@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ForcastPALMapper">
+    <!--
+
+        SELECT
+
+    -->
+	<!-- 예상손익분석 리스트 -->
+	<select id="Select_quoteAnalysisList"
+			parameterType="com.ibiz.api.model.FcstPalSearchVO"
+			resultType="com.ibiz.api.model.FcstPalVO">
+
+		SELECT *
+		FROM( SELECT  Z.FCST_PAL_ID, Z.DOC_NO, Z.REG_DT,
+					Z.LAST_CUST_ID, Z.LAST_CUST_NM, Z.PRJT_ID,
+					Z.PRJT_NM, Z.BOPT_ID, Z.BOPT_NM, Z.ORDE_CUST_ID,
+					Z.ORDE_CUST_NM, Z.PRJT_TYPE_CD, Z.PRJT_TYPE_NM,
+					Z.SELL_AMT, Z.SLS_DEPT_ID, Z.SLS_DEPT_NM, Z.SLS_EMP_ID,
+					Z.SLS_EMP_NM, Z.FCST_PAL_PRGS_STAT_CD,
+					Z.FCST_PAL_PRGS_STAT_NM, Z.SANT_ID, Z.SANT_FRMT_CD, Z.SANT_APPV_DT,
+					ROWNUM AS ROWNUMBER, COUNT(1) OVER() AS TOTAL_CNT
+			FROM ( SELECT TEMP.FCST_PAL_ID, TEMP.DOC_NO, TEMP.REG_DT,
+						TEMP.LAST_CUST_ID, TEMP.LAST_CUST_NM, TEMP.PRJT_ID,
+						TEMP.PRJT_NM, TEMP.BOPT_ID, TEMP.BOPT_NM, TEMP.ORDE_CUST_ID,
+						TEMP.ORDE_CUST_NM, TEMP.PRJT_TYPE_CD, TEMP.PRJT_TYPE_NM,
+						TEMP.SELL_AMT, TEMP.SLS_DEPT_ID, TEMP.SLS_DEPT_NM, TEMP.SLS_EMP_ID,
+						TEMP.SLS_EMP_NM, TEMP.FCST_PAL_PRGS_STAT_CD,
+						TEMP.FCST_PAL_PRGS_STAT_NM, TEMP.SANT_ID, TEMP.SANT_FRMT_CD, TEMP.SANT_APPV_DT
+					FROM ( SELECT BEST.FCST_PAL_ID,
+							BEST.DOC_NO,
+							BEST.REG_DT,
+							BEST.LAST_CUST_ID, IBIZ_CUST_NM(BEST.LAST_CUST_ID) AS LAST_CUST_NM,
+							BEST.PRJT_ID, APRJ.PRJT_NM,
+							BEST.BOPT_ID, BPIP.BOPT_NM,
+							BEST.ORDE_CUST_ID, IBIZ_CUST_NM(BEST.ORDE_CUST_ID) AS ORDE_CUST_NM,
+							BEST.PRJT_TYPE_CD, IBIZ_COM_CD_NM('PRJT_TYPE_CD', BEST.PRJT_TYPE_CD) AS PRJT_TYPE_NM,
+							BEST.SELL_AMT,
+							BEST.SLS_DEPT_ID, IBIZ_DEPT_NM(BEST.SLS_DEPT_ID) AS SLS_DEPT_NM,
+							BEST.SLS_EMP_ID, IBIZ_EMP_NM(BEST.SLS_EMP_ID) AS SLS_EMP_NM,
+							BEST.FCST_PAL_PRGS_STAT_CD, IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD',  BEST.FCST_PAL_PRGS_STAT_CD) AS FCST_PAL_PRGS_STAT_NM,
+							AAPR.SANT_ID,
+							AAPR.SANT_FRMT_CD, AP11.SANT_APPV_DT
+						FROM BEST000T BEST
+							INNER JOIN APRJ000T APRJ ON BEST.PRJT_ID = APRJ.PRJT_ID
+							INNER JOIN BPIP000T BPIP ON (BEST.BOPT_ID = BPIP.BOPT_ID AND BPIP.BOPT_STAT_CD != 'D1')
+							INNER JOIN AAPR100T AAPR ON BEST.SANT_ID = AAPR.SANT_ID
+							LEFT JOIN (
+								SELECT SANT_ID, MAX(SANT_DT) AS SANT_APPV_DT FROM AAPR110T GROUP BY SANT_ID
+							) AP11
+							ON BEST.SANT_ID = AP11.SANT_ID AND BEST.FCST_PAL_PRGS_STAT_CD = 'C'
+							WHERE BEST.SLS_DEPT_ID IN (SELECT DEPT_ID
+														FROM HMST100T
+														START WITH HGRK_DEPT_ID IN (SELECT AUTH_DEPT_ID
+																					FROM SSYS252T
+																					WHERE USER_ID = #{sessEmpId}
+																					)
+														CONNECT BY
+														PRIOR DEPT_ID = HGRK_DEPT_ID
+													UNION ALL
+														SELECT AUTH_DEPT_ID
+														FROM SSYS252T
+														WHERE USER_ID = #{sessEmpId}
+													)
+							) TEMP
+				WHERE 1=1
+				<if test="befFcstPalId != null and befFcstPalId != '' ">
+					AND UPPER(FCST_PAL_ID) = UPPER(#{befFcstPalId})
+				</if>
+				<if test="lastCustId != null and lastCustId != '' ">
+					AND UPPER(LAST_CUST_ID) = UPPER(#{lastCustId})
+				</if>
+				<if test="lastCustNm != null and lastCustNm != '' ">
+					AND UPPER(LAST_CUST_NM) LIKE '%'||UPPER(#{lastCustNm})||'%'
+				</if>
+				<if test="prjtId != null and prjtId != '' ">
+					AND UPPER(PRJT_ID) = UPPER(#{prjtId})
+				</if>
+				<if test="prjtNm != null and prjtNm != '' ">
+					AND UPPER(PRJT_NM) LIKE '%'||UPPER(#{prjtNm})||'%'
+				</if>
+				<if test="ordeCustId != null and ordeCustId != '' ">
+					AND UPPER(ORDE_CUST_ID) = UPPER(#{ordeCustId})
+				</if>
+				<if test="ordeCustNm != null and ordeCustNm != '' ">
+					AND UPPER(ORDE_CUST_NM) LIKE '%'||UPPER(#{ordeCustNm})||'%'
+				</if>
+				<if test="docNo != null and docNo != '' ">
+					AND UPPER(DOC_NO) = UPPER(#{docNo})
+				</if>
+				<if test="fromRegDt != null and fromRegDt != null">
+					<![CDATA[
+								AND TO_CHAR(REG_DT, 'YYYYMMDD') >= #{fromRegDt}
+								]]>
+				</if>
+				<if test="toRegDt != null and toRegDt != null">
+					<![CDATA[
+								AND TO_CHAR(REG_DT, 'YYYYMMDD') <= #{toRegDt}
+								]]>
+				</if>
+				<if test="slsDeptId != null and slsDeptId != null">
+					AND SLS_DEPT_ID  IN (SELECT
+					DEPT_ID
+					FROM
+					HMST100T
+					START WITH
+					HGRK_DEPT_ID = #{slsDeptId}
+					CONNECT BY
+					PRIOR DEPT_ID = HGRK_DEPT_ID
+					UNION ALL
+					SELECT
+					#{slsDeptId}
+					FROM
+					DUAL)
+				</if>
+				<if test="slsEmpId != null and slsEmpId != null">
+					AND SLS_EMP_ID = #{slsEmpId}
+				</if>
+				<if test="prjtTypeCd != null and prjtTypeCd != null">
+					AND PRJT_TYPE_CD = #{prjtTypeCd}
+				</if>
+				<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != null">
+					AND FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}
+				</if>
+				<if test="pageSearchType == 'PP'">
+					ORDER BY LAST_CUST_NM ASC, PRJT_NM ASC, ORDE_CUST_NM ASC, REG_DT DESC
+				</if>
+				<if test="pageSearchType != 'PP'">
+					ORDER BY REG_DT DESC
+				</if>
+			) Z
+			<if test="slsEmpNm != null and slsEmpNm != null and pageSearchType == 'PP'">
+				WHERE SLS_EMP_NM LIKE '%'|| #{slsEmpNm}||'%'
+			</if>
+		)
+		WHERE
+		ROWNUMBER BETWEEN #{pageSize} * (#{pageNumber} - 1) + 1
+		AND #{pageSize} * (#{pageNumber} - 1) + #{pageSize}
+
+	</select>
+
+	<select id="Select_isExistForcastPAL"
+			parameterType="com.ibiz.api.model.FcstPalVO"
+			resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM BEST000T
+		WHERE BOPT_ID =	#{boptId}
+	</select>
+
+</mapper>

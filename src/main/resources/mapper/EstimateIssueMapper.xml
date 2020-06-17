@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="EstimateIssueMapper">
+	<!--
+
+        select
+
+     -->
+
+	<!-- 견적서 발행이력 리스트 -->
+	<select id="Select_estimateHistoryList"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueVO">
+		SELECT TOTAL_CNT, ROWNUMBER, DOC_NO,ESTI_ID,FCST_PAL_ID,ISU_DT,ESTI_WRT_DATE
+			,REG_DT,CHG_DT,LAST_CUST_ID,LAST_CUST_NM,PRJT_NM, BOPT_NM,ORDE_CUST_ID,ORDE_CUST_NM,PRJT_TYPE_NM
+			,PRJT_TYPE_CD,SELL_AMT,SLS_DEPT_NM ,SLS_EMP_NM,ESTIS_STAT_NM,ESTIS_STAT_CD
+		FROM
+		( SELECT  COUNT(1) OVER() AS TOTAL_CNT, ROWNUM AS ROWNUMBER,
+			Z.DOC_NO,Z.ESTI_ID,Z.FCST_PAL_ID,Z.ISU_DT,Z.ESTI_WRT_DATE
+			,Z.REG_DT,Z.CHG_DT,Z.LAST_CUST_ID,Z.LAST_CUST_NM,Z.PRJT_NM
+			,Z.BOPT_NM,Z.ORDE_CUST_ID,Z.ORDE_CUST_NM,Z.PRJT_TYPE_NM
+			,Z.PRJT_TYPE_CD,Z.SELL_AMT,Z.SLS_DEPT_NM
+			,Z.SLS_EMP_NM,Z.ESTIS_STAT_NM,Z.ESTIS_STAT_CD
+		FROM(
+			SELECT DISTINCT
+				T1.DOC_NO
+				,T1.ESTI_ID
+				,T1.FCST_PAL_ID
+				,T1.ISU_DT
+				,T1.ESTI_WRT_DATE
+				,T1.REG_DT
+				,T1.CHG_DT
+				,T2.LAST_CUST_ID
+				,IBIZ_CUST_NM(T2.LAST_CUST_ID)AS LAST_CUST_NM
+				,IBIZ_PRJT_NM(T2.PRJT_ID) AS PRJT_NM
+				,(
+					SELECT BOPT_NM
+					FROM BPIP000T
+					WHERE BOPT_ID = T2.BOPT_ID
+					AND BOPT_STAT_CD != 'D1'
+				) AS BOPT_NM
+				,T2.ORDE_CUST_ID
+				,IBIZ_CUST_NM(T2.ORDE_CUST_ID)AS ORDE_CUST_NM
+				,IBIZ_COM_CD_NM('PRJT_TYPE_CD',T2.PRJT_TYPE_CD) AS PRJT_TYPE_NM
+				,T2.PRJT_TYPE_CD
+				,T2.SELL_AMT
+				,IBIZ_DEPT_NM(T2.SLS_DEPT_ID) AS SLS_DEPT_NM
+				,IBIZ_EMP_NM(T2.SLS_EMP_ID)AS SLS_EMP_NM
+				,IBIZ_COM_CD_NM('ESTIS_STAT_CD',T1.ESTIS_STAT_CD) AS ESTIS_STAT_NM
+				,T1.ESTIS_STAT_CD
+			FROM BEST100T T1
+			INNER JOIN BEST000T T2 ON T1.FCST_PAL_ID = T2.FCST_PAL_ID
+			WHERE 1=1
+		<if test="docNo != null and docNo != '' ">
+			AND UPPER(T1.DOC_NO) = UPPER(#{docNo})
+		</if>
+		<if test="prjtId != null and prjtId != '' ">
+			AND UPPER(T2.PRJT_ID) = UPPER(#{prjtId})
+		</if>
+		<if test="prjtNm != null and prjtNm != '' ">
+			AND UPPER(IBIZ_PRJT_NM(T2.PRJT_ID)) LIKE '%'||UPPER(#{prjtNm})||'%'
+		</if>
+		<if test="lastCustId != null and lastCustId != '' ">
+			AND UPPER(T2.LAST_CUST_ID) = UPPER(#{lastCustId})
+		</if>
+		<if test="lastCustNm != null and lastCustNm != '' ">
+			AND UPPER(IBIZ_CUST_NM(T2.LAST_CUST_ID)) LIKE '%'||UPPER(#{lastCustNm})||'%'
+		</if>
+		<if test="ordeCustId != null and ordeCustId != '' ">
+			AND UPPER(T2.ORDE_CUST_ID) = UPPER(#{ordeCustId})
+		</if>
+		<if test="ordeCustNm != null and ordeCustNm != '' ">
+			AND UPPER(IBIZ_CUST_NM(T2.ORDE_CUST_ID)) LIKE '%'||UPPER(#{ordeCustNm})||'%'
+		</if>
+		<if test="slsDeptId != null and slsDeptId != ''">
+			AND T2.SLS_DEPT_ID IN (SELECT DEPT_ID FROM HMST100T
+			START WITH DEPT_ID = #{slsDeptId}
+			CONNECT BY PRIOR DEPT_ID = HGRK_DEPT_ID)
+		</if>
+		<if test="slsEmpId != null and slsEmpId != ''">
+			AND T2.SLS_EMP_ID = #{slsEmpId}
+		</if>
+		<if test="prjtTypeCd != null and prjtTypeCd != ''">
+			AND T2.PRJT_TYPE_CD = #{prjtTypeCd}
+		</if>
+		<if test="estisStatCd != null and estisStatCd != ''">
+			AND T1.ESTIS_STAT_CD = #{estisStatCd}
+		</if>
+		<if test="fromRegDt != null and fromRegDt != null">
+			<![CDATA[
+			            AND TO_CHAR(T1.REG_DT, 'YYYYMMDD') >= #{fromRegDt}
+			            ]]>
+		</if>
+		<if test="toRegDt != null and toRegDt != null">
+			<![CDATA[
+			            AND TO_CHAR(T1.REG_DT, 'YYYYMMDD') <= #{toRegDt}
+			            ]]>
+		</if>
+			ORDER BY T1.REG_DT DESC
+			) Z
+		)
+		WHERE
+		ROWNUMBER BETWEEN #{pageSize} * (#{pageNumber} - 1) + 1
+		AND #{pageSize} * (#{pageNumber} - 1) + #{pageSize}
+	</select>
+
+	<!-- 견적서 발행내역 상세 -->
+	<select id="Select_estimateIssueDetail"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueVO" >
+		SELECT ESTI_ID, T1.FCST_PAL_ID, T1.ESTI_WRT_DATE, T1.DOC_NO, T1.RCV_CMPY_NM, T1.RCV_CHRR_NM,
+    		T1.TRSMT_CHRR_NM,T1.TRSMT_TEL_NO, T1.TRSMT_EML_ADRS, T1.BSNS_NM,
+    		T1.SPLY_CMPY_NM, T1.SPLY_CMPY_BSNN_NO, T1.SPLY_CMPY_RPRN_NM, T1.SPLY_CMPY_ADRS,
+    		T1.SPLY_CMPY_TEL_NO, T1.SPLY_CMPY_FAX_NO, T1.VAT_CVRD_DST_CD, IBIZ_COM_CD_NM('VAT_CVRD_DST_CD',T1.VAT_CVRD_DST_CD) AS VAT_CVRD_DST_NM,
+    		T1.QLTY_GARNT_SVC_CONT, T1.ETC_MTR, T1.ESTIS_STAT_CD, IBIZ_COM_CD_NM('ESTIS_STAT_CD',T1.ESTIS_STAT_CD) AS ESTIS_STAT_NM,
+			T1.ISU_DT, T1.REG_EMP_ID, IBIZ_EMP_NM(T1.REG_EMP_ID) AS REG_EMP_NM,
+    		T1.REG_DT, T1.CHG_EMP_ID, IBIZ_EMP_NM(T1.CHG_EMP_ID) AS CHG_EMP_NM, T1.CHG_DT, T2.SLS_EMP_ID, T2.SLS_DEPT_ID
+        FROM BEST100T T1
+        INNER JOIN BEST000T T2 ON T1.FCST_PAL_ID = T2.FCST_PAL_ID
+		WHERE ESTI_ID = #{estiId}
+	</select>
+
+	<!-- 견적서 견적내역 상세 -->
+	<select id="Select_estimateDetail"
+			parameterType="com.ibiz.api.model.EstiProductVO"
+			resultType="com.ibiz.api.model.EstiProductVO" >
+		SELECT B.HGRK_COM_CD AS PROD_DST_CD, IBIZ_COM_CD_NM('PROD_DST_CD',B.HGRK_COM_CD) AS PROD_DST_NM,
+			A.ESTI_ID, A.PROD_TYPE_CD, IBIZ_COM_CD_NM('PROD_TYPE_CD',A.PROD_TYPE_CD) AS PROD_TYPE_NM, A.SEQ, A.SVC_JOB_NM,
+			A.SPLY_CMPY_NM, A.PRODP_NM, A.PROD_NM, A.UPC_UNIT_NM, A.QNT, A.BSC_UPC_AMT, A.LPC_AMT, A.SPLY_UPC_AMT, A.SPLY_AMT, A.RMRK_CONT
+		FROM BEST110T A
+			JOIN ( SELECT COM_CD, HGRK_COM_CD, SORT_SEQC FROM ACOM010T WHERE COM_GRP_CD =  (
+								SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'PROD_TYPE_CD' )
+					) B
+			ON A.PROD_TYPE_CD = B.COM_CD
+		WHERE ESTI_ID =  #{estiId}
+		ORDER BY B.SORT_SEQC, A.SEQ
+	</select>
+
+	<!-- 견적서 고객 대표 상세 -->
+	<select id="Select_estimateIssueCustomerDetail"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueVO" >
+		SELECT T0.CUST_ID AS SPLY_CMPY_ID, T0.RPRN_NM AS SPLY_CMPY_RPRN_NM, T0.CSTID_NO AS SPLY_CMPY_BSNN_NO, T0.CUST_NM AS SPLY_CMPY_NM
+			, T3.TEL_NO AS SPLY_CMPY_TEL_NO, T4.TEL_NO AS SPLY_CMPY_FAX_NO, ('('||T5.ZPCD||')'||T5.ZIP_ADRS || T5.DTL_ADRS ) AS SPLY_CMPY_ADRS
+		FROM CMST000T T0
+			LEFT JOIN CMST001T T1 ON T1.TGT_CUST_ID = T0.CUST_ID
+			LEFT JOIN (SELECT TEL_NO,CUST_ID FROM CMST031T T3 WHERE TO_CHAR(SYSDATE,'YYYYMMDD') BETWEEN T3.AVL_START_DATE AND T3.AVL_END_DATE AND CNPL_DST_CD = 'D'  ) T3 ON T0.CUST_ID = T3.CUST_ID  --전화번호
+			LEFT JOIN (SELECT TEL_NO,CUST_ID FROM CMST031T T4 WHERE TO_CHAR(SYSDATE,'YYYYMMDD') BETWEEN T4.AVL_START_DATE AND T4.AVL_END_DATE AND CNPL_DST_CD = 'C'  ) T4 ON T0.CUST_ID = T4.CUST_ID  --팩스번호
+			LEFT JOIN (SELECT ZPCD, ZIP_ADRS, DTL_ADRS, CUST_ID FROM CMST032T T5 WHERE TO_CHAR(SYSDATE,'YYYYMMDD') BETWEEN T5.AVL_START_DATE AND T5.AVL_END_DATE AND T5.ADRS_DST_CD = 'A'  ) T5 ON T0.CUST_ID = T5.CUST_ID  --주소
+			LEFT JOIN SSYS250T S4 ON USER_ID = #{slsEmpId}
+		WHERE T1.CRIT_CUST_ID = S4.CUST_ID AND CUST_REL_TYPE_CD = 'A1'
+	</select>
+
+	<!-- 견적서 발신인 조회 -->
+	<select id="Select_estimateIssueTrsmtInfo"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueVO" >
+		SELECT CUST_NM, OFPS_NM, BLTO_DEPT_NM AS SLS_DEPT_NM,
+			TEL_NO AS TRSMT_TEL_NO, EML_ADRS AS TRSMT_EML_ADRS
+		FROM (
+			SELECT T1.CUST_NM, T1.OFPS_NM, T1.BLTO_DEPT_NM, T2.TEL_NO, T3.EML_ADRS
+			FROM CMST000T T1
+				LEFT JOIN (SELECT ROWNUM, CUST_ID, TEL_NO FROM CMST031T WHERE CNPL_DST_CD = 'B' AND (TO_CHAR(SYSDATE,'yyyymmdd') BETWEEN AVL_START_DATE AND AVL_END_DATE) )T2 ON T1.CUST_ID = T2.CUST_ID
+				LEFT JOIN (SELECT CUST_ID, EML_ADRS FROM CMST031T WHERE CNPL_DST_CD = 'E' AND (TO_CHAR(SYSDATE,'yyyymmdd') BETWEEN AVL_START_DATE AND AVL_END_DATE) )T3 ON T1.CUST_ID = T3.CUST_ID
+				LEFT JOIN (SELECT USER_ID, CUST_ID FROM SSYS250T WHERE USER_ID =  #{slsEmpId} )T4 ON T1.CUST_ID = T4.CUST_ID
+			WHERE USER_ID = #{slsEmpId}
+			ORDER BY ROWNUM DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
+
+	<!-- 예상손익 견적내역 전체 조회 -->
+	<select id="Select_ProfitAnalysis"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiProductVO" >
+		SELECT DISTINCT T1.PROD_SEQ AS SEQ, T1.PROD_TYPE_CD, IBIZ_COM_CD_NM('PROD_TYPE_CD',T1.PROD_TYPE_CD) AS PROD_TYPE_NM,
+			T1.PROD_DST_CD, IBIZ_COM_CD_NM('PROD_DST_CD',T1.PROD_DST_CD) AS PROD_DST_NM, IBIZ_CUST_NM(SPLY_CMPY_CUST_ID) AS SPLY_CMPY_NM,
+			PRODP_NM, CASE WHEN T1.PROD_TYPE_CD = 'TS' THEN IBIZ_COM_CD_NM('SVC_UPC_CRIT_CD',T1.SVC_UPC_CRIT_CD) ELSE PROD_NM END AS PROD_NM,
+			CASE WHEN T1.PROD_TYPE_CD = 'TS' THEN PROD_NM ELSE SVC_JOB_NM END AS SVC_JOB_NM,
+			CASE WHEN INSTR(T1.UPC_UNIT_NM, 'User') = 0 THEN (CASE WHEN INSTR(T1.UPC_UNIT_NM, 'TB') = 0 THEN (CASE WHEN T1.UNIT_QNT = 1 OR T1.UNIT_QNT IS NULL THEN UPC_UNIT_NM ELSE T1.UNIT_QNT ||' '||  T1.UPC_UNIT_NM END) ELSE T1.UNIT_QNT || ' TB' END) ELSE T1.UNIT_QNT || ' User' END AS UPC_UNIT_NM,
+			COPY_QNT AS QNT,
+			BSC_UPC_AMT, LPC_AMT, SPLY_UPC_AMT, SPLY_AMT,
+		CASE WHEN T1.PROD_TYPE_CD = 'LD' OR T1.PROD_TYPE_CD = 'SS' THEN CONCAT(T2.PRC_DC_OPTN_CD, ESTI_RMRK_CONT) ELSE ESTI_RMRK_CONT END AS RMRK_CONT
+		FROM BEST010T T1
+			LEFT JOIN (SELECT PROD_SEQ, PROD_TYPE_CD, LISTAGG(IBIZ_COM_CD_NM('PRC_DC_OPTN_CD',PRC_DC_OPTN_CD), ', ') WITHIN GROUP (ORDER BY PROD_SEQ) AS PRC_DC_OPTN_CD
+				FROM BEST011T T2
+				WHERE FCST_PAL_ID = #{fcstPalId}
+				GROUP BY PROD_SEQ, PROD_TYPE_CD) T2 ON T1.PROD_SEQ = T2.PROD_SEQ AND T1.PROD_TYPE_CD = T2.PROD_TYPE_CD
+		WHERE T1.FCST_PAL_ID = #{fcstPalId}
+		AND PROD_NM IS NOT NULL
+		ORDER BY T1.PROD_SEQ
+	</select>
+
+	<!-- 견적서 유지보수 견적내역 조회 -->
+	<select id="Select_ProfitAnalysisMA"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueMAVO" >
+		SELECT FCST_PAL_ID, PROD_SEQ AS SEQ, IBIZ_PRJT_NM(MA_TGT_PRJT_ID) AS PRJT_NM, PRODP_NM, MA_GODS_SPLY_AMT AS GODS_SPLY_AMT,
+			MA_TRF, MA_START_DATE, MA_END_DATE, SPLY_UPC_AMT AS MNTH_MNDN_AMT, SPLY_AMT
+		FROM BEST010T
+		WHERE FCST_PAL_ID = #{fcstPalId} AND MA_TGT_PRJT_ID IS NOT NULL
+	</select>
+
+	<!-- 견적서 유지보수 서비스 조회 -->
+	<select id="Select_ProfitAnalysisMAService"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueMAServiceVO" >
+		SELECT FCST_PAL_ID, SEQ,
+				IBIZ_COM_CD_NM('TECH_SVC_CD',TECH_SVC_CD) AS SVC_JOB_NM,
+				SVC_PRVD_CDNT_CONT,
+				YRLY_FCST_PUT_COST_AMT,
+				RMRK_CONT AS PRVD_SVC_RMRK_CONT
+		FROM BEST080T
+		WHERE FCST_PAL_ID = #{fcstPalId}
+		ORDER BY SEQ
+	</select>
+
+	<!-- 견적서 유지보수 견적 상세 -->
+	<select id="Select_estimateIssueMAList"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueMAVO" >
+		SELECT ESTI_ID, SEQ, PRJT_NM, PRODP_NM, GODS_SPLY_AMT, MA_TRF,
+				MA_START_DATE, MA_END_DATE, MNTH_MNDN_AMT, SPLY_AMT
+		FROM BEST170T
+		WHERE ESTI_ID =  #{estiId}
+		ORDER BY SEQ
+	</select>
+
+	<!-- 견적서 유지보수 서비스 상세 -->
+	<select id="Select_estimateIssueMAServiceList"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueMAServiceVO" >
+		SELECT ESTI_ID, SEQ, SVC_JOB_NM, SVC_PRVD_CDNT_CONT, PRVD_SVC_RMRK_CONT
+		FROM BEST180T
+		WHERE ESTI_ID =  #{estiId}
+		ORDER BY SEQ
+	</select>
+
+	<!-- 프로젝트 유형 조회 -->
+	<select id="Select_estimateIssuePrjtTypeCd"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueVO">
+		SELECT PRJT_TYPE_CD
+	    FROM BEST000T
+	    WHERE FCST_PAL_ID = #{fcstPalId}
+	</select>
+
+	<!-- 견적서 등록 전 결재진행상태코드 조회 -->
+	<select id="Select_estimateIssueFcstPalPrgsStatCd"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueVO">
+		SELECT FCST_PAL_PRGS_STAT_CD
+	    FROM BEST000T
+	    WHERE FCST_PAL_ID = #{fcstPalId}
+
+	</select>
+
+	<!-- MAX(ESTI_ID) 조회 -->
+	<select id="Select_maxEstiId"
+			resultType="com.ibiz.api.model.EstiIssueVO">
+			SELECT
+			        CASE
+			            WHEN MAX(ESTI_ID) IS NOT NULL THEN MAX(ESTI_ID)
+			            ELSE TO_CHAR(SYSDATE,'yyyy') || '000000'
+			        END
+			    AS ESTI_ID
+			FROM
+			    BEST100T
+	</select>
+
+	<!-- MAX(DOC_NO) 조회 -->
+	<select id="Select_maxDocNo"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueVO">
+        SELECT CASE WHEN (
+	                SELECT
+	                	 MAX(T1.DOC_NO)
+		            FROM
+		                BEST100T T1
+                    INNER JOIN BEST000T T2 ON T2.PRJT_TYPE_CD = #{prjtTypeCd} AND T2.FCST_PAL_ID = T1.FCST_PAL_ID
+		            WHERE SUBSTR(T1.DOC_NO,8,8) IN #{estiWrtDate}
+	        )IS NULL THEN
+            'IZ-' || ( SELECT COM_CD
+	                  FROM ACOM010T WHERE COM_GRP_CD = (
+	                        SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'DOC_KIND_CD')
+	                        AND COM_CD_CHAR_VAL = #{santFrmtCd}
+	                )  || '-' || #{estiWrtDate} ||  '-' || '00'
+                    ELSE (
+	                SELECT
+		                MAX(T1.DOC_NO)
+		            FROM
+		                BEST100T T1
+                    INNER JOIN BEST000T T2 ON T2.PRJT_TYPE_CD = #{prjtTypeCd} AND T2.FCST_PAL_ID = T1.FCST_PAL_ID
+		            WHERE SUBSTR(T1.DOC_NO,8,8) = #{estiWrtDate}
+	        )
+	        END AS DOC_NO
+            FROM DUAL
+	</select>
+
+	<!-- 삭제할 견적서가 존재하는지 여부 조회 -->
+	<select id="Select_IsExistEstimateIssue"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM BEST100T
+		WHERE ESTI_ID = #{estiId}
+	</select>
+
+
+	<!-- 견적서 발행상태 정보 조회 -->
+	<select id="Select_EstimateIssueStatCd"
+			parameterType="com.ibiz.api.model.EstiIssueVO"
+			resultType="com.ibiz.api.model.EstiIssueVO">
+		SELECT ESTIS_STAT_CD,
+		    (   SELECT
+		            T010.COM_CD_NM
+		            FROM
+		                (
+		                SELECT
+		                    T000.COM_GRP_CD
+		                FROM
+		                ACOM000T T000
+		                INNER JOIN ACOM020T T020 ON T000.COM_GRP_CD = T020.COM_GRP_CD
+		                WHERE
+		                <![CDATA[
+		                1 = 1
+		                AND   T020.CLMN_NM = 'ESTIS_STAT_CD'
+		                ]]>
+		                ) T000_T020
+		                INNER JOIN ACOM010T T010 ON T000_T020.COM_GRP_CD = T010.COM_GRP_CD
+		                WHERE
+		                T010.USE_YN = 'Y'
+		                AND   T010.COM_CD = ESTIS_STAT_CD
+		    ) AS ESTIS_STAT_NM
+		FROM BEST100T
+		WHERE ESTI_ID = #{estiId}
+	</select>
+
+
+
+	<!--
+
+		INSERT
+
+	 -->
+	<!-- 견적서발행내역 등록 -->
+	<insert id="Insert_estimateIssue"
+			parameterType="com.ibiz.api.model.EstiIssueVO">
+		INSERT INTO BEST100T (
+		ESTI_ID,
+		FCST_PAL_ID,
+		ESTI_WRT_DATE,
+		DOC_NO,
+		RCV_CMPY_NM,
+		<if test="rcvChrrNm != null and rcvChrrNm != ''">
+			RCV_CHRR_NM,
+		</if>
+		<if test="trsmtChrrNm != null and trsmtChrrNm != ''">
+			TRSMT_CHRR_NM,
+		</if>
+		<if test="trsmtTelNo != null and trsmtTelNo != ''">
+			TRSMT_TEL_NO,
+		</if>
+		<if test="trsmtEmlAdrs != null and trsmtEmlAdrs != ''">
+			TRSMT_EML_ADRS,
+		</if>
+		BSNS_NM,
+		SPLY_CMPY_NM,
+		SPLY_CMPY_BSNN_NO,
+		SPLY_CMPY_RPRN_NM,
+		SPLY_CMPY_ADRS,
+		SPLY_CMPY_TEL_NO,
+		SPLY_CMPY_FAX_NO,
+		VAT_CVRD_DST_CD,
+		<if test="qltyGarntSvcCont != null and qltyGarntSvcCont != ''">
+			QLTY_GARNT_SVC_CONT,
+		</if>
+		<if test="etcMtr != null and etcMtr != ''">
+			ETC_MTR,
+		</if>
+		ESTIS_STAT_CD,
+		REG_EMP_ID,
+		REG_DT,
+		CHG_EMP_ID,
+		CHG_DT
+		)
+		(
+		SELECT #{estiId} AS ESTI_ID
+		,T000.FCST_PAL_ID
+		, #{estiWrtDate} AS ESTI_WRT_DATE
+		<if test="docNo != null and docNo != ''">
+			, #{docNo}  AS DOC_NO
+		</if>
+		,(
+		SELECT CUST_NM
+		FROM CMST000T
+		WHERE CUST_ID = T000.ORDE_CUST_ID
+		) AS RCV_CMPY_NM
+		<if test="rcvChrrNm != null and rcvChrrNm != ''">
+			, #{rcvChrrNm} AS RCV_CHRR_NM
+		</if>
+		<if test="trsmtChrrNm != null and trsmtChrrNm != ''">
+			, #{trsmtChrrNm} AS TRSMT_CHRR_NM
+		</if>
+		<if test="trsmtTelNo != null and trsmtTelNo != ''">
+			, #{trsmtTelNo} AS TRSMT_TEL_NO
+		</if>
+		<if test="trsmtEmlAdrs != null and trsmtEmlAdrs != ''">
+			, #{trsmtEmlAdrs} AS TRSMT_EML_ADRS
+		</if>
+		<if test="bsnsNm != null and bsnsNm != ''">
+			, #{bsnsNm} AS BSNS_NM
+		</if>
+		, #{splyCmpyNm} AS SPLY_CMPY_NM
+		, #{splyCmpyBsnnNo} AS SPLY_CMPY_BSNN_NO
+		, #{splyCmpyRprnNm} AS SPLY_CMPY_RPRN_NM
+		, #{splyCmpyAdrs} AS SPLY_CMPY_ADRS
+		, #{splyCmpyTelNo} AS SPLY_CMPY_TEL_NO
+		, #{splyCmpyFaxNo} AS SPLY_CMPY_FAX_NO
+		, #{vatCvrdDstCd} AS VAT_CVRD_DST_CD
+		<if test="qltyGarntSvcCont != null and qltyGarntSvcCont != ''">
+			, #{qltyGarntSvcCont} AS QLTY_GARNT_SVC_CONT
+		</if>
+		<if test="etcMtr != null and etcMtr != ''">
+			, #{etcMtr} AS ETC_MTR
+		</if>
+		, #{estisStatCd} AS ESTIS_STAT_CD
+		, #{regEmpId} AS REG_EMP_ID
+		, SYSDATE AS REG_DT
+		, #{chgEmpId} AS CHG_EMP_ID
+		, SYSDATE AS CHG_DT
+		FROM BEST000T T000
+		JOIN (
+		SELECT CUST_ID, EMP_ID
+		FROM CMST010T
+		WHERE CUST_ROLE_CLSF_CD = 'C'
+		) CMT010
+		ON T000.SLS_EMP_ID = CMT010.EMP_ID
+		WHERE T000.FCST_PAL_ID = #{fcstPalId}
+		)
+
+	</insert>
+
+	<!-- 견적서발행 상품 등록(PnS) -->
+	<insert id="Insert_estimateIssueProductAll"
+			parameterType="com.ibiz.api.model.EstiProductVO">
+			INSERT INTO BEST110T (
+			    ESTI_ID
+			    ,PROD_TYPE_CD
+			    ,SEQ
+			<if test="svcJobNm != null and svcJobNm != null">
+				,SVC_JOB_NM
+			</if>
+			<if test="splyCmpyNm != null and splyCmpyNm != null">
+				,SPLY_CMPY_NM
+			</if>
+			<if test="prodpNm != null and prodpNm != null">
+				,PRODP_NM
+			</if>
+			<if test="prodNm != null and prodNm != null">
+				,PROD_NM
+			</if>
+			<if test="upcUnitNm != null and upcUnitNm != null">
+				,UPC_UNIT_NM
+			</if>
+				,QNT
+			<if test="bscUpcAmt != null and bscUpcAmt != null">
+				,BSC_UPC_AMT
+			</if>
+			<if test="lpcAmt != null and lpcAmt != null">
+				,LPC_AMT
+			</if>
+			<if test="splyUpcAmt != null and splyUpcAmt != null">
+				,SPLY_UPC_AMT
+			</if>
+				,SPLY_AMT
+			<if test="rmrkCont != null and rmrkCont != null">
+				,RMRK_CONT
+			</if>
+			)
+			VALUES(
+              #{estiId}
+		      ,#{prodTypeCd}
+              ,#{seq}
+			<if test="svcJobNm != null and svcJobNm != null">
+				,#{svcJobNm}
+			</if>
+			<if test="splyCmpyNm != null and splyCmpyNm != null">
+				,#{splyCmpyNm}
+			</if>
+			<if test="prodpNm != null and prodpNm != null">
+				,#{prodpNm}
+			</if>
+			<if test="prodNm != null and prodNm != null">
+				,#{prodNm}
+			</if>
+			<if test="upcUnitNm != null and upcUnitNm != null">
+				,#{upcUnitNm}
+			</if>
+				,NVL(#{qnt},0)
+			<if test="bscUpcAmt != null and bscUpcAmt != null">
+				,#{bscUpcAmt}
+			</if>
+			<if test="lpcAmt != null and lpcAmt != null">
+				,#{lpcAmt}
+			</if>
+			<if test="splyUpcAmt != null and splyUpcAmt != null">
+				,#{splyUpcAmt}
+			</if>
+				,NVL(#{splyAmt},0)
+			<if test="rmrkCont != null and rmrkCont != null">
+				,#{rmrkCont}
+			</if>
+
+            )
+	 </insert>
+
+	<!-- 견적서발행 유지보수 견적 상세 등록(MA) -->
+	<insert id="Insert_estimateIssueMaDetail"
+			parameterType="com.ibiz.api.model.EstiIssueMAVO">
+		INSERT INTO BEST170T (
+			ESTI_ID,
+			SEQ,
+			PRJT_NM,
+			PRODP_NM,
+			GODS_SPLY_AMT,
+			MA_TRF,
+			MA_START_DATE,
+			MA_END_DATE,
+			MNTH_MNDN_AMT,
+			SPLY_AMT
+		) (
+			SELECT #{estiId} AS ESTI_ID,
+			PROD_SEQ AS SEQ,
+			IBIZ_PRJT_NM(MA_TGT_PRJT_ID) AS PRJT_NM,
+			PRODP_NM,
+			NVL(MA_GODS_SPLY_AMT,0) AS GODS_SPLY_AMT,
+			MA_TRF,
+			MA_START_DATE,
+			MA_END_DATE,
+			NVL(SPLY_UPC_AMT,0) AS MNTH_MNDN_AMT,
+			NVL(SPLY_AMT,0) AS SPLY_AMT
+			FROM BEST010T
+			WHERE FCST_PAL_ID = #{fcstPalId}
+			AND MA_TGT_PRJT_ID IS NOT NULL
+		)
+	</insert>
+
+	<!-- 견적서발행 유지보수 서비스 상세 등록(MA) -->
+	<insert id="Insert_estimateIssueMaServiceDetail"
+			parameterType="com.ibiz.api.model.EstiIssueMAServiceVO">
+			INSERT INTO BEST180T (
+			    ESTI_ID
+			    ,SEQ
+			    ,SVC_JOB_NM
+			<if test="svcPrvdCdntCont != null and svcPrvdCdntCont != null">
+				,SVC_PRVD_CDNT_CONT
+			</if>
+			<if test="prvdSvcRmrkCont != null and prvdSvcRmrkCont != null">
+				,PRVD_SVC_RMRK_CONT
+			</if>
+			) VALUES(
+              #{estiId}
+			  ,#{seq}
+		      ,#{svcJobNm}
+			<if test="svcPrvdCdntCont != null and svcPrvdCdntCont != null">
+				,#{svcPrvdCdntCont}
+			</if>
+			<if test="prvdSvcRmrkCont != null and prvdSvcRmrkCont != null">
+				,#{prvdSvcRmrkCont}
+			</if>
+
+            )
+	 </insert>
+
+	<!--
+
+		UPDATE
+
+	 -->
+
+	<!-- 견적서 발행 상태코드 수정 -->
+	<update id="Update_estimateIssueStatCd"
+			parameterType="com.ibiz.api.model.EstiIssueVO">
+			UPDATE BEST100T
+			    SET
+			        ESTIS_STAT_CD = #{estisStatCd},
+			        CHG_EMP_ID = #{chgEmpId},
+			        ISU_DT = SYSDATE,
+			        CHG_DT = SYSDATE
+			WHERE
+			    ESTI_ID = #{estiId}
+	</update>
+
+	<!-- 견적서 수정 -->
+	<update id="Update_estimateIssue"
+			parameterType="com.ibiz.api.model.EstiIssueVO">
+			UPDATE BEST100T
+			    SET
+			        ESTI_WRT_DATE = #{estiWrtDate},
+			    	DOC_NO = #{docNo},
+			    	RCV_CHRR_NM = #{rcvChrrNm},
+			    	TRSMT_CHRR_NM = #{trsmtChrrNm},
+			    	TRSMT_TEL_NO = #{trsmtTelNo},
+			    	TRSMT_EML_ADRS = #{trsmtEmlAdrs},
+			    	BSNS_NM = #{bsnsNm},
+			    	VAT_CVRD_DST_CD = #{vatCvrdDstCd},
+			    	QLTY_GARNT_SVC_CONT = #{qltyGarntSvcCont},
+			    	ETC_MTR = #{etcMtr},
+			        CHG_EMP_ID = #{chgEmpId},
+			        CHG_DT = SYSDATE
+			WHERE
+			    ESTI_ID = #{estiId}
+	</update>
+
+	<!--
+
+		Delete 영역
+
+	 -->
+
+	<!-- 견적서 삭제 -->
+	<delete	id = "Delete_estimateIssue"
+			   parameterType="com.ibiz.api.model.EstiIssueVO">
+			DELETE
+			  FROM BEST100T
+			 WHERE ESTI_ID = #{estiId}
+	</delete>
+
+	<!-- 견적서 세부상품 삭제 -->
+	<delete	id = "Delete_estimateIssueProduct"
+			   parameterType="com.ibiz.api.model.EstiIssueVO">
+			DELETE
+			  FROM BEST110T
+			 WHERE ESTI_ID = #{estiId}
+	</delete>
+
+	<!-- 견적서 유지보수 견적 삭제 -->
+	<delete	id = "Delete_estimateIssueMA"
+			   parameterType="com.ibiz.api.model.EstiIssueVO">
+			DELETE
+			  FROM BEST170T
+			 WHERE ESTI_ID = #{estiId}
+	</delete>
+
+	<!-- 견적서 유지보수 서비스 삭제 -->
+	<delete	id = "Delete_estimateIssueMAService"
+			   parameterType="com.ibiz.api.model.EstiIssueVO">
+			DELETE
+			  FROM BEST180T
+			 WHERE ESTI_ID = #{estiId}
+	</delete>
+
+
+</mapper>

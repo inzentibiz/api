@@ -1,0 +1,1408 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProfitAnalysisMapper">
+
+	<!--
+
+		SELECT
+
+	 -->
+
+
+	<!--	santid를 통해 예상손익정보 가져오기 -->
+	<select id="Select_fcstPalId"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="java.lang.String">
+
+			SELECT FCST_PAL_ID
+			FROM BEST000T
+			WHERE SANT_ID = #{santId}
+
+	</select>
+
+	<select id="Select_fcstPalPrgsStatCd"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.BsnsProfitLossVO">
+
+			SELECT FCST_PAL_PRGS_STAT_CD, IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', FCST_PAL_PRGS_STAT_CD) AS FCST_PAL_PRGS_STAT_NM
+			FROM BEST000T
+			WHERE SANT_ID = #{santId}
+
+	</select>
+
+	<!-- VRB 등록여부 조회
+	  	예상손익을 삭제하는 경우 VRB 등록여부를 체크하기 위한 쿼리 -->
+	<select id="Select_isRelatedWithVrb"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="java.lang.Integer">
+
+			SELECT
+			    NVL(COUNT(1),0)
+			FROM
+			    BPIP141T
+			WHERE
+			    FCST_PAL_ID = #{fcstPalId}
+
+	</select>
+
+
+
+	<!-- 예상손익기본 상세  -->
+	<select id="Select_businessInformation"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.BsnsProfitLossVO">
+
+			SELECT BEST.FCST_PAL_ID, BEST.DOC_NO, BEST.SANT_ID,
+			   BEST.LAST_CUST_ID, IBIZ_CUST_NM(BEST.LAST_CUST_ID) AS LAST_CUST_NM,
+			   BEST.ORDE_CUST_ID, IBIZ_CUST_NM(BEST.ORDE_CUST_ID) AS ORDE_CUST_NM,
+			   BEST.PRJT_ID, APRJ.PRJT_NM,
+			   APRJ.PUAH_BCKG_PPOSE_CONT, APRJ.PRMRY_BSNS_CONT, APRJ.THOF_BSNS_FLD_CONT,
+			   BEST.PRJT_TYPE_CD,
+			   BEST.BOPT_ID, BPIP.BOPT_NM,
+			   IBIZ_COM_CD_NM('BOPT_STAT_CD',BPIP.BOPT_STAT_CD) AS BOPT_STAT_NM,
+			   BEST.CNTR_TRSF_START_YAM, BEST.CNTR_TRSF_END_YAM,
+			   BPIP.SPCL_CONT,
+			   BEST.SELL_AMT,
+			   BEST.TECH_SVC_RVW_EMP_ID, IBIZ_EMP_NM(BEST.TECH_SVC_RVW_EMP_ID) AS TECH_SVC_RVW_EMP_NM,
+			   BEST.TECH_SVC_RVW_DEPT_ID, IBIZ_DEPT_NM(BEST.TECH_SVC_RVW_DEPT_ID) AS TECH_SVC_RVW_DEPT_NM, --◀◀기술서비스검토부서
+			   BEST.SLS_DEPT_ID, IBIZ_DEPT_NM(BEST.SLS_DEPT_ID) AS SLS_DEPT_NM,
+			   BEST.SLS_EMP_ID, IBIZ_EMP_NM(BEST.SLS_EMP_ID) AS SLS_EMP_NM,
+		       BEST.BEF_FCST_PAL_ID,
+			   BEST.FCST_PAL_PRGS_STAT_CD, IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD',BEST.FCST_PAL_PRGS_STAT_CD) AS FCST_PAL_PRGS_STAT_NM,
+			   BEST.VRB_SLCT_RST_CD, IBIZ_COM_CD_NM('VRB_SLCT_RST_CD',BEST.VRB_SLCT_RST_CD) AS VRB_SLCT_RST_NM,
+			   --( SELECT COUNT(1) FROM BPIP141T  WHERE FCST_PAL_ID = BEST.FCST_PAL_ID ) AS VRB_REG_COUNT,  --◀◀2번 SQL 통합
+			   AAPR.SANT_APPV_DT,
+		       BEST.REG_EMP_ID, IBIZ_EMP_NM(BEST.REG_EMP_ID) AS REG_EMP_NM, BEST.REG_DT,
+			   BEST.CHG_EMP_ID, IBIZ_EMP_NM(BEST.CHG_EMP_ID) AS CHG_EMP_NM, BEST.CHG_DT
+		  FROM BEST000T BEST
+			   JOIN APRJ000T APRJ ON ( BEST.PRJT_ID = APRJ.PRJT_ID )
+			   JOIN BPIP000T BPIP ON ( BEST.BOPT_ID = BPIP.BOPT_ID )
+		        LEFT JOIN (
+				    SELECT SANT_ID, MAX(SANT_DT) AS SANT_APPV_DT FROM AAPR110T GROUP BY SANT_ID
+				)AAPR ON BEST.SANT_ID = AAPR.SANT_ID AND BEST.FCST_PAL_PRGS_STAT_CD = 'C'
+		 WHERE BEST.FCST_PAL_ID = #{fcstPalId}
+
+	</select>
+
+
+	<!-- 예상손익 > 프로젝트 직접경비(BEST050T)  상세 화면용 -->
+	<select id="Select_prjtDirectExpenseListForDetail"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.BsnsExpenseVO">
+
+			SELECT B.PRJT_DREXP_CD, ACOM.PRJT_DREXP_NM,
+				   B.BDGT_CMPT_CRIT_CONT, B.BDGT_CMPT_CRIT_AMT, B.BDGT_CMPT_BSS_CONT, B.DREXP_AMT
+			  FROM BEST050T B
+				   JOIN (
+						  SELECT C10.COM_CD AS PRJT_DREXP_CD, C10.COM_CD_NM PRJT_DREXP_NM,
+								 C10.SORT_SEQC AS PROD_DREXP_SEQC
+							FROM ACOM020T C20
+								 JOIN ACOM010T C10 ON (C20.COM_GRP_CD = C10.COM_GRP_CD)
+						   WHERE C20.CLMN_NM = 'PRJT_DREXP_CD'
+							 AND C10.USE_YN = 'Y'
+						 ) ACOM
+				   ON ( B.PRJT_DREXP_CD = ACOM.PRJT_DREXP_CD )
+			 WHERE FCST_PAL_ID = #{fcstPalId}
+			ORDER BY ACOM.PROD_DREXP_SEQC
+	</select>
+
+
+	<!-- 예상손익 > 프로젝트 직접경비(BEST050T)  등록/수정화면용 -->
+	<select id="Select_prjtDirectExpenseListForCreateModify"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.PrjtDrcstExpenseVO">
+
+			SELECT ACOM.PROD_DREXP_SEQC, A12.PRJT_DREXP_CD, ACOM.PRJT_DREXP_NM,
+				   A12.BDGT_CMPT_CRIT_CONT,
+				   A12.BDGT_CMPT_CRIT_CD, IBIZ_COM_CD_NM('BDGT_CMPT_CRIT_CD',A12.BDGT_CMPT_CRIT_CD) AS BDGT_CMPT_CRIT_NM,
+				   A12.DSTR_CRIT_RSL_ITM_CD, IBIZ_COM_CD_NM('DSTR_CRIT_RSL_ITM_CD',A12.DSTR_CRIT_RSL_ITM_CD) AS DSTR_CRIT_RSL_ITM_NM,
+				   A12.BDGT_CMPT_APLCN_QNT,
+				   B05.BDGT_CMPT_BSS_CONT, B05.DREXP_AMT, B05.BDGT_CMPT_CRIT_AMT
+			  FROM ACOM120T A12
+				   JOIN (
+						  SELECT C10.COM_CD AS PRJT_DREXP_CD, C10.COM_CD_NM PRJT_DREXP_NM,
+								 C10.SORT_SEQC AS PROD_DREXP_SEQC
+							FROM ACOM020T C20
+								 JOIN ACOM010T C10 ON (C20.COM_GRP_CD = C10.COM_GRP_CD)
+						   WHERE C20.CLMN_NM = 'PRJT_DREXP_CD'
+							 AND C10.USE_YN = 'Y'
+						 ) ACOM
+				   ON ( A12.PRJT_DREXP_CD = ACOM.PRJT_DREXP_CD )
+				   LEFT JOIN (
+						  SELECT FCST_PAL_ID, PRJT_DREXP_CD, BDGT_CMPT_CRIT_AMT,
+								 BDGT_CMPT_BSS_CONT, DREXP_AMT
+							FROM BEST050T
+						 ) B05
+				   ON ( B05.FCST_PAL_ID = #{fcstPalId} AND A12.PRJT_DREXP_CD = B05.PRJT_DREXP_CD )
+				  WHERE TO_CHAR(SYSDATE,'YYYYMMDD') BETWEEN A12.AVL_START_DATE AND A12.AVL_END_DATE
+			ORDER BY ACOM.PROD_DREXP_SEQC
+
+	</select>
+
+	<!-- 예상손익 상세 > 예상손익상품상세(BEST010T) -->
+	<select id="Select_estimationContentsList"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.BsnsProdDetailVO">
+
+		SELECT B.FCST_PAL_ID, B.PROD_SEQ,
+			   B.PROD_DST_CD, IBIZ_COM_CD_NM('PROD_DST_CD',B.PROD_DST_CD ) AS PROD_DST_NM,
+			   B.PROD_TYPE_CD,  A.COM_CD_NM AS PROD_TYPE_NM,
+			   B.GODS_CLSF_CD, IBIZ_COM_CD_NM('GODS_CLSF_CD',B.GODS_CLSF_CD) AS GODS_CLSF_NM,
+			   B.SPLY_CMPY_CUST_ID, IBIZ_CUST_NM(B.SPLY_CMPY_CUST_ID) AS SPLY_CMPY_CUST_NM,
+			   B.MA_TGT_PRJT_ID, P.PRJT_NM AS MA_TGT_PRJT_NM,
+			   P.LAST_CUST_ID,
+			   B.PRODP_ID, B.PRODP_NM, B.PROD_ID, B.PROD_NM, B.SVC_JOB_NM,
+			   B.SVC_UPC_CRIT_CD, IBIZ_COM_CD_NM('SVC_UPC_CRIT_CD',B.SVC_UPC_CRIT_CD) AS SVC_UPC_CRIT_NM,  --◀◀ 서비스단가기준코드
+			   B.UPC_UNIT_CD, B.UPC_UNIT_NM, B.QNT_DC_RT,
+			   B.MIN_UNIT_QNT, B.MAX_UNIT_QNT,
+			   B.UNIT_QNT, B.COPY_QNT,
+			   B.BSC_UPC_AMT, B.STD_UPC_AMT, B.LPC_AMT,
+			   B.PCHS_UPC_AMT, B.PCHS_AMT,
+			   B.MA_GODS_SPLY_YAM, B.MA_GODS_UPC_UNIT_CD, IBIZ_COM_CD_NM('UPC_UNIT_CD',B.MA_GODS_UPC_UNIT_CD ) AS MA_GODS_UPC_UNIT_NM, B.MA_GODS_SPLY_QNT, B.MA_GODS_SPLY_AMT, B.MA_TRF, B.MA_START_DATE, B.MA_END_DATE,
+			   B.SPLY_UPC_AMT, B.SPLY_AMT,
+			   B.PRC_PLCY_DC_RT,
+			   B.BSC_COST_RT, B.APLCN_COST_RT,
+			   B.PUT_HMFR_GRD_CD, IBIZ_COM_CD_NM('PUT_HMFR_GRD_CD',B.PUT_HMFR_GRD_CD) AS PUT_HMFR_GRD_NM,
+			   B.STD_COST_AMT, B.PUT_NOP_COUNT,
+			   B.DRCST_AMT, B.INCST_AMT,
+			   B.EMB_GODS_YN,
+			   B.SPLM_PCHS_YN,
+			   B.ESTI_RMRK_CONT,
+			   B.COST_RMRK_CONT
+		  FROM BEST010T B
+			   LEFT JOIN APRJ000T P ON ( P.PRJT_ID = B.MA_TGT_PRJT_ID )
+			   LEFT JOIN (SELECT AC10.COM_CD, AC10.COM_CD_NM, AC10.SORT_SEQC
+                FROM ACOM010T AC10 JOIN
+                (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'PROD_TYPE_CD' ) AC20
+                ON AC10.COM_GRP_CD = AC20.COM_GRP_CD
+               ) A ON ( A.COM_CD = B.PROD_TYPE_CD )
+		 WHERE FCST_PAL_ID = #{fcstPalId}
+		ORDER BY A.SORT_SEQC, B.PROD_SEQ
+
+	</select>
+
+	<!--  예상손익 상세 > 예상손익 할인정책(BEST011T)-->
+	<select id="Select_discountPolicyList"
+			parameterType="com.ibiz.api.model.BsnsProdDetailVO"
+			resultType="com.ibiz.api.model.ProdDcPolicyVO">
+
+			SELECT B.PROD_TYPE_CD, B.PROD_SEQ, B.PRC_DC_OPTN_CD, ACOM.PRC_DC_OPTN_NM, B.DC_RT
+			  FROM BEST011T B
+				   JOIN (
+						  SELECT C10.HGRK_COM_CD AS PRC_DC_KIND_CD, HC10.COM_CD_NM AS PRC_DC_KIND_NM,
+								 HC10.SORT_SEQC AS PRC_DC_KIND_SEQC,
+								 C10.COM_CD AS PRC_DC_OPTN_CD, C10.COM_CD_NM PRC_DC_OPTN_NM,
+								 C10.SORT_SEQC AS PRC_DC_OPTN_SEQC
+							FROM ACOM020T C20
+								 JOIN ACOM010T C10 ON (C20.COM_GRP_CD = C10.COM_GRP_CD)
+								 JOIN ACOM010T HC10 ON (C10.HGRK_COM_GRP_CD = HC10.COM_GRP_CD AND C10.HGRK_COM_CD = HC10.COM_CD)
+						   WHERE C20.CLMN_NM = 'PRC_DC_OPTN_CD'
+							 AND C10.USE_YN = 'Y'
+						  --ORDER BY PRC_DC_KIND_SEQC, PRC_DC_OPTN_SEQC
+						 ) ACOM
+				   ON ( B.PRC_DC_OPTN_CD = ACOM.PRC_DC_OPTN_CD )
+			 WHERE FCST_PAL_ID = #{fcstPalId}
+			   AND PROD_TYPE_CD = #{prodTypeCd}
+			   AND PROD_SEQ  = #{prodSeq}
+			ORDER BY ACOM.PRC_DC_KIND_SEQC, ACOM.PRC_DC_OPTN_SEQC
+
+	</select>
+
+	<!-- 예상손익 : 실적(BEST020T) -->
+	<select id="Select_estimateRslSmryList"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.BsnsRslSmryVO">
+
+			SELECT ACOM.PROD_TYPE_CD, ACOM.PROD_TYPE_NM,
+			   SUM(B.LPC_AMT) AS LPC_AMT, --ListPrice
+			   SUM(B.SELL_AMT) SELL_AMT, --매출액
+			   SUM(B.BUY_COST_AMT) BUY_COST_AMT, --매입원가
+			   SUM(B.DRCST_AMT) DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
+			   SUM(B.DREXP_AMT) DREXP_AMT, --직접경비
+			   SUM(B.INCST_AMT) INCST_AMT, --간접원가
+			   SUM(B.CTMG_AMT) CTMG_AMT, --공헌이익
+			   SUM(B.PUT_NOP_COUNT) PUT_NOP_COUNT, --예상투입인원
+			   IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD',MIN(B.PUT_TIME_UNIT_CD)) PUT_TIME_UNIT_NM --투입시간단위코드
+		 FROM  BEST020T B
+			   RIGHT JOIN (
+					  SELECT C10.COM_CD AS PROD_TYPE_CD, C10.COM_CD_NM PROD_TYPE_NM,
+							 C10.SORT_SEQC AS PROD_TYPE_SEQC
+						FROM ACOM020T C20
+							 JOIN ACOM010T C10 ON (C20.COM_GRP_CD = C10.COM_GRP_CD)
+					   WHERE C20.CLMN_NM = 'PROD_TYPE_CD'
+						 AND C10.USE_YN = 'Y'
+						 AND C10.COM_CD_CHAR_VAL = 'S' --Solution에 해당하는 상품유형
+					 ) ACOM
+			   ON ( B.FCST_PAL_ID = #{fcstPalId} AND B.PROD_TYPE_CD = ACOM.PROD_TYPE_CD )
+		GROUP BY ACOM.PROD_TYPE_CD, ACOM.PROD_TYPE_NM, PROD_TYPE_SEQC
+		ORDER BY ACOM.PROD_TYPE_SEQC
+
+	</select>
+
+
+
+	<!-- MA -->
+
+	<!-- 예상손익 > 서비스 제공조건(BEST080T)  -->
+	<select id="Select_MaintenanceConditionDetail"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.MaConditionVO">
+
+			SELECT SEQ,
+				   TECH_SVC_CD, IBIZ_COM_CD_NM('TECH_SVC_CD',TECH_SVC_CD) AS TECH_SVC_NM,
+				   SVC_PRVD_CDNT_CONT,
+				   --SVC_PRVD_WAY_CD, IBIZ_COM_CD_NM('SVC_PRVD_WAY_CD',SVC_PRVD_WAY_CD) AS SVC_PRVD_WAY_NM,
+				   SVC_UPC_CRIT_CD, IBIZ_COM_CD_NM('SVC_UPC_CRIT_CD',SVC_UPC_CRIT_CD) AS SVC_UPC_CRIT_NM, --◀◀◀서비스단가기준코드 컬럼명변경
+				   YRLY_FCST_PUT_COST_AMT, RMRK_CONT
+			  FROM BEST080T
+			 WHERE FCST_PAL_ID = #{fcstPalId}
+			ORDER BY SEQ
+
+	</select>
+
+	<!-- 예상손익 > 계약옵션(BEST090T)  -->
+	<select id="Select_ContractOptionDetail"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.ContractOptionVO">
+
+			SELECT SEQ, CNTR_CNCLS_CDNT_CD, IBIZ_COM_CD_NM('CNTR_CNCLS_CDNT_CD',CNTR_CNCLS_CDNT_CD) AS CNTR_CNCLS_CDNT_NM
+			  FROM BEST090T
+			 WHERE FCST_PAL_ID = #{fcstPalId}
+			ORDER BY SEQ
+
+	</select>
+
+
+	<!-- 예상손익 상세 >  VRB 대상선정 및 평가결과 : VRB 대상선정 기준항목(BPIP110T) -->
+	<select id="Select_vrbCriteriaList"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.VrbCriteriaVO">
+
+			SELECT ACOM.VRB_SLCT_ITM_DST_CD, ACOM.VRB_SLCT_ITM_DST_NM,
+				   BPIP.VRB_SLCT_ITM_CD, ACOM.VRB_SLCT_ITM_NM,
+				   VRB_SLCT_CRIT_UNIT_CD, IBIZ_COM_CD_NM('VRB_SLCT_CRIT_UNIT_CD',VRB_SLCT_CRIT_UNIT_CD) AS VRB_SLCT_CRIT_UNIT_NM,
+				   VRB_SLCT_CRIT_QNT,
+				   QNT_APLCN_CDNT_CD, IBIZ_COM_CD_NM('QNT_APLCN_CDNT_CD',QNT_APLCN_CDNT_CD) AS QNT_APLCN_CDNT_NM --◀컬럼명 변경: CRIT_QNT_APLCN_CDNT_CD -> QNT_APLCN_CDNT_CD
+			  FROM BPIP110T BPIP
+				   JOIN (
+						  SELECT C10.HGRK_COM_CD AS VRB_SLCT_ITM_DST_CD, HC10.COM_CD_NM AS VRB_SLCT_ITM_DST_NM,
+								 HC10.SORT_SEQC AS VRB_SLCT_ITM_DST_SEQC,
+								 C10.COM_CD AS VRB_SLCT_ITM_CD, C10.COM_CD_NM VRB_SLCT_ITM_NM,
+								 C10.SORT_SEQC AS VRB_SLCT_ITM_SEQC
+							FROM ACOM020T C20
+								 JOIN ACOM010T C10 ON (C20.COM_GRP_CD = C10.COM_GRP_CD)
+								 JOIN ACOM010T HC10 ON (C10.HGRK_COM_GRP_CD = HC10.COM_GRP_CD AND C10.HGRK_COM_CD = HC10.COM_CD)
+						   WHERE C20.CLMN_NM = 'VRB_SLCT_ITM_CD'
+							 AND C10.USE_YN = 'Y'
+						 ) ACOM
+				   ON ( BPIP.VRB_SLCT_ITM_CD = ACOM.VRB_SLCT_ITM_CD )
+			 WHERE
+			 <if test="santId == null">
+				   TO_CHAR(SYSDATE,'YYYYMMDD') BETWEEN BPIP.AVL_START_DATE AND BPIP.AVL_END_DATE
+			 </if>
+			 <if test="santId != null and santId != ''">
+				   #{regDt} BETWEEN BPIP.AVL_START_DATE AND BPIP.AVL_END_DATE
+			 </if>
+			ORDER BY ACOM.VRB_SLCT_ITM_DST_SEQC, ACOM.VRB_SLCT_ITM_SEQC
+
+	</select>
+
+	<!-- 예상손익 상세 > VRB 대상선정 및 평가결과 : VRB 리스트 (BPIP100T)-->
+	<select id="Select_vrbList"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.VRBProfitAnalysisDetailVO">
+
+		SELECT BP10.VRB_ANLY_ID, BP10.DOC_NO,
+			   BP10.EFCM_DATE,
+			   BP10.VRB_UDWG_RST_CD, IBIZ_COM_CD_NM('VRB_UDWG_RST_CD',BP10.VRB_UDWG_RST_CD) AS VRB_UDWG_RST_NM,
+			   BP10.VRB_PRGS_STAT_CD, IBIZ_COM_CD_NM('VRB_PRGS_STAT_CD',BP10.VRB_PRGS_STAT_CD) AS VRB_PRGS_STAT_NM,
+			   BP14.LPC_AMT, BP14.SELL_AMT, BP14.BUY_COST_AMT, BP14.DRCST_AMT, BP14.DREXP_AMT, BP14.INCST_AMT, BP14.CTMG_AMT,
+			   BP14.PUT_NOP_COUNT,
+			   IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD',BP14.PUT_TIME_UNIT_CD) AS PUT_TIME_UNIT_NM
+		  FROM BPIP100T BP10
+			   JOIN (
+					  SELECT VRB_ANLY_ID,
+							 SUM(LPC_AMT) AS LPC_AMT, SUM(SELL_AMT) AS SELL_AMT, SUM(BUY_COST_AMT) AS BUY_COST_AMT,
+							 SUM(DRCST_AMT) AS DRCST_AMT, SUM(DREXP_AMT) AS DREXP_AMT, SUM(INCST_AMT) AS INCST_AMT, SUM(CTMG_AMT) AS CTMG_AMT,
+							 SUM(PUT_NOP_COUNT) AS PUT_NOP_COUNT, MIN(PUT_TIME_UNIT_CD) AS PUT_TIME_UNIT_CD
+						FROM BPIP141T
+					  GROUP BY VRB_ANLY_ID
+					) BP14
+			   ON ( BP10.VRB_ANLY_ID = BP14.VRB_ANLY_ID )
+		 WHERE EXISTS ( SELECT 1 FROM BPIP141T
+						 WHERE FCST_PAL_ID = #{fcstPalId} AND VRB_ANLY_ID = BP10.VRB_ANLY_ID )
+		ORDER BY BP10.REG_DT DESC
+	</select>
+
+
+	<!-- 예상손익 key select -->
+	<select id="Select_newFcstPalId"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.BsnsProfitLossVO">
+			SELECT IBIZ_NEW_ID('BEST000T','FCST_PAL_ID','YYYY######') AS FCST_PAL_ID FROM DUAL
+	</select>
+
+	<!--
+
+		INSERT
+
+	 -->
+
+	<!-- 예상손익 기본 등록(BEST000T) -->
+	<insert id="Insert_estimatedProfitAndLoss"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			useGeneratedKeys="true"
+			keyProperty="fcstPalId">
+
+		INSERT INTO BEST000T (
+		FCST_PAL_ID,
+		FRMT_CD,
+		DOC_NO,
+		SANT_ID,
+		<if test="lastCustId != null and lastCustId != ''">
+			LAST_CUST_ID,
+		</if>
+		PRJT_ID,
+		PRJT_TYPE_CD,
+		BOPT_ID,
+		<if test="ordeCustId != null and ordeCustId != ''">
+			ORDE_CUST_ID,
+		</if>
+		<if test="cntrTrsfStartYam != null and cntrTrsfStartYam != ''">
+			CNTR_TRSF_START_YAM,
+		</if>
+		<if test="cntrTrsfEndYam != null and cntrTrsfEndYam != ''">
+			CNTR_TRSF_END_YAM,
+		</if>
+		<if test="techSvcRvwDeptId != null and techSvcRvwDeptId != ''">
+			TECH_SVC_RVW_DEPT_ID,
+		</if>
+		<if test="techSvcRvwEmpId != null and techSvcRvwEmpId != ''">
+			TECH_SVC_RVW_EMP_ID,
+		</if>
+		<if test="vrbSlctRstCd != null and vrbSlctRstCd != ''">
+			VRB_SLCT_RST_CD,
+		</if>
+		<if test="cntrSpclCont != null and cntrSpclCont != ''">
+			CNTR_SPCL_CONT,
+		</if>
+		SELL_AMT,
+		FCST_PAL_PRGS_STAT_CD,
+		SLS_DEPT_ID,
+		SLS_EMP_ID,
+		<if test="befFcstPalId != null and befFcstPalId != ''">
+		BEF_FCST_PAL_ID,
+		</if>
+		REG_EMP_ID,
+		REG_DT,
+		CHG_EMP_ID,
+		CHG_DT
+		) VALUES (
+		#{fcstPalId},
+		#{frmtCd},
+		(SELECT IBIZ_NEW_DOC_NO('BEST000T','DOC_NO','FRMT_CD',#{frmtCd}) FROM DUAL ),
+		#{santId},
+		<if test="lastCustId != null and lastCustId != ''">
+			#{lastCustId},
+		</if>
+		#{prjtId},
+		#{prjtTypeCd},
+		#{boptId},
+		<if test="ordeCustId != null and ordeCustId != ''">
+			#{ordeCustId},
+		</if>
+		<if test="cntrTrsfStartYam != null and cntrTrsfStartYam != ''">
+			#{cntrTrsfStartYam},
+		</if>
+		<if test="cntrTrsfEndYam != null and cntrTrsfEndYam != ''">
+			#{cntrTrsfEndYam},
+		</if>
+		<if test="techSvcRvwDeptId != null and techSvcRvwDeptId != ''">
+			#{techSvcRvwDeptId},
+		</if>
+		<if test="techSvcRvwEmpId != null and techSvcRvwEmpId != ''">
+			#{techSvcRvwEmpId},
+		</if>
+		<if test="vrbSlctRstCd != null and vrbSlctRstCd != ''">
+			#{vrbSlctRstCd},
+		</if>
+		<if test="cntrSpclCont != null and cntrSpclCont != ''">
+			#{cntrSpclCont},
+		</if>
+		#{sellAmt},
+		#{fcstPalPrgsStatCd},
+		#{slsDeptId},
+		#{slsEmpId},
+		<if test="befFcstPalId != null and befFcstPalId != ''">
+			#{befFcstPalId},
+		</if>
+		#{regEmpId},
+		SYSDATE,
+		#{regEmpId},
+		SYSDATE
+		)
+
+	</insert>
+
+	<!-- 예상손익상품상세 등록(BEST010T) -->
+	<insert id="Insert_estimatedProductDetail"
+			parameterType="com.ibiz.api.model.BsnsProdDetailVO" >
+
+		INSERT INTO BEST010T (
+			FCST_PAL_ID,
+			PROD_TYPE_CD,
+			PROD_SEQ,
+			PROD_DST_CD,
+			<if test="splyCmpyCustId != null and splyCmpyCustId != ''">
+				SPLY_CMPY_CUST_ID,
+			</if>
+			<if test="prodpId != null and prodpId != ''">
+				PRODP_ID,
+			</if>
+			<if test="prodpNm != null and prodpNm != ''">
+				PRODP_NM,
+			</if>
+			<if test="prodId != null and prodId != ''">
+				PROD_ID,
+			</if>
+			<if test="prodNm != null and prodNm != ''">
+				PROD_NM,
+			</if>
+			<if test="svcJobNm != null and svcJobNm != ''">
+				SVC_JOB_NM,
+			</if>
+			<if test="svcUpcCritCd != null and svcUpcCritCd != ''">
+				SVC_UPC_CRIT_CD,
+			</if>
+			<if test="upcUnitCd != null and upcUnitCd != ''">
+				UPC_UNIT_CD,
+			</if>
+			<if test="upcUnitNm != null and upcUnitNm != ''">
+				UPC_UNIT_NM,
+			</if>
+			<if test="minUnitQnt != null and minUnitQnt != ''">
+				MIN_UNIT_QNT,
+			</if>
+			<if test="maxUnitQnt != null and maxUnitQnt != ''">
+				MAX_UNIT_QNT,
+			</if>
+			<if test="qntDcRt != null and qntDcRt != ''">
+				QNT_DC_RT,
+			</if>
+			<if test="unitQnt != null and unitQnt != ''">
+				UNIT_QNT,
+			</if>
+			<if test="copyQnt != null and copyQnt != ''">
+				COPY_QNT,
+			</if>
+			<if test="bscUpcAmt != null and bscUpcAmt != ''">
+				BSC_UPC_AMT,
+			</if>
+
+			<if test="stdUpcAmt != null and stdUpcAmt != ''">
+				STD_UPC_AMT,
+			</if>
+
+			<if test="lpcAmt != null and lpcAmt != ''">
+				LPC_AMT,
+			</if>
+			<if test="pchsUpcAmt != null and pchsUpcAmt != ''">
+				PCHS_UPC_AMT,
+			</if>
+			<if test="pchsAmt != null and pchsAmt != ''">
+				PCHS_AMT,
+			</if>
+			<if test="splyUpcAmt != null and splyUpcAmt != ''">
+				SPLY_UPC_AMT,
+			</if>
+			<if test="splyAmt != null and splyAmt != ''">
+				SPLY_AMT,
+			</if>
+			<if test="embGodsYn != null and embGodsYn != ''">
+				EMB_GODS_YN,
+			</if>
+			<if test="estiRmrkCont != null and estiRmrkCont != ''">
+				ESTI_RMRK_CONT,
+			</if>
+			<if test="costRmrkCont != null and costRmrkCont != ''">
+				COST_RMRK_CONT,
+			</if>
+			<if test="bscCostRt != null and bscCostRt != ''">
+				BSC_COST_RT,
+			</if>
+			<if test="prcPlcyDcRt != null and prcPlcyDcRt != ''">
+				PRC_PLCY_DC_RT,
+			</if>
+			<if test="aplcnCostRt != null and aplcnCostRt != ''">
+				APLCN_COST_RT,
+			</if>
+			<if test="putHmfrGrdCd != null and putHmfrGrdCd != ''">
+				PUT_HMFR_GRD_CD,
+			</if>
+			<if test="stdCostAmt != null and stdCostAmt != ''">
+				STD_COST_AMT,
+			</if>
+			<if test="putNopCount != null and putNopCount != ''">
+				PUT_NOP_COUNT,
+			</if>
+			<if test="drcstAmt != null and drcstAmt != ''">
+				DRCST_AMT,
+			</if>
+			<if test="incstAmt != null and incstAmt != ''">
+				INCST_AMT,
+			</if>
+			<if test="splmPchsYn != null and splmPchsYn != ''">
+				SPLM_PCHS_YN,
+			</if>
+
+			<if test="maTgtPrjtId != null and maTgtPrjtId != ''">
+				MA_TGT_PRJT_ID,
+			</if>
+			<if test="maGodsSplyYam != null and maGodsSplyYam != ''">
+				MA_GODS_SPLY_YAM,
+			</if>
+			<if test="maGodsUpcUnitCd != null and maGodsUpcUnitCd != ''">
+				MA_GODS_UPC_UNIT_CD,
+			</if>
+			<if test="maGodsSplyQnt != null and maGodsSplyQnt != ''">
+				MA_GODS_SPLY_QNT,
+			</if>
+			<if test="maGodsSplyAmt != null and maGodsSplyAmt != ''">
+				MA_GODS_SPLY_AMT,
+			</if>
+			<if test="maTrf != null and maTrf != ''">
+				MA_TRF,
+			</if>
+			<if test="maStartDate != null and maStartDate != ''">
+				MA_START_DATE,
+			</if>
+			<if test="maEndDate != null and maEndDate != ''">
+				MA_END_DATE,
+			</if>
+			GODS_CLSF_CD
+		) VALUES (
+			#{fcstPalId},
+			#{prodTypeCd},
+			#{prodSeq},
+			#{prodDstCd},
+			<if test="splyCmpyCustId != null and splyCmpyCustId != ''">
+				#{splyCmpyCustId},
+			</if>
+			<if test="prodpId != null and prodpId != ''">
+				#{prodpId},
+			</if>
+			<if test="prodpNm != null and prodpNm != ''">
+				#{prodpNm},
+			</if>
+			<if test="prodId != null and prodId != ''">
+				#{prodId},
+			</if>
+			<if test="prodNm != null and prodNm != ''">
+				#{prodNm},
+			</if>
+			<if test="svcJobNm != null and svcJobNm != ''">
+				#{svcJobNm},
+			</if>
+			<if test="svcUpcCritCd != null and svcUpcCritCd != ''">
+				#{svcUpcCritCd},
+			</if>
+			<if test="upcUnitCd != null and upcUnitCd != ''">
+				#{upcUnitCd},
+			</if>
+			<if test="upcUnitNm != null and upcUnitNm != ''">
+				#{upcUnitNm},
+			</if>
+			<if test="minUnitQnt != null and minUnitQnt != ''">
+				#{minUnitQnt},
+			</if>
+			<if test="maxUnitQnt != null and maxUnitQnt != ''">
+				#{maxUnitQnt},
+			</if>
+			<if test="qntDcRt != null and qntDcRt != ''">
+				#{qntDcRt},
+			</if>
+			<if test="unitQnt != null and unitQnt != ''">
+				#{unitQnt},
+			</if>
+			<if test="copyQnt != null and copyQnt != ''">
+				#{copyQnt},
+			</if>
+			<if test="bscUpcAmt != null and bscUpcAmt != ''">
+				#{bscUpcAmt},
+			</if>
+			<if test="stdUpcAmt != null and stdUpcAmt != ''">
+				#{stdUpcAmt},
+			</if>
+			<if test="lpcAmt != null and lpcAmt != ''">
+				#{lpcAmt},
+			</if>
+			<if test="pchsUpcAmt != null and pchsUpcAmt != ''">
+				#{pchsUpcAmt},
+			</if>
+			<if test="pchsAmt != null and pchsAmt != ''">
+				#{pchsAmt},
+			</if>
+			<if test="splyUpcAmt != null and splyUpcAmt != ''">
+				#{splyUpcAmt},
+			</if>
+			<if test="splyAmt != null and splyAmt != ''">
+				#{splyAmt},
+			</if>
+			<if test="embGodsYn != null and embGodsYn != ''">
+				#{embGodsYn},
+			</if>
+			<if test="estiRmrkCont != null and estiRmrkCont != ''">
+				#{estiRmrkCont},
+			</if>
+			<if test="costRmrkCont != null and costRmrkCont != ''">
+				#{costRmrkCont},
+			</if>
+			<if test="bscCostRt != null and bscCostRt != ''">
+				#{bscCostRt},
+			</if>
+			<if test="prcPlcyDcRt != null and prcPlcyDcRt != ''">
+				#{prcPlcyDcRt},
+			</if>
+			<if test="aplcnCostRt != null and aplcnCostRt != ''">
+				#{aplcnCostRt},
+			</if>
+			<if test="putHmfrGrdCd != null and putHmfrGrdCd != ''">
+				#{putHmfrGrdCd},
+			</if>
+			<if test="stdCostAmt != null and stdCostAmt != ''">
+				#{stdCostAmt},
+			</if>
+			<if test="putNopCount != null and putNopCount != ''">
+				#{putNopCount},
+			</if>
+			<if test="drcstAmt != null and drcstAmt != ''">
+				#{drcstAmt},
+			</if>
+			<if test="incstAmt != null and incstAmt != ''">
+				#{incstAmt},
+			</if>
+			<if test="splmPchsYn != null and splmPchsYn != ''">
+				#{splmPchsYn},
+			</if>
+			<if test="maTgtPrjtId != null and maTgtPrjtId != ''">
+				#{maTgtPrjtId},
+			</if>
+			<if test="maGodsSplyYam != null and maGodsSplyYam != ''">
+				#{maGodsSplyYam},
+			</if>
+			<if test="maGodsUpcUnitCd != null and maGodsUpcUnitCd != ''">
+				#{maGodsUpcUnitCd},
+			</if>
+			<if test="maGodsSplyQnt != null and maGodsSplyQnt != ''">
+				#{maGodsSplyQnt},
+			</if>
+			<if test="maGodsSplyAmt != null and maGodsSplyAmt != ''">
+				#{maGodsSplyAmt},
+			</if>
+			<if test="maTrf != null and maTrf != ''">
+				#{maTrf},
+			</if>
+			<if test="maStartDate != null and maStartDate != ''">
+				#{maStartDate},
+			</if>
+			<if test="maEndDate != null and maEndDate != ''">
+				#{maEndDate},
+			</if>
+			#{godsClsfCd}
+		)
+
+	</insert>
+
+	<!-- 할인정책상세 등록 (BEST011T)-->
+	<insert id="Insert_estimatedProductDiscountPolicy"
+			parameterType="com.ibiz.api.model.ProdDcPolicyVO" >
+
+			INSERT INTO BEST011T (
+			    FCST_PAL_ID,
+			    PROD_TYPE_CD,
+			    PROD_SEQ,
+			    PRC_DC_OPTN_CD,
+			    DC_RT
+			) VALUES (
+			    #{fcstPalId},
+			    #{prodTypeCd},
+			    #{prodSeq},
+			    #{prcDcOptnCd},
+			    #{dcRt}
+			)
+
+	</insert>
+
+
+	<!-- 프로젝트 경비(직접비) 등록 (BEST050T)-->
+	<insert id="Insert_estimatedExpense"
+			parameterType="com.ibiz.api.model.BsnsExpenseVO" >
+
+		INSERT INTO BEST050T (
+			FCST_PAL_ID,
+			PRJT_DREXP_CD,
+		<if test="bdgtCmptCritCont != null and bdgtCmptCritCont != ''">
+			BDGT_CMPT_CRIT_CONT,
+		</if>
+		<if test="bdgtCmptCritAmt != null and bdgtCmptCritAmt != ''">
+			BDGT_CMPT_CRIT_AMT,
+		</if>
+		<if test="bdgtCmptBssCont != null and bdgtCmptBssCont != ''">
+			BDGT_CMPT_BSS_CONT,
+		</if>
+			DREXP_AMT
+		) VALUES (
+			#{fcstPalId},
+			#{prjtDrexpCd},
+			<if test="bdgtCmptCritCont != null and bdgtCmptCritCont != ''">
+				#{bdgtCmptCritCont},
+			</if>
+			<if test="bdgtCmptCritAmt != null and bdgtCmptCritAmt != ''">
+				#{bdgtCmptCritAmt},
+			</if>
+			<if test="bdgtCmptBssCont != null and bdgtCmptBssCont != ''">
+				#{bdgtCmptBssCont},
+			</if>
+			#{drexpAmt}
+		)
+
+	</insert>
+
+
+	<!-- 예상손익 : 실적(BEST020T) -->
+	<insert id="Insert_estimateRslSmry"
+			parameterType="com.ibiz.api.model.BsnsRslSmryVO" >
+
+		INSERT INTO BEST020T (
+			FCST_PAL_ID,
+			PROD_TYPE_CD,
+		<if test="lpcAmt != null and lpcAmt != ''">
+			LPC_AMT,
+		</if>
+		<if test="sellAmt != null and sellAmt != ''">
+			SELL_AMT,
+		</if>
+		<if test="buyCostAmt != null and buyCostAmt != ''">
+			BUY_COST_AMT,
+		</if>
+		<if test="drcstAmt != null and drcstAmt != ''">
+			DRCST_AMT,
+		</if>
+		<if test="drexpAmt != null and drexpAmt != ''">
+			DREXP_AMT,
+		</if>
+		<if test="incstAmt != null and incstAmt != ''">
+			INCST_AMT,
+		</if>
+		<if test="ctmgAmt != null and ctmgAmt != ''">
+			CTMG_AMT,
+		</if>
+		<if test="putTimeUnitCd != null and putTimeUnitCd != ''">
+			PUT_TIME_UNIT_CD,
+		</if>
+		<if test="putNopCount != null and putNopCount != ''">
+			PUT_NOP_COUNT,
+		</if>
+			GODS_CLSF_CD
+		) VALUES (
+			#{fcstPalId},
+			#{prodTypeCd},
+		<if test="lpcAmt != null and lpcAmt != ''">
+			#{lpcAmt},
+		</if>
+		<if test="sellAmt != null and sellAmt != ''">
+			#{sellAmt},
+		</if>
+		<if test="buyCostAmt != null and buyCostAmt != ''">
+			#{buyCostAmt},
+		</if>
+		<if test="drcstAmt != null and drcstAmt != ''">
+			#{drcstAmt},
+		</if>
+		<if test="drexpAmt != null and drexpAmt != ''">
+			#{drexpAmt},
+		</if>
+		<if test="incstAmt != null and incstAmt != ''">
+			#{incstAmt},
+		</if>
+		<if test="ctmgAmt != null and ctmgAmt != ''">
+			#{ctmgAmt},
+		</if>
+		<if test="putTimeUnitCd != null and putTimeUnitCd != ''">
+			#{putTimeUnitCd},
+		</if>
+		<if test="putNopCount != null and putNopCount != ''">
+			#{putNopCount},
+		</if>
+			#{godsClsfCd}
+		)
+
+	</insert>
+
+
+	<!-- MA -->
+
+	<!-- 3. 서비스 제공조건  -->
+	<insert id="Insert_maintenanceConditionDetail"
+			parameterType="com.ibiz.api.model.MaConditionVO" >
+
+		INSERT INTO BEST080T (
+			FCST_PAL_ID,
+			SEQ,
+			TECH_SVC_CD,
+			SVC_PRVD_CDNT_CONT
+		<if test="svcUpcCritCd != null and svcUpcCritCd != ''">
+			, SVC_UPC_CRIT_CD
+		</if>
+		<if test="yrlyFcstPutCostAmt != null and yrlyFcstPutCostAmt != ''">
+			, YRLY_FCST_PUT_COST_AMT
+		</if>
+		<if test="rmrkCont != null and rmrkCont != ''">
+			, RMRK_CONT
+		</if>
+		) VALUES (
+			#{fcstPalId},
+			#{seq},
+			#{techSvcCd},
+			#{svcPrvdCdntCont}
+		<if test="svcUpcCritCd != null and svcUpcCritCd != ''">
+			, #{svcUpcCritCd}
+		</if>
+		<if test="yrlyFcstPutCostAmt != null and yrlyFcstPutCostAmt != ''">
+			, #{yrlyFcstPutCostAmt}
+		</if>
+		<if test="rmrkCont != null and rmrkCont != ''">
+			, #{rmrkCont}
+		</if>
+		)
+
+	</insert>
+
+
+
+	<!-- 계약옵션  -->
+	<insert id="Insert_contractOptionDetail"
+			parameterType="com.ibiz.api.model.ContractOptionVO" >
+			INSERT INTO BEST090T (
+			    FCST_PAL_ID,
+			    SEQ,
+			    CNTR_CNCLS_CDNT_CD
+			) VALUES (
+			    #{fcstPalId},
+			    #{seq},
+			    #{cntrCnclsCdntCd}
+			)
+	</insert>
+
+
+	<!--
+
+       UPDATE
+
+    -->
+	<!-- 예상손익상세 기본 수정 -->
+	<update id= "Update_estimatedProfitAndLoss"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO" >
+
+			UPDATE BEST000T
+			    SET
+			    	SLS_DEPT_ID = #{slsDeptId},
+			       	SLS_EMP_ID  = #{slsEmpId},
+			        LAST_CUST_ID = #{lastCustId},
+			        PRJT_ID = #{prjtId},
+			        PRJT_TYPE_CD = #{prjtTypeCd},
+			        BOPT_ID = #{boptId},
+			        ORDE_CUST_ID = #{ordeCustId},
+			        CNTR_TRSF_START_YAM = #{cntrTrsfStartYam},
+			        CNTR_TRSF_END_YAM = #{cntrTrsfEndYam},
+			        TECH_SVC_RVW_DEPT_ID = #{techSvcRvwDeptId},
+			        TECH_SVC_RVW_EMP_ID = #{techSvcRvwEmpId},
+			        VRB_SLCT_RST_CD = #{vrbSlctRstCd},
+			        SELL_AMT = #{sellAmt},
+			        CNTR_SPCL_CONT = #{cntrSpclCont},
+					BEF_FCST_PAL_ID = #{befFcstPalId},
+			        CHG_EMP_ID = #{chgEmpId},
+			        CHG_DT = SYSDATE
+			WHERE
+			    FCST_PAL_ID = #{fcstPalId}
+
+	</update>
+
+
+	<!--
+
+       DELETE
+
+    -->
+	<!-- 예상손익 기본 삭제(BEST000T) -->
+	<delete id="Delete_estimatedProfitAndLoss"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO" >
+
+			DELETE FROM BEST000T WHERE
+			    FCST_PAL_ID = #{fcstPalId}
+
+	</delete>
+
+	<!-- 예상손익상품 삭제(BEST010T) -->
+	<delete id="Delete_estimatedProductDetail"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO" >
+
+			DELETE FROM BEST010T
+			WHERE
+			    FCST_PAL_ID = #{fcstPalId}
+
+	</delete>
+
+	<!-- 예상손익 할인정책 삭제(BEST011T) -->
+	<delete id="Delete_estimatedProductDiscountPolicy"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO" >
+
+			DELETE FROM BEST011T
+			WHERE
+			    FCST_PAL_ID = #{fcstPalId}
+
+	</delete>
+
+
+	<!-- 예상손익 직접경비 삭제(BEST050T) -->
+	<delete id="Delete_estimatedExpense"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO" >
+
+			DELETE FROM BEST050T
+			WHERE
+			    FCST_PAL_ID = #{fcstPalId}
+
+	</delete>
+
+	<!-- 예상손익 실적 삭제(BEST020T) -->
+	<delete id="Delete_estimateRslSmry"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO" >
+
+			DELETE FROM BEST020T
+			WHERE
+			    FCST_PAL_ID = #{fcstPalId}
+
+	</delete>
+
+
+	<!-- MA -->
+
+
+	<!-- 예상손익 실적 삭제(BEST020T) -->
+	<delete id="Delete_maintenanceConditionDetail"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO" >
+
+			DELETE FROM BEST080T WHERE
+			    FCST_PAL_ID = #{fcstPalId}
+
+	</delete>
+
+	<!-- 계약옵션 삭제(BEST090T) -->
+	<delete id="Delete_contractOptionDetail"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO" >
+
+			DELETE FROM BEST090T WHERE
+			    FCST_PAL_ID = #{fcstPalId}
+
+	</delete>
+
+	<!-- 에상손익 결재진행상태코드 업데이트 -->
+	<update id="Update_estimateApprovalState"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO">
+			UPDATE BEST000T
+			    SET
+			        FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}
+			WHERE
+			    SANT_ID = #{santId}
+	</update>
+
+	<!-- 프로젝트타입 조회 (문자값이 S인 것만 조회) > 예상손익(BEST020T) (check 필요) -->
+	<select id="Select_prodTypeCdBySolution"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="com.ibiz.api.model.BsnsProdDetailVO">
+		<choose>
+			<when test="fcstPalId == null or fcstPalId == ''">
+				SELECT COM_CD AS PROD_TYPE_CD, COM_CD_NM AS PROD_TYPE_NM, SORT_SEQC
+				FROM ACOM010T ACOM1
+				JOIN ACOM020T ACOM2 ON ACOM1.COM_GRP_CD = ACOM2.COM_GRP_CD
+				WHERE ACOM2.CLMN_NM = 'PROD_TYPE_CD' AND COM_CD_CHAR_VAL = 'S' AND USE_YN = 'Y'
+				ORDER BY SORT_SEQC
+			</when>
+			<when test="fcstPalId != null and fcstPalId != ''">
+				SELECT DISTINCT NVL(A.PROD_TYPE_CD,B.COM_CD) AS PROD_TYPE_CD, B.COM_CD_NM AS PROD_TYPE_NM, B.SORT_SEQC
+				FROM (
+					SELECT PROD_TYPE_CD FROM BEST020T  WHERE FCST_PAL_ID = #{fcstPalId}
+				) A
+				<if test="svcSearchType =='U' ">
+					RIGHT JOIN  -- 수정(RIGHT) 상세(LEFT) 여부에 따라 변경
+				</if>
+				<if test="svcSearchType =='R' ">
+					LEFT JOIN  -- 수정(RIGHT) 상세(LEFT) 여부에 따라 변경
+				</if>
+				(
+					SELECT COM_CD, COM_CD_NM, SORT_SEQC
+					FROM ACOM010T ACOM1
+					JOIN ACOM020T ACOM2 ON ACOM1.COM_GRP_CD = ACOM2.COM_GRP_CD
+					WHERE ACOM2.CLMN_NM = 'PROD_TYPE_CD' AND COM_CD_CHAR_VAL = 'S'
+				) B
+				ON A.PROD_TYPE_CD = B.COM_CD
+				ORDER BY SORT_SEQC
+			</when>
+		</choose>
+	</select>
+
+
+	<!-- 예상손익 기본리스트 조회 For 엑셀 -->
+	<select id="Select_basicEstimateAnalysisListForExcel"
+			parameterType="com.ibiz.api.model.FcstPalSearchVO"
+			resultType="com.ibiz.api.model.ExcelBasicEstimateAnalysisVO">
+
+			SELECT A.FCST_PAL_ID, A.DOC_NO,
+					A.SLS_DEPT_ID, IBIZ_DEPT_NM(A.SLS_DEPT_ID) SLS_DEPT_NM, --영업부서
+					A.SLS_EMP_ID, IBIZ_EMP_NM(A.SLS_EMP_ID) SLS_EMP_NM, --영업대표
+					IBIZ_COM_CD_NM('PRJT_TYPE_CD', A.PRJT_TYPE_CD) PRJT_TYPE_NM, -- A.PRJT_TYPE_CD, --프로젝트유형
+					A.LAST_CUST_ID, IBIZ_CUST_NM(A.LAST_CUST_ID) AS LAST_CUST_NM, --최종고객
+					P.PRJT_ID, P.PRJT_NM, O.BOPT_ID, O.BOPT_NM, --프로젝트명, 사업기회명
+					A.ORDE_CUST_ID, IBIZ_CUST_NM(A.ORDE_CUST_ID) AS ORDE_CUST_NM, --발주업체
+					A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
+					IBIZ_EMP_NM(A.TECH_SVC_RVW_EMP_ID) TECH_SVC_RVW_EMP_NM, --A.TECH_SVC_RVW_EMP_ID, --기술서비스검토자
+					IBIZ_DEPT_NM( (SELECT BLTO_DEPT_ID FROM HMST300T WHERE EMP_ID = TECH_SVC_RVW_EMP_ID) ) AS TECH_SVC_RVW_DEPT_NM, --기술서비스검토부서
+					IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_NM, --예상손익진행상태코드
+					SUM(B.SELL_AMT) SELL_AMT, --매출액
+					SUM(B.BUY_COST_AMT) BUY_COST_AMT, --매입원가
+					SUM(B.DRCST_AMT) DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
+					SUM(B.DREXP_AMT) DREXP_AMT, --직접경비
+					SUM(B.INCST_AMT) INCST_AMT, --간접원가
+					SUM(B.CTMG_AMT) CTMG_AMT, --공헌이익
+					SUM(B.PUT_NOP_COUNT) PUT_NOP_COUNT, --예상투입인원
+					IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD',MIN(B.PUT_TIME_UNIT_CD)) PUT_TIME_UNIT_NM, --투입시간단위코드
+					IBIZ_EMP_NM(A.REG_EMP_ID) REG_EMP_NM, --등록자
+					A.REG_DT, --등록일시
+					A.CHG_DT --최종변경일시
+			FROM BEST000T A, BEST020T B, BPIP000T O, APRJ000T P
+			WHERE A.BOPT_ID = O.BOPT_ID
+			AND A.PRJT_ID = P.PRJT_ID
+			--AND A.FCST_PAL_PRGS_STAT_CD NOT IN ('R','W') --예상손익진행상태코드 R:반려, W:폐기
+			AND A.FCST_PAL_ID = B.FCST_PAL_ID
+			<if test="docNo != null and docNo != ''">
+				AND A.DOC_NO = #{docNo}  --★ 검색조건:문서번호 (문서번호 조건 입력시 다른 검색조건은 무시)
+			</if>
+			<if test="lastCustId != null and lastCustId != ''">
+				AND A.LAST_CUST_ID = #{lastCustId} --★ 검색조건:최종고객ID
+			</if>
+			<if test="lastCustNm != null and lastCustNm != ''">
+				AND UPPER(IBIZ_CUST_NM(A.LAST_CUST_ID)) LIKE '%'||UPPER(#{lastCustNm})||'%' --★ 검색조건:최종고객명
+			</if>
+			<if test="prjtId != null and prjtId != ''">
+				AND A.PRJT_ID = #{prjtId} --★ 검색조건:프로젝트ID
+			</if>
+			<if test="prjtNm != null and prjtNm != ''">
+				AND UPPER(P.PRJT_NM) LIKE '%'||UPPER(#{prjtNm})||'%' --★ 검색조건:프로젝트명
+			</if>
+			<if test="ordeCustId != null and ordeCustId != ''">
+				AND A.ORDE_CUST_ID = #{ordeCustId} --★ 검색조건:발주업체ID
+			</if>
+			<if test="ordeCustNm != null and ordeCustNm != ''">
+				AND UPPER(IBIZ_CUST_NM(A.ORDE_CUST_ID)) LIKE '%'||UPPER(#{ordeCustNm})||'%' --★ 검색조건:발주업체명
+			</if>
+			<if test="fromRegDt != null and fromRegDt != null">
+				<![CDATA[
+					AND TO_CHAR(A.REG_DT, 'YYYYMMDD') >= #{fromRegDt}
+					]]>
+			</if>
+			<if test="toRegDt != null and toRegDt != null">
+				<![CDATA[
+					AND TO_CHAR(A.REG_DT, 'YYYYMMDD') <= #{toRegDt}
+					]]>
+			</if>
+			AND A.SLS_DEPT_ID IN (SELECT DEPT_ID FROM HMST100T
+			START WITH DEPT_ID = #{slsDeptId}  --★ 검색조건:영업부서
+			CONNECT BY PRIOR DEPT_ID = HGRK_DEPT_ID)
+			<if test="slsEmpId != null and slsEmpId != ''">
+				AND A.SLS_EMP_ID = #{slsEmpId}  --★ 검색조건:영업대표
+			</if>
+			<if test="prjtTypeCd != null and prjtTypeCd != ''">
+				AND A.PRJT_TYPE_CD = #{prjtTypeCd}  --★ 검색조건:프로젝트유형
+			</if>
+			<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != ''">
+				AND A.FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}  --★ 검색조건:진행상태
+			</if>
+			GROUP BY A.FCST_PAL_ID, A.DOC_NO,
+					A.SLS_DEPT_ID, --영업부서
+					A.SLS_EMP_ID, --영업대표
+					A.PRJT_TYPE_CD, --프로젝트유형
+					A.LAST_CUST_ID,  --최종고객
+					P.PRJT_ID, P.PRJT_NM, O.BOPT_ID, O.BOPT_NM, --프로젝트명, 사업기회명
+					A.ORDE_CUST_ID, --발주업체
+					A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
+					A.TECH_SVC_RVW_EMP_ID, --기술서비스검토자
+					A.FCST_PAL_PRGS_STAT_CD, --예상손익진행상태코드
+					A.REG_EMP_ID, A.REG_DT, A.CHG_DT --등록자,등록일시, 최종변경일시
+			ORDER BY A.REG_DT DESC
+
+	</select>
+
+	<!-- 예상손익 상품유형별 리스트 조회 For 엑셀 -->
+	<select id="Select_estimateByProdTypeListForExcel"
+			parameterType="com.ibiz.api.model.FcstPalSearchVO"
+			resultType="com.ibiz.api.model.ExcelProductTypeEstimateVO">
+
+			SELECT A.FCST_PAL_ID, A.DOC_NO,
+					A.SLS_DEPT_ID, IBIZ_DEPT_NM(A.SLS_DEPT_ID) SLS_DEPT_NM, --영업부서
+					A.SLS_EMP_ID, IBIZ_EMP_NM(A.SLS_EMP_ID) SLS_EMP_NM, --영업대표
+					IBIZ_COM_CD_NM('PRJT_TYPE_CD', A.PRJT_TYPE_CD) PRJT_TYPE_NM, -- A.PRJT_TYPE_CD, --프로젝트유형
+					A.LAST_CUST_ID, IBIZ_CUST_NM(A.LAST_CUST_ID) AS LAST_CUST_NM, --최종고객
+					P.PRJT_ID, P.PRJT_NM, O.BOPT_ID, O.BOPT_NM, --프로젝트명, 사업기회명
+					A.ORDE_CUST_ID, IBIZ_CUST_NM(A.ORDE_CUST_ID) AS ORDE_CUST_NM, --발주업체
+					A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
+					IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_NM, --예상손익진행상태코드
+					IBIZ_COM_CD_NM('PROD_TYPE_CD', B.PROD_TYPE_CD) PROD_TYPE_NM, --상품유형코드
+					IBIZ_COM_CD_NM('GODS_CLSF_CD', B.GODS_CLSF_CD) GODS_CLSF_NM, --제품분류코드
+					SUM(B.SELL_AMT) SELL_AMT, --매출액
+					SUM(B.BUY_COST_AMT) BUY_COST_AMT, --매입원가
+					SUM(B.DRCST_AMT) DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
+					SUM(B.DREXP_AMT) DREXP_AMT, --직접경비
+					SUM(B.INCST_AMT) INCST_AMT, --간접원가
+					SUM(B.CTMG_AMT) CTMG_AMT, --공헌이익
+					SUM(B.PUT_NOP_COUNT) PUT_NOP_COUNT, --예상투입인원
+					B.PUT_TIME_UNIT_CD,
+					IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD',MIN(B.PUT_TIME_UNIT_CD)) PUT_TIME_UNIT_NM, --투입시간단위코드
+					A.REG_DT
+			FROM BEST000T A, BEST020T B, BPIP000T O, APRJ000T P
+			WHERE A.BOPT_ID = O.BOPT_ID
+			AND A.PRJT_ID = P.PRJT_ID
+			--AND A.FCST_PAL_PRGS_STAT_CD NOT IN ('R','W') --예상손익진행상태코드 R:반려, W:폐기
+			AND A.FCST_PAL_ID = B.FCST_PAL_ID
+			<if test="docNo != null and docNo != ''">
+				AND A.DOC_NO = #{docNo}  --★ 검색조건:문서번호 (문서번호 조건 입력시 다른 검색조건은 무시)
+			</if>
+			<if test="lastCustId != null and lastCustId != ''">
+				AND A.LAST_CUST_ID = #{lastCustId} --★ 검색조건:최종고객ID
+			</if>
+			<if test="lastCustNm != null and lastCustNm != ''">
+				AND UPPER(IBIZ_CUST_NM(A.LAST_CUST_ID)) LIKE '%'||UPPER(#{lastCustNm})||'%' --★ 검색조건:최종고객명
+			</if>
+			<if test="prjtId != null and prjtId != ''">
+				AND A.PRJT_ID = #{prjtId} --★ 검색조건:프로젝트ID
+			</if>
+			<if test="prjtNm != null and prjtNm != ''">
+				AND UPPER(P.PRJT_NM) LIKE '%'||UPPER(#{prjtNm})||'%' --★ 검색조건:프로젝트명
+			</if>
+			<if test="ordeCustId != null and ordeCustId != ''">
+				AND A.ORDE_CUST_ID = #{ordeCustId} --★ 검색조건:발주업체ID
+			</if>
+			<if test="ordeCustNm != null and ordeCustNm != ''">
+				AND UPPER(IBIZ_CUST_NM(A.ORDE_CUST_ID)) LIKE '%'||UPPER(#{ordeCustNm})||'%' --★ 검색조건:발주업체명
+			</if>
+			<if test="fromRegDt != null and fromRegDt != null">
+				<![CDATA[
+					AND TO_CHAR(A.REG_DT, 'YYYYMMDD') >= #{fromRegDt}
+					]]>
+			</if>
+			<if test="toRegDt != null and toRegDt != null">
+				<![CDATA[
+					AND TO_CHAR(A.REG_DT, 'YYYYMMDD') <= #{toRegDt}
+					]]>
+			</if>
+			AND A.SLS_DEPT_ID IN (SELECT DEPT_ID FROM HMST100T
+			START WITH DEPT_ID =  #{slsDeptId}  --★ 검색조건:영업부서
+			CONNECT BY PRIOR DEPT_ID = HGRK_DEPT_ID)
+			<if test="slsEmpId != null and slsEmpId != ''">
+				AND A.SLS_EMP_ID = #{slsEmpId}  --★ 검색조건:영업대표
+			</if>
+			<if test="prjtTypeCd != null and prjtTypeCd != ''">
+				AND A.PRJT_TYPE_CD = #{prjtTypeCd}  --★ 검색조건:프로젝트유형
+			</if>
+			<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != ''">
+				AND A.FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}  --★ 검색조건:진행상태
+			</if>
+			GROUP BY A.FCST_PAL_ID, A.DOC_NO,
+					A.SLS_DEPT_ID, --영업부서
+					A.SLS_EMP_ID, --영업대표
+					A.PRJT_TYPE_CD, --프로젝트유형
+					A.LAST_CUST_ID,  --최종고객
+					P.PRJT_ID, P.PRJT_NM, O.BOPT_ID, O.BOPT_NM, --프로젝트명, 사업기회명
+					A.ORDE_CUST_ID, --발주업체
+					A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
+					A.FCST_PAL_PRGS_STAT_CD, --예상손익진행상태코드
+					B.PROD_TYPE_CD, --상품유형코드
+					B.GODS_CLSF_CD, --제품분류코드
+					B.PUT_TIME_UNIT_CD,
+					A.REG_DT
+			ORDER BY A.REG_DT DESC
+
+	</select>
+
+
+	<!-- 예상손익 상품별 리스트 조회 For 엑셀 -->
+	<select id="Select_estimateByProductListForExcel"
+			parameterType="com.ibiz.api.model.FcstPalSearchVO"
+			resultType="com.ibiz.api.model.ExcelProductEstimateVO">
+
+			SELECT A.FCST_PAL_ID, A.DOC_NO,
+					A.SLS_DEPT_ID, IBIZ_DEPT_NM(A.SLS_DEPT_ID) SLS_DEPT_NM, --영업부서
+					A.SLS_EMP_ID, IBIZ_EMP_NM(A.SLS_EMP_ID) SLS_EMP_NM, --영업대표
+					IBIZ_COM_CD_NM('PRJT_TYPE_CD', A.PRJT_TYPE_CD) PRJT_TYPE_NM, -- A.PRJT_TYPE_CD, --프로젝트유형
+					A.LAST_CUST_ID, IBIZ_CUST_NM(A.LAST_CUST_ID) AS LAST_CUST_NM, --최종고객
+					P.PRJT_ID, P.PRJT_NM, O.BOPT_ID, O.BOPT_NM, --프로젝트명, 사업기회명
+					A.ORDE_CUST_ID, IBIZ_CUST_NM(A.ORDE_CUST_ID) AS ORDE_CUST_NM, --발주업체
+					A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
+					IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_NM, --예상손익진행상태코드
+					A.REG_DT, --등록일시
+					IBIZ_COM_CD_NM('PROD_TYPE_CD', B.PROD_TYPE_CD) PROD_TYPE_NM, --상품유형코드
+					PROD_SEQ, --상품순번
+					IBIZ_COM_CD_NM('GODS_CLSF_CD', B.GODS_CLSF_CD) GODS_CLSF_NM, --제품분류코드
+					MA_TGT_PRJT_ID, --MA대상프로젝트ID
+					IBIZ_PRJT_NM(MA_TGT_PRJT_ID) MA_TGT_PRJT_NM, --MA대상프로젝트ID
+					B.SPLY_CMPY_CUST_ID, IBIZ_CUST_NM(B.SPLY_CMPY_CUST_ID) AS SPLY_CMPY_CUST_NM, --최종고객
+					PRODP_ID, --상품팩ID
+					PRODP_NM, --상품팩명
+					PROD_ID, --상품ID
+					PROD_NM, --상품명
+					SVC_JOB_NM, --서비스업무명
+					UPC_UNIT_CD, --단가단위코드
+					UPC_UNIT_NM, --단가단위명
+					MIN_UNIT_QNT, --최소단위수량
+					MAX_UNIT_QNT, --최대단위수량
+					QNT_DC_RT, --수량할인율
+					UNIT_QNT, --단위수량
+					COPY_QNT, --COPY수량
+					STD_UPC_AMT, --표준단가금액
+					BSC_UPC_AMT, --기본단가금액
+					LPC_AMT, --LISTPRICE금액
+					PCHS_UPC_AMT, --구매단가금액
+					PCHS_AMT, --구매금액
+					MA_GODS_SPLY_AMT, --MA제품공급금액
+					MA_TRF, --MA요율
+					MA_START_DATE, --MA시작일자
+					MA_END_DATE, --MA종료일자
+					SPLY_UPC_AMT, --공급단가금액
+					SPLY_AMT, --공급금액
+					PRC_PLCY_DC_RT, --가격정책할인율
+					BSC_COST_RT, --기본원가율
+					APLCN_COST_RT, --적용원가율
+					IBIZ_COM_CD_NM('PUT_HMFR_GRD_CD', PUT_HMFR_GRD_CD)  PUT_HMFR_GRD_NM, --투입인력등급코드
+					STD_COST_AMT, --표준원가금액
+					PUT_NOP_COUNT, --투입인원수
+					DRCST_AMT, --직접원가금액
+					INCST_AMT, --간접원가금액
+					EMB_GODS_YN, --내장형제품여부
+					SPLM_PCHS_YN, --추가구매여부
+					ESTI_RMRK_CONT, --견적비고 (★★★★ 견적비고, 원가비고 통합 검토)
+					COST_RMRK_CONT --원가비고 (★★★★ 견적비고, 원가비고 통합 검토)
+			FROM BEST000T A, BEST010T B, BPIP000T O, APRJ000T P, ACOM010T PTC010T, ACOM020T PTC020T
+			WHERE A.BOPT_ID = O.BOPT_ID
+			AND A.PRJT_ID = P.PRJT_ID
+			--AND A.FCST_PAL_PRGS_STAT_CD NOT IN ('R','W') --예상손익진행상태코드 R:반려, W:폐기
+			AND A.FCST_PAL_ID = B.FCST_PAL_ID
+			AND PTC020T.CLMN_NM = 'PROD_TYPE_CD'
+			AND PTC020T.COM_GRP_CD = PTC010T.COM_GRP_CD
+			AND B.PROD_TYPE_CD = PTC010T.COM_CD
+			<if test="docNo != null and docNo != ''">
+				AND A.DOC_NO = #{docNo}  --★ 검색조건:문서번호 (문서번호 조건 입력시 다른 검색조건은 무시)
+			</if>
+			<if test="lastCustId != null and lastCustId != ''">
+				AND A.LAST_CUST_ID = #{lastCustId} --★ 검색조건:최종고객ID
+			</if>
+			<if test="lastCustNm != null and lastCustNm != ''">
+				AND UPPER(IBIZ_CUST_NM(A.LAST_CUST_ID)) LIKE '%'||UPPER(#{lastCustNm})||'%' --★ 검색조건:최종고객명
+			</if>
+			<if test="prjtId != null and prjtId != ''">
+				AND A.PRJT_ID = #{prjtId} --★ 검색조건:프로젝트ID
+			</if>
+			<if test="prjtNm != null and prjtNm != ''">
+				AND UPPER(P.PRJT_NM) LIKE '%'||UPPER(#{prjtNm})||'%' --★ 검색조건:프로젝트명
+			</if>
+			<if test="ordeCustId != null and ordeCustId != ''">
+				AND A.ORDE_CUST_ID = #{ordeCustId} --★ 검색조건:발주업체ID
+			</if>
+			<if test="ordeCustNm != null and ordeCustNm != ''">
+				AND UPPER(IBIZ_CUST_NM(A.ORDE_CUST_ID)) LIKE '%'||UPPER(#{ordeCustNm})||'%' --★ 검색조건:발주업체명
+			</if>
+			<if test="fromRegDt != null and fromRegDt != null">
+				<![CDATA[
+					AND TO_CHAR(A.REG_DT, 'YYYYMMDD') >= #{fromRegDt}
+					]]>
+			</if>
+			<if test="toRegDt != null and toRegDt != null">
+				<![CDATA[
+					AND TO_CHAR(A.REG_DT, 'YYYYMMDD') <= #{toRegDt}
+					]]>
+			</if>
+			AND A.SLS_DEPT_ID IN (SELECT DEPT_ID FROM HMST100T
+			START WITH DEPT_ID = #{slsDeptId}  --★ 검색조건:영업부서
+			CONNECT BY PRIOR DEPT_ID = HGRK_DEPT_ID)
+			<if test="slsEmpId != null and slsEmpId != ''">
+				AND A.SLS_EMP_ID = #{slsEmpId}  --★ 검색조건:영업대표
+			</if>
+			<if test="prjtTypeCd != null and prjtTypeCd != ''">
+				AND A.PRJT_TYPE_CD = #{prjtTypeCd}  --★ 검색조건:프로젝트유형
+			</if>
+			<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != ''">
+				AND A.FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}  --★ 검색조건:진행상태
+			</if>
+			--★★★★★★ AND ( ESTI_RMRK_CONT IS NOT NULL AND COST_RMRK_CONT IS NOT NULL ) (★★★★ 견적비고, 원가비고 통합 검토)
+			ORDER BY A.REG_DT DESC, PTC010T.SORT_SEQC, B.PROD_SEQ --등록일시, 상품유형코드 정렬순서, 예상손익상품순서
+
+	</select>
+
+	<!-- 결재문서제목 구성정보 조회  -->
+	<select id="Select_draftEstimateDocTitl"
+			resultType="java.lang.String">
+
+			SELECT
+                '['||
+                (
+			        SELECT
+			            COM_CD_NM
+			        FROM
+			            ACOM010T
+			        WHERE
+			            COM_GRP_CD = (
+			            			SELECT COM_GRP_CD FROM ACOM020T	WHERE CLMN_NM = 'SANT_FRMT_CD'
+                        ) AND COM_CD = #{santFrmtCd}
+                )
+                ||'] '||
+			    (
+			        SELECT
+			            CUST_NM
+			        FROM
+			            CMST000T
+			        WHERE
+			            CUST_ID = (
+			            			SELECT
+			            				LAST_CUST_ID
+			            			FROM
+			            				APRJ000T
+			            			WHERE
+			            				PRJT_ID = #{prjtId}
+			            )
+			    )
+			    ||' / '||(
+			        SELECT
+			            BOPT_NM
+			        FROM
+			            BPIP000T
+			        WHERE
+			            BOPT_ID = #{boptId}
+			            AND BOPT_STAT_CD != 'D1'
+			    ) AS DOC_TITL
+			FROM
+			    DUAL
+
+	</select>
+
+
+	<!-- 예상손익기본 상세  -->
+	<select id="Select_IsRelatedWithBefProfitAnalysis"
+			parameterType="com.ibiz.api.model.BsnsProfitLossVO"
+			resultType="java.lang.Integer">
+
+		SELECT COUNT(1)
+		FROM BEST000T
+		WHERE BEF_FCST_PAL_ID = #{fcstPalId}
+
+	</select>
+</mapper>

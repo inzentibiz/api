@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DraftMapper">
+    <!--
+
+        SELECT
+
+    -->
+
+	<!-- 결재알림구분 정보 조회   -->
+	<select id="Select_santNtcDstInfo"
+			parameterType="com.ibiz.api.model.ApprovalVO"
+			resultType="com.ibiz.api.model.ApprovalVO">
+			SELECT
+				SANT_ID,
+			    SANT_PRGS_STAT_CD,
+			    SANT_NTC_DST_CD,
+			    EMG_SANT_DST_CD,
+			    IBIZ_COM_CD_NM('SANT_NTC_DST_CD',SANT_NTC_DST_CD) AS SANT_NTC_DST_NM
+			FROM
+			    AAPR100T
+			WHERE
+			    SANT_ID = #{santId}
+	</select>
+
+	<!-- MAX(SANT_ID) 조회 -->
+	<select id="Select_maxSantId"
+			resultType="com.ibiz.api.model.ApprovalVO">
+			SELECT
+			        CASE
+			            WHEN MAX(SANT_ID) IS NOT NULL THEN MAX(SANT_ID)
+			            ELSE TO_CHAR(SYSDATE,'yyyy') || '000000'
+			        END
+			    AS SANT_ID
+			FROM
+			    AAPR100T
+	</select>
+
+	<!--
+
+		INSERT
+
+	 -->
+
+	<!-- 기안서 등록 -->
+	<insert id="Insert_draft"
+			parameterType="com.ibiz.api.model.ApprovalVO">
+		INSERT
+		INTO AAPR100T (
+			SANT_ID,
+			DOC_TITL,
+			<if test="bdctCont != null and bdctCont != ''">
+				BDCT_CONT,
+			</if>
+			SANT_FRMT_CD,
+			SANT_NTC_DST_CD,
+			EMG_SANT_DST_CD,
+			SANT_PRGS_STAT_CD,
+			<if test="attcId != null and attcId != ''">
+				ATTC_ID,
+			</if>
+			REG_EMP_ID,
+			REG_DT,
+			CHG_EMP_ID,
+			CHG_DT
+		)
+		VALUES (
+			#{santId},
+			#{docTitl},
+			<if test="bdctCont != null and bdctCont != ''">
+				#{bdctCont},
+			</if>
+			#{santFrmtCd},
+			#{santNtcDstCd},
+			#{emgSantDstCd},
+			#{santPrgsStatCd},
+			<if test="attcId != null and attcId != ''">
+				#{attcId},
+			</if>
+			#{regEmpId},
+			SYSDATE,
+			#{regEmpId},
+			SYSDATE
+		)
+	</insert>
+
+	<!-- 결재자 등록 -->
+	<insert id="Insert_approver"
+			parameterType="com.ibiz.api.model.ApprovalDetailVO">
+		INSERT
+		INTO AAPR110T (
+			SANT_ID,
+			SANT_SEQ,
+			APRN_ROLE_CD,
+			SANT_DEPT_ID,
+			APRN_EMP_ID,
+			APRN_RESO_CD,
+			APRN_OFPS_CD,
+			MDTR_APRN_YN
+
+			<if test="santOpinCont != null and santOpinCont != ''">
+				,SANT_OPIN_CONT
+			</if>
+			<if test="santAppvDstCd != null and santAppvDstCd != ''">
+				,SANT_APPV_DST_CD
+			</if>
+			<if test="santDt != null and santDt != ''">
+				,SANT_DT
+			</if>
+		)
+		VALUES (
+			#{santId},
+			#{santSeq},
+			#{aprnRoleCd},
+			#{santDeptId},
+			#{aprnEmpId},
+			#{aprnResoCd},
+			#{aprnOfpsCd},
+			#{mdtrAprnYn}
+
+			<if test="santOpinCont != null and santOpinCont != ''">
+				,#{santOpinCont}
+			</if>
+			<if test="santAppvDstCd != null and santAppvDstCd != ''">
+				,#{santAppvDstCd}
+			</if>
+			<if test="santDt != null and santDt != ''">
+				,TO_DATE(#{santDt},'YYYYMMDDHH24MISS')
+			</if>
+		)
+	</insert>
+
+	<!--
+
+       UPDATE
+
+    -->
+
+	<!-- 기안서 수정 -->
+	<update id="Update_draft"
+			parameterType="com.ibiz.api.model.ApprovalVO">
+			UPDATE AAPR100T
+			    SET
+			        EMG_SANT_DST_CD = #{emgSantDstCd},
+			        SANT_NTC_DST_CD = #{santNtcDstCd}
+
+			        , DOC_TITL = #{docTitl}
+
+
+			        , BDCT_CONT = #{bdctCont}
+
+
+			        , ATTC_ID = #{attcId}
+
+			WHERE
+			    SANT_ID = #{santId}
+	</update>
+
+	<!-- 결재상태 수정 -->
+	<update id="Update_approvalState"
+			parameterType="com.ibiz.api.model.ApprovalVO">
+			UPDATE AAPR100T
+			    SET
+			        SANT_PRGS_STAT_CD = #{santPrgsStatCd},
+			        CHG_EMP_ID = #{chgEmpId},
+			        CHG_DT = SYSDATE
+			WHERE
+			    SANT_ID = #{santId}
+	</update>
+
+	<!--
+
+       DELETE
+
+    -->
+
+	<!-- 기안서 삭제 -->
+	<delete id="Delete_draft"
+			parameterType="com.ibiz.api.model.ApprovalVO">
+			DELETE FROM AAPR100T WHERE
+			    SANT_ID = #{santId}
+	</delete>
+
+	<!-- 기안서 상세 삭제 -->
+	<delete id="Delete_draftDetail"
+			parameterType="com.ibiz.api.model.ApprovalVO">
+			DELETE FROM AAPR110T WHERE
+			    SANT_ID = #{santId}
+	</delete>
+
+	<!-- 결제라인리스트 삭제 -->
+	<delete id="Delete_approverList"
+			parameterType="com.ibiz.api.model.ApprovalVO">
+			DELETE FROM AAPR110T
+			WHERE
+			    SANT_ID = #{santId}
+	</delete>
+
+</mapper>

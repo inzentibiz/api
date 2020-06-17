@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SalesMapper">
+
+    <!-- 영업활동내역리스트 조회 -->
+    <select id="Select_salesActivityList"
+            parameterType="com.ibiz.api.model.BizOpportunityVO"
+            resultType="com.ibiz.api.model.SalesActivityVO">
+
+			SELECT TOTAL_CNT, ROWNUMBER
+					, SLS_ACT_ID, BOPT_ID, PRMRY_ACT_CONT
+					, ACT_PLAN_CONT, REG_EMP_ID, CHG_EMP_ID
+					, REG_DT, REG_EMP_NM, REG_DEPT_NM
+					, CHG_EMP_NM, CHG_DEPT_NM, CHG_DT
+			FROM
+			    (
+			    	SELECT COUNT(1) OVER() AS TOTAL_CNT, ROWNUM AS ROWNUMBER
+							, WRAP_T25O.SLS_ACT_ID, WRAP_T25O.BOPT_ID, WRAP_T25O.PRMRY_ACT_CONT
+							, WRAP_T25O.ACT_PLAN_CONT, WRAP_T25O.REG_EMP_ID, WRAP_T25O.CHG_EMP_ID
+							, WRAP_T25O.REG_DT, WRAP_T25O.REG_EMP_NM, WRAP_T25O.REG_DEPT_NM
+							, WRAP_T25O.CHG_EMP_NM, WRAP_T25O.CHG_DEPT_NM, WRAP_T25O.CHG_DT
+			    	FROM
+			    	(
+			        SELECT
+			            T250.SLS_ACT_ID,
+			            T250.BOPT_ID,
+			            T250.PRMRY_ACT_CONT,
+			            T250.ACT_PLAN_CONT,
+			            T250.REG_EMP_ID,
+			            T250.CHG_EMP_ID,
+			            T250.REG_DT,
+                        IBIZ_EMP_NM(T250.REG_EMP_ID) AS REG_EMP_NM,
+                        (
+                            SELECT DEPT_NM
+                            FROM HMST100T
+                            WHERE DEPT_ID = (
+                                SELECT BLTO_DEPT_ID
+                                FROM HMST300T
+                                WHERE EMP_ID = T250.REG_EMP_ID
+                                )
+                        ) AS REG_DEPT_NM,
+                        IBIZ_EMP_NM(T250.CHG_EMP_ID) AS CHG_EMP_NM,
+                        (
+                            SELECT DEPT_NM
+                            FROM HMST100T
+                            WHERE DEPT_ID = (
+                                SELECT BLTO_DEPT_ID
+                                FROM HMST300T
+                                WHERE EMP_ID = T250.CHG_EMP_ID
+                                )
+                        ) AS CHG_DEPT_NM,
+                        T250.CHG_DT
+			        FROM
+			            (
+			                SELECT
+			                    SLS_ACT_ID,
+			                    BOPT_ID,
+			                    PRMRY_ACT_CONT,
+			                    ACT_PLAN_CONT,
+			                    REG_DT,
+                                REG_EMP_ID,
+                                CHG_EMP_ID,
+                                CHG_DT
+			                FROM
+			                    BPIP250T
+			            ) T250
+			        WHERE
+			            T250.BOPT_ID = #{boptId}
+			            ORDER BY REG_DT DESC
+			    	) WRAP_T25O
+			    )
+			WHERE
+				ROWNUMBER BETWEEN #{pageSize} * (#{pageNumber} - 1) + 1
+			    AND #{pageSize} * (#{pageNumber} - 1) + #{pageSize}
+
+	</select>
+
+    <!-- MAX(SLS_ACT_ID) 조회 -->
+    <select id="Select_maxSlsActId"
+            resultType="com.ibiz.api.model.SalesActivityVO">
+			SELECT
+			        CASE
+			            WHEN MAX(SLS_ACT_ID) IS NOT NULL THEN MAX(SLS_ACT_ID)
+			            ELSE TO_CHAR(SYSDATE,'yyyy') || '000000'
+			        END
+			    AS SLS_ACT_ID
+			FROM
+			    BPIP250T
+	</select>
+
+    <!--  영업활동내역 등록 -->
+    <insert id="Insert_salesActivity"
+            parameterType="com.ibiz.api.model.SalesActivityVO" >
+
+        INSERT INTO BPIP250T (
+			SLS_ACT_ID,
+			BOPT_ID,
+			PRMRY_ACT_CONT,
+			<if test="actPlanCont != null and actPlanCont != ''">
+				ACT_PLAN_CONT,
+			</if>
+			REG_EMP_ID,
+			REG_DT,
+			CHG_EMP_ID,
+			CHG_DT
+        ) VALUES (
+			#{slsActId},
+			#{boptId},
+			#{prmryActCont},
+			<if test="actPlanCont != null and actPlanCont != ''">
+				#{actPlanCont},
+			</if>
+			#{regEmpId},
+			SYSDATE,
+			#{regEmpId},
+			SYSDATE
+        )
+
+    </insert>
+
+
+    <!-- 영업활동내역 수정 -->
+    <update id="Update_salesActivity"
+            parameterType="com.ibiz.api.model.SalesActivityVO">
+
+			UPDATE BPIP250T
+			    SET
+			        PRMRY_ACT_CONT = #{prmryActCont},
+			        ACT_PLAN_CONT = #{actPlanCont},
+			        CHG_EMP_ID = #{chgEmpId},
+			        CHG_DT = SYSDATE
+			WHERE
+			    SLS_ACT_ID = #{slsActId}
+
+	</update>
+
+    <!-- 영업활동내역 삭제 -->
+    <delete id="Delete_salesActivity"
+            parameterType="com.ibiz.api.model.SalesActivityVO">
+			DELETE FROM BPIP250T WHERE
+			    SLS_ACT_ID = #{slsActId}
+	</delete>
+
+</mapper>

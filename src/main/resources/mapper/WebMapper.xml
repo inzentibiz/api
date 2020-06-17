@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="WebMapper">
+
+	<!--
+
+		Select
+
+	-->
+
+	<!-- 권한 부서 조회  -->
+	<select id="Select_authDeptIdList"
+			parameterType="java.lang.String"
+			resultType="java.lang.String">
+
+			SELECT
+			    AUTH_DEPT_ID AS DEPT_ID
+			FROM
+			    SSYS252T
+			WHERE
+			    USER_ID = #{userId}
+
+	</select>
+
+	<!-- 하위 권한 부서 포함 조회  -->
+	<select id="Select_allAuthDeptIdList"
+			parameterType="java.lang.String"
+			resultType="java.lang.String">
+
+			SELECT DEPT_ID, DEPT_NM, HGRK_DEPT_ID, DEPT_SORT_SEQC,
+					DEPT_LVL_CD, HDDP_EMP_ID, ORG_DST_CD, SELL_OCR_YN,
+					ORG_CRT_DATE, ORG_CLOSE_DATE, CHG_EMP_ID, CHG_DT
+			FROM HMST100T
+			START WITH
+			    HGRK_DEPT_ID = #{deptId}
+			CONNECT BY
+			    PRIOR DEPT_ID = HGRK_DEPT_ID
+			UNION ALL
+			SELECT DEPT_ID, DEPT_NM, HGRK_DEPT_ID, DEPT_SORT_SEQC,
+					DEPT_LVL_CD, HDDP_EMP_ID, ORG_DST_CD, SELL_OCR_YN,
+					ORG_CRT_DATE, ORG_CLOSE_DATE, CHG_EMP_ID, CHG_DT
+			FROM
+			    HMST100T
+			WHERE
+			    DEPT_ID = #{deptId}
+
+	</select>
+
+
+
+
+</mapper>
