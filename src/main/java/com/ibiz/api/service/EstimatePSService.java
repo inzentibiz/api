@@ -51,11 +51,16 @@ public class EstimatePSService extends AbstractDraftService {
         bsnsProfitLossVO.getApproval().setDocTitl(estimateDao.selectDraftEstimateDocTitl(bsnsProfitLossVO));
         bsnsProfitLossVO.getApproval().setSantFrmtCd(bsnsProfitLossVO.getFrmtCd());
         bsnsProfitLossVO.setSantId(super.insertDraft(bsnsProfitLossVO.getApproval()));
+/* 구소스
 
         // 문서서식채번
         String prevDocNo = estimateDao.selectMaxDocNo(bsnsProfitLossVO.getApproval()).getDocNo();
         bsnsProfitLossVO.setDocNo(super.generateDocId(3, prevDocNo));
 
+        estimateDao.insertEstimatedProfitAndLoss(bsnsProfitLossVO);
+*/
+
+        // 문서서식채번 포함하여 기본테이블 INSERT
         estimateDao.insertEstimatedProfitAndLoss(bsnsProfitLossVO);
 
         // LC, SV, OP

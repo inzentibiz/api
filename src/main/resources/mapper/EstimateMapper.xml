@@ -504,7 +504,7 @@
 		) VALUES (
 		#{fcstPalId},
 		#{frmtCd},
-		#{docNo},
+		(SELECT IBIZ_NEW_DOC_NO('BEST000T','DOC_NO','FRMT_CD',#{frmtCd}) FROM DUAL ),
 		#{santId},
 		<if test="lastCustId != null and lastCustId != ''">
 			#{lastCustId},
