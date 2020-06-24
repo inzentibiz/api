@@ -22,7 +22,7 @@ public class BsnsProdDetailVO {
     /**
      * 상품유형명
      */
-    private String prodTypeNm;
+    private String prodTypeCdNm;
 
     /**
      * 상품구분코드
@@ -32,7 +32,7 @@ public class BsnsProdDetailVO {
     /**
      * 상품구분코드명
      */
-    private String prodDstNm;
+    private String prodDstCdNm;
 
     /**
      * 상품순번
@@ -101,7 +101,7 @@ public class BsnsProdDetailVO {
 	*//**
      * SW기술자등급코드명
      *//*
-	private String swTcenGrdNm;
+	private String swTcenGrdCdNm;
 	*/
     /**
      * 단가단위코드
@@ -183,7 +183,7 @@ public class BsnsProdDetailVO {
 	*//**
      * 투입시간단위코드명
      *//*
-	private String putTimeUnitNm;
+	private String putTimeUnitCdNm;
 	*/
     /**
      * 최소단위수량
@@ -316,7 +316,7 @@ public class BsnsProdDetailVO {
     /**
      * 제품분류명
      */
-    private String godsClsfNm;
+    private String godsClsfCdNm;
 
     /**
      * MA제품공금금액
@@ -409,12 +409,12 @@ public class BsnsProdDetailVO {
         this.prodTypeCd = prodTypeCd;
     }
 
-    public String getProdTypeNm() {
-        return prodTypeNm;
+    public String getProdTypeCdNm() {
+        return prodTypeCdNm;
     }
 
-    public void setProdTypeNm(String prodTypeNm) {
-        this.prodTypeNm = prodTypeNm;
+    public void setProdTypeCdNm(String prodTypeCdNm) {
+        this.prodTypeCdNm = prodTypeCdNm;
     }
 
     public String getProdDstCd() {
@@ -425,12 +425,12 @@ public class BsnsProdDetailVO {
         this.prodDstCd = prodDstCd;
     }
 
-    public String getProdDstNm() {
-        return prodDstNm;
+    public String getProdDstCdNm() {
+        return prodDstCdNm;
     }
 
-    public void setProdDstNm(String prodDstNm) {
-        this.prodDstNm = prodDstNm;
+    public void setProdDstCdNm(String prodDstCdNm) {
+        this.prodDstCdNm = prodDstCdNm;
     }
 
     public Integer getProdSeq() {
@@ -505,12 +505,12 @@ public class BsnsProdDetailVO {
             this.swTcenGrdCd = swTcenGrdCd;
         }
 
-        public String getSwTcenGrdNm() {
-            return swTcenGrdNm;
+        public String getSwTcenGrdCdNm() {
+            return swTcenGrdCdNm;
         }
 
-        public void setSwTcenGrdNm(String swTcenGrdNm) {
-            this.swTcenGrdNm = swTcenGrdNm;
+        public void setSwTcenGrdCdNm(String swTcenGrdCdNm) {
+            this.swTcenGrdCdNm = swTcenGrdCdNm;
         }
     */
     public String getUpcUnitCd() {
@@ -633,12 +633,12 @@ public class BsnsProdDetailVO {
             this.putTimeUnitCd = putTimeUnitCd;
         }
 
-        public String getPutTimeUnitNm() {
-            return putTimeUnitNm;
+        public String getPutTimeUnitCdNm() {
+            return putTimeUnitCdNm;
         }
 
-        public void setPutTimeUnitNm(String putTimeUnitNm) {
-            this.putTimeUnitNm = putTimeUnitNm;
+        public void setPutTimeUnitCdNm(String putTimeUnitCdNm) {
+            this.putTimeUnitCdNm = putTimeUnitCdNm;
         }
     */
     public Integer getMinUnitQnt() {
@@ -841,12 +841,12 @@ public class BsnsProdDetailVO {
         this.godsClsfCd = godsClsfCd;
     }
 
-    public String getGodsClsfNm() {
-        return godsClsfNm;
+    public String getGodsClsfCdNm() {
+        return godsClsfCdNm;
     }
 
-    public void setGodsClsfNm(String godsClsfNm) {
-        this.godsClsfNm = godsClsfNm;
+    public void setGodsClsfCdNm(String godsClsfCdNm) {
+        this.godsClsfCdNm = godsClsfCdNm;
     }
 
     public long getMaGodsSplyAmt() {

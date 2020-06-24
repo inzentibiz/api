@@ -4,6 +4,8 @@ spring:
 
 
 
+
+
 mybatis:
   mapper-locations: "classpath:/mapper/*.xml"
   configuration:
@@ -13,12 +15,12 @@ mybatis:
 logging:
   config: classpath:logback-spring.xml
   level:
-    com.ibiz.api.controller: INFO
-    log4jdbc: INFO
+    com.ibiz.api.controller: debug
+    log4jdbc:
 
 eureka:
   instance:
-    instance-id: sales-act-7300
+    instance-id: sales-order-7300
   client:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka/
@@ -33,12 +35,7 @@ management:
     shutdown:
       enabled: true
 
-server:
-  port: 7300
-
-
-
---- #local 환경 start
+--- #local 환경
 
 spring:
   profiles: local
@@ -49,18 +46,20 @@ spring:
     port: 6379
 
   datasource:
-    driver-class-name: oracle.jdbc.OracleDriver #net.sf.log4jdbc.sql.jdbcapi.DriverSpy # oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@192.168.18.120:1521:ibiz #jdbc:log4jdbc:oracle:thin:@192.168.19.230:1521:ibiz # jdbc:oracle:thin:@192.168.19.230:1521:ibiz
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@192.168.18.120:1521:ibiz
     username: IBIZ
     password: IBIZ1229
+
+server:
+  port: 7300
 
 logging: # ROOT레벨 전체 로깅 레벨 결정
   level:
     root: info
 
---- #local 환경 end
 
---- #dev 환경 start
+--- #dev 환경
 
 spring:
   profiles: dev
@@ -72,18 +71,19 @@ spring:
     password: dev5791
 
   datasource:
-    driver-class-name: oracle.jdbc.OracleDriver #net.sf.log4jdbc.sql.jdbcapi.DriverSpy # oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@192.168.18.120:1521:ibiz #jdbc:log4jdbc:oracle:thin:@192.168.19.230:1521:ibiz # jdbc:oracle:thin:@192.168.19.230:1521:ibiz
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@192.168.18.120:1521:ibiz
     username: IBIZ
     password: IBIZ1229
+
+server:
+  port: 7300
 
 logging: # ROOT레벨 전체 로깅 레벨 결정
   level:
     root: info
 
-  --- #dev 환경 end
-
---- #staging 환경 start
+--- #staging 환경
 
 spring:
   profiles: staging
@@ -94,21 +94,20 @@ spring:
     port: 6379
     password: staging1216
 
-
   datasource:
-    driver-class-name: oracle.jdbc.OracleDriver #net.sf.log4jdbc.sql.jdbcapi.DriverSpy # oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@192.168.18.120:1521:ibiz #jdbc:log4jdbc:oracle:thin:@192.168.19.230:1521:ibiz # jdbc:oracle:thin:@192.168.19.230:1521:ibiz
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@192.168.18.120:1521:ibiz
     username: IBIZ_STAGING
     password: dkdlqlwm#123
+
+server:
+  port: 7300
 
 logging: # ROOT레벨 전체 로깅 레벨 결정
   level:
     root: info
 
---- #staging 환경 end
-
-
---- #prod 환경 start
+--- #prod 환경
 
 spring:
   profiles: prod
@@ -120,13 +119,15 @@ spring:
     password: operation0307
 
   datasource:
-    driver-class-name: oracle.jdbc.OracleDriver #net.sf.log4jdbc.sql.jdbcapi.DriverSpy # oracle.jdbc.OracleDriver
+    driver-class-name: oracle.jdbc.OracleDriver
     url: jdbc:oracle:thin:@183.111.96.41:1521:orcl
     username: IBIZ_PRODUCT
     password: IBIZ1229
 
+server:
+  port: 7300
+
 logging: # ROOT레벨 전체 로깅 레벨 결정
   level:
-    root: info
+    root: error
 
---- #prod 환경 end

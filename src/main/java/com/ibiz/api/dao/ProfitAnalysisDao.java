@@ -71,12 +71,12 @@ public class ProfitAnalysisDao {
     }
 
     //VRB 대상선정 및 평가결과 : VRB 대상선정 기준항목 조회
-    public List<VrbCriteriaVO> selectVrbCriteriaList(BsnsProfitLossVO bsnsProfitLossVO) {
+    public List<VRBSelectCriteriaVO> selectVrbCriteriaList(BsnsProfitLossVO bsnsProfitLossVO) {
         return mybatis.selectList("ProfitAnalysisMapper.Select_vrbCriteriaList", bsnsProfitLossVO);
     }
 
     //VRB 분석리스트 조회
-    public List<VRBProfitAnalysisDetailVO> selectVrbList(BsnsProfitLossVO bsnsProfitLossVO) {
+    public List<VRBProfitVO> selectVrbList(BsnsProfitLossVO bsnsProfitLossVO) {
         return mybatis.selectList("ProfitAnalysisMapper.Select_vrbList", bsnsProfitLossVO);
     }
 
@@ -96,7 +96,7 @@ public class ProfitAnalysisDao {
     }
 
     // 진행상태 조회
-    public BsnsProfitLossVO selectFcstPalPrgsStatCd(BsnsProfitLossVO bsnsProfitLossVO) {
+    public BsnsProfitLossVO selectFcstPalPrgsStatCdNmCd(BsnsProfitLossVO bsnsProfitLossVO) {
         return mybatis.selectOne("ProfitAnalysisMapper.Select_fcstPalPrgsStatCd", bsnsProfitLossVO);
     }
 
@@ -223,14 +223,6 @@ public class ProfitAnalysisDao {
      */
     public List<FcstPalVO> selectQuoteAnalysisList(FcstPalSearchVO fcstPalSearchVO) {
         return mybatis.selectList("ForcastPALMapper.Select_quoteAnalysisList", fcstPalSearchVO);
-    }
-
-    public List<EstiHisVO> selectEstimateHistoryList(EstiHisSearchVO estiHisSearchVO){
-        return mybatis.selectList("EstimateIssueMapper.Select_estimateHistoryList", estiHisSearchVO);
-    }
-
-    public Integer selectEstimateHistoryListCount(EstiHisSearchVO estiHisSearchVO) {
-        return mybatis.selectOne("EstimateIssueMapper.Select_estimateHistoryListCount", estiHisSearchVO);
     }
 
     public Integer selectIsExistForcastPAL(FcstPalVO fcstPalVO) {

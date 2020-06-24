@@ -21,7 +21,7 @@ public class ProdDcPolicyVO {
     /**
      * 상품유형명
      */
-    private String prodTypeNm;
+    private String prodTypeCdNm;
 
 
     /**
@@ -105,12 +105,12 @@ public class ProdDcPolicyVO {
         this.prodTypeCd = prodTypeCd;
     }
 
-    public String getProdTypeNm() {
-        return prodTypeNm;
+    public String getProdTypeCdNm() {
+        return prodTypeCdNm;
     }
 
-    public void setProdTypeNm(String prodTypeNm) {
-        this.prodTypeNm = prodTypeNm;
+    public void setProdTypeCdNm(String prodTypeCdNm) {
+        this.prodTypeCdNm = prodTypeCdNm;
     }
 
 }

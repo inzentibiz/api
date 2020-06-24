@@ -11,7 +11,7 @@ public class ErrorResponse {
     ErrorResponse(ErrorCode errorCode) {
         this.message = errorCode.getMessage();
         this.code = errorCode.getCode();
-        this.application = "ibiz-api-sales-act";
+        this.application = "ibiz-api-sales-order";
     }
 
     public String getMessage() {

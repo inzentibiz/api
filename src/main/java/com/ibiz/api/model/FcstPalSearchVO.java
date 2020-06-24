@@ -320,11 +320,11 @@ public class FcstPalSearchVO {
         this.pageNumber = pageNumber;
     }
 
-    public String getFcstPalPrgsStatCd() {
+    public String getFcstPalPrgsStatCdNmCd() {
         return fcstPalPrgsStatCd;
     }
 
-    public void setFcstPalPrgsStatCd(String fcstPalPrgsStatCd) {
+    public void setFcstPalPrgsStatCdNmCd(String fcstPalPrgsStatCd) {
         this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
     }
 

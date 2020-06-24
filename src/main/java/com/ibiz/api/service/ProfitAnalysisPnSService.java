@@ -2,7 +2,7 @@ package com.ibiz.api.service;
 
 import com.ibiz.api.dao.DraftDao;
 import com.ibiz.api.dao.ProfitAnalysisDao;
-import com.ibiz.api.dao.ProjectVRBDao;
+import com.ibiz.api.dao.VRBAnalysisDAO;
 import com.ibiz.api.exception.DeleteDeniedException;
 import com.ibiz.api.exception.UpdateDeniedException;
 import com.ibiz.api.model.*;
@@ -23,8 +23,8 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
     @Resource(name = "profitAnalysisDao")
     private ProfitAnalysisDao profitAnalysisDao;
 
-    @Resource(name="projectVRBDao")
-    private ProjectVRBDao projectVRBDao;
+    @Resource(name="vrbAnalysisDAO")
+    private VRBAnalysisDAO vrbAnalysisDAO;
 
     @Resource(name = "draftDao")
     private DraftDao draftDao;
@@ -46,13 +46,13 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
             befBsnsProfitLossVO.setFcstPalId(bsnsProfitLossVO.getBefFcstPalId());
             befBsnsProfitLossVO.setSantId(profitAnalysisDao.selectBusinessInformation(befBsnsProfitLossVO).getSantId());
 
-           if( !profitAnalysisDao.selectFcstPalPrgsStatCd(befBsnsProfitLossVO).getFcstPalPrgsStatCd().equals("C")){
+           if( !profitAnalysisDao.selectFcstPalPrgsStatCdNmCd(befBsnsProfitLossVO).getFcstPalPrgsStatCdNmCd().equals("C")){
                throw new UpdateDeniedException("변경전 예상손익분석서는 승인상태여야 합니다.",befBsnsProfitLossVO);
            }
         }
 
         // 결재 등록 (미상신)
-        bsnsProfitLossVO.setFcstPalPrgsStatCd("A");
+        bsnsProfitLossVO.setFcstPalPrgsStatCdNmCd("A");
         bsnsProfitLossVO.getApproval().setRegEmpId(accountVO.getEmpId());
         bsnsProfitLossVO.setSantFrmtCd(bsnsProfitLossVO.getFrmtCd());
         bsnsProfitLossVO.getApproval().setDocTitl(profitAnalysisDao.selectDraftEstimateDocTitl(bsnsProfitLossVO));
@@ -116,19 +116,19 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
 
             bsnsProfitLossVO.setRegDt(bsnsProfitLoss.getRegDt());
             bsnsProfitLoss.setVrbCriteriaList(profitAnalysisDao.selectVrbCriteriaList(bsnsProfitLossVO));
-            List<VRBProfitAnalysisDetailVO> profitValueAnalysisDetailList = new ArrayList();
+            List<VRBProfitVO> profitValueAnalysisDetailList = new ArrayList();
 
             profitValueAnalysisDetailList = profitAnalysisDao.selectVrbList(bsnsProfitLossVO); // BPIP100T + BPIP141T
-            List<VRBVO> mergeVRBList = new ArrayList();
+            List<VRBAnalysisVO> mergeVRBList = new ArrayList();
 
-            // VRBVO / VRBProfitAnalysisDetailVO 별도로 관리하기 때문에 내려줄때도 구분해서 내리기
+            // VRBVO / VRBProfitVO 별도로 관리하기 때문에 내려줄때도 구분해서 내리기
             if (profitValueAnalysisDetailList.size() > 0) {
                 for (int i = 0; i < profitValueAnalysisDetailList.size(); i++) {
-                    VRBVO vrbVO = new VRBVO();
-                    VRBVO resultVrbVO = new VRBVO();
-                    vrbVO.setVrbAnlyId(profitValueAnalysisDetailList.get(i).getVrbAnlyId());
-                    resultVrbVO = projectVRBDao.selectVrbInfoByAnlyId(vrbVO);
-                    List<VRBProfitAnalysisDetailVO> subProfitValueAnalysisDetailList = new ArrayList();
+                    VRBAnalysisVO vrbAnalysisVO = new VRBAnalysisVO();
+                    VRBAnalysisVO resultVrbVO = new VRBAnalysisVO();
+                    vrbAnalysisVO.setVrbAnlyId(profitValueAnalysisDetailList.get(i).getVrbAnlyId());
+                    resultVrbVO = vrbAnalysisDAO.selectRlvnVRBAnalysis(vrbAnalysisVO);
+                    List<VRBProfitVO> subProfitValueAnalysisDetailList = new ArrayList();
                     subProfitValueAnalysisDetailList.add(profitValueAnalysisDetailList.get(i));
 
                     resultVrbVO.setVrbProfitAnalysisDetailList(subProfitValueAnalysisDetailList);
@@ -169,7 +169,7 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
             bsnsProfitLoss.setApproval(super.selectApprovalInfo(bsnsProfitLoss.getSantId()));
 
             // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
-            if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W")) {
+            if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("W")) {
                 bsnsProfitLoss.setIsInProgress(false);
             } else {
                 bsnsProfitLoss.setIsInProgress(true);
@@ -205,29 +205,29 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
             approvalDetail.setUserGrpVO(userGrpVO);
 
             // 버튼 리스트
-            if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("A") &&  super.isBelongToAuthDept(userGrpVO) ) {
+            if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("A") &&  super.isBelongToAuthDept(userGrpVO) ) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "수정"); }});
             }
 
             if (accountVO.getRoleList().contains("AD")
-                    || (userGrpVO.getTargetUserId().equals(userGrpVO.getSourceUserId()) && bsnsProfitLoss.getFcstPalPrgsStatCd().equals("A"))) {
+                    || (userGrpVO.getTargetUserId().equals(userGrpVO.getSourceUserId()) && bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("A"))) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "삭제"); }});
             }
 
 
             if(super.isBelongToAuthDept(userGrpVO)){
                 // 예상손익진행상태가 반려, 폐기가 아닌 경우에만 견적작성버튼 내려줌(요구사항 수정)
-                if(!bsnsProfitLoss.getFcstPalPrgsStatCd().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W") ){
+                if(!bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("W") ){
                     buttonList.add(new HashMap<String, String>() {{put("button", "견적작성"); }});
                 }
-                if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C")) {
+                if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("C")) {
                     // 예상손익진행상태가 승인인 경우 예상손익변경버튼 내려줌
                     buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
                     buttonList.add(new HashMap<String, String>() {{put("button", "수주보고"); }});
                 }
             }
 
-            if ((bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("R"))
+            if ((bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("R"))
                     && userGrpVO.getTargetUserId().equals(userGrpVO.getSourceUserId()) ) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "폐기"); }});
             }
@@ -253,7 +253,7 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
         // 결재 모듈에서 처리된 진행상태값에 따라 서식의 진행상태를 업데이트한다.
         BsnsProfitLossVO bsnsProfitLossVO = new BsnsProfitLossVO();
         bsnsProfitLossVO.setSantId(approvalVO.getSantId());
-        bsnsProfitLossVO.setFcstPalPrgsStatCd("W");
+        bsnsProfitLossVO.setFcstPalPrgsStatCdNmCd("W");
         profitAnalysisDao.updateEstimateApprovalState(bsnsProfitLossVO);
 
         return approvalVO;
@@ -275,7 +275,7 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
             befBsnsProfitLossVO.setFcstPalId(bsnsProfitLossVO.getBefFcstPalId());
             befBsnsProfitLossVO.setSantId(profitAnalysisDao.selectBusinessInformation(befBsnsProfitLossVO).getSantId());
 
-            if (!profitAnalysisDao.selectFcstPalPrgsStatCd(befBsnsProfitLossVO).getFcstPalPrgsStatCd().equals("C")) {
+            if (!profitAnalysisDao.selectFcstPalPrgsStatCdNmCd(befBsnsProfitLossVO).getFcstPalPrgsStatCdNmCd().equals("C")) {
                 throw new UpdateDeniedException("변경전 예상손익분석서는 승인상태여야 합니다.",befBsnsProfitLossVO);
             }
         }
@@ -373,11 +373,11 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
     }
 
     @Transactional
-    public List<VrbCriteriaVO> selectVrbCriteriaList(Payload<BsnsProfitLossVO> requestPayload) throws Exception {
+    public List<VRBSelectCriteriaVO> selectVrbCriteriaList(Payload<BsnsProfitLossVO> requestPayload) throws Exception {
         log.info("Call Service : " + this.getClass().getName() + ".selectVrbCriteriaList");
         BsnsProfitLossVO bsnsProfitLossVO = requestPayload.getDto();
 
-        List<VrbCriteriaVO> data = profitAnalysisDao.selectVrbCriteriaList(bsnsProfitLossVO);
+        List<VRBSelectCriteriaVO> data = profitAnalysisDao.selectVrbCriteriaList(bsnsProfitLossVO);
 
         return data;
     }
@@ -409,19 +409,19 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
 
         switch (bsnsProfitLoss.getApproval().getSantPrgsStatCd()) {
             case "A":	// 미상신
-                bsnsProfitLossVO.setFcstPalPrgsStatCd("A"); // 등록
+                bsnsProfitLossVO.setFcstPalPrgsStatCdNmCd("A"); // 등록
                 break;
             case "B":	// 결재중
-                bsnsProfitLossVO.setFcstPalPrgsStatCd("B"); // 결재진행
+                bsnsProfitLossVO.setFcstPalPrgsStatCdNmCd("B"); // 결재진행
                 break;
             case "C":	// 완결
-                bsnsProfitLossVO.setFcstPalPrgsStatCd("C"); // 승인
+                bsnsProfitLossVO.setFcstPalPrgsStatCdNmCd("C"); // 승인
                 break;
             case "R":	// 반려/합의거부
-                bsnsProfitLossVO.setFcstPalPrgsStatCd("R"); // 반려
+                bsnsProfitLossVO.setFcstPalPrgsStatCdNmCd("R"); // 반려
                 break;
             case "W":	// 폐기
-                bsnsProfitLossVO.setFcstPalPrgsStatCd("W"); // 폐기
+                bsnsProfitLossVO.setFcstPalPrgsStatCdNmCd("W"); // 폐기
                 break;
         }
 
@@ -430,10 +430,10 @@ public class ProfitAnalysisPnSService  extends AbstractDraftService {
         profitAnalysisDao.updateEstimateApprovalState(bsnsProfitLossVO);
 
         // 예상손익 결재진행 상태 조회
-        result = profitAnalysisDao.selectFcstPalPrgsStatCd(bsnsProfitLoss);
+        result = profitAnalysisDao.selectFcstPalPrgsStatCdNmCd(bsnsProfitLoss);
 
         // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
-        if(result.getFcstPalPrgsStatCd().equals("D") || result.getFcstPalPrgsStatCd().equals("W")) {
+        if(result.getFcstPalPrgsStatCdNmCd().equals("D") || result.getFcstPalPrgsStatCdNmCd().equals("W")) {
             result.setIsInProgress(false);
         }else {
             result.setIsInProgress(true);

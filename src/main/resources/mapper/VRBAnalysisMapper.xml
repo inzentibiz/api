@@ -1,0 +1,1067 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="VRBAnalysisMapper">
+
+	<!--
+
+		SELECT
+
+	-->
+
+
+	<select id="selectVRBAnlyId"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBAnalysisVO">
+
+			SELECT VRB_ANLY_ID, DOC_NO, PRJT_ID, EFCM_DATE, CUST_DMD_MTR,
+				BSNS_CHRC_CONT, COPE_SCHM_CONT, CMPY_SLCT_WAY_CONT,
+				CMPY_EVAL_WAY_CONT, PRTC_CMPY_PRSCD_CONT, SLS_DEPT_ID,
+				SLS_EMP_ID, VRB_UDWG_RST_CD, VRB_PRGS_STAT_CD, SANT_ID,
+				REG_EMP_ID, REG_DT, CHG_EMP_ID, CHG_DT
+			FROM
+			    BPIP100T
+			WHERE
+			    SANT_ID = #{santId}
+
+	</select>
+
+	<select id="selectRlvnVRBAnalysis"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBAnalysisVO">
+
+			SELECT
+			    VRB_ANLY_ID,DOC_NO, SANT_ID, EFCM_DATE, VRB_UDWG_RST_CD, IBIZ_COM_CD_NM('VRB_UDWG_RST_CD',VRB_UDWG_RST_CD) AS VRB_UDWG_RST_CD_NM,
+			    VRB_PRGS_STAT_CD, IBIZ_COM_CD_NM('VRB_PRGS_STAT_CD',VRB_PRGS_STAT_CD) AS VRB_PRGS_STAT_CD_NM
+			FROM
+			    BPIP100T
+			WHERE
+			    VRB_ANLY_ID = #{vrbAnlyId}
+
+	</select>
+
+	<!-- 수익분석상세 조회 for VRB -->
+	<select id="selectVRBAnalysisErnnAnlyList"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBProfitVO">
+		SELECT PROD_TYPE_CD, PROD_TYPE_CD_NM
+			,LPC_AMT -- List Price
+			,SELL_AMT --매출금액
+			,BUY_COST_AMT --매입원가금액
+			,DRCST_AMT --직접원가금액
+			,DREXP_AMT --직접경비금액
+			,INCST_AMT --간접원가금액
+			,CTMG_AMT --공헌이익금액
+			,PUT_TIME_UNIT_CD
+			,IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD', PUT_TIME_UNIT_CD) AS PUT_TIME_UNIT_CD_NM
+			,PUT_NOP_COUNT
+		FROM ( SELECT PROD_TYPE_CD,
+					SORT_SEQC, PUT_TIME_UNIT_CD,
+					SUM(NVL(PUT_NOP_COUNT,0)) AS PUT_NOP_COUNT,
+					( SELECT T010.COM_CD_NM
+						FROM ( SELECT T000.COM_GRP_CD
+								FROM ACOM000T T000
+								INNER JOIN ACOM020T T020 ON T000.COM_GRP_CD = T020.COM_GRP_CD
+								WHERE T020.CLMN_NM = 'PROD_TYPE_CD'
+							) T000_T020
+						LEFT JOIN ACOM010T T010 ON T000_T020.COM_GRP_CD = T010.COM_GRP_CD
+						WHERE T010.COM_CD = BPIP141T.PROD_TYPE_CD
+					) AS PROD_TYPE_CD_NM,
+					NVL(SUM(LPC_AMT), 0) AS LPC_AMT,
+					NVL(SUM(SELL_AMT), 0) AS SELL_AMT,
+					NVL(SUM(BUY_COST_AMT), 0) AS BUY_COST_AMT,
+					NVL(SUM(DRCST_AMT), 0) AS DRCST_AMT,
+					NVL(SUM(DREXP_AMT), 0) AS DREXP_AMT,
+					NVL(SUM(INCST_AMT), 0) AS INCST_AMT,
+					NVL(SUM(CTMG_AMT), 0) AS CTMG_AMT
+				FROM BPIP141T
+				LEFT JOIN ( SELECT COM_CD, SORT_SEQC FROM ACOM010T WHERE COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'PROD_TYPE_CD') )
+				ON BPIP141T.PROD_TYPE_CD = COM_CD
+		WHERE VRB_ANLY_ID = #{vrbAnlyId}
+		GROUP BY PROD_TYPE_CD, SORT_SEQC, PUT_TIME_UNIT_CD
+		) ORDER BY SORT_SEQC
+	</select>
+
+	<!-- 수익분석내역 조회 for VRB -->
+	<select id="selectVRBAnalysisErnnAnly"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.ProfitValueAnalysisVO">
+		SELECT VRB_ANLY_ID,
+				INCST_AMT, -- 간접원가(간접비)
+				CTMG_AMT, -- 공헌이익
+				LPC_AMT, -- List Price(소계)
+				SPLY_AMT, -- 매출금액(소계)
+				BUY_COST_AMT, -- 매입원가금액(소계)
+				DRCST_AMT, --직접원가(소계)
+				DREXP_AMT, -- 직접경비(소계)
+				( SELECT NVL(SUM(BUY_COST_AMT), 0)
+					FROM BPIP141T
+					WHERE VRB_ANLY_ID = #{vrbAnlyId}
+						AND  PROD_TYPE_CD = 'SD'
+						OR   PROD_TYPE_CD = 'SS'
+						OR   PROD_TYPE_CD = 'TS'
+				) AS SVC_BUY_COST_AMT
+		FROM ( SELECT VRB_ANLY_ID,
+					NVL(SUM(INCST_AMT), 0) AS INCST_AMT,
+					NVL(SUM(CTMG_AMT), 0) AS CTMG_AMT,
+					NVL(SUM(LPC_AMT), 0) AS LPC_AMT,
+					NVL(SUM(SELL_AMT), 0) AS SPLY_AMT,
+					NVL(SUM(BUY_COST_AMT), 0) AS BUY_COST_AMT,
+					NVL(SUM(DRCST_AMT), 0) AS DRCST_AMT,
+					NVL(SUM(DREXP_AMT), 0) AS DREXP_AMT
+				FROM BPIP141T
+				GROUP BY VRB_ANLY_ID
+		)
+		WHERE VRB_ANLY_ID = #{vrbAnlyId}
+	</select>
+
+
+	<!-- 프로젝트 정보 조회 -->
+	<select id="selectDraftVRBAnalysisTitle"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="java.lang.String">
+			SELECT
+				'['||
+                (
+			        SELECT
+			            COM_CD_NM
+			        FROM
+			            ACOM010T
+			        WHERE
+			            COM_GRP_CD = (
+			            			SELECT COM_GRP_CD FROM ACOM020T	WHERE CLMN_NM = 'SANT_FRMT_CD'
+                        ) AND COM_CD = #{santFrmtCd}
+                )
+                ||'] '||
+			    (
+			        SELECT
+			            CUST_NM
+			        FROM
+			            CMST000T
+			        WHERE
+			            CUST_ID = APRJ000T.LAST_CUST_ID
+			    )||' / '|| PRJT_NM
+			FROM
+			    APRJ000T
+			WHERE
+				PRJT_ID = #{prjtId}
+	</select>
+
+	<!-- prjtId, vrbAnlyId 조회 -->
+	<select id="selectPrjtIdAndVrbAnlyId"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBAnalysisVO">
+
+			SELECT
+				VRB_ANLY_ID,
+				PRJT_ID,
+				SLS_EMP_ID,
+                IBIZ_EMP_NM(SLS_EMP_ID) AS SLS_EMP_NM,
+				SLS_DEPT_ID ,
+                IBIZ_DEPT_NM(SLS_DEPT_ID) AS SLS_DEPT_NM
+			FROM BPIP100T
+			WHERE
+			SANT_ID = #{santId}
+
+	</select>
+
+	<!-- vrb 진행상태 코드 조회 -->
+	<select id="selectVRBPrgsStatCd"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBAnalysisVO">
+
+			SELECT
+				VRB_ANLY_ID,
+				PRJT_ID,
+				VRB_UDWG_RST_CD, IBIZ_COM_CD_NM('VRB_UDWG_RST_CD', VRB_UDWG_RST_CD) AS VRB_UDWG_RST_CD_NM,
+                EFCM_DATE,
+				VRB_PRGS_STAT_CD, IBIZ_COM_CD_NM('VRB_PRGS_STAT_CD', VRB_PRGS_STAT_CD) AS VRB_PRGS_STAT_CD_NM
+			FROM BPIP100T
+			WHERE
+			SANT_ID = #{santId}
+
+	</select>
+
+	<!-- 사업정보 - 프로젝트 조회 -->
+	<select id="selectVRBAnalysisProject"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.ProjectVO">
+
+		SELECT PRJT_ID ,PRJT_NM
+				,LAST_CUST_ID, IBIZ_CUST_NM(LAST_CUST_ID) AS LAST_CUST_NM
+				,BSNS_DOI_CD, IBIZ_COM_CD_NM('BSNS_DOI_CD', BSNS_DOI_CD) AS BSNS_DOI_NM -- 사업중요도
+				,BEXC_START_DATE, BEXC_END_DATE -- 사업수행(시작/종료)일자
+				,SLS_EMP_ID, IBIZ_EMP_NM(SLS_EMP_ID) AS SLS_EMP_NM
+				,SLS_DEPT_ID, IBIZ_DEPT_NM(SLS_DEPT_ID) AS SLS_DEPT_NM
+				,PRJT_TYPE_CD, IBIZ_COM_CD_NM('PRJT_TYPE_CD', PRJT_TYPE_CD) AS PRJT_TYPE_CD_NM
+				,PRJT_STAT_CD, IBIZ_COM_CD_NM('PRJT_STAT_CD', PRJT_STAT_CD) AS PRJT_STAT_CD_NM
+				,MBSN_CUST_ID, IBIZ_CUST_NM(MBSN_CUST_ID) AS MBSN_CUST_NM -- 주사업자고객
+				,BSNS_BDGT_AMT -- 사업예산금액
+				,PUAH_BCKG_PPOSE_CONT, PRMRY_BSNS_CONT, THOF_BSNS_FLD_CONT -- 추진배경목적내용, 주요사업내용, 당사사업영역내용
+		FROM APRJ000T
+		WHERE PRJT_ID =
+		<if test="vrbAnlyId != null">
+			( SELECT PRJT_ID
+				FROM BPIP100T
+				WHERE VRB_ANLY_ID = #{vrbAnlyId}
+			)
+		</if>
+		<if test="prjtId != null and vrbAnlyId == null">
+			#{prjtId}
+		</if>
+
+	</select>
+
+	<!-- 사업정보 - 사업기회리스트 -->
+	<select id="selectVRBAnalysisBizChanceListForView"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBBizChanceVO">
+		SELECT BEST.REG_DT AS ANLY_DT
+				,BEST.FCST_PAL_ID
+				,BEST.DOC_NO
+				,BEST.SANT_ID
+				,BEST.PRJT_ID
+				,BPIP.BOPT_ID, BPIP.BOPT_NM
+				,BPIP.ORDE_CUST_ID, IBIZ_CUST_NM(BPIP.ORDE_CUST_ID) AS ORDE_CUST_NM
+				,BEST.SUM_SPLY_AMT AS SPLY_AMT
+				,BEST.CTMG_AMT
+				,BEST.SUM_PUT_NOP_COUNT AS PUT_NOP_COUNT
+				,BEST.PUT_TIME_UNIT_CD, IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD', BEST.PUT_TIME_UNIT_CD) AS PUT_TIME_UNIT_CD_NM
+				,BPIP.WCT_PRBB_CD, IBIZ_COM_CD_NM('WCT_PRBB_CD', BPIP.WCT_PRBB_CD) AS WCT_PRBB_CD_NM
+				,BPIP.PRPS_FNSH_DATE, BPIP.BID_FNSH_DATE ,BPIP.CNTR_DATE
+				,IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD',FCST_PAL_PRGS_STAT_CD) AS FCST_PAL_PRGS_STAT_CD_NM
+		FROM BPIP000T BPIP
+		INNER JOIN ( SELECT FCST_PAL_ID,
+							BOPT_ID,
+							DOC_NO,
+							PRJT_ID,
+							SANT_ID,
+							REG_DT,
+							FCST_PAL_PRGS_STAT_CD,
+							( SELECT SUM(SELL_AMT)
+								FROM BPIP141T
+								WHERE BPIP141T.FCST_PAL_ID = BEST000T.FCST_PAL_ID
+									AND BPIP141T.VRB_ANLY_ID = #{vrbAnlyId}
+								GROUP BY BPIP141T.FCST_PAL_ID
+							) AS SUM_SPLY_AMT,
+							( SELECT SUM(PUT_NOP_COUNT)
+								FROM BPIP141T
+								WHERE BPIP141T.FCST_PAL_ID = BEST000T.FCST_PAL_ID
+									AND BPIP141T.VRB_ANLY_ID = #{vrbAnlyId}
+								GROUP BY BPIP141T.FCST_PAL_ID
+							) AS SUM_PUT_NOP_COUNT,
+							( SELECT PUT_TIME_UNIT_CD
+								FROM BPIP141T
+								WHERE BPIP141T.FCST_PAL_ID = BEST000T.FCST_PAL_ID
+									AND BPIP141T.VRB_ANLY_ID = #{vrbAnlyId}
+									AND PROD_TYPE_CD = 'SD'
+									AND ROWNUM = 1
+							) AS PUT_TIME_UNIT_CD,
+							( SELECT NVL(((SUM(SELL_AMT) - SUM(BUY_COST_AMT)) - SUM(DRCST_AMT) - SUM(DREXP_AMT)) - SUM(INCST_AMT), 0)
+									-- SUM(CTMG_AMT)
+								FROM BPIP141T
+								WHERE BPIP141T.FCST_PAL_ID = BEST000T.FCST_PAL_ID
+									AND BPIP141T.VRB_ANLY_ID = #{vrbAnlyId}
+							) AS CTMG_AMT
+						FROM BEST000T
+						WHERE VRB_SLCT_RST_CD = 'A' OR VRB_SLCT_RST_CD = 'B'
+				) BEST
+		ON BPIP.BOPT_ID = BEST.BOPT_ID
+		WHERE BPIP.PRJT_ID = ( SELECT PRJT_ID
+								FROM BPIP100T
+								WHERE VRB_ANLY_ID = #{vrbAnlyId}
+							)
+		AND BEST.FCST_PAL_ID IN ( SELECT FCST_PAL_ID
+									FROM BPIP141T
+									WHERE VRB_ANLY_ID = #{vrbAnlyId}
+								)
+		AND BPIP.BOPT_STAT_CD != 'D1'
+		ORDER BY BEST.REG_DT
+
+	</select>
+
+	<!-- 사업정보 - 사업기회리스트 -->
+	<select id="selectVRBAnalysisBizChanceList"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBBizChanceVO">
+		SELECT BEST.FCST_PAL_ID
+			,BEST.REG_DT AS ANLY_DT
+			,BEST.DOC_NO
+			,BEST.SANT_ID
+			,BPIP.PRJT_ID
+			,BPIP.BOPT_ID, BPIP.BOPT_NM
+			,BPIP.ORDE_CUST_ID, IBIZ_CUST_NM(BPIP.ORDE_CUST_ID) AS ORDE_CUST_NM
+			,BEST.SELL_AMT AS SPLY_AMT -- 총매출
+			,(BEST.SELL_AMT - BEST.BUY_COST_AMT ) AS NSLE_AMT -- 순매출 = ( 총공급금액 - SV 외주단가금액 - 총구매금액 )
+			,(BEST.SELL_AMT - BEST.BUY_COST_AMT - BEST.DRCST_AMT - BEST.DREXP_AMT - BEST.INCST_AMT) AS CTMG_AMT -- 공헌이익
+			,BEST.SUM_PUT_NOP_COUNT AS PUT_NOP_COUNT -- 투입인원
+			,BEST.PUT_TIME_UNIT_CD, IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD', BEST.PUT_TIME_UNIT_CD) AS PUT_TIME_UNIT_CD_NM
+			,BPIP.WCT_PRBB_CD, IBIZ_COM_CD_NM('WCT_PRBB_CD', BPIP.WCT_PRBB_CD) AS WCT_PRBB_CD_NM
+			,BPIP.PRPS_FNSH_DATE, BPIP.BID_FNSH_DATE, BPIP.CNTR_DATE
+			<if test="vrbAnlyId != null">
+				,CASE WHEN BEST.FCST_PAL_ID IN ( SELECT FCST_PAL_ID
+												FROM BPIP141T
+												WHERE VRB_ANLY_ID = #{vrbAnlyId}
+											)
+				THEN 'true' ELSE 'false' END AS CHECK_BOX
+			</if>
+		FROM BPIP000T BPIP
+		INNER JOIN ( SELECT BEST000T.FCST_PAL_ID,
+						BOPT_ID,
+						DOC_NO,
+						REG_DT,
+						SANT_ID,
+						SUM(NVL((CASE WHEN PROD_TYPE_CD = 'SD'
+						THEN PUT_NOP_COUNT
+						ELSE 0 END
+						), 0)) AS SUM_PUT_NOP_COUNT, -- 총 투입인원
+						'M' AS PUT_TIME_UNIT_CD,-- 투입 단위
+						NVL(SUM(BEST020T.LPC_AMT), 0) AS LPC_AMT,
+						NVL(SUM(BEST020T.SELL_AMT), 0) AS SELL_AMT,
+						NVL(SUM(BEST020T.BUY_COST_AMT), 0) AS BUY_COST_AMT,
+						NVL(SUM(BEST020T.DRCST_AMT), 0) AS DRCST_AMT,
+						NVL(SUM(BEST020T.DREXP_AMT), 0) AS DREXP_AMT,
+						NVL(SUM(BEST020T.INCST_AMT), 0) AS INCST_AMT
+					FROM BEST000T
+					LEFT JOIN BEST020T ON BEST000T.FCST_PAL_ID = BEST020T.FCST_PAL_ID
+					WHERE VRB_SLCT_RST_CD = 'A' OR VRB_SLCT_RST_CD = 'B'
+					GROUP BY BEST000T.FCST_PAL_ID, BOPT_ID,DOC_NO, REG_DT, SANT_ID
+			) BEST
+		ON BPIP.BOPT_ID = BEST.BOPT_ID
+		WHERE BPIP.PRJT_ID =
+		<if test="vrbAnlyId != null">
+			( SELECT PRJT_ID
+				FROM BPIP100T
+				WHERE VRB_ANLY_ID = #{vrbAnlyId}
+			)
+		</if>
+		<if test="prjtId != null and vrbAnlyId == null">
+			#{prjtId}
+		</if>
+			AND BPIP.BOPT_STAT_CD != 'D1'
+		ORDER BY BEST.REG_DT
+	</select>
+
+	<!-- VRB 조회 -->
+	<select id="selectVRBAnalysis"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBAnalysisVO">
+
+			SELECT
+				VRB_ANLY_ID ,PRJT_ID ,DOC_NO
+			    ,CUST_DMD_MTR, BSNS_CHRC_CONT, COPE_SCHM_CONT -- 고객요구사항, 사업특성내용, 대응방안내용
+			    ,CMPY_SLCT_WAY_CONT, CMPY_EVAL_WAY_CONT, PRTC_CMPY_PRSCD_CONT -- 경쟁사분석: 업체선정방식내용, 업체평가방식내용, 참여업체현황내용
+			    ,EFCM_DATE -- 시행일자
+			    ,VRB_UDWG_RST_CD, IBIZ_COM_CD_NM('VRB_UDWG_RST_CD', VRB_UDWG_RST_CD) AS VRB_UDWG_RST_CD_NM -- VRB심서결과코드
+			    ,VRB_PRGS_STAT_CD, IBIZ_COM_CD_NM('VRB_PRGS_STAT_CD', VRB_PRGS_STAT_CD) AS VRB_PRGS_STAT_CD_NM -- VRB 진행상태코드
+			    ,BPIP.SLS_DEPT_ID, IBIZ_DEPT_NM(BPIP.SLS_DEPT_ID) AS SLS_DEPT_NM, BPIP.SLS_EMP_ID, IBIZ_EMP_NM(BPIP.SLS_EMP_ID) AS SLS_EMP_NM
+			    ,BPIP.REG_DT, BPIP.CHG_DT
+			    ,BPIP.REG_EMP_ID, IBIZ_EMP_NM(BPIP.REG_EMP_ID) AS REG_EMP_NM
+			    ,BPIP.CHG_EMP_ID, IBIZ_EMP_NM(BPIP.CHG_EMP_ID) AS CHG_EMP_NM
+			    ,AAPR.SANT_PRGS_STAT_CD ,AAPR.SANT_NTC_DST_CD,IBIZ_COM_CD_NM('SANT_NTC_DST_CD', AAPR.SANT_NTC_DST_CD) AS SANT_NTC_DST_NM
+			FROM BPIP100T BPIP
+			JOIN AAPR100T AAPR
+			ON	BPIP.SANT_ID = AAPR.SANT_ID
+			WHERE  VRB_ANLY_ID = #{vrbAnlyId}
+
+	</select>
+
+	<!-- VRB분석항목코드 조회  -->
+	<select id="selectVRBAnlyItmCdList"
+			parameterType="com.ibiz.api.model.CommonGroupVO"
+			resultType="com.ibiz.api.model.CommonGroupVO">
+
+		SELECT HGRK_COM_CD AS HGRK_COM_GRP_CD,
+		    COM_CD AS COM_GRP_CD,
+		    COM_CD_NM AS COM_GRP_CD_NM
+		FROM  ACOM010T
+		WHERE COM_GRP_CD = 'BP17'
+
+	</select>
+
+	<!-- 고객 분석 조회 -->
+	<select id="selectVRBCustomerList"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBCustomerVO">
+
+			SELECT VRB_ANLY_ID ,SEQ
+			    ,BLTO_ISTT_NM, DEPT_NM, CUST_NM, COPS_NM, RESO_NM, CRG_JOB_NM
+			    ,CUST_INDG_CD, IBIZ_COM_CD_NM('CUST_INDG_CD', CUST_INDG_CD) AS CUST_INDG_CD_NM
+			    ,CUST_FDL_INCLN_CD, IBIZ_COM_CD_NM('CUST_FDL_INCLN_CD', CUST_FDL_INCLN_CD) AS CUST_FDL_INCLN_CD_NM
+			    ,RMRK_CONT
+			FROM
+			    BPIP120T
+			WHERE
+			    VRB_ANLY_ID = #{vrbAnlyId}
+			ORDER BY  SEQ
+
+	</select>
+
+	<!-- VRB 사업분석내역 조회 : 전략가치분석, 사업리스크분석, 수주 및 사업수행 전략  -->
+	<select id="selectVRBStrategyList"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBStrategyVO">
+
+			SELECT VRB_ANLY_ID
+			    ,VRB_ANLY_TYPE_CD, IBIZ_COM_CD_NM('VRB_ANLY_TYPE_CD', VRB_ANLY_TYPE_CD) AS VRB_ANLY_TYPE_CD_NM
+			    ,VRB_ANLY_ITM_CD, IBIZ_COM_CD_NM('VRB_ANLY_ITM_CD', VRB_ANLY_ITM_CD) AS VRB_ANLY_ITM_CD_NM
+			    ,PRSCD_ANLY_CONT, RUN_SCHM_CONT, SPRT_REQ_CONT
+			FROM BPIP150T
+			WHERE VRB_ANLY_ID = #{vrbAnlyId}
+
+	</select>
+
+	<!-- VRB경쟁사분석리스트 조회 -->
+	<select id="selectVRBCompetitorList"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBCompetitorVO">
+
+			SELECT VRB_ANLY_ID, SEQ
+			    ,CMPY_NM, STRH_CONT, WKNS_CONT, CPTT_GODS_NM
+			    ,GODS_CPTT_SUP_CD, IBIZ_COM_CD_NM('GODS_CPTT_SUP_CD', GODS_CPTT_SUP_CD) AS GODS_CPTT_SUP_CD_NM
+			    ,PRC_CPTT_SUP_CD, IBIZ_COM_CD_NM('PRC_CPTT_SUP_CD', PRC_CPTT_SUP_CD) AS PRC_CPTT_SUP_CD_NM
+			FROM BPIP130T
+			WHERE VRB_ANLY_ID = #{vrbAnlyId}
+			ORDER BY SEQ
+
+	</select>
+
+	<!-- VRB검토결과리스트 조회 -->
+	<select id="selectVRBOpinionList"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBOpinionVO">
+
+			SELECT VRB_ANLY_ID ,SEQ
+			    ,ORG_DST_CD, IBIZ_COM_CD_NM('ORG_DST_CD', ORG_DST_CD) AS ORG_DST_CD_NM
+			    ,RVWR_DEPT_ID, IBIZ_DEPT_NM(RVWR_DEPT_ID) AS RVWR_DEPT_NM
+			    ,RVWR_EMP_ID, IBIZ_EMP_NM(RVWR_EMP_ID) AS RVWR_EMP_NM
+			    ,RVWR_RESO_CD, IBIZ_COM_CD_NM('RVWR_RESO_CD', RVWR_RESO_CD) AS RVWR_RESO_CD_NM
+			    ,RVWR_OFPS_CD, IBIZ_COM_CD_NM('RVWR_OFPS_CD', RVWR_OFPS_CD) AS RVWR_OFPS_CD_NM
+			    ,RVW_OPIN_CONT
+			FROM BPIP170T
+			WHERE VRB_ANLY_ID = #{vrbAnlyId}
+			ORDER BY SEQ
+
+	</select>
+
+	<!-- VRB분석이력리스트 조회 -->
+	<select id="selectVRBAnalysisList"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBAnalysisVO">
+		SELECT TOTAL_CNT, ROWNUMBER,
+				VRB_ANLY_ID, SANT_ID, LAST_CUST_ID,
+				LAST_CUST_NM, PRJT_ID, PRJT_NM,
+				DOC_NO, SPLY_AMT, NSLE_AMT, CTMG_AMT,
+				PUT_NOP_COUNT, PUT_TIME_UNIT_CD, PUT_TIME_UNIT_CD_NM,
+				SLS_DEPT_ID, SLS_DEPT_NM, SLS_EMP_ID, SLS_EMP_NM,
+				REG_DT, EFCM_DATE, VRB_UDWG_RST_CD, VRB_UDWG_RST_CD_NM,
+				VRB_PRGS_STAT_CD, VRB_PRGS_STAT_CD_NM, CHG_EMP_ID, CHG_EMP_NM, CHG_DT
+		FROM (SELECT COUNT(1) OVER() AS TOTAL_CNT,ROWNUM AS ROWNUMBER,
+					TEMP.VRB_ANLY_ID, TEMP.SANT_ID, TEMP.LAST_CUST_ID,
+					TEMP.LAST_CUST_NM, TEMP.PRJT_ID, TEMP.PRJT_NM,
+					TEMP.DOC_NO, TEMP.SPLY_AMT, TEMP.NSLE_AMT, TEMP.CTMG_AMT,
+					TEMP.PUT_NOP_COUNT, TEMP.PUT_TIME_UNIT_CD, TEMP.PUT_TIME_UNIT_CD_NM,
+					TEMP.SLS_DEPT_ID, TEMP.SLS_DEPT_NM, TEMP.SLS_EMP_ID, TEMP.SLS_EMP_NM,
+					TEMP.REG_DT, TEMP.EFCM_DATE, TEMP.VRB_UDWG_RST_CD, TEMP.VRB_UDWG_RST_CD_NM,
+					TEMP.VRB_PRGS_STAT_CD, TEMP.VRB_PRGS_STAT_CD_NM, TEMP.CHG_EMP_ID, TEMP.CHG_EMP_NM, TEMP.CHG_DT
+				FROM (SELECT BPIP100T.VRB_ANLY_ID, BPIP100T.SANT_ID,
+							APRJ000T.LAST_CUST_ID, IBIZ_CUST_NM(APRJ000T.LAST_CUST_ID) AS LAST_CUST_NM,
+							BPIP100T.PRJT_ID, APRJ000T.PRJT_NM,
+							BPIP100T.DOC_NO,
+							BPIP141T.SELL_AMT AS SPLY_AMT,
+							(BPIP141T.SELL_AMT - BPIP141T.BUY_COST_AMT) AS NSLE_AMT,
+							BPIP141T.CTMG_AMT,
+							BPIP141T.PUT_NOP_COUNT,
+							BPIP141T.PUT_TIME_UNIT_CD, IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD', BPIP141T.PUT_TIME_UNIT_CD) AS PUT_TIME_UNIT_CD_NM,
+							BPIP100T.SLS_DEPT_ID, IBIZ_DEPT_NM(BPIP100T.SLS_DEPT_ID) AS SLS_DEPT_NM,
+							BPIP100T.SLS_EMP_ID, IBIZ_EMP_NM(BPIP100T.SLS_EMP_ID) AS SLS_EMP_NM,
+							BPIP100T.REG_DT,
+							BPIP100T.EFCM_DATE,
+							BPIP100T.VRB_UDWG_RST_CD, IBIZ_COM_CD_NM('VRB_UDWG_RST_CD', BPIP100T.VRB_UDWG_RST_CD) AS VRB_UDWG_RST_CD_NM,
+							BPIP100T.VRB_PRGS_STAT_CD, IBIZ_COM_CD_NM('VRB_PRGS_STAT_CD', BPIP100T.VRB_PRGS_STAT_CD) AS VRB_PRGS_STAT_CD_NM,
+							BPIP100T.CHG_EMP_ID, IBIZ_EMP_NM(BPIP100T.CHG_EMP_ID) AS CHG_EMP_NM,
+							BPIP100T.CHG_DT
+						FROM BPIP100T
+						INNER JOIN AAPR100T AAPR ON BPIP100T.SANT_ID = AAPR.SANT_ID
+						LEFT JOIN (SELECT VRB_ANLY_ID,'M' AS PUT_TIME_UNIT_CD,
+										SUM(CASE WHEN PUT_TIME_UNIT_CD = 'M' THEN PUT_NOP_COUNT
+										WHEN PUT_TIME_UNIT_CD = 'D' THEN PUT_NOP_COUNT/20
+										WHEN PUT_TIME_UNIT_CD = 'H' THEN PUT_NOP_COUNT/160 END) AS PUT_NOP_COUNT,
+										SUM(CTMG_AMT) AS CTMG_AMT,
+										NVL(SUM(SELL_AMT), 0) AS SELL_AMT,
+										NVL(SUM(BUY_COST_AMT), 0) AS BUY_COST_AMT
+									FROM BPIP141T
+									GROUP BY VRB_ANLY_ID
+							) BPIP141T ON BPIP100T.VRB_ANLY_ID = BPIP141T.VRB_ANLY_ID
+		INNER JOIN APRJ000T ON BPIP100T.PRJT_ID = APRJ000T.PRJT_ID
+		WHERE BPIP100T.SLS_DEPT_ID IN (SELECT DEPT_ID
+										FROM HMST100T
+										START WITH
+										HGRK_DEPT_ID IN (SELECT AUTH_DEPT_ID
+															FROM SSYS252T
+															WHERE USER_ID = #{sessEmpId})
+														CONNECT BY
+															PRIOR DEPT_ID = HGRK_DEPT_ID
+														UNION ALL
+															SELECT AUTH_DEPT_ID
+															FROM SSYS252T
+															WHERE USER_ID = #{sessEmpId}
+										)
+		ORDER BY BPIP100T.REG_DT DESC
+		) TEMP
+		WHERE 1=1
+		<if test="docNo != null and docNo != '' ">
+			AND UPPER(DOC_NO) = UPPER(#{docNo})
+		</if>
+		<if test="lastCustId != null and lastCustId != '' ">
+			AND UPPER(LAST_CUST_ID) = UPPER(#{lastCustId})
+		</if>
+		<if test="lastCustNm != null and lastCustNm != '' ">
+			AND UPPER(LAST_CUST_NM) LIKE '%'||UPPER(#{lastCustNm})||'%'
+		</if>
+		<if test="prjtId != null and prjtId != '' ">
+			AND UPPER(PRJT_ID) = UPPER(#{prjtId})
+		</if>
+		<if test="prjtNm != null and prjtNm != '' ">
+			AND UPPER(PRJT_NM) LIKE '%'||UPPER(#{prjtNm})||'%'
+		</if>
+		<if test="bexcStartDate != null and bexcStartDate != null">
+			<![CDATA[
+			            AND TO_CHAR(REG_DT, 'YYYYMMDD') >= #{bexcStartDate}
+			            ]]>
+		</if>
+		<if test="bexcEndDate != null and bexcEndDate != null">
+			<![CDATA[
+			            AND TO_CHAR(REG_DT, 'YYYYMMDD') <= #{bexcEndDate}
+			            ]]>
+		</if>
+		<if test="slsDeptId != null and slsDeptId != null">
+			AND SLS_DEPT_ID  IN (SELECT DEPT_ID
+									FROM HMST100T
+									START WITH
+									HGRK_DEPT_ID = #{slsDeptId}
+									CONNECT BY
+									PRIOR DEPT_ID = HGRK_DEPT_ID
+								UNION ALL
+										SELECT #{slsDeptId}
+										FROM DUAL
+								)
+		</if>
+		<if test="slsEmpId != null and slsEmpId != null">
+			AND SLS_EMP_ID = #{slsEmpId}
+		</if>
+		<if test="vrbPrgsStatCd != null and vrbPrgsStatCd != null">
+			AND VRB_PRGS_STAT_CD = #{vrbPrgsStatCd}
+		</if>
+		) WHERE
+		ROWNUMBER BETWEEN #{pageSize} * (#{pageNumber} - 1) + 1
+		AND #{pageSize} * (#{pageNumber} - 1) + #{pageSize}
+
+	</select>
+
+	<!-- MAX(VRB_ANLY_ID) 조회 -->
+	<select id="selectMaxVRBAnlyId"
+			resultType="com.ibiz.api.model.VRBAnalysisVO">
+			SELECT
+			        CASE
+			            WHEN MAX(VRB_ANLY_ID) IS NOT NULL THEN MAX(VRB_ANLY_ID)
+			            ELSE TO_CHAR(SYSDATE,'yyyy') || '000000'
+			        END
+			    AS VRB_ANLY_ID
+			FROM
+			    BPIP100T
+	</select>
+
+	<!-- MAX(DOC_NO) 조회 -->
+	<select id="selectVRBAnalysisMaxDocNo"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="com.ibiz.api.model.VRBAnalysisVO">
+			SELECT
+	        CASE WHEN (
+	                SELECT MAX(DOC_NO)
+		            FROM BPIP100T BPIP
+			        JOIN AAPR100T AAPR ON BPIP.SANT_ID = AAPR.SANT_ID
+					WHERE AAPR.SANT_FRMT_CD = #{santFrmtCd}
+	        ) IS NULL THEN
+	         'IZ-' || ( SELECT COM_CD_CHAR_VAL
+	                  	FROM ACOM010T
+						WHERE COM_GRP_CD = ( SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'SANT_FRMT_CD')
+	                        AND COM_CD = #{santFrmtCd}
+	                )  || '-' || TO_CHAR(SYSDATE,'yyyymmdd') ||  '-' || '00'
+	        ELSE (
+	                SELECT MAX(DOC_NO)
+		            FROM BPIP100T BPIP
+					JOIN AAPR100T AAPR ON BPIP.SANT_ID = AAPR.SANT_ID
+					WHERE AAPR.SANT_FRMT_CD = #{santFrmtCd}
+	        )
+	        END AS DOC_NO
+        FROM DUAL
+	</select>
+
+	<!--
+
+		INSERT
+
+	-->
+
+	<!--
+		예상손익데이터 이관
+	-->
+
+	<!--  FROM 예상손익 TO VRB 수익분석상세-->
+	<insert id="insertOfferProfitIntoVrbAnalysis"
+			parameterType="com.ibiz.api.model.VRBProfitVO" >
+		INSERT INTO BPIP141T (
+			VRB_ANLY_ID,
+			FCST_PAL_ID,
+			PROD_TYPE_CD,
+			LPC_AMT,
+			SELL_AMT,
+			BUY_COST_AMT,
+			DRCST_AMT,
+			DREXP_AMT,
+			INCST_AMT,
+			CTMG_AMT,
+			PUT_TIME_UNIT_CD,
+			PUT_NOP_COUNT
+		)
+		SELECT
+			#{vrbAnlyId},
+			#{fcstPalId},
+			B.PROD_TYPE_CD,
+			NVL(SUM(B.LPC_AMT),0),
+			NVL(SUM(B.SELL_AMT),0), --매출금액
+			NVL(SUM(B.BUY_COST_AMT),0), --매입원가
+			NVL(SUM(B.DRCST_AMT),0), --직접원가(매입외)
+			NVL(SUM(B.DREXP_AMT),0), --직접경비
+			NVL(SUM(B.INCST_AMT),0), --간접원가
+			NVL(SUM(B.CTMG_AMT),0), --공헌이익
+			CASE WHEN B.PROD_TYPE_CD = 'SD' THEN 'M' ELSE NULL END PUT_TIME_UNIT_CD, --투입시간단위코드 (S/W Development인 경우만 해당)
+			CASE WHEN B.PROD_TYPE_CD = 'SD' THEN
+			NVL(SUM((CASE WHEN PUT_TIME_UNIT_CD = 'M' THEN 1
+			WHEN PUT_TIME_UNIT_CD = 'D' THEN 20
+			WHEN PUT_TIME_UNIT_CD = 'H' THEN 160
+			ELSE 1 END) * PUT_NOP_COUNT),0)
+			ELSE NULL END AS PUT_NOP_COUNT --투입인원수 (S/W Development인 경우만 해당)
+		FROM BEST020T B
+		WHERE B.FCST_PAL_ID = #{fcstPalId}
+		GROUP BY B.FCST_PAL_ID,  B.PROD_TYPE_CD
+	</insert>
+
+
+	<!--  VRB 등록 -->
+	<insert id="insertVRBAnalysis"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
+
+		INSERT INTO BPIP100T (
+			VRB_ANLY_ID
+			,PRJT_ID
+			<if test="docNo != null and docNo != ''">
+				,DOC_NO
+			</if>
+			<if test="efcmDate != null and efcmDate != ''">
+				,EFCM_DATE
+			</if>
+			<if test="vrbUdwgRstCd != null and vrbUdwgRstCd != ''">
+				,VRB_UDWG_RST_CD
+			</if>
+			<if test="custDmdMtr != null and custDmdMtr != ''">
+				,CUST_DMD_MTR
+			</if>
+			<if test="bsnsChrcCont != null and bsnsChrcCont != ''">
+				,BSNS_CHRC_CONT
+			</if>
+			<if test="copeSchmCont != null and copeSchmCont != ''">
+				,COPE_SCHM_CONT
+			</if>
+
+			<if test="cmpySlctWayCont != null and cmpySlctWayCont != ''">
+				,CMPY_SLCT_WAY_CONT
+			</if>
+			<if test="cmpyEvalWayCont != null and cmpyEvalWayCont != ''">
+				,CMPY_EVAL_WAY_CONT
+			</if>
+			<if test="prtcCmpyPrscdCont != null and prtcCmpyPrscdCont != ''">
+				,PRTC_CMPY_PRSCD_CONT
+			</if>
+
+			<if test="slsDeptId != null and slsDeptId != ''">
+				,SLS_DEPT_ID
+			</if>
+			<if test="slsEmpId != null and slsEmpId != ''">
+				,SLS_EMP_ID
+			</if>
+
+			,VRB_PRGS_STAT_CD
+			,REG_EMP_ID
+			,REG_DT
+			,SANT_ID
+			,CHG_EMP_ID
+			,CHG_DT
+		) VALUES (
+			#{vrbAnlyId}
+			,#{prjtId}
+			<if test="docNo != null and docNo != ''">
+				,#{docNo}
+			</if>
+			<if test="efcmDate != null and efcmDate != ''">
+				,#{efcmDate}
+			</if>
+			<if test="vrbUdwgRstCd != null and vrbUdwgRstCd != ''">
+				,#{vrbUdwgRstCd}
+			</if>
+			<if test="custDmdMtr != null and custDmdMtr != ''">
+				,#{custDmdMtr}
+			</if>
+			<if test="bsnsChrcCont != null and bsnsChrcCont != ''">
+				,#{bsnsChrcCont}
+			</if>
+			<if test="copeSchmCont != null and copeSchmCont != ''">
+				,#{copeSchmCont}
+			</if>
+
+			<if test="cmpySlctWayCont != null and cmpySlctWayCont != ''">
+				,#{cmpySlctWayCont}
+			</if>
+			<if test="cmpyEvalWayCont != null and cmpyEvalWayCont != ''">
+				,#{cmpyEvalWayCont}
+			</if>
+			<if test="prtcCmpyPrscdCont != null and prtcCmpyPrscdCont != ''">
+				,#{prtcCmpyPrscdCont}
+			</if>
+
+			<if test="slsDeptId != null and slsDeptId != ''">
+				,#{slsDeptId}
+			</if>
+			<if test="slsEmpId != null and slsEmpId != ''">
+				,#{slsEmpId}
+			</if>
+
+			,#{vrbPrgsStatCd}
+			,#{regEmpId}
+			,SYSDATE
+			,#{santId}
+			,#{regEmpId}
+			,SYSDATE
+		)
+
+	</insert>
+
+	<!--  VRB고객분석내역 등록 -->
+	<insert id="insertVRBCustomer"
+			parameterType="com.ibiz.api.model.VRBCustomerVO" >
+
+		INSERT INTO BPIP120T (
+			VRB_ANLY_ID
+			,SEQ
+			,BLTO_ISTT_NM
+			<if test="deptNm != null and deptNm != ''">
+				,DEPT_NM
+			</if>
+			,CUST_NM
+			<if test="copsNm != null and copsNm != ''">
+				,COPS_NM
+			</if>
+			<if test="resoNm != null and resoNm != ''">
+				,RESO_NM
+			</if>
+			<if test="crgJobNm != null and crgJobNm != ''">
+				,CRG_JOB_NM
+			</if>
+			<if test="custIndgCd != null and custIndgCd != ''">
+				,CUST_INDG_CD
+			</if>
+			<if test="custFdlInclnCd != null and custFdlInclnCd != ''">
+				,CUST_FDL_INCLN_CD
+			</if>
+			<if test="rmrkCont != null and rmrkCont != ''">
+				,RMRK_CONT
+			</if>
+		) VALUES (
+			#{vrbAnlyId}
+			,#{seq}
+			,#{bltoIsttNm}
+			<if test="deptNm != null and deptNm != ''">
+				,#{deptNm}
+			</if>
+			,#{custNm}
+			<if test="copsNm != null and copsNm != ''">
+				,#{copsNm}
+			</if>
+			<if test="resoNm != null and resoNm != ''">
+				,#{resoNm}
+			</if>
+			<if test="crgJobNm != null and crgJobNm != ''">
+				,#{crgJobNm}
+			</if>
+			<if test="custIndgCd != null and custIndgCd != ''">
+				,#{custIndgCd}
+			</if>
+			<if test="custFdlInclnCd != null and custFdlInclnCd != ''">
+				,#{custFdlInclnCd}
+			</if>
+			<if test="rmrkCont != null and rmrkCont != ''">
+				,#{rmrkCont}
+			</if>
+		)
+
+	</insert>
+
+
+	<!--  VRB경쟁사분석내역 등록 -->
+	<insert id="insertVRBCompetitor"
+			parameterType="com.ibiz.api.model.VRBCompetitorVO" >
+
+		INSERT INTO BPIP130T (
+			VRB_ANLY_ID,
+			SEQ,
+			CMPY_NM
+			<if test="strhCont != null and strhCont != ''">
+				, STRH_CONT
+			</if>
+			<if test="wknsCont != null and wknsCont != ''">
+				, WKNS_CONT
+			</if>
+			<if test="cpttGodsNm != null and cpttGodsNm != ''">
+				, CPTT_GODS_NM
+			</if>
+			<if test="godsCpttSupCd != null and godsCpttSupCd != ''">
+				, GODS_CPTT_SUP_CD
+			</if>
+			<if test="prcCpttSupCd != null and prcCpttSupCd != ''">
+				, PRC_CPTT_SUP_CD
+			</if>
+		) VALUES (
+			#{vrbAnlyId},
+			(
+			SELECT
+			CASE
+			WHEN MAX(BPIP130T.SEQ) IS NOT NULL THEN MAX(BPIP130T.SEQ) + 1
+			ELSE 1
+			END
+			FROM
+			BPIP130T
+			WHERE
+			VRB_ANLY_ID = #{vrbAnlyId}
+
+			),
+			#{cmpyNm}
+			<if test="strhCont != null and strhCont != ''">
+				, #{strhCont}
+			</if>
+			<if test="wknsCont != null and wknsCont != ''">
+				, #{wknsCont}
+			</if>
+			<if test="cpttGodsNm != null and cpttGodsNm != ''">
+				, #{cpttGodsNm}
+			</if>
+			<if test="godsCpttSupCd != null and godsCpttSupCd != ''">
+				, #{godsCpttSupCd}
+			</if>
+			<if test="prcCpttSupCd != null and prcCpttSupCd != ''">
+				, #{prcCpttSupCd}
+			</if>
+		)
+
+	</insert>
+
+	<!--  VRB검토결과 등록 -->
+	<insert id="insertVRBOpinion"
+			parameterType="com.ibiz.api.model.VRBOpinionVO" >
+
+		INSERT INTO BPIP170T (
+			VRB_ANLY_ID,
+			SEQ,
+			ORG_DST_CD,
+			RVWR_DEPT_ID,
+			RVWR_EMP_ID
+			<if test="rvwrResoCd != null and rvwrResoCd != ''">
+				, RVWR_RESO_CD
+			</if>
+			<if test="rvwrOfpsCd != null and rvwrOfpsCd != ''">
+				, RVWR_OFPS_CD
+			</if>
+			<if test="rvwOpinCont != null and rvwOpinCont != ''">
+				, RVW_OPIN_CONT
+			</if>
+		) VALUES (
+			#{vrbAnlyId},
+			(
+			SELECT
+			CASE
+			WHEN MAX(BPIP170T.SEQ) IS NOT NULL THEN MAX(BPIP170T.SEQ) + 1
+			ELSE 1
+			END
+			FROM
+			BPIP170T
+			WHERE
+			VRB_ANLY_ID = #{vrbAnlyId}
+			),
+			#{orgDstCd},
+			#{rvwrDeptId},
+			#{rvwrEmpId}
+			<if test="rvwrResoCd != null and rvwrResoCd != ''">
+				, #{rvwrResoCd}
+			</if>
+			<if test="rvwrOfpsCd != null and rvwrOfpsCd != ''">
+				, #{rvwrOfpsCd}
+			</if>
+			<if test="rvwOpinCont != null and rvwOpinCont != ''">
+				, #{rvwOpinCont}
+			</if>
+		)
+
+	</insert>
+
+	<!--  VRB사업분석내역 등록 -->
+	<insert id="insertVRBStrategy"
+			parameterType="com.ibiz.api.model.VRBStrategyVO" >
+
+		INSERT INTO BPIP150T (
+			VRB_ANLY_ID,
+			VRB_ANLY_TYPE_CD,
+			VRB_ANLY_ITM_CD
+			<if test="prscdAnlyCont != null and prscdAnlyCont != ''">
+				, PRSCD_ANLY_CONT
+			</if>
+			<if test="runSchmCont != null and runSchmCont != ''">
+				, RUN_SCHM_CONT
+			</if>
+			<if test="sprtReqCont != null and sprtReqCont != ''">
+				, SPRT_REQ_CONT
+			</if>
+		) VALUES (
+			#{vrbAnlyId},
+			#{vrbAnlyTypeCd},
+			#{vrbAnlyItmCd}
+			<if test="prscdAnlyCont != null and prscdAnlyCont != ''">
+				, #{prscdAnlyCont}
+			</if>
+			<if test="runSchmCont != null and runSchmCont != ''">
+				, #{runSchmCont}
+			</if>
+			<if test="sprtReqCont != null and sprtReqCont != ''">
+				, #{sprtReqCont}
+			</if>
+		)
+
+	</insert>
+
+	<!--
+
+		UPDATE
+
+	-->
+
+	<!-- VRB진행상태 수정 -->
+	<update id="updateVrbPrgsStatCd"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
+		UPDATE BPIP100T
+			SET
+				VRB_PRGS_STAT_CD = #{vrbPrgsStatCd}
+		WHERE
+		    SANT_ID = #{santId}
+	</update>
+
+	<!-- VRB사업분석내역 수정 -->
+	<update id="updateVRBStrategy"
+			parameterType="com.ibiz.api.model.VRBStrategyVO" >
+		UPDATE BPIP150T
+			SET
+				PRSCD_ANLY_CONT = #{prscdAnlyCont}
+		    	, RUN_SCHM_CONT = #{runSchmCont}
+		    	, SPRT_REQ_CONT = #{sprtReqCont}
+		WHERE
+			VRB_ANLY_ID = #{vrbAnlyId}
+			AND VRB_ANLY_TYPE_CD = #{vrbAnlyTypeCd}
+			AND VRB_ANLY_ITM_CD = #{vrbAnlyItmCd}
+	</update>
+
+	<!-- VRB 수정 : 고객분석, 경쟁자 분석  -->
+	<update id="updateVRBAnalysis"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
+
+			UPDATE BPIP100T
+			    SET
+			    	CHG_EMP_ID = #{chgEmpId}
+					, CHG_DT = SYSDATE
+					, PRJT_ID = #{prjtId}
+			        , CUST_DMD_MTR = #{custDmdMtr}
+			        , BSNS_CHRC_CONT = #{bsnsChrcCont}
+			        , COPE_SCHM_CONT = #{copeSchmCont}
+			        , CMPY_SLCT_WAY_CONT = #{cmpySlctWayCont}
+			        , CMPY_EVAL_WAY_CONT = #{cmpyEvalWayCont}
+			        , PRTC_CMPY_PRSCD_CONT = #{prtcCmpyPrscdCont}
+			        , EFCM_DATE = #{efcmDate}
+			        , VRB_UDWG_RST_CD = #{vrbUdwgRstCd}
+			        , VRB_PRGS_STAT_CD = #{vrbPrgsStatCd}
+			        , SLS_DEPT_ID = #{slsDeptId}
+			        , SLS_EMP_ID = #{slsEmpId}
+			WHERE
+			    VRB_ANLY_ID = #{vrbAnlyId}
+
+	</update>
+
+	<!--
+
+		DELETE
+
+	-->
+
+	<!-- VRB 삭제 -->
+	<delete id="deleteVRBAnalysis"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
+
+			DELETE FROM BPIP100T WHERE
+			    VRB_ANLY_ID = #{vrbAnlyId}
+
+	</delete>
+
+	<!-- VRB 수익분석상세 삭제 -->
+	<delete id="deleteVRBProfit"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
+
+			DELETE FROM BPIP141T WHERE
+			    VRB_ANLY_ID = #{vrbAnlyId}
+
+	</delete>
+
+	<!-- 사업분석 삭제 -->
+	<delete id="deleteVRBStrategy"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
+
+			DELETE FROM BPIP150T WHERE
+			    VRB_ANLY_ID = #{vrbAnlyId}
+
+	</delete>
+
+	<!-- 고객분석 삭제 -->
+	<delete id="deleteVRBCustomer"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
+
+			DELETE FROM BPIP120T WHERE
+			    VRB_ANLY_ID = #{vrbAnlyId}
+
+	</delete>
+
+
+	<!-- 경쟁사분석 삭제 -->
+	<delete id="deleteVRBCompetitor"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
+
+			DELETE FROM BPIP130T WHERE
+			    VRB_ANLY_ID = #{vrbAnlyId}
+
+	</delete>
+
+	<!-- 검토결과 삭제 -->
+	<delete id="deleteVRBOpinion"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
+
+			DELETE FROM BPIP170T WHERE
+			    VRB_ANLY_ID = #{vrbAnlyId}
+
+	</delete>
+
+</mapper>

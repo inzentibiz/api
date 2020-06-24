@@ -42,7 +42,7 @@ public class ProjectVO {
     /**
      * 프로젝트 유형코드명
      */
-    private String prjtTypeNm;
+    private String prjtTypeCdNm;
     /**
      * 사업중요도코드
      */
@@ -151,7 +151,7 @@ public class ProjectVO {
     /**
      * 프로젝트상태명
      */
-    private String prjtStatNm;
+    private String prjtStatCdNm;
 
     /**
      * warranty 기간 코드
@@ -214,7 +214,7 @@ public class ProjectVO {
     /**
      * 사업기회리스트
      */
-    private List<BizOpportunityVO> bizOpportunityList;
+    private List<BizChanceVO> bizOpportunityList;
 
     /**
      * 영업대표 이관을 위한 리스트
@@ -312,12 +312,12 @@ public class ProjectVO {
         this.prjtTypeCd = prjtTypeCd;
     }
 
-    public String getPrjtTypeNm() {
-        return prjtTypeNm;
+    public String getPrjtTypeCdNm() {
+        return prjtTypeCdNm;
     }
 
-    public void setPrjtTypeNm(String prjtTypeNm) {
-        this.prjtTypeNm = prjtTypeNm;
+    public void setPrjtTypeCdNm(String prjtTypeCdNm) {
+        this.prjtTypeCdNm = prjtTypeCdNm;
     }
 
     public String getBsnsDoiCd() {
@@ -496,12 +496,12 @@ public class ProjectVO {
         this.prjtStatCd = prjtStatCd;
     }
 
-    public String getPrjtStatNm() {
-        return prjtStatNm;
+    public String getPrjtStatCdNm() {
+        return prjtStatCdNm;
     }
 
-    public void setPrjtStatNm(String prjtStatNm) {
-        this.prjtStatNm = prjtStatNm;
+    public void setPrjtStatCdNm(String prjtStatCdNm) {
+        this.prjtStatCdNm = prjtStatCdNm;
     }
 
     public String getWartPerdCd() {
@@ -600,11 +600,11 @@ public class ProjectVO {
         this.issueTitl = issueTitl;
     }
 
-    public List<BizOpportunityVO> getBizOpportunityList() {
+    public List<BizChanceVO> getBizOpportunityList() {
         return bizOpportunityList;
     }
 
-    public void setBizOpportunityList(List<BizOpportunityVO> bizOpportunityList) {
+    public void setBizOpportunityList(List<BizChanceVO> bizOpportunityList) {
         this.bizOpportunityList = bizOpportunityList;
     }
 

@@ -59,8 +59,8 @@
 [2020-05-06 14:21:05:7944][RMI TCP Connection(4)-192.168.19.17] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
 [2020-05-06 14:21:06:8202][boundedElastic-1] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
 [2020-05-06 14:21:06:8204][boundedElastic-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
-[2020-05-06 14:22:14:76608][http-nio-7301-exec-1] INFO  c.i.a.c.ProjectBizOpptyController - Call Controller : com.ibiz.api.controller.ProjectBizOpptyController.selectBizOpportunityList
-[2020-05-06 14:22:14:76638][http-nio-7301-exec-1] INFO  c.i.a.s.ProjectBizOpptyService - Call Service : com.ibiz.api.service.ProjectBizOpptyService.selectBizOpportunityList
+[2020-05-06 14:22:14:76608][http-nio-7301-exec-1] INFO  c.i.a.c.ProjectBizOpptyController - Call Controller : com.ibiz.api.controller.ProjectBizOpptyController.selectBizChanceList
+[2020-05-06 14:22:14:76638][http-nio-7301-exec-1] INFO  c.i.a.s.ProjectBizOpptyService - Call Service : com.ibiz.api.service.BizChanceService.selectBizChanceList
 [2020-05-06 14:22:15:77927][http-nio-7301-exec-2] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectQuoteAnalysisList
 [2020-05-06 14:22:15:77934][http-nio-7301-exec-2] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectQuoteAnalysisList
 [2020-05-06 14:22:20:82294][http-nio-7301-exec-3] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectQuoteAnalysisList
@@ -339,8 +339,8 @@ org.apache.ibatis.reflection.ReflectionException: There is no getter for propert
 [2020-05-06 14:25:03:7557][RMI TCP Connection(5)-192.168.19.17] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
 [2020-05-06 14:25:04:7914][boundedElastic-1] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
 [2020-05-06 14:25:04:7916][boundedElastic-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
-[2020-05-06 14:25:09:13081][http-nio-7301-exec-1] INFO  c.i.a.c.ProjectBizOpptyController - Call Controller : com.ibiz.api.controller.ProjectBizOpptyController.selectBizOpportunityList
-[2020-05-06 14:25:09:13107][http-nio-7301-exec-1] INFO  c.i.a.s.ProjectBizOpptyService - Call Service : com.ibiz.api.service.ProjectBizOpptyService.selectBizOpportunityList
+[2020-05-06 14:25:09:13081][http-nio-7301-exec-1] INFO  c.i.a.c.ProjectBizOpptyController - Call Controller : com.ibiz.api.controller.ProjectBizOpptyController.selectBizChanceList
+[2020-05-06 14:25:09:13107][http-nio-7301-exec-1] INFO  c.i.a.s.ProjectBizOpptyService - Call Service : com.ibiz.api.service.BizChanceService.selectBizChanceList
 [2020-05-06 14:25:10:14127][http-nio-7301-exec-2] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectQuoteAnalysisList
 [2020-05-06 14:25:10:14134][http-nio-7301-exec-2] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectQuoteAnalysisList
 [2020-05-06 14:25:15:19011][http-nio-7301-exec-3] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectQuoteAnalysisList

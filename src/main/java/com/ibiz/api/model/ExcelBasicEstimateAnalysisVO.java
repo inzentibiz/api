@@ -21,7 +21,7 @@ public class ExcelBasicEstimateAnalysisVO {
     private String slsEmpNm;
 
     @ColumnAttribute(Index = 4, Title = "프로젝트유형", ColumnWidth = 100, CellStyleMethodName = "Content")
-    private String prjtTypeNm;
+    private String prjtTypeCdNm;
 
     @ColumnAttribute(Index = 5, Title = "최종고객ID", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String lastCustId;
@@ -60,7 +60,7 @@ public class ExcelBasicEstimateAnalysisVO {
     private String techSvcRvwEmpNm;
 
     @ColumnAttribute(Index = 17, Title = "예상손익진행상태", ColumnWidth = 130, CellStyleMethodName = "Content")
-    private String fcstPalPrgsStatNm;
+    private String fcstPalPrgsStatCdNm;
 
     @ColumnAttribute(Index = 18, Title = "매출액", ColumnWidth = 110, CellStyleMethodName = "ContentRight", CellType=CellType.NumericComma)
     private String sellAmt;
@@ -84,7 +84,7 @@ public class ExcelBasicEstimateAnalysisVO {
     private String putNopCount;
 
     @ColumnAttribute(Index = 25, Title = "투입시간단위", ColumnWidth = 100, CellStyleMethodName = "Content")
-    private String putTimeUnitNm;
+    private String putTimeUnitCdNm;
 
     @ColumnAttribute(Index = 26, Title = "등록일시", ColumnWidth = 160, CellStyleMethodName = "Content")
     private String regDt;
@@ -124,12 +124,12 @@ public class ExcelBasicEstimateAnalysisVO {
         this.slsEmpNm = slsEmpNm;
     }
 
-    public String getPrjtTypeNm() {
-        return prjtTypeNm;
+    public String getPrjtTypeCdNm() {
+        return prjtTypeCdNm;
     }
 
-    public void setPrjtTypeNm(String prjtTypeNm) {
-        this.prjtTypeNm = prjtTypeNm;
+    public void setPrjtTypeCdNm(String prjtTypeCdNm) {
+        this.prjtTypeCdNm = prjtTypeCdNm;
     }
 
     public String getLastCustId() {
@@ -228,12 +228,12 @@ public class ExcelBasicEstimateAnalysisVO {
         this.techSvcRvwDeptNm = techSvcRvwDeptNm;
     }
 
-    public String getFcstPalPrgsStatNm() {
-        return fcstPalPrgsStatNm;
+    public String getFcstPalPrgsStatCdNmNm() {
+        return fcstPalPrgsStatCdNm;
     }
 
-    public void setFcstPalPrgsStatNm(String fcstPalPrgsStatNm) {
-        this.fcstPalPrgsStatNm = fcstPalPrgsStatNm;
+    public void setFcstPalPrgsStatCdNmNm(String fcstPalPrgsStatCdNm) {
+        this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 
     public String getSellAmt() {
@@ -292,12 +292,12 @@ public class ExcelBasicEstimateAnalysisVO {
         this.putNopCount = putNopCount;
     }
 
-    public String getPutTimeUnitNm() {
-        return putTimeUnitNm;
+    public String getPutTimeUnitCdNm() {
+        return putTimeUnitCdNm;
     }
 
-    public void setPutTimeUnitNm(String putTimeUnitNm) {
-        this.putTimeUnitNm = putTimeUnitNm;
+    public void setPutTimeUnitCdNm(String putTimeUnitCdNm) {
+        this.putTimeUnitCdNm = putTimeUnitCdNm;
     }
 
     public String getRegDt() {

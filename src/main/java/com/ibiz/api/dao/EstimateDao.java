@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository(value = "estimateDao")
 public class EstimateDao {
@@ -74,14 +73,14 @@ public class EstimateDao {
     /**
      * 3. VRB 대상선정 및 평가결과 : VRB 대상선정 기준항목 조회
      */
-    public List<VrbCriteriaVO> selectVrbCriteriaList(BsnsProfitLossVO bsnsProfitLossVO) {
+    public List<VRBSelectCriteriaVO> selectVrbCriteriaList(BsnsProfitLossVO bsnsProfitLossVO) {
         return mybatis.selectList("EstimateMapper.Select_vrbCriteriaList", bsnsProfitLossVO);
     }
 
     /**
      * 3. VRB 대상선정 및 평가결과 : VRB 분석리스트 조회
      */
-    public List<VRBProfitAnalysisDetailVO> selectVrbList(BsnsProfitLossVO bsnsProfitLossVO) {
+    public List<VRBProfitVO> selectVrbList(BsnsProfitLossVO bsnsProfitLossVO) {
         return mybatis.selectList("EstimateMapper.Select_vrbList", bsnsProfitLossVO);
     }
 
@@ -285,8 +284,8 @@ public class EstimateDao {
         mybatis.delete("EstimateMapper.Delete_ContractOptionDetail", bsnsProfitLossVO);
     }
 
-    public BsnsProfitLossVO selectFcstPalPrgsStatCd(BsnsProfitLossVO bsnsProfitLossVO) {
-        return mybatis.selectOne("EstimateMapper.Select_FcstPalPrgsStatCd", bsnsProfitLossVO);
+    public BsnsProfitLossVO selectFcstPalPrgsStatCdNmCd(BsnsProfitLossVO bsnsProfitLossVO) {
+        return mybatis.selectOne("EstimateMapper.Select_FcstPalPrgsStatCdNmCd", bsnsProfitLossVO);
     }
 
     public List<ContractOptionVO> selectContractOptionDetail(BsnsProfitLossVO bsnsProfitLossVO) {
@@ -299,14 +298,6 @@ public class EstimateDao {
      */
     public List<FcstPalVO> selectQuoteAnalysisList(FcstPalSearchVO fcstPalSearchVO) {
         return mybatis.selectList("ForcastPALMapper.Select_quoteAnalysisList", fcstPalSearchVO);
-    }
-
-    public List<EstiHisVO> selectEstimateHistoryList(EstiHisSearchVO estiHisSearchVO){
-        return mybatis.selectList("EstimateIssueMapper.Select_estimateHistoryList", estiHisSearchVO);
-    }
-
-    public Integer selectEstimateHistoryListCount(EstiHisSearchVO estiHisSearchVO) {
-        return mybatis.selectOne("EstimateIssueMapper.Select_estimateHistoryListCount", estiHisSearchVO);
     }
 
     public Integer selectIsExistForcastPAL(FcstPalVO fcstPalVO) {

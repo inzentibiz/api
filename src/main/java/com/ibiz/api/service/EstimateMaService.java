@@ -26,7 +26,7 @@ public class EstimateMaService extends AbstractDraftService {
 
         bsnsProfitLossVO.setFcstPalId(IndexUtils.generateId(10, prevId));
         bsnsProfitLossVO.setRegEmpId(accountVO.getEmpId());
-        bsnsProfitLossVO.setFcstPalPrgsStatCd("A");
+        bsnsProfitLossVO.setFcstPalPrgsStatCdNmCd("A");
 
         bsnsProfitLossVO.getApproval().setRegEmpId(accountVO.getEmpId());
         bsnsProfitLossVO.setSantFrmtCd(bsnsProfitLossVO.getFrmtCd());
@@ -113,7 +113,7 @@ public class EstimateMaService extends AbstractDraftService {
         bsnsProfitLoss.setApproval(super.selectApprovalInfo(bsnsProfitLoss.getSantId()));
 
         // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
-        if(bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W")) {
+        if(bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("W")) {
             bsnsProfitLoss.setIsInProgress(false);
         }else {
             bsnsProfitLoss.setIsInProgress(true);

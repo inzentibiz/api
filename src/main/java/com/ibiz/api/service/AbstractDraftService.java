@@ -1,7 +1,6 @@
 package com.ibiz.api.service;
 
 import com.ibiz.api.dao.DraftDao;
-import com.ibiz.api.dao.MailDao;
 import com.ibiz.api.model.ApprovalDetailVO;
 import com.ibiz.api.model.ApprovalVO;
 import com.ibiz.api.model.AttcFileVO;
@@ -42,9 +41,6 @@ public class AbstractDraftService extends AbstractWebService {
 
     @Resource(name = "draftDao")
     private DraftDao draftDao;
-
-    @Resource(name = "mailDao")
-    private MailDao mailDao;
 
     @Transactional
     protected ApprovalVO selectApprovalInfo(String santId) {

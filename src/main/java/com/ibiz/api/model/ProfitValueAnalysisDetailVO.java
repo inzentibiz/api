@@ -50,7 +50,7 @@ public class ProfitValueAnalysisDetailVO {
     /**
      * 상품구분명
      */
-    private String prodDstNm;
+    private String prodDstCdNm;
 
     /**
      * 상품유형코드
@@ -60,7 +60,7 @@ public class ProfitValueAnalysisDetailVO {
     /**
      * 상품유형명
      */
-    private String prodTypeNm;
+    private String prodTypeCdNm;
 
     /**
      * 제조원가금액
@@ -144,12 +144,12 @@ public class ProfitValueAnalysisDetailVO {
         this.prodDstCd = prodDstCd;
     }
 
-    public String getProdDstNm() {
-        return prodDstNm;
+    public String getProdDstCdNm() {
+        return prodDstCdNm;
     }
 
-    public void setProdDstNm(String prodDstNm) {
-        this.prodDstNm = prodDstNm;
+    public void setProdDstCdNm(String prodDstCdNm) {
+        this.prodDstCdNm = prodDstCdNm;
     }
 
     public String getMakeCostAmt() {
@@ -176,20 +176,20 @@ public class ProfitValueAnalysisDetailVO {
         this.prodTypeCd = prodTypeCd;
     }
 
-    public String getProdTypeNm() {
-        return prodTypeNm;
+    public String getProdTypeCdNm() {
+        return prodTypeCdNm;
     }
 
-    public void setProdTypeNm(String prodTypeNm) {
-        this.prodTypeNm = prodTypeNm;
+    public void setProdTypeCdNm(String prodTypeCdNm) {
+        this.prodTypeCdNm = prodTypeCdNm;
     }
 
     @Override
     public String toString() {
         return "ProfitValueAnalysisDetailVO [vrbAnlyId=" + vrbAnlyId + ", fcstPalId=" + fcstPalId + ", lpcAmt=" + lpcAmt
                 + ", slsDcRt=" + slsDcRt + ", sellAmt=" + sellAmt + ", pchsAmt=" + pchsAmt + ", drcstAmt=" + drcstAmt
-                + ", sellPrf=" + sellPrf + ", prodDstCd=" + prodDstCd + ", prodDstNm=" + prodDstNm + ", makeCostAmt=" + makeCostAmt
-                + ", nsleAmt=" + nsleAmt + ", prodTypeCd=" + prodTypeCd + ", prodTypeNm=" + prodTypeNm + "]";
+                + ", sellPrf=" + sellPrf + ", prodDstCd=" + prodDstCd + ", prodDstCdNm=" + prodDstCdNm + ", makeCostAmt=" + makeCostAmt
+                + ", nsleAmt=" + nsleAmt + ", prodTypeCd=" + prodTypeCd + ", prodTypeCdNm=" + prodTypeCdNm + "]";
     }
 
 }

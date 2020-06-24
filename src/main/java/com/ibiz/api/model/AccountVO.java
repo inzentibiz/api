@@ -47,12 +47,12 @@ public class AccountVO {
     /**
      * 직위명
      */
-    private String ofpsNm;
+    private String ofpsCdNm;
 
     /**
      * 직책명
      */
-    private String resoNm;
+    private String resoCdNm;
 
     /**
      * 소속부서명
@@ -60,11 +60,19 @@ public class AccountVO {
     private String deptNm;
 
     /**
+     * 사용자권한정보
+     */
+    private List<String> roleList;
+
+    /**
+     * 사용자역할정보
+     * */
+    private Boolean isInRoles;
+
+    /**
      * 사용자 로그인 정보
      */
     private LoginVO loginVO;
-
-    private List<String> roleList;
 
     public String getUserId() {
         return userId;
@@ -122,20 +130,20 @@ public class AccountVO {
         this.resoCd = resoCd;
     }
 
-    public String getOfpsNm() {
-        return ofpsNm;
+    public String getOfpsCdNm() {
+        return ofpsCdNm;
     }
 
-    public void setOfpsNm(String ofpsNm) {
-        this.ofpsNm = ofpsNm;
+    public void setOfpsCdNm(String ofpsCdNm) {
+        this.ofpsCdNm = ofpsCdNm;
     }
 
-    public String getResoNm() {
-        return resoNm;
+    public String getResoCdNm() {
+        return resoCdNm;
     }
 
-    public void setResoNm(String resoNm) {
-        this.resoNm = resoNm;
+    public void setResoCdNm(String resoCdNm) {
+        this.resoCdNm = resoCdNm;
     }
 
     public String getDeptNm() {
@@ -146,6 +154,9 @@ public class AccountVO {
         this.deptNm = deptNm;
     }
 
+    public List<String> getRoleList() { return roleList; }
+
+    public void setRoleList(List<String> roleList) { this.roleList = roleList; }
 
     public String getCustId() {
         return custId;
@@ -164,11 +175,11 @@ public class AccountVO {
         this.loginVO = loginVO;
     }
 
-    public List<String> getRoleList() {
-        return roleList;
+    public Boolean getIsInRoles() {
+        return isInRoles;
     }
 
-    public void setRoleList(List<String> roleList) {
-        this.roleList = roleList;
+    public void setIsInRoles(Boolean isInRoles) {
+        this.isInRoles = isInRoles;
     }
 }

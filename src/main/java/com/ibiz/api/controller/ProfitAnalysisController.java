@@ -169,7 +169,7 @@ public class ProfitAnalysisController extends BaseController {
     }
 
 
-    // updateDraftPrgsStatCd 결재진행상태 동기화 > 결재버튼 활성화 여부체크 > 진행상태값 바인딩
+    // updateVRBAnalysisStat 결재진행상태 동기화 > 결재버튼 활성화 여부체크 > 진행상태값 바인딩
     @PostMapping("/updateDraftPrgsStatCd")
     public ResponseEntity<String> updateDraftPrgsStatCd(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".updateDraftPrgsStatCd");

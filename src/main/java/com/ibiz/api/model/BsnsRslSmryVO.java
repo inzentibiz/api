@@ -21,7 +21,7 @@ public class BsnsRslSmryVO {
     /**
      * 상품유형명
      */
-    private String prodTypeNm;
+    private String prodTypeCdNm;
 
     /**
      * 제품분류코드
@@ -31,7 +31,7 @@ public class BsnsRslSmryVO {
     /**
      * 제품분류명
      */
-    private String godsClsfNm;
+    private String godsClsfCdNm;
 
     /**
      * ListPirce금액
@@ -76,7 +76,7 @@ public class BsnsRslSmryVO {
     /**
      * 투입시간단위명
      */
-    private String putTimeUnitNm;
+    private String putTimeUnitCdNm;
 
     /**
      * 투입인원수
@@ -99,12 +99,12 @@ public class BsnsRslSmryVO {
         this.prodTypeCd = prodTypeCd;
     }
 
-    public String getProdTypeNm() {
-        return prodTypeNm;
+    public String getProdTypeCdNm() {
+        return prodTypeCdNm;
     }
 
-    public void setProdTypeNm(String prodTypeNm) {
-        this.prodTypeNm = prodTypeNm;
+    public void setProdTypeCdNm(String prodTypeCdNm) {
+        this.prodTypeCdNm = prodTypeCdNm;
     }
 
     public long getLpcAmt() {
@@ -163,12 +163,12 @@ public class BsnsRslSmryVO {
         this.godsClsfCd = godsClsfCd;
     }
 
-    public String getGodsClsfNm() {
-        return godsClsfNm;
+    public String getGodsClsfCdNm() {
+        return godsClsfCdNm;
     }
 
-    public void setGodsClsfNm(String godsClsfNm) {
-        this.godsClsfNm = godsClsfNm;
+    public void setGodsClsfCdNm(String godsClsfCdNm) {
+        this.godsClsfCdNm = godsClsfCdNm;
     }
 
     public long getCtmgAmt() {
@@ -187,12 +187,12 @@ public class BsnsRslSmryVO {
         this.putTimeUnitCd = putTimeUnitCd;
     }
 
-    public String getPutTimeUnitNm() {
-        return putTimeUnitNm;
+    public String getPutTimeUnitCdNm() {
+        return putTimeUnitCdNm;
     }
 
-    public void setPutTimeUnitNm(String putTimeUnitNm) {
-        this.putTimeUnitNm = putTimeUnitNm;
+    public void setPutTimeUnitCdNm(String putTimeUnitCdNm) {
+        this.putTimeUnitCdNm = putTimeUnitCdNm;
     }
 
     public double getPutNopCount() {

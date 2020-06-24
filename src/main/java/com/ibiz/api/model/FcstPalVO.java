@@ -135,7 +135,7 @@ public class FcstPalVO {
     /**
      * 프로젝트유형명
      */
-    private String prjtTypeNm;
+    private String prjtTypeCdNm;
 
     /**
      * 매출금액
@@ -155,7 +155,7 @@ public class FcstPalVO {
     /**
      * 예상손익 진행상태명
      */
-    private String fcstPalPrgsStatNm;
+    private String fcstPalPrgsStatCdNm;
 
     private String santFrmtCd;
 
@@ -282,11 +282,11 @@ public class FcstPalVO {
         this.etcMtr = etcMtr;
     }
 
-    public String getFcstPalPrgsStatCd() {
+    public String getFcstPalPrgsStatCdNmCd() {
         return fcstPalPrgsStatCd;
     }
 
-    public void setFcstPalPrgsStatCd(String fcstPalPrgsStatCd) {
+    public void setFcstPalPrgsStatCdNmCd(String fcstPalPrgsStatCd) {
         this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
     }
 
@@ -378,12 +378,12 @@ public class FcstPalVO {
         this.ordeCustNm = ordeCustNm;
     }
 
-    public String getPrjtTypeNm() {
-        return prjtTypeNm;
+    public String getPrjtTypeCdNm() {
+        return prjtTypeCdNm;
     }
 
-    public void setPrjtTypeNm(String prjtTypeNm) {
-        this.prjtTypeNm = prjtTypeNm;
+    public void setPrjtTypeCdNm(String prjtTypeCdNm) {
+        this.prjtTypeCdNm = prjtTypeCdNm;
     }
 
     public Long getSellAmt() {
@@ -410,12 +410,12 @@ public class FcstPalVO {
         this.slsEmpNm = slsEmpNm;
     }
 
-    public String getFcstPalPrgsStatNm() {
-        return fcstPalPrgsStatNm;
+    public String getFcstPalPrgsStatCdNmNm() {
+        return fcstPalPrgsStatCdNm;
     }
 
-    public void setFcstPalPrgsStatNm(String fcstPalPrgsStatNm) {
-        this.fcstPalPrgsStatNm = fcstPalPrgsStatNm;
+    public void setFcstPalPrgsStatCdNmNm(String fcstPalPrgsStatCdNm) {
+        this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 
     public String getSantFrmtCd() {

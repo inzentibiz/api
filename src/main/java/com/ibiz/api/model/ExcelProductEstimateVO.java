@@ -21,7 +21,7 @@ public class ExcelProductEstimateVO {
     private String slsEmpNm;
 
     @ColumnAttribute(Index = 4, Title = "프로젝트유형", ColumnWidth = 100, CellStyleMethodName = "Content")
-    private String prjtTypeNm;
+    private String prjtTypeCdNm;
 
     @ColumnAttribute(Index = 5, Title = "최종고객ID", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String lastCustId;
@@ -54,16 +54,16 @@ public class ExcelProductEstimateVO {
     private String cntrTrsfEndYam;
 
     @ColumnAttribute(Index = 15, Title = "예상손익진행상태", ColumnWidth = 130, CellStyleMethodName = "Content")
-    private String fcstPalPrgsStatNm;
+    private String fcstPalPrgsStatCdNm;
 
     @ColumnAttribute(Index = 16, Title = "상품유형", ColumnWidth = 140, CellStyleMethodName = "ContentLeft")
-    private String prodTypeNm;
+    private String prodTypeCdNm;
 
     @ColumnAttribute(Index = 17, Title = "상품순번", ColumnWidth = 80, CellStyleMethodName = "ContentRight")
     private String prodSeq;
 
     @ColumnAttribute(Index = 18, Title = "제품분류", ColumnWidth = 100, CellStyleMethodName = "ContentLeft")
-    private String godsClsfNm;
+    private String godsClsfCdNm;
 
     @ColumnAttribute(Index = 19, Title = "MA대상프로젝트ID", ColumnWidth = 130, CellStyleMethodName = "Content")
     private String maTgtPrjtId;
@@ -199,12 +199,12 @@ public class ExcelProductEstimateVO {
         this.slsEmpNm = slsEmpNm;
     }
 
-    public String getPrjtTypeNm() {
-        return prjtTypeNm;
+    public String getPrjtTypeCdNm() {
+        return prjtTypeCdNm;
     }
 
-    public void setPrjtTypeNm(String prjtTypeNm) {
-        this.prjtTypeNm = prjtTypeNm;
+    public void setPrjtTypeCdNm(String prjtTypeCdNm) {
+        this.prjtTypeCdNm = prjtTypeCdNm;
     }
 
     public String getLastCustId() {
@@ -287,20 +287,20 @@ public class ExcelProductEstimateVO {
         this.cntrTrsfEndYam = cntrTrsfEndYam;
     }
 
-    public String getFcstPalPrgsStatNm() {
-        return fcstPalPrgsStatNm;
+    public String getFcstPalPrgsStatCdNmNm() {
+        return fcstPalPrgsStatCdNm;
     }
 
-    public void setFcstPalPrgsStatNm(String fcstPalPrgsStatNm) {
-        this.fcstPalPrgsStatNm = fcstPalPrgsStatNm;
+    public void setFcstPalPrgsStatCdNmNm(String fcstPalPrgsStatCdNm) {
+        this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 
-    public String getProdTypeNm() {
-        return prodTypeNm;
+    public String getProdTypeCdNm() {
+        return prodTypeCdNm;
     }
 
-    public void setProdTypeNm(String prodTypeNm) {
-        this.prodTypeNm = prodTypeNm;
+    public void setProdTypeCdNm(String prodTypeCdNm) {
+        this.prodTypeCdNm = prodTypeCdNm;
     }
 
     public String getProdSeq() {
@@ -311,12 +311,12 @@ public class ExcelProductEstimateVO {
         this.prodSeq = prodSeq;
     }
 
-    public String getGodsClsfNm() {
-        return godsClsfNm;
+    public String getGodsClsfCdNm() {
+        return godsClsfCdNm;
     }
 
-    public void setGodsClsfNm(String godsClsfNm) {
-        this.godsClsfNm = godsClsfNm;
+    public void setGodsClsfCdNm(String godsClsfCdNm) {
+        this.godsClsfCdNm = godsClsfCdNm;
     }
 
     public String getMaTgtPrjtId() {

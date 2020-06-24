@@ -54,7 +54,7 @@ public class BsnsProfitLossVO {
     /**
      * 프로젝트유형코드명
      */
-    private String prjtTypeNm;
+    private String prjtTypeCdNm;
 
     /**
      * 사업기회ID
@@ -69,7 +69,7 @@ public class BsnsProfitLossVO {
     /**
      * 사업기회상태명
      */
-    private String boptStatNm;
+    private String boptStatCdNm;
 
     /**
      * 발주고객ID
@@ -153,7 +153,7 @@ public class BsnsProfitLossVO {
     /**
      * 예상손익진행상태코드명
      */
-    private String fcstPalPrgsStatNm;
+    private String fcstPalPrgsStatCdNm;
 
     /**
      * 결재ID
@@ -174,7 +174,7 @@ public class BsnsProfitLossVO {
 
     private String slsEmpNm;
 
-    private String slsOfpsNm;
+    private String slsOfpsCdNm;
 
 
     /**
@@ -223,12 +223,12 @@ public class BsnsProfitLossVO {
     /**
      * VRB선정기준
      */
-    private List<VrbCriteriaVO> vrbCriteriaList;
+    private List<VRBSelectCriteriaVO> vrbCriteriaList;
 
     /**
      * VRB분석리스트
      */
-    private List<VRBVO> vrbProfitAnalysisList;
+    private List<VRBAnalysisVO> vrbProfitAnalysisList;
 
     /**
      * 사업예상상품상세
@@ -411,12 +411,12 @@ public class BsnsProfitLossVO {
         this.prjtTypeCd = prjtTypeCd;
     }
 
-    public String getPrjtTypeNm() {
-        return prjtTypeNm;
+    public String getPrjtTypeCdNm() {
+        return prjtTypeCdNm;
     }
 
-    public void setPrjtTypeNm(String prjtTypeNm) {
-        this.prjtTypeNm = prjtTypeNm;
+    public void setPrjtTypeCdNm(String prjtTypeCdNm) {
+        this.prjtTypeCdNm = prjtTypeCdNm;
     }
 
     public String getBoptId() {
@@ -517,20 +517,20 @@ public class BsnsProfitLossVO {
         this.etcMtr = etcMtr;
     }
 
-    public String getFcstPalPrgsStatCd() {
+    public String getFcstPalPrgsStatCdNmCd() {
         return fcstPalPrgsStatCd;
     }
 
-    public void setFcstPalPrgsStatCd(String fcstPalPrgsStatCd) {
+    public void setFcstPalPrgsStatCdNmCd(String fcstPalPrgsStatCd) {
         this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
     }
 
-    public String getFcstPalPrgsStatNm() {
-        return fcstPalPrgsStatNm;
+    public String getFcstPalPrgsStatCdNmNm() {
+        return fcstPalPrgsStatCdNm;
     }
 
-    public void setFcstPalPrgsStatNm(String fcstPalPrgsStatNm) {
-        this.fcstPalPrgsStatNm = fcstPalPrgsStatNm;
+    public void setFcstPalPrgsStatCdNmNm(String fcstPalPrgsStatCdNm) {
+        this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 
     public String getSantId() {
@@ -629,19 +629,19 @@ public class BsnsProfitLossVO {
         this.thofBsnsFldCont = thofBsnsFldCont;
     }
 
-    public List<VrbCriteriaVO> getVrbCriteriaList() {
+    public List<VRBSelectCriteriaVO> getVrbCriteriaList() {
         return vrbCriteriaList;
     }
 
-    public void setVrbCriteriaList(List<VrbCriteriaVO> vrbCriteriaList) {
+    public void setVrbCriteriaList(List<VRBSelectCriteriaVO> vrbCriteriaList) {
         this.vrbCriteriaList = vrbCriteriaList;
     }
 
-    public List<VRBVO> getVrbProfitAnalysisList() {
+    public List<VRBAnalysisVO> getVrbProfitAnalysisList() {
         return vrbProfitAnalysisList;
     }
 
-    public void setVrbProfitAnalysisList(List<VRBVO> vrbProfitAnalysisList) {
+    public void setVrbProfitAnalysisList(List<VRBAnalysisVO> vrbProfitAnalysisList) {
         this.vrbProfitAnalysisList = vrbProfitAnalysisList;
     }
 
@@ -733,12 +733,12 @@ public class BsnsProfitLossVO {
         this.techSvcRvwDeptNm = techSvcRvwDeptNm;
     }
 
-    public String getSlsOfpsNm() {
-        return slsOfpsNm;
+    public String getSlsOfpsCdNm() {
+        return slsOfpsCdNm;
     }
 
-    public void setSlsOfpsNm(String slsOfpsNm) {
-        this.slsOfpsNm = slsOfpsNm;
+    public void setSlsOfpsCdNm(String slsOfpsCdNm) {
+        this.slsOfpsCdNm = slsOfpsCdNm;
     }
 
     public String getTechSvcRvwOfpsNm() {
@@ -797,12 +797,12 @@ public class BsnsProfitLossVO {
         this.docTypeCd = docTypeCd;
     }
 
-    public String getBoptStatNm() {
-        return boptStatNm;
+    public String getBoptStatCdNm() {
+        return boptStatCdNm;
     }
 
-    public void setBoptStatNm(String boptStatNm) {
-        this.boptStatNm = boptStatNm;
+    public void setBoptStatCdNm(String boptStatCdNm) {
+        this.boptStatCdNm = boptStatCdNm;
     }
 
     public List<ContractOptionVO> getContractOptionList() {
