@@ -6,7 +6,7 @@ import com.ibiz.api.utils.ColumnAttribute;
 import com.ibiz.api.utils.Enum.CellType;
 
 @CellStyleClassAttribute(CellStyleMethodName = "Title", ClassType = CellStyles.class)
-public class ExcelProductEstimateVO {
+public class ExcelOfferProfitByProductVO {
 
     @ColumnAttribute(Index = 0, Title = "예상손익분석서ID", ColumnWidth = 120, CellStyleMethodName = "Content")
     private String fcstPalId;
@@ -138,7 +138,7 @@ public class ExcelProductEstimateVO {
     private String aplcnCostRt;
 
     @ColumnAttribute(Index = 43, Title = "투입인력등급", ColumnWidth = 130, CellStyleMethodName = "ContentLeft")
-    private String putHmfrGrdNm;
+    private String putHmfrGrdCdNm;
 
     @ColumnAttribute(Index = 44, Title = "표준원가", ColumnWidth = 110, CellStyleMethodName = "ContentRight", CellType=CellType.NumericComma)
     private String stdCostAmt;
@@ -495,12 +495,12 @@ public class ExcelProductEstimateVO {
         this.aplcnCostRt = aplcnCostRt;
     }
 
-    public String getPutHmfrGrdNm() {
-        return putHmfrGrdNm;
+    public String getPutHmfrGrdCdNm() {
+        return putHmfrGrdCdNm;
     }
 
-    public void setPutHmfrGrdNm(String putHmfrGrdNm) {
-        this.putHmfrGrdNm = putHmfrGrdNm;
+    public void setPutHmfrGrdCdNm(String putHmfrGrdCdNm) {
+        this.putHmfrGrdCdNm = putHmfrGrdCdNm;
     }
 
     public String getStdCostAmt() {

@@ -4,7 +4,7 @@ package com.ibiz.api.model;
  * ACOM120T : 프로젝트직접경비코드
  *
  */
-public class PrjtDrcstExpenseVO {
+public class DirectCostCriteriaVO {
 
     /**
      * 프로젝트직접경비코드
@@ -24,7 +24,7 @@ public class PrjtDrcstExpenseVO {
     /**
      * 프로젝트직접경비명
      */
-    private String prjtDrexpNm;
+    private String prjtDrexpCdNm;
 
     /**
      * GL계정코드
@@ -64,7 +64,7 @@ public class PrjtDrcstExpenseVO {
     /**
      * 실적배부기준명
      */
-    private String dstrCritRslItmNm;
+    private String dstrCritRslItmCdNm;
 
     /**
      * 등록사원ID
@@ -115,12 +115,12 @@ public class PrjtDrcstExpenseVO {
         this.avlEndDate = avlEndDate;
     }
 
-    public String getPrjtDrexpNm() {
-        return prjtDrexpNm;
+    public String getPrjtDrexpCdNm() {
+        return prjtDrexpCdNm;
     }
 
-    public void setPrjtDrexpNm(String prjtDrexpNm) {
-        this.prjtDrexpNm = prjtDrexpNm;
+    public void setPrjtDrexpCdNm(String prjtDrexpCdNm) {
+        this.prjtDrexpCdNm = prjtDrexpCdNm;
     }
 
     public String getGlAcntCd() {
@@ -195,12 +195,12 @@ public class PrjtDrcstExpenseVO {
         this.dstrCritRslItmCd = dstrCritRslItmCd;
     }
 
-    public String getDstrCritRslItmNm() {
-        return dstrCritRslItmNm;
+    public String getDstrCritRslItmCdNm() {
+        return dstrCritRslItmCdNm;
     }
 
-    public void setDstrCritRslItmNm(String dstrCritRslItmNm) {
-        this.dstrCritRslItmNm = dstrCritRslItmNm;
+    public void setDstrCritRslItmCdNm(String dstrCritRslItmCdNm) {
+        this.dstrCritRslItmCdNm = dstrCritRslItmCdNm;
     }
 
     public long getDrexpAmt() {

@@ -2,7 +2,7 @@ package com.ibiz.api.model;
 
 import java.util.List;
 
-public class AttcFileVO {
+public class AttachVO {
 
     /**
      * 파일 첨부를 사용하는 영역 이름(board, customer, approval)
@@ -80,7 +80,7 @@ public class AttcFileVO {
     /**
      * 사용하지않으며, 기존 코드와의 호환성으로 남겨둠
      */
-    private List<AttcFileVO> attcFileVO;
+    private List<AttachVO> attachVO;
 
     private String state;
 
@@ -204,12 +204,12 @@ public class AttcFileVO {
         this.santId = santId;
     }
 
-    public List<AttcFileVO> getAttcFileVO() {
-        return attcFileVO;
+    public List<AttachVO> getAttachVO() {
+        return attachVO;
     }
 
-    public void setAttcFileVO(List<AttcFileVO> attcFileVO) {
-        this.attcFileVO = attcFileVO;
+    public void setAttachVO(List<AttachVO> attachVO) {
+        this.attachVO = attachVO;
     }
 
     public String getState() {

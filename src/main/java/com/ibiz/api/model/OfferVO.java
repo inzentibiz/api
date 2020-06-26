@@ -8,7 +8,7 @@ import java.util.Map;
  * BEST000T : 사업예상손익기본
  *
  */
-public class BsnsProfitLossVO {
+public class OfferVO {
 
     /**
      * 예상손익ID
@@ -24,7 +24,7 @@ public class BsnsProfitLossVO {
     /**
      * 서식코드명
      */
-    private String frmtNm;
+    private String frmtCdNm;
 
     /**
      * 최종고객ID
@@ -124,7 +124,7 @@ public class BsnsProfitLossVO {
     /**
      * VRB선정결과코드명
      */
-    private String vrbSlctRstNm;
+    private String vrbSlctRstCdNm;
 
     /**
      * 매출금액
@@ -233,27 +233,27 @@ public class BsnsProfitLossVO {
     /**
      * 사업예상상품상세
      */
-    private List<BsnsProdDetailVO> bsnsProdDetailList;
+    private List<OfferProductVO> bsnsProdDetailList;
 
     /**
      * 견적제품할인정책리스트
      */
-    private List<ProdDcPolicyVO> prodDcPolicyList;
+    private List<OfferProductDCVO> prodDcPolicyList;
 
     /**
      * 예상투입인원상세리스트
      */
-    private List<BsnsProdDetailVO> inputPersonList;
+    private List<OfferProductVO> inputPersonList;
 
     /**
      * 프로젝트경비리스트
      */
-    private List<BsnsExpenseVO> bsnsExpenseList;
+    private List<OfferExpenseVO> bsnsExpenseList;
 
     /**
      * 프로젝트경비리스트(ACOM120T)
      */
-    private List<PrjtDrcstExpenseVO> prjtDrcstExpenseList;
+    private List<DirectCostCriteriaVO> prjtDrcstExpenseList;
 
     /**
      * 사업예상간접비리스트
@@ -263,12 +263,12 @@ public class BsnsProfitLossVO {
     /**
      * 유지보수대상사업상세리스트
      */
-    private List<BsnsProdDetailVO> maBsnsDetailList;
+    private List<OfferProductVO> maBsnsDetailList;
 
     /**
      * 유지보수제공조건상세리스트
      */
-    private List<MaConditionVO> maConditionList;
+    private List<OfferMACondVO> maConditionList;
 
     /**
      * 결재역할별 버튼 리스트
@@ -309,12 +309,12 @@ public class BsnsProfitLossVO {
     /**
      *  계약옵션
      */
-    private List<ContractOptionVO> contractOptionList;
+    private List<OfferContractCondVO> contractOptionList;
 
     /**
      * 에상손익 실적(취합)
      */
-    private List<BsnsRslSmryVO> bsnsRslSmryList;
+    private List<OfferResultVO> bsnsRslSmryList;
 
     /**
      * 에상손익 쿼리 조회시 사용될 분기값
@@ -331,12 +331,12 @@ public class BsnsProfitLossVO {
      */
     private String santAppvDt;
 
-    public String getFrmtNm() {
-        return frmtNm;
+    public String getFrmtCdNm() {
+        return frmtCdNm;
     }
 
-    public void setFrmtNm(String frmtNm) {
-        this.frmtNm = frmtNm;
+    public void setFrmtCdNm(String frmtCdNm) {
+        this.frmtCdNm = frmtCdNm;
     }
 
     public Boolean getIsInProgress() {
@@ -485,12 +485,12 @@ public class BsnsProfitLossVO {
         this.vrbSlctRstCd = vrbSlctRstCd;
     }
 
-    public String getVrbSlctRstNm() {
-        return vrbSlctRstNm;
+    public String getVrbSlctRstCdNm() {
+        return vrbSlctRstCdNm;
     }
 
-    public void setVrbSlctRstNm(String vrbSlctRstNm) {
-        this.vrbSlctRstNm = vrbSlctRstNm;
+    public void setVrbSlctRstCdNm(String vrbSlctRstCdNm) {
+        this.vrbSlctRstCdNm = vrbSlctRstCdNm;
     }
 
     public Long getSellAmt() {
@@ -645,35 +645,35 @@ public class BsnsProfitLossVO {
         this.vrbProfitAnalysisList = vrbProfitAnalysisList;
     }
 
-    public List<BsnsProdDetailVO> getBsnsProdDetailList() {
+    public List<OfferProductVO> getBsnsProdDetailList() {
         return bsnsProdDetailList;
     }
 
-    public void setBsnsProdDetailList(List<BsnsProdDetailVO> bsnsProdDetailList) {
+    public void setBsnsProdDetailList(List<OfferProductVO> bsnsProdDetailList) {
         this.bsnsProdDetailList = bsnsProdDetailList;
     }
 
-    public List<ProdDcPolicyVO> getProdDcPolicyList() {
+    public List<OfferProductDCVO> getProdDcPolicyList() {
         return prodDcPolicyList;
     }
 
-    public void setProdDcPolicyList(List<ProdDcPolicyVO> prodDcPolicyList) {
+    public void setProdDcPolicyList(List<OfferProductDCVO> prodDcPolicyList) {
         this.prodDcPolicyList = prodDcPolicyList;
     }
 
-    public List<BsnsProdDetailVO> getInputPersonList() {
+    public List<OfferProductVO> getInputPersonList() {
         return inputPersonList;
     }
 
-    public void setInputPersonList(List<BsnsProdDetailVO> inputPersonList) {
+    public void setInputPersonList(List<OfferProductVO> inputPersonList) {
         this.inputPersonList = inputPersonList;
     }
 
-    public List<BsnsExpenseVO> getBsnsExpenseList() {
+    public List<OfferExpenseVO> getBsnsExpenseList() {
         return bsnsExpenseList;
     }
 
-    public void setBsnsExpenseList(List<BsnsExpenseVO> bsnsExpenseList) {
+    public void setBsnsExpenseList(List<OfferExpenseVO> bsnsExpenseList) {
         this.bsnsExpenseList = bsnsExpenseList;
     }
 
@@ -693,11 +693,11 @@ public class BsnsProfitLossVO {
         this.maBsnsDetailList = maBsnsDetailList;
     }
 */
-    public List<MaConditionVO> getMaConditionList() {
+    public List<OfferMACondVO> getMaConditionList() {
         return maConditionList;
     }
 
-    public void setMaConditionList(List<MaConditionVO> maConditionList) {
+    public void setMaConditionList(List<OfferMACondVO> maConditionList) {
         this.maConditionList = maConditionList;
     }
 
@@ -805,27 +805,27 @@ public class BsnsProfitLossVO {
         this.boptStatCdNm = boptStatCdNm;
     }
 
-    public List<ContractOptionVO> getContractOptionList() {
+    public List<OfferContractCondVO> getContractOptionList() {
         return contractOptionList;
     }
 
-    public void setContractOptionList(List<ContractOptionVO> contractOptionList) {
+    public void setContractOptionList(List<OfferContractCondVO> contractOptionList) {
         this.contractOptionList = contractOptionList;
     }
 
-    public List<BsnsProdDetailVO> getMaBsnsDetailList() {
+    public List<OfferProductVO> getMaBsnsDetailList() {
         return maBsnsDetailList;
     }
 
-    public void setMaBsnsDetailList(List<BsnsProdDetailVO> maBsnsDetailList) {
+    public void setMaBsnsDetailList(List<OfferProductVO> maBsnsDetailList) {
         this.maBsnsDetailList = maBsnsDetailList;
     }
 
-    public List<BsnsRslSmryVO> getBsnsRslSmryList() {
+    public List<OfferResultVO> getBsnsRslSmryList() {
         return bsnsRslSmryList;
     }
 
-    public void setBsnsRslSmryList(List<BsnsRslSmryVO> bsnsRslSmryList) {
+    public void setBsnsRslSmryList(List<OfferResultVO> bsnsRslSmryList) {
         this.bsnsRslSmryList = bsnsRslSmryList;
     }
 
@@ -845,11 +845,11 @@ public class BsnsProfitLossVO {
         this.svcSearchType = svcSearchType;
     }
 
-    public List<PrjtDrcstExpenseVO> getPrjtDrcstExpenseList() {
+    public List<DirectCostCriteriaVO> getPrjtDrcstExpenseList() {
         return prjtDrcstExpenseList;
     }
 
-    public void setPrjtDrcstExpenseList(List<PrjtDrcstExpenseVO> prjtDrcstExpenseList) {
+    public void setPrjtDrcstExpenseList(List<DirectCostCriteriaVO> prjtDrcstExpenseList) {
         this.prjtDrcstExpenseList = prjtDrcstExpenseList;
     }
 

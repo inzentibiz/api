@@ -6,7 +6,8 @@ import com.ibiz.api.utils.ColumnAttribute;
 import com.ibiz.api.utils.Enum.CellType;
 
 @CellStyleClassAttribute(CellStyleMethodName = "Title", ClassType = CellStyles.class)
-public class ExcelProductTypeEstimateVO {
+public class ExcelOfferProfitVO {
+
     @ColumnAttribute(Index = 0, Title = "예상손익분석서ID", ColumnWidth = 120, CellStyleMethodName = "Content")
     private String fcstPalId;
 
@@ -52,14 +53,14 @@ public class ExcelProductTypeEstimateVO {
     @ColumnAttribute(Index = 14, Title = "계약이행종료월", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String cntrTrsfEndYam;
 
-    @ColumnAttribute(Index = 15, Title = "예상손익진행상태", ColumnWidth = 130, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 15, Title = "기술서비스검토부서", ColumnWidth = 120, CellStyleMethodName = "Content")
+    private String techSvcRvwDeptNm;
+
+    @ColumnAttribute(Index = 16, Title = "기술서비스검토자", ColumnWidth = 120, CellStyleMethodName = "Content")
+    private String techSvcRvwEmpNm;
+
+    @ColumnAttribute(Index = 17, Title = "예상손익진행상태", ColumnWidth = 130, CellStyleMethodName = "Content")
     private String fcstPalPrgsStatCdNm;
-
-    @ColumnAttribute(Index = 16, Title = "상품유형", ColumnWidth = 140, CellStyleMethodName = "ContentLeft")
-    private String prodTypeCdNm;
-
-    @ColumnAttribute(Index = 17, Title = "제품분류", ColumnWidth = 100, CellStyleMethodName = "ContentLeft")
-    private String godsClsfCdNm;
 
     @ColumnAttribute(Index = 18, Title = "매출액", ColumnWidth = 110, CellStyleMethodName = "ContentRight", CellType=CellType.NumericComma)
     private String sellAmt;
@@ -87,6 +88,9 @@ public class ExcelProductTypeEstimateVO {
 
     @ColumnAttribute(Index = 26, Title = "등록일시", ColumnWidth = 160, CellStyleMethodName = "Content")
     private String regDt;
+
+    @ColumnAttribute(Index = 27, Title = "변경일시", ColumnWidth = 160, CellStyleMethodName = "Content")
+    private String chgDt;
 
     public String getFcstPalId() {
         return fcstPalId;
@@ -208,28 +212,28 @@ public class ExcelProductTypeEstimateVO {
         this.cntrTrsfEndYam = cntrTrsfEndYam;
     }
 
+    public String getTechSvcRvwEmpNm() {
+        return techSvcRvwEmpNm;
+    }
+
+    public void setTechSvcRvwEmpNm(String techSvcRvwEmpNm) {
+        this.techSvcRvwEmpNm = techSvcRvwEmpNm;
+    }
+
+    public String getTechSvcRvwDeptNm() {
+        return techSvcRvwDeptNm;
+    }
+
+    public void setTechSvcRvwDeptNm(String techSvcRvwDeptNm) {
+        this.techSvcRvwDeptNm = techSvcRvwDeptNm;
+    }
+
     public String getFcstPalPrgsStatCdNmNm() {
         return fcstPalPrgsStatCdNm;
     }
 
     public void setFcstPalPrgsStatCdNmNm(String fcstPalPrgsStatCdNm) {
         this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
-    }
-
-    public String getProdTypeCdNm() {
-        return prodTypeCdNm;
-    }
-
-    public void setProdTypeCdNm(String prodTypeCdNm) {
-        this.prodTypeCdNm = prodTypeCdNm;
-    }
-
-    public String getGodsClsfCdNm() {
-        return godsClsfCdNm;
-    }
-
-    public void setGodsClsfCdNm(String godsClsfCdNm) {
-        this.godsClsfCdNm = godsClsfCdNm;
     }
 
     public String getSellAmt() {
@@ -304,5 +308,12 @@ public class ExcelProductTypeEstimateVO {
         this.regDt = regDt;
     }
 
+    public String getChgDt() {
+        return chgDt;
+    }
+
+    public void setChgDt(String chgDt) {
+        this.chgDt = chgDt;
+    }
 
 }

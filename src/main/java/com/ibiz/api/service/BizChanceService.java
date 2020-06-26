@@ -1,7 +1,7 @@
 package com.ibiz.api.service;
 
-import com.ibiz.api.dao.EstimateDao;
 import com.ibiz.api.dao.BizChanceDAO;
+import com.ibiz.api.dao.OfferProfitDAO;
 import com.ibiz.api.model.*;
 import com.ibiz.api.utils.IndexUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +23,8 @@ public class BizChanceService {
     @Resource(name = "bizChanceDAO")
     private BizChanceDAO bizChanceDAO;
 
-    @Resource(name = "estimateDao")
-    private EstimateDao estimateDao;
+    @Resource(name = "offerProfitDAO")
+    private OfferProfitDAO offerProfitDAO;
 
     @Transactional
     public List<BizChanceVO> selectBizChanceList(Payload<BizChanceSearchVO> requestPayload) throws Exception {
@@ -273,7 +273,7 @@ public class BizChanceService {
         FcstPalVO fcstPalVO = new FcstPalVO();
         fcstPalVO.setBoptId(bizChanceVO.getBoptId());
 
-        if( !(estimateDao.selectIsExistForcastPAL(fcstPalVO) > 0)) {	//예상손익&견적서 있는 지 비교
+        if( !(offerProfitDAO.selectisExistsOffer(fcstPalVO) > 0)) {	//예상손익&견적서 있는 지 비교
             if(!bizChanceVO.getRegDt().equals(today)) {
 
                 bizChanceVO = bizChanceDAO.selectBizChaneInfo(bizChanceVO);

@@ -142,20 +142,20 @@ public class VRBAnalysisService extends AbstractDraftService {
         ApprovalDetailVO approvalDetail = new ApprovalDetailVO();
         ApprovalVO approvalVO = new ApprovalVO();
 
-        UserGrpVO userGrpVO = new UserGrpVO();
+        SysUserGroupVO sysUserGroupVO = new SysUserGroupVO();
         List<Map<String, String>> buttonList = new ArrayList<>();
 
-        userGrpVO.setTargetUserId(vrb.getSlsEmpId());
-        userGrpVO.setSourceUserId(accountVO.getEmpId());
+        sysUserGroupVO.setTargetUserId(vrb.getSlsEmpId());
+        sysUserGroupVO.setSourceUserId(accountVO.getEmpId());
 
         VRBAnalysisVO vrbAnalysisVO = vrbAnalysisDAO.selectVRBAnlyId(vrb);
 
         vrb.setProject(vrbAnalysisDAO.selectVRBAnalysisProject(vrbAnalysisVO));
 
         if (vrbAnalysisVO.getSantId() != null &&
-                (super.isBelongToAuthDept(userGrpVO)) || accountVO.getRoleList().contains("AD")) {
+                (super.isBelongToAuthDept(sysUserGroupVO)) || accountVO.getRoleList().contains("AD")) {
             approvalDetail.setSantId(vrb.getSantId());
-            approvalDetail.setUserGrpVO(userGrpVO);
+            approvalDetail.setSysUserGroupVO(sysUserGroupVO);
 
             // 버튼 리스트
             if (vrbAnalysisVO.getVrbPrgsStatCd().equals("A") ) {
@@ -163,7 +163,7 @@ public class VRBAnalysisService extends AbstractDraftService {
             }
 
             if (accountVO.getRoleList().contains("AD")
-                    || (userGrpVO.getTargetUserId().equals(userGrpVO.getSourceUserId()) && vrbAnalysisVO.getVrbPrgsStatCd().equals("A"))) {
+                    || (sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) && vrbAnalysisVO.getVrbPrgsStatCd().equals("A"))) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "삭제"); }});
             }
 
@@ -172,7 +172,7 @@ public class VRBAnalysisService extends AbstractDraftService {
                 buttonList.add(new HashMap<String, String>() {{put("button", "수주작성"); }});
             }
 
-            if (  (vrbAnalysisVO.getVrbPrgsStatCd().equals("C") || vrbAnalysisVO.getVrbPrgsStatCd().equals("R")) && (userGrpVO.getTargetUserId().equals(userGrpVO.getSourceUserId()) || accountVO.getRoleList().contains("AD")) ) {
+            if (  (vrbAnalysisVO.getVrbPrgsStatCd().equals("C") || vrbAnalysisVO.getVrbPrgsStatCd().equals("R")) && (sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) || accountVO.getRoleList().contains("AD")) ) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "폐기"); }});
             }
         }

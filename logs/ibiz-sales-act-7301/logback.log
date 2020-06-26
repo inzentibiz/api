@@ -61,10 +61,10 @@
 [2020-05-06 14:21:06:8204][boundedElastic-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
 [2020-05-06 14:22:14:76608][http-nio-7301-exec-1] INFO  c.i.a.c.ProjectBizOpptyController - Call Controller : com.ibiz.api.controller.ProjectBizOpptyController.selectBizChanceList
 [2020-05-06 14:22:14:76638][http-nio-7301-exec-1] INFO  c.i.a.s.ProjectBizOpptyService - Call Service : com.ibiz.api.service.BizChanceService.selectBizChanceList
-[2020-05-06 14:22:15:77927][http-nio-7301-exec-2] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectQuoteAnalysisList
-[2020-05-06 14:22:15:77934][http-nio-7301-exec-2] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectQuoteAnalysisList
-[2020-05-06 14:22:20:82294][http-nio-7301-exec-3] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectQuoteAnalysisList
-[2020-05-06 14:22:20:82297][http-nio-7301-exec-3] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectQuoteAnalysisList
+[2020-05-06 14:22:15:77927][http-nio-7301-exec-2] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectOfferProfitList
+[2020-05-06 14:22:15:77934][http-nio-7301-exec-2] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectOfferProfitList
+[2020-05-06 14:22:20:82294][http-nio-7301-exec-3] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectOfferProfitList
+[2020-05-06 14:22:20:82297][http-nio-7301-exec-3] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectOfferProfitList
 [2020-05-06 14:22:20:82306][http-nio-7301-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Failure in @ExceptionHandler com.ibiz.api.exception.GlobalExceptionHandler#handleException(Exception)
 java.lang.ClassCastException: class org.mybatis.spring.MyBatisSystemException cannot be cast to class java.util.function.Supplier (org.mybatis.spring.MyBatisSystemException is in unnamed module of loader 'app'; java.util.function.Supplier is in module java.base of loader 'bootstrap')
 	at com.ibiz.api.exception.GlobalExceptionHandler.handleException(GlobalExceptionHandler.java:21)
@@ -208,8 +208,8 @@ org.apache.ibatis.reflection.ReflectionException: There is no getter for propert
 	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:426)
 	at com.sun.proxy.$Proxy117.selectList(Unknown Source)
 	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:223)
-	at com.ibiz.api.dao.EstimateDao.selectQuoteAnalysisList(EstimateDao.java:301)
-	at com.ibiz.api.dao.EstimateDao$$FastClassBySpringCGLIB$$f7829ce3.invoke(<generated>)
+	at com.ibiz.api.dao.OfferProfitDAO.selectOfferProfitList(offerProfitDAO.java:301)
+	at com.ibiz.api.dao.OfferProfitDAO$$FastClassBySpringCGLIB$$f7829ce3.invoke(<generated>)
 	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
@@ -218,8 +218,8 @@ org.apache.ibatis.reflection.ReflectionException: There is no getter for propert
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)
-	at com.ibiz.api.dao.EstimateDao$$EnhancerBySpringCGLIB$$d1a0b4f.selectQuoteAnalysisList(<generated>)
-	at com.ibiz.api.service.EstimatePSService.selectQuoteAnalysisList(EstimatePSService.java:425)
+	at com.ibiz.api.dao.OfferProfitDAO$$EnhancerBySpringCGLIB$$d1a0b4f.selectOfferProfitList(<generated>)
+	at com.ibiz.api.service.EstimatePSService.selectOfferProfitList(EstimatePSService.java:425)
 	at com.ibiz.api.service.EstimatePSService$$FastClassBySpringCGLIB$$d70c41c6.invoke(<generated>)
 	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)
@@ -230,8 +230,8 @@ org.apache.ibatis.reflection.ReflectionException: There is no getter for propert
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)
-	at com.ibiz.api.service.EstimatePSService$$EnhancerBySpringCGLIB$$1eb51314.selectQuoteAnalysisList(<generated>)
-	at com.ibiz.api.controller.EstimateController.selectQuoteAnalysisList(EstimateController.java:44)
+	at com.ibiz.api.service.EstimatePSService$$EnhancerBySpringCGLIB$$1eb51314.selectOfferProfitList(<generated>)
+	at com.ibiz.api.controller.EstimateController.selectOfferProfitList(EstimateController.java:44)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -341,7 +341,7 @@ org.apache.ibatis.reflection.ReflectionException: There is no getter for propert
 [2020-05-06 14:25:04:7916][boundedElastic-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
 [2020-05-06 14:25:09:13081][http-nio-7301-exec-1] INFO  c.i.a.c.ProjectBizOpptyController - Call Controller : com.ibiz.api.controller.ProjectBizOpptyController.selectBizChanceList
 [2020-05-06 14:25:09:13107][http-nio-7301-exec-1] INFO  c.i.a.s.ProjectBizOpptyService - Call Service : com.ibiz.api.service.BizChanceService.selectBizChanceList
-[2020-05-06 14:25:10:14127][http-nio-7301-exec-2] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectQuoteAnalysisList
-[2020-05-06 14:25:10:14134][http-nio-7301-exec-2] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectQuoteAnalysisList
-[2020-05-06 14:25:15:19011][http-nio-7301-exec-3] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectQuoteAnalysisList
-[2020-05-06 14:25:15:19014][http-nio-7301-exec-3] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectQuoteAnalysisList
+[2020-05-06 14:25:10:14127][http-nio-7301-exec-2] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectOfferProfitList
+[2020-05-06 14:25:10:14134][http-nio-7301-exec-2] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectOfferProfitList
+[2020-05-06 14:25:15:19011][http-nio-7301-exec-3] INFO  c.i.a.controller.EstimateController - Call Controller : com.ibiz.api.controller.EstimateController.selectOfferProfitList
+[2020-05-06 14:25:15:19014][http-nio-7301-exec-3] INFO  c.i.api.service.EstimatePSService - Call Service : com.ibiz.api.service.EstimatePSService.selectOfferProfitList

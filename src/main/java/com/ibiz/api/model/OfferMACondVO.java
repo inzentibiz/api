@@ -4,7 +4,7 @@ package com.ibiz.api.model;
  * BEST080T : 유지보수제공조건상세
  *
  */
-public class MaConditionVO {
+public class OfferMACondVO {
 
     /**
      * 예상손익ID
@@ -24,7 +24,7 @@ public class MaConditionVO {
     /**
      * 기술서비스코드명
      */
-    private String techSvcNm;
+    private String techSvcCdNm;
 
     /**
      * 서비스제공조건내용
@@ -39,7 +39,7 @@ public class MaConditionVO {
     /**
      * 서비스단가기준코드명
      */
-    private String svcUpcCritNm;
+    private String svcUpcCritCdNm;
 
     /**
      * 연간예상투입원가금액
@@ -76,12 +76,12 @@ public class MaConditionVO {
         this.techSvcCd = techSvcCd;
     }
 
-    public String getTechSvcNm() {
-        return techSvcNm;
+    public String getTechSvcCdNm() {
+        return techSvcCdNm;
     }
 
-    public void setTechSvcNm(String techSvcNm) {
-        this.techSvcNm = techSvcNm;
+    public void setTechSvcCdNm(String techSvcCdNm) {
+        this.techSvcCdNm = techSvcCdNm;
     }
 
     public String getSvcPrvdCdntCont() {
@@ -100,12 +100,12 @@ public class MaConditionVO {
         this.svcUpcCritCd = svcUpcCritCd;
     }
 
-    public String getSvcUpcCritNm() {
-        return svcUpcCritNm;
+    public String getSvcUpcCritCdNm() {
+        return svcUpcCritCdNm;
     }
 
-    public void setSvcUpcCritNm(String svcUpcCritNm) {
-        this.svcUpcCritNm = svcUpcCritNm;
+    public void setSvcUpcCritCdNm(String svcUpcCritCdNm) {
+        this.svcUpcCritCdNm = svcUpcCritCdNm;
     }
 
     public Long getYrlyFcstPutCostAmt() {

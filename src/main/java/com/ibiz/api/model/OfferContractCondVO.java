@@ -1,6 +1,10 @@
 package com.ibiz.api.model;
-
-public class ContractOptionVO {
+/**
+ *
+ * BEST090T : 계약체결조건상세
+ *
+ */
+public class OfferContractCondVO {
 
     /**
      * 예상손익ID
@@ -18,9 +22,9 @@ public class ContractOptionVO {
     private String cntrCnclsCdntCd;
 
     /**
-     * 계약체결조건명
+     * 계약체결조건코드명
      */
-    private String cntrCnclsCdntNm;
+    private String cntrCnclsCdntCdNm;
 
     public String getFcstPalId() {
         return fcstPalId;
@@ -46,12 +50,12 @@ public class ContractOptionVO {
         this.cntrCnclsCdntCd = cntrCnclsCdntCd;
     }
 
-    public String getCntrCnclsCdntNm() {
-        return cntrCnclsCdntNm;
+    public String getCntrCnclsCdntCdNm() {
+        return cntrCnclsCdntCdNm;
     }
 
-    public void setCntrCnclsCdntNm(String cntrCnclsCdntNm) {
-        this.cntrCnclsCdntNm = cntrCnclsCdntNm;
+    public void setCntrCnclsCdntCdNm(String cntrCnclsCdntCdNm) {
+        this.cntrCnclsCdntCdNm = cntrCnclsCdntCdNm;
     }
 
 

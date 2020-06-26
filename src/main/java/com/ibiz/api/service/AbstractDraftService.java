@@ -3,7 +3,7 @@ package com.ibiz.api.service;
 import com.ibiz.api.dao.DraftDao;
 import com.ibiz.api.model.ApprovalDetailVO;
 import com.ibiz.api.model.ApprovalVO;
-import com.ibiz.api.model.AttcFileVO;
+import com.ibiz.api.model.AttachVO;
 import com.ibiz.api.utils.IndexUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -52,10 +52,10 @@ public class AbstractDraftService extends AbstractWebService {
 
     @Transactional
     protected void deleteCascadingDraft(ApprovalVO approvalVO) throws Exception {
-        AttcFileVO attcFileVO = new AttcFileVO();
+        AttachVO attachVO = new AttachVO();
 
         if (approvalVO.getAttcId() != null && !approvalVO.getAttcId().equals("")) {
-            attcFileVO.setAttcId(approvalVO.getAttcId());
+            attachVO.setAttcId(approvalVO.getAttcId());
         }
 
         draftDao.deleteDraftDetail(approvalVO);

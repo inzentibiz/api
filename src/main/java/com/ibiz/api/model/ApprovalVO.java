@@ -43,7 +43,7 @@ public class ApprovalVO {
     /**
      * 결재서식코드명
      */
-    private String santFrmtNm;
+    private String santFrmtCdNm;
 
     /**
      * 결재 알림 구분 코드
@@ -134,7 +134,7 @@ public class ApprovalVO {
     /**
      * 첨부파일 리스트
      */
-    private List<AttcFileVO> attcFileList;
+    private List<AttachVO> attcFileList;
 
     /**
      * 진행중인결재시퀀스
@@ -339,12 +339,12 @@ public class ApprovalVO {
         this.santFrmtCd = santFrmtCd;
     }
 
-    public String getSantFrmtNm() {
-        return santFrmtNm;
+    public String getSantFrmtCdNm() {
+        return santFrmtCdNm;
     }
 
-    public void setSantFrmtNm(String santFrmtNm) {
-        this.santFrmtNm = santFrmtNm;
+    public void setSantFrmtCdNm(String santFrmtCdNm) {
+        this.santFrmtCdNm = santFrmtCdNm;
     }
 
     public String getSantNtcDstCd() {
@@ -491,11 +491,11 @@ public class ApprovalVO {
         this.roleButtonList = roleButtonList;
     }
 
-    public List<AttcFileVO> getAttcFileList() {
+    public List<AttachVO> getAttcFileList() {
         return attcFileList;
     }
 
-    public void setAttcFileList(List<AttcFileVO> attcFileList) {
+    public void setAttcFileList(List<AttachVO> attcFileList) {
         this.attcFileList = attcFileList;
     }
 
@@ -791,7 +791,7 @@ public class ApprovalVO {
     public String toString() {
         return "ApprovalVO [totalCnt=" + totalCnt + ", santId=" + santId + ", santSeq=" + santSeq + ", santDeptId="
                 + santDeptId + ", docTitl=" + docTitl + ", bdctCont=" + bdctCont + ", santFrmtCd=" + santFrmtCd
-                + ", santFrmtNm=" + santFrmtNm + ", santNtcDstCd=" + santNtcDstCd + ", santNtcDstNm=" + santNtcDstNm
+                + ", santFrmtCdNm=" + santFrmtCdNm + ", santNtcDstCd=" + santNtcDstCd + ", santNtcDstNm=" + santNtcDstNm
                 + ", emgSantDstCd=" + emgSantDstCd + ", emgSantDstNm=" + emgSantDstNm + ", santPrgsStatCd="
                 + santPrgsStatCd + ", santPrgsStatNm=" + santPrgsStatNm + ", santAppvDstNm=" + santAppvDstNm
                 + ", attcId=" + attcId + ", regEmpId=" + regEmpId + ", regEmpNm=" + regEmpNm + ", RegDt=" + RegDt

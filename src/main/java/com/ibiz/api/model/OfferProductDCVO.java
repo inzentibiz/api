@@ -5,7 +5,7 @@ package com.ibiz.api.model;
  * BEST011T : 예상손익할인정책상세
  *
  */
-public class ProdDcPolicyVO {
+public class OfferProductDCVO {
 
     /**
      * 예상손익ID
@@ -37,7 +37,7 @@ public class ProdDcPolicyVO {
     /**
      * 가격할인옵션코드명
      */
-    private String prcDcOptnNm;
+    private String prcDcOptnCdNm;
 
     /**
      * 할인율
@@ -73,12 +73,12 @@ public class ProdDcPolicyVO {
         this.prcDcOptnCd = prcDcOptnCd;
     }
 
-    public String getPrcDcOptnNm() {
-        return prcDcOptnNm;
+    public String getPrcDcOptnCdNm() {
+        return prcDcOptnCdNm;
     }
 
-    public void setPrcDcOptnNm(String prcDcOptnNm) {
-        this.prcDcOptnNm = prcDcOptnNm;
+    public void setPrcDcOptnCdNm(String prcDcOptnCdNm) {
+        this.prcDcOptnCdNm = prcDcOptnCdNm;
     }
 
     public Double getDcRt() {

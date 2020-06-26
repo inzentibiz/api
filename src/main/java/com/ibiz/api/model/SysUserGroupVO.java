@@ -1,6 +1,6 @@
 package com.ibiz.api.model;
 
-public class UserGrpVO {
+public class SysUserGroupVO {
 
     /**
      * 순번
@@ -151,7 +151,7 @@ public class UserGrpVO {
 
     @Override
     public String toString() {
-        return "UserGrpVO [seq=" + seq + ", userId=" + userId + ", userNm=" + userNm + ", userGrpCd=" + userGrpCd
+        return "SysUserGroupVO [seq=" + seq + ", userId=" + userId + ", userNm=" + userNm + ", userGrpCd=" + userGrpCd
                 + ", userGrpNm=" + userGrpNm + ", athrDeptCd=" + athrDeptCd + ", athrDeptNm=" + athrDeptNm
                 + ", avlStartDate=" + avlStartDate + ", avlEndDate=" + avlEndDate + ", targetUserId=" + targetUserId
                 + ", sourceUserId=" + sourceUserId + ", deptId=" + deptId + "]";

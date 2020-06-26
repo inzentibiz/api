@@ -6,7 +6,7 @@ package com.ibiz.api.model;
  *
  */
 
-public class BsnsExpenseVO {
+public class OfferExpenseVO {
 
     /**
      * 예상손익ID
@@ -21,7 +21,7 @@ public class BsnsExpenseVO {
     /**
      * GL계정명
      */
-    private String glAcntNm;
+    private String glAcntCdNm;
 
 
     /**
@@ -59,7 +59,7 @@ public class BsnsExpenseVO {
     /**
      * 프로젝트직접경비명
      */
-    private String prjtDrexpNm;
+    private String prjtDrexpCdNm;
 
     /**
      * 예산산출기준내용
@@ -102,12 +102,12 @@ public class BsnsExpenseVO {
         this.glAcntCd = glAcntCd;
     }
 
-    public String getGlAcntNm() {
-        return glAcntNm;
+    public String getGlAcntCdNm() {
+        return glAcntCdNm;
     }
 
-    public void setGlAcntNm(String glAcntNm) {
-        this.glAcntNm = glAcntNm;
+    public void setGlAcntCdNm(String glAcntCdNm) {
+        this.glAcntCdNm = glAcntCdNm;
     }
 
     public Long getDrcstAmt() {
@@ -158,12 +158,12 @@ public class BsnsExpenseVO {
         this.prjtDrexpCd = prjtDrexpCd;
     }
 
-    public String getPrjtDrexpNm() {
-        return prjtDrexpNm;
+    public String getPrjtDrexpCdNm() {
+        return prjtDrexpCdNm;
     }
 
-    public void setPrjtDrexpNm(String prjtDrexpNm) {
-        this.prjtDrexpNm = prjtDrexpNm;
+    public void setPrjtDrexpCdNm(String prjtDrexpCdNm) {
+        this.prjtDrexpCdNm = prjtDrexpCdNm;
     }
 
     public String getBdgtCmptCritCont() {

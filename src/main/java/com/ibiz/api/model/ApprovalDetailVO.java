@@ -100,7 +100,7 @@ public class ApprovalDetailVO {
 
     private String sessEmpId;
 
-    private UserGrpVO userGrpVO;
+    private SysUserGroupVO sysUserGroupVO;
 
     private String mdtrAprnYn;
 
@@ -266,12 +266,12 @@ public class ApprovalDetailVO {
         this.sessEmpId = sessEmpId;
     }
 
-    public UserGrpVO getUserGrpVO() {
-        return userGrpVO;
+    public SysUserGroupVO getSysUserGroupVO() {
+        return sysUserGroupVO;
     }
 
-    public void setUserGrpVO(UserGrpVO userGrpVO) {
-        this.userGrpVO = userGrpVO;
+    public void setSysUserGroupVO(SysUserGroupVO sysUserGroupVO) {
+        this.sysUserGroupVO = sysUserGroupVO;
     }
 
     public String getMdtrAprnYn() {

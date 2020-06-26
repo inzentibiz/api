@@ -1,7 +1,7 @@
 package com.ibiz.api.service;
 
 import com.ibiz.api.dao.WebDao;
-import com.ibiz.api.model.UserGrpVO;
+import com.ibiz.api.model.SysUserGroupVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ public class AbstractWebService {
     private WebDao webDao;
 
     @Transactional
-    protected boolean isBelongToAuthDept(UserGrpVO userGrpVO) {
+    protected boolean isBelongToAuthDept(SysUserGroupVO sysUserGroupVO) {
         //List<String> resultList = webDAO.selectIsBelongToAuthDept(userGrpVO);
         HashSet<String> allSourceDeptIdSet = new HashSet<>();
         HashSet<String> allTargetDeptIdSet = new HashSet<>();
@@ -26,12 +26,12 @@ public class AbstractWebService {
         int preSize;
         int postSize;
 
-        List<String> sourceDeptIdList = webDao.selectAuthDeptIdList(userGrpVO.getSourceUserId());
+        List<String> sourceDeptIdList = webDao.selectAuthDeptIdList(sysUserGroupVO.getSourceUserId());
         for (String sourceDeptId : sourceDeptIdList) {
             allSourceDeptIdSet.addAll(webDao.selectAllAuthDeptIdList(sourceDeptId));
         }
 
-        List<String> targetDeptIdList = webDao.selectAuthDeptIdList(userGrpVO.getTargetUserId());
+        List<String> targetDeptIdList = webDao.selectAuthDeptIdList(sysUserGroupVO.getTargetUserId());
         for (String targetDeptId : targetDeptIdList) {
             allTargetDeptIdSet.addAll(webDao.selectAllAuthDeptIdList(targetDeptId));
         }

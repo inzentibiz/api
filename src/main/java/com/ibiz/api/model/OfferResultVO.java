@@ -6,7 +6,7 @@ package com.ibiz.api.model;
  *
  */
 
-public class BsnsRslSmryVO {
+public class OfferResultVO {
 
     /**
      * 예상손익ID

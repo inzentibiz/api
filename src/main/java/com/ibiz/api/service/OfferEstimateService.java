@@ -132,18 +132,18 @@ public class OfferEstimateService extends AbstractDraftService {
         EstimateVO estimateVO = requestPayload.getDto();
 
         ApprovalDetailVO  approvalDetail = new ApprovalDetailVO();
-        UserGrpVO userGrpVO = new UserGrpVO();
+        SysUserGroupVO sysUserGroupVO = new SysUserGroupVO();
         List<Map<String, String>> buttonList = new ArrayList<>();
         ApprovalVO approvalVO = new ApprovalVO();
         estimateVO = offerEstimateDAO.selectOfferEstimate(estimateVO.getEstiId());
 
-        userGrpVO.setTargetUserId(estimateVO.getSlsEmpId());
-        userGrpVO.setSourceUserId(accountVO.getEmpId());
+        sysUserGroupVO.setTargetUserId(estimateVO.getSlsEmpId());
+        sysUserGroupVO.setSourceUserId(accountVO.getEmpId());
 
-        if (estimateVO.getEstiId() != null && (super.isBelongToAuthDept(userGrpVO)) || accountVO.getRoleList().contains("AD")) {
+        if (estimateVO.getEstiId() != null && (super.isBelongToAuthDept(sysUserGroupVO)) || accountVO.getRoleList().contains("AD")) {
 
             // 버튼 리스트
-            if (estimateVO.getEstisStatCd().equals("A1") || estimateVO.getEstisStatCd().equals("A2") &&  super.isBelongToAuthDept(userGrpVO) ) {
+            if (estimateVO.getEstisStatCd().equals("A1") || estimateVO.getEstisStatCd().equals("A2") &&  super.isBelongToAuthDept(sysUserGroupVO) ) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "수정"); }});
                 buttonList.add(new HashMap<String, String>() {{put("button", "발행"); }});
             }/*else if (estiIssueVO.getEstisStatCd().equals("B2") &&  super.isBelongToAuthDept(userGrpVO) ) {
@@ -151,7 +151,7 @@ public class OfferEstimateService extends AbstractDraftService {
             }*/
 
             if (accountVO.getRoleList().contains("AD")
-                    || (userGrpVO.getTargetUserId().equals(userGrpVO.getSourceUserId()) && estimateVO.getEstisStatCd().equals("A"))) {
+                    || (sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) && estimateVO.getEstisStatCd().equals("A"))) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "삭제"); }});
             }
 

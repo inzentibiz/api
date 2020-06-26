@@ -6,7 +6,7 @@ package com.ibiz.api.model;
  *
  */
 
-public class BsnsProdDetailVO {
+public class OfferProductVO {
 
     /**
      * 예상손익ID
@@ -89,7 +89,7 @@ public class BsnsProdDetailVO {
     /**
      * 서비스단가기준코드명
      */
-    private String svcUpcCritNm;
+    private String svcUpcCritCdNm;
 
     // 201911상품변경
     /*
@@ -220,7 +220,7 @@ public class BsnsProdDetailVO {
     /**
      * 가격할인옵션코드명
      */
-    private String prcDcOptnNm;
+    private String prcDcOptnCdNm;
 
     /**
      * 할인율
@@ -235,7 +235,7 @@ public class BsnsProdDetailVO {
     /**
      * 격할인옵션명(할인정책1)
      */
-    private String prcDcOptnNmU;
+    private String prcDcOptnCdNmU;
 
     /**
      * 할인율(할인정책1)
@@ -250,7 +250,7 @@ public class BsnsProdDetailVO {
     /**
      * 격할인옵션명(할인정책2)
      */
-    private String prcDcOptnNmH;
+    private String prcDcOptnCdNmH;
 
     /**
      * 할인율(할인정책2)
@@ -265,7 +265,7 @@ public class BsnsProdDetailVO {
     /**
      * 격할인옵션명(할인정책2)
      */
-    private String prcDcOptnNmM;
+    private String prcDcOptnCdNmM;
 
     /**
      * 할인율(할인정책3)
@@ -356,7 +356,7 @@ public class BsnsProdDetailVO {
     /**
      * 투입인력등급코드명
      */
-    private String putHmfrGrdNm;
+    private String putHmfrGrdCdNm;
 
     /**
      * 표준원가금액
@@ -386,7 +386,7 @@ public class BsnsProdDetailVO {
     /**
      * MA제품단가단위명(유지보수 견적내역)
      */
-    private String maGodsUpcUnitNm;
+    private String maGodsUpcUnitCdNm;
 
     /**
      * MA제품공급수량(유지보수 견적내역)
@@ -689,12 +689,12 @@ public class BsnsProdDetailVO {
         this.prcDcOptnCd = prcDcOptnCd;
     }
 
-    public String getPrcDcOptnNm() {
-        return prcDcOptnNm;
+    public String getPrcDcOptnCdNm() {
+        return prcDcOptnCdNm;
     }
 
-    public void setPrcDcOptnNm(String prcDcOptnNm) {
-        this.prcDcOptnNm = prcDcOptnNm;
+    public void setPrcDcOptnCdNm(String prcDcOptnCdNm) {
+        this.prcDcOptnCdNm = prcDcOptnCdNm;
     }
 
     public Double getDcRt() {
@@ -713,12 +713,12 @@ public class BsnsProdDetailVO {
         this.prcDcOptnCdU = prcDcOptnCdU;
     }
 
-    public String getPrcDcOptnNmU() {
-        return prcDcOptnNmU;
+    public String getPrcDcOptnCdNmU() {
+        return prcDcOptnCdNmU;
     }
 
-    public void setPrcDcOptnNmU(String prcDcOptnNmU) {
-        this.prcDcOptnNmU = prcDcOptnNmU;
+    public void setPrcDcOptnCdNmU(String prcDcOptnCdNmU) {
+        this.prcDcOptnCdNmU = prcDcOptnCdNmU;
     }
 
     public Double getDcRtU() {
@@ -737,12 +737,12 @@ public class BsnsProdDetailVO {
         this.prcDcOptnCdH = prcDcOptnCdH;
     }
 
-    public String getPrcDcOptnNmH() {
-        return prcDcOptnNmH;
+    public String getPrcDcOptnCdNmH() {
+        return prcDcOptnCdNmH;
     }
 
-    public void setPrcDcOptnNmH(String prcDcOptnNmH) {
-        this.prcDcOptnNmH = prcDcOptnNmH;
+    public void setPrcDcOptnCdNmH(String prcDcOptnCdNmH) {
+        this.prcDcOptnCdNmH = prcDcOptnCdNmH;
     }
 
     public Double getDcRtH() {
@@ -761,12 +761,12 @@ public class BsnsProdDetailVO {
         this.prcDcOptnCdM = prcDcOptnCdM;
     }
 
-    public String getPrcDcOptnNmM() {
-        return prcDcOptnNmM;
+    public String getPrcDcOptnCdNmM() {
+        return prcDcOptnCdNmM;
     }
 
-    public void setPrcDcOptnNmM(String prcDcOptnNmM) {
-        this.prcDcOptnNmM = prcDcOptnNmM;
+    public void setPrcDcOptnCdNmM(String prcDcOptnCdNmM) {
+        this.prcDcOptnCdNmM = prcDcOptnCdNmM;
     }
 
     public Double getDcRtM() {
@@ -929,12 +929,12 @@ public class BsnsProdDetailVO {
         this.lastCustId = lastCustId;
     }
 
-    public String getPutHmfrGrdNm() {
-        return putHmfrGrdNm;
+    public String getPutHmfrGrdCdNm() {
+        return putHmfrGrdCdNm;
     }
 
-    public void setPutHmfrGrdNm(String putHmfrGrdNm) {
-        this.putHmfrGrdNm = putHmfrGrdNm;
+    public void setPutHmfrGrdCdNm(String putHmfrGrdCdNm) {
+        this.putHmfrGrdCdNm = putHmfrGrdCdNm;
     }
 
     public String getSvcUpcCritCd() {
@@ -945,12 +945,12 @@ public class BsnsProdDetailVO {
         this.svcUpcCritCd = svcUpcCritCd;
     }
 
-    public String getSvcUpcCritNm() {
-        return svcUpcCritNm;
+    public String getSvcUpcCritCdNm() {
+        return svcUpcCritCdNm;
     }
 
-    public void setSvcUpcCritNm(String svcUpcCritNm) {
-        this.svcUpcCritNm = svcUpcCritNm;
+    public void setSvcUpcCritCdNm(String svcUpcCritCdNm) {
+        this.svcUpcCritCdNm = svcUpcCritCdNm;
     }
 
     public String getMaGodsSplyYam() {
@@ -969,12 +969,12 @@ public class BsnsProdDetailVO {
         this.maGodsUpcUnitCd = maGodsUpcUnitCd;
     }
 
-    public String getMaGodsUpcUnitNm() {
-        return maGodsUpcUnitNm;
+    public String getMaGodsUpcUnitCdNm() {
+        return maGodsUpcUnitCdNm;
     }
 
-    public void setMaGodsUpcUnitNm(String maGodsUpcUnitNm) {
-        this.maGodsUpcUnitNm = maGodsUpcUnitNm;
+    public void setMaGodsUpcUnitCdNm(String maGodsUpcUnitCdNm) {
+        this.maGodsUpcUnitCdNm = maGodsUpcUnitCdNm;
     }
 
     public Double getMaGodsSplyQnt() {
