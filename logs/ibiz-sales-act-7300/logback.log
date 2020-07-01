@@ -29,11 +29,11 @@ java.lang.IllegalStateException: Failed to load property source from location 'c
 	at com.ibiz.api.ApiApplication.main(ApiApplication.java:10)
 Caused by: org.yaml.snakeyaml.scanner.ScannerException: while scanning a simple key
  in 'reader', line 84, column 3:
-      --- #dev È¯°æ end
+      --- #dev È¯ï¿½ï¿½ end
       ^
 could not find expected ':'
  in 'reader', line 86, column 1:
-    --- #staging È¯°æ start
+    --- #staging È¯ï¿½ï¿½ start
     ^
 
 	at org.yaml.snakeyaml.scanner.ScannerImpl.stalePossibleSimpleKeys(ScannerImpl.java:464)
@@ -266,7 +266,7 @@ could not find expected ':'
 [2020-06-23 14:03:26:962102][http-nio-7300-exec-5] INFO  c.i.a.c.BizChanceController - Call Controller : com.ibiz.api.controller.BizChanceController.selectExcelDwnlBizChanceSellBuyList
 [2020-06-23 14:03:26:962106][http-nio-7300-exec-5] INFO  c.ibiz.api.service.BizChanceService - Call Service : com.ibiz.api.service.BizChanceService.selectExcelDwnlBizChanceSellBuyList
 [2020-06-23 14:03:27:962695][http-nio-7300-exec-7] INFO  c.i.a.c.BizChanceController - Call Controller : com.ibiz.api.controller.BizChanceController.selectExcelDwnlBizChanceList
-[2020-06-23 14:03:27:962701][http-nio-7300-exec-7] INFO  c.ibiz.api.service.BizChanceService - Call Service : com.ibiz.api.service.BizChanceService.getBizOpportunityDetailList
+[2020-06-23 14:03:27:962701][http-nio-7300-exec-7] INFO  c.ibiz.api.service.BizChanceService - Call Service : com.ibiz.api.service.BizChanceService.getBizChanceDetailList
 [2020-06-23 14:03:33:968652][http-nio-7300-exec-6] INFO  c.i.a.c.BizChanceController - Call Controller : com.ibiz.api.controller.BizChanceController.selectExcelDwnlBizChanceSellBuyList
 [2020-06-23 14:03:33:968656][http-nio-7300-exec-6] INFO  c.ibiz.api.service.BizChanceService - Call Service : com.ibiz.api.service.BizChanceService.selectExcelDwnlBizChanceSellBuyList
 [2020-06-23 14:04:20:1015807][http-nio-7300-exec-10] INFO  c.i.a.c.BizChanceController - Call Controller : com.ibiz.api.controller.BizChanceController.selectBizChanceList

@@ -229,12 +229,12 @@ public class BizChanceVO {
     /**
      * 월별 매출매입 리스트
      */
-    private List<BizChanceAmountVO> bizOpportunityAmtList;
+    private List<BizChanceAmountVO> bizChanceAmtList;
 
     /**
      * 월별 투입인원 리스트
      */
-    private List<BizChancePersonVO> bizOpportunityNopList;
+    private List<BizChancePersonVO> bizChanceNopList;
 
     /**
      * 최종고객명
@@ -311,7 +311,7 @@ public class BizChanceVO {
     /**
      * 사업기회 이관 리스트
      */
-    private List<BizChanceVO> bizOpportunityTransferList;
+    private List<BizChanceVO> bizChanceChangeList;
 
     /**
      * 예상손익MA 연간투입원가
@@ -330,12 +330,12 @@ public class BizChanceVO {
 
     private BizChanceActivityVO bizChanceActivityVO;
 
-    public List<BizChanceVO> getBizOpportunityTransferList() {
-        return bizOpportunityTransferList;
+    public List<BizChanceVO> getBizChanceChangeList() {
+        return bizChanceChangeList;
     }
 
-    public void setBizOpportunityTransferList(List<BizChanceVO> bizOpportunityTransferList) {
-        this.bizOpportunityTransferList = bizOpportunityTransferList;
+    public void setBizChanceChangeList(List<BizChanceVO> bizChanceChangeList) {
+        this.bizChanceChangeList = bizChanceChangeList;
     }
 
     public String getFcstPalId() {
@@ -664,20 +664,20 @@ public class BizChanceVO {
         this.sumPutNopCount = sumPutNopCount;
     }
 
-    public List<BizChanceAmountVO> getBizOpportunityAmtList() {
-        return bizOpportunityAmtList;
+    public List<BizChanceAmountVO> getBizChanceAmtList() {
+        return bizChanceAmtList;
     }
 
-    public void setBizOpportunityAmtList(List<BizChanceAmountVO> bizOpportunityAmtList) {
-        this.bizOpportunityAmtList = bizOpportunityAmtList;
+    public void setBizChanceAmtList(List<BizChanceAmountVO> bizChanceAmtList) {
+        this.bizChanceAmtList = bizChanceAmtList;
     }
 
-    public List<BizChancePersonVO> getBizOpportunityNopList() {
-        return bizOpportunityNopList;
+    public List<BizChancePersonVO> getBizChanceNopList() {
+        return bizChanceNopList;
     }
 
-    public void setBizOpportunityNopList(List<BizChancePersonVO> bizOpportunityNopList) {
-        this.bizOpportunityNopList = bizOpportunityNopList;
+    public void setBizChanceNopList(List<BizChancePersonVO> bizChanceNopList) {
+        this.bizChanceNopList = bizChanceNopList;
     }
 
     public String getLastCustNm() {

@@ -234,7 +234,7 @@ public class VRBAnalysisVO {
     /**
      * 사업기회리스트
      */
-    private List<BizChanceVO> bizOpportunityList;
+    private List<BizChanceVO> bizChanceList;
 
     /**
      * 영업활동리스트
@@ -252,7 +252,7 @@ public class VRBAnalysisVO {
 
     private ApprovalDetailVO approvalDetail;
 
-    private List<VRBBizChanceVO> vrbBizOpportunityList;
+    private List<VRBBizChanceVO> vrbBizChanceList;
 
     private ApprovalVO approval;
 
@@ -708,12 +708,12 @@ public class VRBAnalysisVO {
         this.vrbBusinessAnalysisList = vrbBusinessAnalysisList;
     }
 
-    public List<BizChanceVO> getBizOpportunityList() {
-        return bizOpportunityList;
+    public List<BizChanceVO> getBizChanceList() {
+        return bizChanceList;
     }
 
-    public void setBizOpportunityList(List<BizChanceVO> bizOpportunityList) {
-        this.bizOpportunityList = bizOpportunityList;
+    public void setBizChanceList(List<BizChanceVO> bizChanceList) {
+        this.bizChanceList = bizChanceList;
     }
 
     public List<BizChanceActivityVO> getSalesActivityList() {
@@ -756,12 +756,12 @@ public class VRBAnalysisVO {
         this.approvalDetail = approvalDetail;
     }
 
-    public List<VRBBizChanceVO> getVrbBizOpportunityList() {
-        return vrbBizOpportunityList;
+    public List<VRBBizChanceVO> getVrbBizChanceList() {
+        return vrbBizChanceList;
     }
 
-    public void setVrbBizOpportunityList(List<VRBBizChanceVO> vrbBizOpportunityList) {
-        this.vrbBizOpportunityList = vrbBizOpportunityList;
+    public void setVrbBizChanceList(List<VRBBizChanceVO> vrbBizChanceList) {
+        this.vrbBizChanceList = vrbBizChanceList;
     }
 
     public ApprovalVO getApproval() {

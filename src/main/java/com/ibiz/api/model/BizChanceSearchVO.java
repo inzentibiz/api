@@ -450,7 +450,7 @@ public class BizChanceSearchVO {
     /**
      * 사업기회 이관 리스트
      */
-    private List<BizChanceVO> bizOpportunityTransferList;
+    private List<BizChanceVO> bizChanceChangeList;
 
     /**
      * 윈도우팝업여부
@@ -1046,11 +1046,11 @@ public class BizChanceSearchVO {
         this.chgEndDate = chgEndDate;
     }
 
-    public List<BizChanceVO> getBizOpportunityTransferList() {
-        return bizOpportunityTransferList;
+    public List<BizChanceVO> getBizChanceChangeList() {
+        return bizChanceChangeList;
     }
-    public void setBizOpportunityTransferList(List<BizChanceVO> bizOpportunityTransferList) {
-        this.bizOpportunityTransferList = bizOpportunityTransferList;
+    public void setBizChanceChangeList(List<BizChanceVO> bizChanceChangeList) {
+        this.bizChanceChangeList = bizChanceChangeList;
     }
 
     public String getUserId() {

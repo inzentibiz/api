@@ -523,9 +523,9 @@ public class OfferProfitService extends AbstractDraftService {
         log.info("Call Service : " + this.getClass().getName() + ".selectBizChanceList");
         BizChanceSearchVO bizChanceSearchVO = requestPayload.getDto();
 
-        List<BizChanceVO> BizOpportList = bizChanceDAO.selectBizChanceList(bizChanceSearchVO);
+        List<BizChanceVO> bizChanceList = bizChanceDAO.selectBizChanceList(bizChanceSearchVO);
 
-        return BizOpportList;
+        return bizChanceList;
     }
 
     @Transactional
@@ -536,34 +536,34 @@ public class OfferProfitService extends AbstractDraftService {
         BizChanceAmountVO bizChanceAmountVO = new BizChanceAmountVO();
         BizChancePersonVO bizChancePersonVO = new BizChancePersonVO();
 
-        List<BizChanceVO> bizOpportList = bizChanceDAO.selectBizChanceView(bizChanceSearchVO);
+        List<BizChanceVO> bizChanceList = bizChanceDAO.selectBizChanceView(bizChanceSearchVO);
 
-        for(int i=0; i<bizOpportList.size(); i++) {
-            bizChanceAmountVO.setBoptId(bizOpportList.get(i).getBoptId());
-            bizChancePersonVO.setBoptId(bizOpportList.get(i).getBoptId());
+        for(int i=0; i<bizChanceList.size(); i++) {
+            bizChanceAmountVO.setBoptId(bizChanceList.get(i).getBoptId());
+            bizChancePersonVO.setBoptId(bizChanceList.get(i).getBoptId());
 
             List<BizChanceAmountVO> amtList = bizChanceDAO.selectBizChanceAmtList(bizChanceAmountVO);
             List<BizChancePersonVO> nopList = bizChanceDAO.selectBizChanceNopList(bizChancePersonVO);
 
-            bizOpportList.get(i).setBizOpportunityAmtList(amtList);
-            bizOpportList.get(i).setBizOpportunityNopList(nopList);
+            bizChanceList.get(i).setBizChanceAmtList(amtList);
+            bizChanceList.get(i).setBizChanceNopList(nopList);
 
-            bizOpportList.get(i).setSumPutNopCount(0);
+            bizChanceList.get(i).setSumPutNopCount(0);
             for(int j=0; j<nopList.size(); j++) {
-                bizOpportList.get(i).setSumPutNopCount(bizOpportList.get(i).getSumPutNopCount() + nopList.get(j).getPutNopCount());
+                bizChanceList.get(i).setSumPutNopCount(bizChanceList.get(i).getSumPutNopCount() + nopList.get(j).getPutNopCount());
             }
-            bizOpportList.get(i).setSumSellAmt(0);
-            bizOpportList.get(i).setSumBuyAmt(0);
+            bizChanceList.get(i).setSumSellAmt(0);
+            bizChanceList.get(i).setSumBuyAmt(0);
             for(int j=0; j<amtList.size(); j++) {
 
-                bizOpportList.get(i).setSumSellAmt(bizOpportList.get(i).getSumSellAmt() + (amtList.get(j).getSellAmt()== null? 0: amtList.get(j).getSellAmt()));
-                bizOpportList.get(i).setSumBuyAmt(bizOpportList.get(i).getSumBuyAmt() + (amtList.get(j).getBuyAmt()== null? 0: amtList.get(j).getBuyAmt()) );
+                bizChanceList.get(i).setSumSellAmt(bizChanceList.get(i).getSumSellAmt() + (amtList.get(j).getSellAmt()== null? 0: amtList.get(j).getSellAmt()));
+                bizChanceList.get(i).setSumBuyAmt(bizChanceList.get(i).getSumBuyAmt() + (amtList.get(j).getBuyAmt()== null? 0: amtList.get(j).getBuyAmt()) );
             }
         }
 
-        bizOpportList.get(0).setChgDtView(bizOpportList.get(0).getChgDt());
+        bizChanceList.get(0).setChgDtView(bizChanceList.get(0).getChgDt());
 
-        return bizOpportList;
+        return bizChanceList;
     }
 
 
@@ -578,17 +578,17 @@ public class OfferProfitService extends AbstractDraftService {
         bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
         bizChancePersonVO.setBoptId(bizChanceVO.getBoptId());
 
-        BizChanceVO bizOpportunity = bizChanceDAO.selectBizChance(bizChanceVO);
+        BizChanceVO bizChance = bizChanceDAO.selectBizChance(bizChanceVO);
         List<BizChanceAmountVO> amtList = bizChanceDAO.selectBizChanceAmtList(bizChanceAmountVO);
         List<BizChancePersonVO> nopList = bizChanceDAO.selectBizChanceNopList(bizChancePersonVO);
 
-        bizOpportunity.setBizOpportunityAmtList(amtList);
-        bizOpportunity.setBizOpportunityNopList(nopList);
-        bizOpportunity.setChgDtView(bizOpportunity.getChgDt());
+        bizChance.setBizChanceAmtList(amtList);
+        bizChance.setBizChanceNopList(nopList);
+        bizChance.setChgDtView(bizChance.getChgDt());
 
-        bizOpportunity.setSalesActivityList(bizChanceDAO.selectBizChanceActivityList(bizChanceVO));
+        bizChance.setSalesActivityList(bizChanceDAO.selectBizChanceActivityList(bizChanceVO));
 
-        return bizOpportunity;
+        return bizChance;
     }
 
     @Transactional
@@ -616,9 +616,9 @@ public class OfferProfitService extends AbstractDraftService {
         log.info("Call Service : " + this.getClass().getName() + ".selectBizChancePopupList");
         BizChanceSearchVO bizChanceSearchVO = requestPayload.getDto();
 
-        List<BizChanceVO> BizOpportList = bizChanceDAO.selectBizChancePopupList(bizChanceSearchVO);
+        List<BizChanceVO> bizChanceList = bizChanceDAO.selectBizChancePopupList(bizChanceSearchVO);
 
-        return BizOpportList;
+        return bizChanceList;
     }
 
     // INSERT
@@ -648,9 +648,9 @@ public class OfferProfitService extends AbstractDraftService {
         bizChanceDAO.insertBizChance(bizChanceVO);
         bizChanceDAO.insertBizChanceHistory(bizChanceVO);
 
-        if(bizChanceVO.getBizOpportunityAmtList() != null) {
+        if(bizChanceVO.getBizChanceAmtList() != null) {
             int amtSeq = 1;
-            for(BizChanceAmountVO bizChanceAmountVO : bizChanceVO.getBizOpportunityAmtList()) {
+            for(BizChanceAmountVO bizChanceAmountVO : bizChanceVO.getBizChanceAmtList()) {
                 bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
                 bizChanceAmountVO.setChgDt(chgDt);
                 bizChanceAmountVO.setSeq(amtSeq);
@@ -661,8 +661,8 @@ public class OfferProfitService extends AbstractDraftService {
                 amtSeq++;
             }
         }
-        if(bizChanceVO.getBizOpportunityNopList() != null) {
-            for(BizChancePersonVO bizChancePersonVO : bizChanceVO.getBizOpportunityNopList()) {
+        if(bizChanceVO.getBizChanceNopList() != null) {
+            for(BizChancePersonVO bizChancePersonVO : bizChanceVO.getBizChanceNopList()) {
                 bizChancePersonVO.setBoptId(bizChanceVO.getBoptId());
                 bizChancePersonVO.setPutTimeUnitCd("A");
                 bizChancePersonVO.setChgDt(chgDt);
@@ -702,11 +702,11 @@ public class OfferProfitService extends AbstractDraftService {
         }
         bizChanceDAO.insertBizChanceHistory(bizChanceVO);
 
-        if(bizChanceVO.getBizOpportunityAmtList() != null) {
+        if(bizChanceVO.getBizChanceAmtList() != null) {
             bizChanceDAO.deleteBizChanceAmtAll(bizChanceVO);
 
             int amtSeq = 1;
-            for(BizChanceAmountVO bizChanceAmountVO : bizChanceVO.getBizOpportunityAmtList()) {
+            for(BizChanceAmountVO bizChanceAmountVO : bizChanceVO.getBizChanceAmtList()) {
                 bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
                 bizChanceAmountVO.setChgDt(chgDt);
                 bizChanceAmountVO.setSeq(amtSeq);
@@ -719,10 +719,10 @@ public class OfferProfitService extends AbstractDraftService {
             }
         }
 
-        if(bizChanceVO.getBizOpportunityNopList() != null) {
+        if(bizChanceVO.getBizChanceNopList() != null) {
             bizChanceDAO.deleteBizChanceNopAll(bizChanceVO);
 
-            for(BizChancePersonVO bizChancePersonVO : bizChanceVO.getBizOpportunityNopList()) {
+            for(BizChancePersonVO bizChancePersonVO : bizChanceVO.getBizChanceNopList()) {
                 bizChancePersonVO.setBoptId(bizChanceVO.getBoptId());
                 bizChancePersonVO.setPutTimeUnitCd("A");
                 bizChancePersonVO.setChgDt(chgDt);
@@ -815,9 +815,9 @@ public class OfferProfitService extends AbstractDraftService {
         AccountVO accountVO = requestPayload.getAccountVO();
         BizChanceSearchVO bizChanceSearchVO = requestPayload.getDto();
 
-        List<BizChanceVO> BizOpportList = bizChanceDAO.selectBizChanceRelList(bizChanceSearchVO);
+        List<BizChanceVO> bizChanceList = bizChanceDAO.selectBizChanceRelList(bizChanceSearchVO);
 
-        return BizOpportList;
+        return bizChanceList;
     }
 
     @Transactional
@@ -826,19 +826,19 @@ public class OfferProfitService extends AbstractDraftService {
         AccountVO accountVO = requestPayload.getAccountVO();
         BizChanceSearchVO bizChanceSearchVO = requestPayload.getDto();
 
-        List<BizChanceVO> BizOpportList = null;
+        List<BizChanceVO> bizChanceList = null;
 
         String prjtTypeCd = bizChanceDAO.selectPrjtTypeCd(bizChanceSearchVO.getBoptId());
         bizChanceSearchVO.setPrjtTypeCd(prjtTypeCd);
 
         //해당 예상손익분석서
         if(bizChanceSearchVO.getPrjtTypeCd().equals("B2")) {
-            BizOpportList = bizChanceDAO.selectRlvnOfferProfitMAList(bizChanceSearchVO);
+            bizChanceList = bizChanceDAO.selectRlvnOfferProfitMAList(bizChanceSearchVO);
         }else {
-            BizOpportList = bizChanceDAO.selectRlvnOfferProfitPSList(bizChanceSearchVO);
+            bizChanceList = bizChanceDAO.selectRlvnOfferProfitPSList(bizChanceSearchVO);
         }
 
-        return BizOpportList;
+        return bizChanceList;
     }
 
 
@@ -885,7 +885,7 @@ public class OfferProfitService extends AbstractDraftService {
         bizChanceVO.getSlsEmpId();
 
         try{
-            for(BizChanceVO model : bizChanceVO.getBizOpportunityTransferList()) {
+            for(BizChanceVO model : bizChanceVO.getBizChanceChangeList()) {
                 bizChanceVO.setBoptId(model.getBoptId());
                 transferBizChanceVO.setBoptId(model.getBoptId());
 
@@ -928,7 +928,7 @@ public class OfferProfitService extends AbstractDraftService {
 
     @Transactional
     public List<ExcelBizChanceVO> selectExcelDwnlBizChanceList(Payload<BizChanceSearchVO> requestPayload) throws Exception {
-        log.info("Call Service : " + this.getClass().getName() + ".getBizOpportunityDetailList");
+        log.info("Call Service : " + this.getClass().getName() + ".getBizChanceDetailList");
         BizChanceSearchVO bizChanceSearchVO = requestPayload.getDto();
 
         List<ExcelBizChanceVO> list = bizChanceDAO.selectExcelDwnlBizChanceList(bizChanceSearchVO);

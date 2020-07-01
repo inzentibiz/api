@@ -214,7 +214,7 @@ public class ProjectVO {
     /**
      * 사업기회리스트
      */
-    private List<BizChanceVO> bizOpportunityList;
+    private List<BizChanceVO> bizChanceList;
 
     /**
      * 영업대표 이관을 위한 리스트
@@ -600,12 +600,12 @@ public class ProjectVO {
         this.issueTitl = issueTitl;
     }
 
-    public List<BizChanceVO> getBizOpportunityList() {
-        return bizOpportunityList;
+    public List<BizChanceVO> getBizChanceList() {
+        return bizChanceList;
     }
 
-    public void setBizOpportunityList(List<BizChanceVO> bizOpportunityList) {
-        this.bizOpportunityList = bizOpportunityList;
+    public void setBizChanceList(List<BizChanceVO> bizChanceList) {
+        this.bizChanceList = bizChanceList;
     }
 
     public List<ProjectVO> getProjectSlsTransferList() {

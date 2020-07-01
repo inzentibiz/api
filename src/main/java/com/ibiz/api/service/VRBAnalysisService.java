@@ -48,7 +48,7 @@ public class VRBAnalysisService extends AbstractDraftService {
 
         vrb = vrbAnalysisDAO.selectVRBAnalysis(vrbAnalysisVO);
         vrb.setProject(vrbAnalysisDAO.selectVRBAnalysisProject(vrbAnalysisVO));
-        vrb.setVrbBizOpportunityList(vrbAnalysisDAO.selectVRBAnalysisBizChanceListForView(vrbAnalysisVO));
+        vrb.setVrbBizChanceList(vrbAnalysisDAO.selectVRBAnalysisBizChanceListForView(vrbAnalysisVO));
         vrb.setVrbCustomerAnalysisList(vrbAnalysisDAO.selectVRBCustomerList(vrbAnalysisVO));
         vrb.setVrbBusinessAnalysisList(vrbAnalysisDAO.selectVRBStrategyList(vrbAnalysisVO));
         vrb.setVrbCompetitorAnalysisList(vrbAnalysisDAO.selectVRBCompetitorList(vrbAnalysisVO));
@@ -234,7 +234,7 @@ public class VRBAnalysisService extends AbstractDraftService {
         VRBAnalysisVO vrb = new VRBAnalysisVO();
 
         vrb.setProject(vrbAnalysisDAO.selectVRBAnalysisProject(vrbAnalysisVO));
-        vrb.setVrbBizOpportunityList(vrbAnalysisDAO.selectVRBAnalysisBizChanceList(vrbAnalysisVO));
+        vrb.setVrbBizChanceList(vrbAnalysisDAO.selectVRBAnalysisBizChanceList(vrbAnalysisVO));
 
         return vrb;
     }
@@ -247,7 +247,7 @@ public class VRBAnalysisService extends AbstractDraftService {
         VRBAnalysisVO vrb =  vrbAnalysisDAO.selectVRBAnalysis(vrbAnalysisVO);
 
         vrb.setProject(vrbAnalysisDAO.selectVRBAnalysisProject(vrbAnalysisVO));
-        vrb.setVrbBizOpportunityList(vrbAnalysisDAO.selectVRBAnalysisBizChanceList(vrbAnalysisVO));
+        vrb.setVrbBizChanceList(vrbAnalysisDAO.selectVRBAnalysisBizChanceList(vrbAnalysisVO));
 
         vrb.setVrbCustomerAnalysisList(vrbAnalysisDAO.selectVRBCustomerList(vrbAnalysisVO));
         vrb.setVrbBusinessAnalysisList(vrbAnalysisDAO.selectVRBStrategyList(vrbAnalysisVO));
