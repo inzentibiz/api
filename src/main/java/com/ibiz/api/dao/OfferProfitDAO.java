@@ -62,8 +62,8 @@ public class OfferProfitDAO {
     /**
      * 3. VRB 대상선정 및 평가결과 : VRB 대상선정 기준항목 조회
      */
-    public List<VRBSelectCriteriaVO> selectVRBSelectCriteriaList(OfferVO offerVO) {
-        return mybatis.selectList("OfferProfitMapper.selectVRBSelectCriteriaList", offerVO);
+    public List<VRBSelectCriteriaVO> selectVrbCriteriaList(OfferVO offerVO) {
+        return mybatis.selectList("OfferProfitMapper.selectVrbCriteriaList", offerVO);
     }
 
     /**
@@ -128,15 +128,15 @@ public class OfferProfitDAO {
     /**
      * EXCEL
      */
-    public List<ExcelOfferProfitVO> seleceExcelDwnlOfferProfitList(FcstPalSearchVO fcstPalSearchVO) {
-        return mybatis.selectList("OfferProfitMapper.seleceExcelDwnlOfferProfitList", fcstPalSearchVO);
+    public List<ExcelOfferProfitVO> seleceExcelDwnlOfferProfitList(OfferProfitSearchVO offerProfitSearchVO) {
+        return mybatis.selectList("OfferProfitMapper.seleceExcelDwnlOfferProfitList", offerProfitSearchVO);
     }
 
-    public List<ExcelOfferProfitByProdTypeVO> seleceExcelDwnlOfferProfitByProdTypeList(FcstPalSearchVO fcstPalSearchVO) {
-        return mybatis.selectList("OfferProfitMapper.seleceExcelDwnlOfferProfitByProdTypeList", fcstPalSearchVO);
+    public List<ExcelOfferProfitByProdTypeVO> seleceExcelDwnlOfferProfitByProdTypeList(OfferProfitSearchVO offerProfitSearchVO) {
+        return mybatis.selectList("OfferProfitMapper.seleceExcelDwnlOfferProfitByProdTypeList", offerProfitSearchVO);
     }
-    public List<ExcelOfferProfitByProductVO> seleceExcelDwnlOfferProfitByProductList(FcstPalSearchVO fcstPalSearchVO) {
-        return mybatis.selectList("OfferProfitMapper.seleceExcelDwnlOfferProfitByProductList", fcstPalSearchVO);
+    public List<ExcelOfferProfitByProductVO> seleceExcelDwnlOfferProfitByProductList(OfferProfitSearchVO offerProfitSearchVO) {
+        return mybatis.selectList("OfferProfitMapper.seleceExcelDwnlOfferProfitByProductList", offerProfitSearchVO);
     }
 
     /*
@@ -217,12 +217,12 @@ public class OfferProfitDAO {
     /*
      * Legacy
      */
-    public List<FcstPalVO> selectOfferProfitList(FcstPalSearchVO fcstPalSearchVO) {
-        return mybatis.selectList("OfferProfitMapper.selectOfferProfitList", fcstPalSearchVO);
+    public List<OfferVO> selectOfferProfitList(OfferProfitSearchVO offerProfitSearchVO) {
+        return mybatis.selectList("OfferProfitMapper.selectOfferProfitList", offerProfitSearchVO);
     }
 
-    public Integer selectisExistsOffer(FcstPalVO fcstPalVO) {
-        return mybatis.selectOne("OfferProfitMapper.selectisExistsOffer", fcstPalVO);
+    public Integer selectisExistsOffer(OfferVO offerVO) {
+        return mybatis.selectOne("OfferProfitMapper.selectisExistsOffer", offerVO);
     }
 
 

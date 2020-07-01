@@ -169,8 +169,8 @@ java.lang.ClassCastException: class org.mybatis.spring.MyBatisSystemException ca
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:834)
-[2020-05-06 14:22:20:82313][http-nio-7301-exec-3] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'pageSearchType' in 'class com.ibiz.api.model.FcstPalSearchVO'] with root cause
-org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'pageSearchType' in 'class com.ibiz.api.model.FcstPalSearchVO'
+[2020-05-06 14:22:20:82313][http-nio-7301-exec-3] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'pageSearchType' in 'class com.ibiz.api.model.OfferProfitSearchVO'] with root cause
+org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'pageSearchType' in 'class com.ibiz.api.model.OfferProfitSearchVO'
 	at org.apache.ibatis.reflection.Reflector.getGetInvoker(Reflector.java:373)
 	at org.apache.ibatis.reflection.MetaClass.getGetInvoker(MetaClass.java:163)
 	at org.apache.ibatis.reflection.wrapper.BeanWrapper.getBeanProperty(BeanWrapper.java:162)

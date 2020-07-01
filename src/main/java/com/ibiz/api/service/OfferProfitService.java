@@ -125,7 +125,7 @@ public class OfferProfitService extends AbstractDraftService {
         if(bsnsProfitLoss !=null) {
 
             offerVO.setRegDt(bsnsProfitLoss.getRegDt());
-            bsnsProfitLoss.setVrbCriteriaList(offerProfitDAO.selectVRBSelectCriteriaList(offerVO));
+            bsnsProfitLoss.setVrbCriteriaList(offerProfitDAO.selectVrbCriteriaList(offerVO));
             List<VRBProfitVO> profitValueAnalysisDetailList = new ArrayList();
 
             profitValueAnalysisDetailList = offerProfitDAO.selectOfferProfitPS1VrbList(offerVO); // BPIP141T
@@ -416,24 +416,24 @@ public class OfferProfitService extends AbstractDraftService {
     }
 
     @Transactional
-    public List<VRBSelectCriteriaVO> selectVRBSelectCriteriaList(Payload<OfferVO> requestPayload) throws Exception {
-        log.info("Call Service : " + this.getClass().getName() + ".selectVRBSelectCriteriaList");
+    public List<VRBSelectCriteriaVO> selectVrbCriteriaList(Payload<OfferVO> requestPayload) throws Exception {
+        log.info("Call Service : " + this.getClass().getName() + ".selectVrbCriteriaList");
         OfferVO offerVO = requestPayload.getDto();
 
-        List<VRBSelectCriteriaVO> data = offerProfitDAO.selectVRBSelectCriteriaList(offerVO);
+        List<VRBSelectCriteriaVO> data = offerProfitDAO.selectVrbCriteriaList(offerVO);
 
         return data;
     }
 
     @Transactional
-    public List<FcstPalVO> selectOfferProfitList(Payload<FcstPalSearchVO> requestPayload) throws Exception {
+    public List<OfferVO> selectOfferProfitList(Payload<OfferProfitSearchVO> requestPayload) throws Exception {
         log.info("Call Service : " + this.getClass().getName() + ".selectOfferProfitList");
-        FcstPalSearchVO fcstPalSearchVO = requestPayload.getDto();
+        OfferProfitSearchVO offerProfitSearchVO = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
 
-        fcstPalSearchVO.setSessEmpId(accountVO.getEmpId());
+        offerProfitSearchVO.setSessEmpId(accountVO.getEmpId());
 
-        List<FcstPalVO> list = offerProfitDAO.selectOfferProfitList(fcstPalSearchVO);
+        List<OfferVO> list = offerProfitDAO.selectOfferProfitList(offerProfitSearchVO);
 
         return list;
     }
@@ -762,7 +762,7 @@ public class OfferProfitService extends AbstractDraftService {
         bizChanceVO.setChgDt(chgDt);
 
         // 예상손익분석/견적서가 존재하는지 여부를 확인 후 삭제시도.. 존재할 경우 "예상손익분석/견적서가 존재하여 삭제 불가능합니다."
-        FcstPalVO fcstPalVO = new FcstPalVO();
+        OfferVO fcstPalVO = new OfferVO();
         fcstPalVO.setBoptId(bizChanceVO.getBoptId());
 
         if( !(offerProfitDAO.selectisExistsOffer(fcstPalVO) > 0)) {	//예상손익&견적서 있는 지 비교
@@ -1697,11 +1697,11 @@ public class OfferProfitService extends AbstractDraftService {
 
 
     @Transactional
-    public List<ExcelOfferProfitVO> seleceExcelDwnlOfferProfitList(Payload<FcstPalSearchVO> requestPayload) throws Exception {
+    public List<ExcelOfferProfitVO> seleceExcelDwnlOfferProfitList(Payload<OfferProfitSearchVO> requestPayload) throws Exception {
         log.info("Call Service : " + this.getClass().getName() + ".seleceExcelDwnlOfferProfitList");
-        FcstPalSearchVO fcstPalSearchVO = requestPayload.getDto();
+        OfferProfitSearchVO offerProfitSearchVO = requestPayload.getDto();
 
-        List<ExcelOfferProfitVO> list = offerProfitDAO.seleceExcelDwnlOfferProfitList(fcstPalSearchVO);
+        List<ExcelOfferProfitVO> list = offerProfitDAO.seleceExcelDwnlOfferProfitList(offerProfitSearchVO);
 
         //날짜 포맷변환
         SimpleDateFormat beforeMMFormat = new SimpleDateFormat("yyyyMM");
@@ -1724,11 +1724,11 @@ public class OfferProfitService extends AbstractDraftService {
     }
 
     @Transactional
-    public List<ExcelOfferProfitByProdTypeVO> seleceExcelDwnlOfferProfitByProdTypeList(Payload<FcstPalSearchVO> requestPayload) throws Exception {
+    public List<ExcelOfferProfitByProdTypeVO> seleceExcelDwnlOfferProfitByProdTypeList(Payload<OfferProfitSearchVO> requestPayload) throws Exception {
         log.info("Call Service : " + this.getClass().getName() + ".seleceExcelDwnlOfferProfitByProdTypeList");
-        FcstPalSearchVO fcstPalSearchVO = requestPayload.getDto();
+        OfferProfitSearchVO offerProfitSearchVO = requestPayload.getDto();
 
-        List<ExcelOfferProfitByProdTypeVO> list = offerProfitDAO.seleceExcelDwnlOfferProfitByProdTypeList(fcstPalSearchVO);
+        List<ExcelOfferProfitByProdTypeVO> list = offerProfitDAO.seleceExcelDwnlOfferProfitByProdTypeList(offerProfitSearchVO);
 
         //날짜 포맷변환
         SimpleDateFormat beforeMMFormat = new SimpleDateFormat("yyyyMM");
@@ -1751,11 +1751,11 @@ public class OfferProfitService extends AbstractDraftService {
     }
 
     @Transactional
-    public List<ExcelOfferProfitByProductVO> seleceExcelDwnlOfferProfitByProductList(Payload<FcstPalSearchVO> requestPayload) throws Exception {
+    public List<ExcelOfferProfitByProductVO> seleceExcelDwnlOfferProfitByProductList(Payload<OfferProfitSearchVO> requestPayload) throws Exception {
         log.info("Call Service : " + this.getClass().getName() + ".seleceExcelDwnlOfferProfitByProductList");
-        FcstPalSearchVO fcstPalSearchVO = requestPayload.getDto();
+        OfferProfitSearchVO offerProfitSearchVO = requestPayload.getDto();
 
-        List<ExcelOfferProfitByProductVO> list = offerProfitDAO.seleceExcelDwnlOfferProfitByProductList(fcstPalSearchVO);
+        List<ExcelOfferProfitByProductVO> list = offerProfitDAO.seleceExcelDwnlOfferProfitByProductList(offerProfitSearchVO);
 
         //날짜 포맷변환
         SimpleDateFormat beforeMMFormat = new SimpleDateFormat("yyyyMM");

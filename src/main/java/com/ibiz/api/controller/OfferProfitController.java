@@ -2,8 +2,8 @@ package com.ibiz.api.controller;
 
 import com.google.gson.reflect.TypeToken;
 import com.ibiz.api.model.ApprovalVO;
+import com.ibiz.api.model.OfferProfitSearchVO;
 import com.ibiz.api.model.OfferVO;
-import com.ibiz.api.model.FcstPalSearchVO;
 import com.ibiz.api.model.Payload;
 import com.ibiz.api.service.OfferProfitService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class OfferProfitController extends BaseController {
     @PostMapping("/selectOfferProfitList")
     public ResponseEntity<String> selectOfferProfitList(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".selectOfferProfitList");
-        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<FcstPalSearchVO>>(){});
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferProfitSearchVO>>(){});
 
         return super.composePayload(new Payload<List>(offerProfitService.selectOfferProfitList(requestPayload)));
     }
@@ -95,12 +95,12 @@ public class OfferProfitController extends BaseController {
     }
 
     // 3. VRB 대상선정 및 평가결과 : VRB 대상선정 기준항목 조회
-    @PostMapping("/selectVRBSelectCriteriaList")
-    public ResponseEntity<String> selectVRBSelectCriteriaList(@RequestParam("payload") String payload) throws Exception {
-        log.info("Call Controller : " + this.getClass().getName() + ".selectVRBSelectCriteriaList");
+    @PostMapping("/selectVrbCriteriaList")
+    public ResponseEntity<String> selectVrbCriteriaList(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".selectVrbCriteriaList");
         Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferVO>>(){});
 
-        return super.composePayload(new Payload<List>(offerProfitService.selectVRBSelectCriteriaList(requestPayload)));
+        return super.composePayload(new Payload<List>(offerProfitService.selectVrbCriteriaList(requestPayload)));
     }
 
     // 예상손익분석서(솔루션.MA) 기안버튼리스트
@@ -195,7 +195,7 @@ public class OfferProfitController extends BaseController {
     @PostMapping("/seleceExcelDwnlOfferProfitList")
     public ResponseEntity<String> seleceExcelDwnlOfferProfitList(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".seleceExcelDwnlOfferProfitList");
-        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<FcstPalSearchVO>>(){});
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferProfitSearchVO>>(){});
 
         return super.composePayload(new Payload<List>(offerProfitService.seleceExcelDwnlOfferProfitList(requestPayload)));
     }
@@ -205,7 +205,7 @@ public class OfferProfitController extends BaseController {
     @PostMapping("/seleceExcelDwnlOfferProfitByProdTypeList")
     public ResponseEntity<String> seleceExcelDwnlOfferProfitByProdTypeList(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".seleceExcelDwnlOfferProfitByProdTypeList");
-        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<FcstPalSearchVO>>(){});
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferProfitSearchVO>>(){});
 
         return super.composePayload(new Payload<List>(offerProfitService.seleceExcelDwnlOfferProfitByProdTypeList(requestPayload)));
     }
@@ -215,7 +215,7 @@ public class OfferProfitController extends BaseController {
     @PostMapping("/seleceExcelDwnlOfferProfitByProductList")
     public ResponseEntity<String> seleceExcelDwnlOfferProfitByProductList(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".seleceExcelDwnlOfferProfitByProductList");
-        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<FcstPalSearchVO>>(){});
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferProfitSearchVO>>(){});
 
         return super.composePayload(new Payload<List>(offerProfitService.seleceExcelDwnlOfferProfitByProductList(requestPayload)));
     }

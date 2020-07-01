@@ -270,10 +270,10 @@ public class BizChanceService {
         bizChanceVO.setChgDt(chgDt);
 
         // 예상손익분석/견적서가 존재하는지 여부를 확인 후 삭제시도.. 존재할 경우 "예상손익분석/견적서가 존재하여 삭제 불가능합니다."
-        FcstPalVO fcstPalVO = new FcstPalVO();
-        fcstPalVO.setBoptId(bizChanceVO.getBoptId());
+        OfferVO offerVO = new OfferVO();
+        offerVO.setBoptId(bizChanceVO.getBoptId());
 
-        if( !(offerProfitDAO.selectisExistsOffer(fcstPalVO) > 0)) {	//예상손익&견적서 있는 지 비교
+        if( !(offerProfitDAO.selectisExistsOffer(offerVO) > 0)) {	//예상손익&견적서 있는 지 비교
             if(!bizChanceVO.getRegDt().equals(today)) {
 
                 bizChanceVO = bizChanceDAO.selectBizChaneInfo(bizChanceVO);

@@ -331,6 +331,11 @@ public class OfferVO {
      */
     private String santAppvDt;
 
+    /**
+     * 전체 row 수
+     */
+    private Integer totalCnt;
+
     public String getFrmtCdNm() {
         return frmtCdNm;
     }
@@ -875,5 +880,37 @@ public class OfferVO {
 
     public void setSantAppvDt(String santAppvDt) {
         this.santAppvDt = santAppvDt;
+    }
+
+    public String getFcstPalPrgsStatCd() {
+        return fcstPalPrgsStatCd;
+    }
+
+    public void setFcstPalPrgsStatCd(String fcstPalPrgsStatCd) {
+        this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
+    }
+
+    public String getFcstPalPrgsStatCdNm() {
+        return fcstPalPrgsStatCdNm;
+    }
+
+    public void setFcstPalPrgsStatCdNm(String fcstPalPrgsStatCdNm) {
+        this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
+    }
+
+    public Boolean getInProgress() {
+        return isInProgress;
+    }
+
+    public void setInProgress(Boolean inProgress) {
+        isInProgress = inProgress;
+    }
+
+    public Integer getTotalCnt() {
+        return totalCnt;
+    }
+
+    public void setTotalCnt(Integer totalCnt) {
+        this.totalCnt = totalCnt;
     }
 }

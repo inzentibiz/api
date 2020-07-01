@@ -1,6 +1,6 @@
 package com.ibiz.api.model;
 
-public class FcstPalSearchVO {
+public class OfferProfitSearchVO {
 
     /**
      * 최종고객 ID

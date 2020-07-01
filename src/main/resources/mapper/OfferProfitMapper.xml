@@ -179,7 +179,7 @@
 
 
 	<!-- 3. VRB 대상선정 및 평가결과 : VRB 대상선정 기준항목 -->
-	<select id="selectVRBSelectCriteriaList"
+	<select id="selectVrbCriteriaList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.VRBSelectCriteriaVO">
 
@@ -1023,7 +1023,7 @@
 
 	<!-- 예상손익 기본리스트 조회 For 엑셀 -->
 	<select id="seleceExcelDwnlOfferProfitList"
-			parameterType="com.ibiz.api.model.FcstPalSearchVO"
+			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
 			resultType="com.ibiz.api.model.ExcelOfferProfitVO">
 
 		SELECT A.FCST_PAL_ID, A.DOC_NO,
@@ -1113,7 +1113,7 @@
 
 	<!-- 예상손익 상품유형별 리스트 조회 For 엑셀 -->
 	<select id="seleceExcelDwnlOfferProfitByProdTypeList"
-			parameterType="com.ibiz.api.model.FcstPalSearchVO"
+			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
 			resultType="com.ibiz.api.model.ExcelOfferProfitByProdTypeVO">
 
 		SELECT A.FCST_PAL_ID, A.DOC_NO,
@@ -1205,7 +1205,7 @@
 
 	<!-- 예상손익 상품별 리스트 조회 For 엑셀 -->
 	<select id="seleceExcelDwnlOfferProfitByProductList"
-			parameterType="com.ibiz.api.model.FcstPalSearchVO"
+			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
 			resultType="com.ibiz.api.model.ExcelOfferProfitByProductVO">
 
 		SELECT A.FCST_PAL_ID, A.DOC_NO,
@@ -2299,8 +2299,8 @@
 
 	<!-- 예상손익분석 리스트 -->
 	<select id="selectOfferProfitList"
-			parameterType="com.ibiz.api.model.FcstPalSearchVO"
-			resultType="com.ibiz.api.model.FcstPalVO">
+			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
+			resultType="com.ibiz.api.model.OfferVO">
 
 		SELECT *
 		FROM( SELECT  Z.FCST_PAL_ID, Z.DOC_NO, Z.REG_DT,
@@ -2431,7 +2431,7 @@
 	</select>
 
 	<select id="selectisExistsOffer"
-			parameterType="com.ibiz.api.model.FcstPalVO"
+			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="java.lang.Integer">
 		SELECT COUNT(1)
 		FROM BEST000T
