@@ -1,5 +1,11 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BEST050T : 사업예상직접경비상세
@@ -11,6 +17,8 @@ public class OfferExpenseVO {
     /**
      * 예상손익ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 견적ID는 10자리 이하여야합니다." )
     private String fcstPalId;
 
     /**
@@ -49,11 +57,15 @@ public class OfferExpenseVO {
     /**
      * 직접경비금액
      */
+    @NotNull
+    @Digits(integer=15,fraction=0)
     private long drexpAmt;
 
     /**
      * 프로젝트직접경비코드
      */
+    @NotNull
+    @Size(max=4, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 프로젝트직접경비코드는 4자리 이하여야합니다." )
     private String prjtDrexpCd;
 
     /**

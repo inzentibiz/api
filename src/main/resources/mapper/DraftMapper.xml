@@ -88,7 +88,7 @@
 
 	<!-- 결재자 등록 -->
 	<insert id="Insert_approver"
-			parameterType="com.ibiz.api.model.ApprovalDetailVO">
+			parameterType="com.ibiz.api.model.ApprovalAuthorizerVO">
 		INSERT
 		INTO AAPR110T (
 			SANT_ID,

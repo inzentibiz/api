@@ -1,4 +1,11 @@
 package com.ibiz.api.model;
+
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BPIP110T : 선정기준관리
@@ -7,12 +14,14 @@ package com.ibiz.api.model;
 public class VRBSelectCriteriaVO {
 
     /**
-     *  VRB선정항목코드
+     * VRB선정항목코드
      */
+    @NotNull
+    @Size(max = 4, message = ExceptionCode.OUTOFSIZE_EXCEPTION + " VRB선정항목코드는 4자리 이하여야합니다.")
     private String vrbSlctItmCd;
 
     /**
-     *  VRB선정항목코드명
+     * VRB선정항목코드명
      */
     private String vrbSlctItmCdNm;
 
@@ -29,21 +38,28 @@ public class VRBSelectCriteriaVO {
     /**
      * 유효시작일자
      */
+    @NotNull
+    @Size(max = 8, message = ExceptionCode.OUTOFSIZE_EXCEPTION + " 유효시작일자는 8자리 이하여야합니다.")
     private String avlStartDate;
 
     /**
      * 유효종료일자
      */
+    @NotNull
+    @Size(max = 8, message = ExceptionCode.OUTOFSIZE_EXCEPTION + " 유효종료일자는 8자리 이하여야합니다.")
     private String avlEndDate;
 
     /**
      * VRB선정기준수량
      */
+    @NotNull
+    @Digits(integer = 17, fraction = 5)
     private Integer vrbSlctCritQnt;
 
     /**
      * VRB선정기준단위코드
      */
+    @Size(max = 4, message = ExceptionCode.OUTOFSIZE_EXCEPTION + " VRB선정기준단위코드는 4자리 이하여야합니다.")
     private String vrbSlctCritUnitCd;
 
     /**
@@ -54,6 +70,7 @@ public class VRBSelectCriteriaVO {
     /**
      * 기준수량적용조건코드
      */
+    @Size(max = 4, message = ExceptionCode.OUTOFSIZE_EXCEPTION + " 기준수량적용조건코드는 4자리 이하여야합니다.")
     private String critQntAplcnCdntCd;
 
     /**
@@ -64,6 +81,7 @@ public class VRBSelectCriteriaVO {
     /**
      * 변경사원ID
      */
+    @Size(max = 10, message = ExceptionCode.OUTOFSIZE_EXCEPTION + " 변경사원ID는 10자리 이하여야합니다.")
     private String chgEmpId;
 
     /**

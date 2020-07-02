@@ -1,5 +1,9 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class BizChanceVO {
@@ -26,16 +30,21 @@ public class BizChanceVO {
     /**
      * 사업기회 ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 사업기회ID는 10자리 이하여야합니다." )
     private String boptId;
 
     /**
      * 프로젝트 ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 프로젝트ID는 10자리 이하여야합니다." )
     private String prjtId;
 
     /**
      * 사업기회명
      */
+    @NotNull
     private String boptNm;
 
     /**
@@ -50,6 +59,8 @@ public class BizChanceVO {
     /**
      * 계약일자
      */
+    @NotNull
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 계약일자는 8자리 이하여야합니다." )
     private String cntrDate;
 
     /**
@@ -85,6 +96,8 @@ public class BizChanceVO {
     /**
      * 수주확률코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 수주확률코드는 4자리 이하여야합니다." )
     private String wctPrbbCd;
 
     /**
@@ -94,6 +107,7 @@ public class BizChanceVO {
     /**
      * 예상 반영 여부
      */
+    @NotNull
     private String fcstRflcYn;
 
     /**
@@ -104,6 +118,8 @@ public class BizChanceVO {
     /**
      * 사업기회상태코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 사업기회상태코드는 4자리 이하여야합니다." )
     private String boptStatCd;
 
     /**
@@ -134,6 +150,8 @@ public class BizChanceVO {
     /**
      * 사업기회종료유형코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 사업기회종료코드는 4자리 이하여야합니다." )
     private String boptEndTypeCd;
 
     /**
@@ -144,6 +162,8 @@ public class BizChanceVO {
     /**
      * 영업부서ID
      */
+    @NotNull
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 영업부서ID는 8자리 이하여야합니다." )
     private String slsDeptId;
     /**
      * 영업부서명
@@ -152,6 +172,8 @@ public class BizChanceVO {
     /**
      * 영업사원ID
      */
+    @NotNull
+    @Size(max=8, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 영업사원ID는 8자리 이하여야합니다." )
     private String slsEmpId;
 
     /**

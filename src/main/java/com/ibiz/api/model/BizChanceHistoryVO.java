@@ -1,20 +1,25 @@
 package com.ibiz.api.model;
 
+import javax.validation.constraints.NotNull;
+
 public class BizChanceHistoryVO {
 
     /**
      * 사업기회 ID
      */
+    @NotNull
     private String boptId;
 
     /**
      * 사업기회명
      */
+    @NotNull
     private String boptNm;
 
     /**
      * 프로젝트 ID
      */
+    @NotNull
     private String prjtId;
 
     /**
@@ -35,6 +40,7 @@ public class BizChanceHistoryVO {
     /**
      * 사업분류코드
      */
+    @NotNull
     private String bsnsClsfCd;
 
     /**
@@ -46,6 +52,7 @@ public class BizChanceHistoryVO {
     /**
      * 계약일자
      */
+    @NotNull
     private String cntrDate;
 
     /**
@@ -61,16 +68,19 @@ public class BizChanceHistoryVO {
     /**
      * 수주확률코드
      */
+    @NotNull
     private String wctPrbbCd;
 
     /**
      * 예상 반영 여부
      */
+    @NotNull
     private String fcstRflcYn;
 
     /**
      * 사업기회상태코드
      */
+    @NotNull
     private String boptStatCd;
 
     /**
@@ -81,11 +91,13 @@ public class BizChanceHistoryVO {
     /**
      * 사업기회종료유형코드
      */
+    @NotNull
     private String boptEndTypeCd;
 
     /**
      * 영업부서ID
      */
+    @NotNull
     private String slsDeptId;
 
     /**
@@ -96,6 +108,7 @@ public class BizChanceHistoryVO {
     /**
      * 영업사원ID
      */
+    @NotNull
     private String slsEmpId;
 
     /**
@@ -116,6 +129,7 @@ public class BizChanceHistoryVO {
     /**
      * 변경일시
      */
+    @NotNull
     private String chgDt;
 
     /* 월별 매출 매입 */

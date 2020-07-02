@@ -1,5 +1,11 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BEST010T : 사업예상상품상세
@@ -11,12 +17,16 @@ public class OfferProductVO {
     /**
      * 예상손익ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익ID는 10자리 이하여야합니다." )
     private String fcstPalId;
 
     // 201911상품변경
     /**
      * 상품유형코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 상품유형코드는 4자리 이하여야합니다." )
     private String prodTypeCd;
 
     /**
@@ -27,6 +37,8 @@ public class OfferProductVO {
     /**
      * 상품구분코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 상품구분코드는 4자리 이하여야합니다." )
     private String prodDstCd;
 
     /**
@@ -37,6 +49,8 @@ public class OfferProductVO {
     /**
      * 상품순번
      */
+    @NotNull
+    @Digits(integer=3,fraction=0)
     private Integer prodSeq;
 
     /**
@@ -48,6 +62,7 @@ public class OfferProductVO {
     /**
      * 공급업체고객ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 공급업체고객ID는 10자리 이하여야합니다." )
     private String splyCmpyCustId;
 
     /**
@@ -58,6 +73,7 @@ public class OfferProductVO {
     /**
      * 상품팩ID
      */
+    @Size(max=7, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 상품팩ID는 7자리 이하여야합니다." )
     private String prodpId;
 
     /**
@@ -68,6 +84,7 @@ public class OfferProductVO {
     /**
      * 상품ID
      */
+    @Size(max=7, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 상품ID는 7자리 이하여야합니다." )
     private String prodId;
 
     /**
@@ -188,21 +205,25 @@ public class OfferProductVO {
     /**
      * 최소단위수량
      */
+    @Digits(integer=5,fraction=0)
     private Integer minUnitQnt;
 
     /**
      * 최대단위수량
      */
+    @Digits(integer=5,fraction=0)
     private Integer maxUnitQnt;
 
     /**
      * 수량할인율
      */
+    @Digits(integer=5,fraction=4)
     private Double qntDcRt;
 
     /**
      * 기본원가율
      */
+    @Digits(integer=5,fraction=4)
     private Double bscCostRt;
 
     // 201911상품변경
@@ -281,16 +302,19 @@ public class OfferProductVO {
     /**
      * 가격정책할인율
      */
+    @Digits(integer=5,fraction=4)
     private Double prcPlcyDcRt;
 
     /**
      * 적용원가율
      */
+    @Digits(integer=5,fraction=4)
     private Double aplcnCostRt;
 
     /**
      * 직접원가금액
      */
+    @Digits(integer=15,fraction=0)
     private long drcstAmt;
 
     /**
@@ -301,16 +325,20 @@ public class OfferProductVO {
     /**
      * 간접원가금액
      */
+    @Digits(integer=15,fraction=0)
     private long incstAmt;
 
     /**
-     * 추가금액여부
+     * 추가구매여부
      */
+    @Size(max=1, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 추가구매여부는 1자리 이하여야합니다." )
     private String splmPchsYn;
 
     /**
      * 제품분류코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 제품분류코드는 4자리 이하여야합니다." )
     private String godsClsfCd;
 
     /**
@@ -321,26 +349,31 @@ public class OfferProductVO {
     /**
      * MA제품공금금액
      */
+    @Digits(integer=15,fraction=0)
     private long maGodsSplyAmt;
 
     /**
      * MA요율
      */
+    @Digits(integer=5,fraction=4)
     private double maTrf;
 
     /**
      * MA시작일자
      */
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 유지보수 시작일자는 8자리 이하여야합니다." )
     private String maStartDate;
 
     /**
      * MA종료일자
      */
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 유지보수 종료일자는 8자리 이하여야합니다." )
     private String maEndDate;
 
     /**
      * MA대상프로젝트ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" MA대상프로젝트ID는 10자리 이하여야합니다." )
     private String maTgtPrjtId;
 
     /**
@@ -351,6 +384,7 @@ public class OfferProductVO {
     /**
      * 투입인력등급코드
      */
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 투입인력등급코드는 4자리 이하여야합니다." )
     private String putHmfrGrdCd;
 
     /**
@@ -361,26 +395,31 @@ public class OfferProductVO {
     /**
      * 표준원가금액
      */
+    @Digits(integer=15,fraction=0)
     private long stdCostAmt;
 
     /**
      * 투입인원수
      */
+    @Digits(integer=5,fraction=2)
     private double putNopCount;
 
     /**
      * 최종고객(유지보수 견적내역)
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 최종고객ID는 10자리 이하여야합니다." )
     private String lastCustId;
 
     /**
      * MA제품공급연월(유지보수 견적내역)
      */
+    @Size(max=6, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" MA제품공급연월은 4자리 이하여야합니다." )
     private String maGodsSplyYam;
 
     /**
      * MA제품단가단위코드(유지보수 견적내역)
      */
+    @Size(max=4, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" MA제품단가단위코드는 4자리 이하여야합니다." )
     private String maGodsUpcUnitCd;
 
     /**
@@ -391,7 +430,9 @@ public class OfferProductVO {
     /**
      * MA제품공급수량(유지보수 견적내역)
      */
+    @Digits(integer=10,fraction=5)
     private Double maGodsSplyQnt;
+
 
     public String getFcstPalId() {
         return fcstPalId;

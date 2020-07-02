@@ -1,5 +1,11 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BPIP120T : VRB고객분석내역
@@ -11,16 +17,21 @@ public class VRBCustomerVO {
     /**
      * VRB분석ID
      */
+    @NotNull
+    @Size(max=10, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" VRB분석ID는 10자리 이하여야합니다." )
     private String vrbAnlyId;
 
     /**
      * 순번
      */
+    @NotNull
+    @Digits(integer=3,fraction=0)
     private Integer seq;
 
     /**
      * 소속기관명
      */
+    @NotNull
     private String bltoIsttNm;
 
     /**
@@ -31,6 +42,7 @@ public class VRBCustomerVO {
     /**
      * 고객명
      */
+    @NotNull
     private String custNm;
 
     /**
@@ -51,6 +63,7 @@ public class VRBCustomerVO {
     /**
      * 고객영향도코드
      */
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 고객영향도코드는 4자리 이하여야합니다." )
     private String custIndgCd;
 
     /**
@@ -61,6 +74,7 @@ public class VRBCustomerVO {
     /**
      * 고객우호성향코드
      */
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 고객우호성향코드는 4자리 이하여야합니다." )
     private String custFdlInclnCd;
 
     /**

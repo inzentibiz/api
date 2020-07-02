@@ -111,7 +111,7 @@ public class OfferProfitService extends AbstractDraftService {
         log.info("Call Service : " + this.getClass().getName() + ".selectOfferProfitPS1");
         OfferVO offerVO = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
-        ApprovalDetailVO  approvalDetail = new ApprovalDetailVO();
+        ApprovalAuthorizerVO approvalDetail = new ApprovalAuthorizerVO();
 
         OfferVO bsnsProfitLoss;
         SysUserGroupVO sysUserGroupVO = new SysUserGroupVO();
@@ -222,7 +222,7 @@ public class OfferProfitService extends AbstractDraftService {
         OfferVO bsnsProfitLoss = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
         ApprovalVO approvalVO = new ApprovalVO();
-        ApprovalDetailVO  approvalDetail = new ApprovalDetailVO();
+        ApprovalAuthorizerVO approvalDetail = new ApprovalAuthorizerVO();
         OfferVO offerVO = new OfferVO();
         SysUserGroupVO sysUserGroupVO = new SysUserGroupVO();
         List<Map<String, String>> buttonList = new ArrayList<>();
@@ -1347,7 +1347,7 @@ public class OfferProfitService extends AbstractDraftService {
         log.info("Call Service : " + this.getClass().getName() + ".selectOfferProfitPS2");
         OfferVO offerVO = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
-        ApprovalDetailVO  approvalDetail = new ApprovalDetailVO();
+        ApprovalAuthorizerVO approvalDetail = new ApprovalAuthorizerVO();
 
         OfferVO bsnsProfitLoss;
         List<OfferResultVO> bsnsRslSmryList =  new ArrayList();
@@ -1432,7 +1432,7 @@ public class OfferProfitService extends AbstractDraftService {
         OfferVO bsnsProfitLoss = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
         ApprovalVO approvalVO = new ApprovalVO();
-        ApprovalDetailVO  approvalDetail = new ApprovalDetailVO();
+        ApprovalAuthorizerVO approvalDetail = new ApprovalAuthorizerVO();
         OfferVO offerVO = new OfferVO();
         SysUserGroupVO sysUserGroupVO = new SysUserGroupVO();
         List<Map<String, String>> buttonList = new ArrayList<>();

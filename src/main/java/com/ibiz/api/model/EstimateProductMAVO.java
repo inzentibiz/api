@@ -1,5 +1,11 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BEST170T : MA견적상세
@@ -11,56 +17,74 @@ public class EstimateProductMAVO {
     /**
      * 견적ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 견적ID는 10자리 이하여야합니다." )
     private String estiId;
 
     /**
      * 예상손익ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익ID는 10자리 이하여야합니다." )
     private String fcstPalId;
 
     /**
      * 순번
      */
+    @NotNull
+    @Digits(integer=3,fraction=0)
     private Integer seq;
 
     /**
      * 프로젝트명
      */
+    @NotNull
     private String prjtNm;
 
     /**
      * 제품명
      */
+    @NotNull
     private String godsNm;
 
     /**
      * 제품공급금액
      */
+    @NotNull
+    @Digits(integer=15,fraction=0)
     private Long godsSplyAmt;
 
     /**
      * 유지보수요율
      */
+    @Digits(integer=5,fraction=4)
     private Double maTrf;
 
     /**
      * 유지보수 시작일자
      */
+    @NotNull
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 유지보수 시작일자는 8자리 이하여야합니다." )
     private String maStartDate;
 
     /**
      * 유지보수 종료일자
      */
+    @Size(max=8, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 유지보수 종료일자는 8자리 이하여야합니다." )
     private String maEndDate;
 
     /**
      * 월간보수금액
      */
+    @NotNull
+    @Digits(integer=15,fraction=0)
     private Long mnthMndnAmt;
 
     /**
      * 공급금액
      */
+    @NotNull
+    @Digits(integer=15,fraction=0)
     private Integer splyAmt;
 
     /**

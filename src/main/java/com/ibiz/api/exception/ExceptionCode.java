@@ -98,6 +98,21 @@ public class ExceptionCode {
      */
 
 
+    public static final String NO_DEFINITION_EXCEPTION	="00";public static final String NO_DEFINITION_EXCEPTION_MESSAGE="관리자에게 문의하세요";
+    public static final String NOTNULL_EXCEPTION="01";public static final String NOTNULL_EXCEPTION_MESSAGE="null or blank";
+    public static final String OUTOFSIZE_EXCEPTION="02";public static final String OUTOFSIZE_EXCEPTION_MESSAGE="size";
+    public static final String CODE_OVERLAP_EXCEPTION="03";public static final String CODE_OVERLAP_EXCEPTION_MESSAGE="중복 코드";
+    public static final String CODE_NOT_EQUAL_EXCEPTION="04";public static final String CODE_NOT_EQUAL_EXCEPTION_MESSAGE="코드 불 일치";
+    public static final String NO_AUTHORIZATION_EXCEPTION="05";public static final String NO_AUTHORIZATION_EXCEPTION_MESSAGE="권한 없음";
+    public static final String DELETED_PAGE_EXCEPTION="06";public static final String DELETED_PAGE_EXCEPTION_MESSAGE="삭제된 페이지";
+    public static final String MISSMATCH_EMAIL_TYPE_EXCPETION="07";public static final String MISSMATCH_EMAIL_TYPE_EXCPETION_MESSAGE="이메일 형식이 맞지않음";
+    public static final String MISSMATCH_DATE_TYPE_EXCPETION="08";public static final String MISSMATCH_DATE_TYPE_EXCPETION_MESSAGE="날짜 형식오류";
+    public static final String MISSMATCH_NUMBER_TYPE_EXCPETION="09";public static final String MISSMATCH_NUMBER_TYPE_EXCPETION_MESSAGE="숫자 타입";
+    public static final String MISSMATCH_CHARACTOR_TYPE_EXCPETION="10";public static final String MISSMATCH_CHARACTOR_TYPE_EXCPETION_MESSAGE="문자 타입";
+    public static final String DATE_OVERLAP_EXCEPTION="11";public static final String DATE_OVERLAP_EXCEPTION_MESSAGE="기간중복";
+    public static final String 	NO_HISTORY_EXCEPTION	="12";	public static final String 	NO_HISTORY_EXCEPTION_MESSAGE ="이력이 존재하지 않습니다";
+
+
     public static final String UNHANDLED_EXCEPTION = "";
     public static final String UNHANDLED_EXCEPTION_MESSAGE = "관리자에게 문의하세요";
 

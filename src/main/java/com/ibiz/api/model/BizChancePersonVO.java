@@ -1,10 +1,18 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class BizChancePersonVO {
 
     /**
      * 사업기회ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 사업기회ID는 10자리 이하여야합니다." )
     private String boptId;
 
     /**
@@ -15,16 +23,22 @@ public class BizChancePersonVO {
     /**
      * 사업수행역할코드
      */
+    @NotNull
+    @Size(max=4, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 사업수행역할코드는 4자리 이하여야합니다." )
     private String bexcRoleCd;
 
     /**
      * 투입시간단위코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 투입시간단위코드는 4자리 이하여야합니다." )
     private String putTimeUnitCd;
 
     /**
      * 투입인원수
      */
+    @NotNull
+    @Digits(integer=5,fraction=2)
     private float putNopCount;
 
     /**

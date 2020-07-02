@@ -1,5 +1,11 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BPIP170T : VRB참여자상세
@@ -11,16 +17,22 @@ public class VRBOpinionVO {
     /**
      * VRB분석ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" VRB분석ID는 10자리 이하여야합니다." )
     private String vrbAnlyId;
 
     /**
      * 순번
      */
+    @NotNull
+    @Digits(integer=3,fraction=0)
     private Integer seq;
 
     /**
      * 조직구분코드
      */
+    @NotNull
+    @Size(max=4, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 조직구분코드는 4자리 이하여야합니다." )
     private String orgDstCd;
 
     /**
@@ -31,6 +43,8 @@ public class VRBOpinionVO {
     /**
      * 검토자부서ID
      */
+    @NotNull
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 검토자부서ID는 8자리 이하여야합니다." )
     private String rvwrDeptId;
 
     /**
@@ -41,16 +55,19 @@ public class VRBOpinionVO {
     /**
      * 검토자사원ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 검토자사원ID는 10자리 이하여야합니다." )
     private String rvwrEmpId;
 
     /**
-     * 검토자사원ID
+     * 검토자사원Nm
      */
     private String rvwrEmpNm;
 
     /**
      * 검토자직책코드
      */
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 검토자직책코드는 4자리 이하여야합니다." )
     private String rvwrResoCd;
 
     /**
@@ -61,6 +78,7 @@ public class VRBOpinionVO {
     /**
      * 검토자직위코드
      */
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 검토자직위코드는 4자리 이하여야합니다." )
     private String rvwrOfpsCd;
 
     /**

@@ -1,6 +1,6 @@
 package com.ibiz.api.dao;
 
-import com.ibiz.api.model.ApprovalDetailVO;
+import com.ibiz.api.model.ApprovalAuthorizerVO;
 import com.ibiz.api.model.ApprovalVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +32,8 @@ public class DraftDao {
         mybatis.insert("DraftMapper.Insert_draft", approvalVO);
     }
 
-    public void insertApprover(ApprovalDetailVO approvalDetailVO) {
-        mybatis.insert("DraftMapper.Insert_approver", approvalDetailVO);
+    public void insertApprover(ApprovalAuthorizerVO approvalAuthorizerVO) {
+        mybatis.insert("DraftMapper.Insert_approver", approvalAuthorizerVO);
     }
 
     /*

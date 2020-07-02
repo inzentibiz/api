@@ -1,5 +1,9 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -13,11 +17,15 @@ public class EstimateVO {
     /**
      * 견적ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 견적ID는 10자리 이하여야합니다." )
     private String estiId;
 
     /**
      * 예상손익ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익ID는 10자리 이하여야합니다." )
     private String fcstPalId;
 
     /**
@@ -28,6 +36,8 @@ public class EstimateVO {
     /**
      * 견적작성일자
      */
+    @NotNull
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 견적작성일자는 8자리 이하여야합니다." )
     private String estiWrtDate;
 
     /**
@@ -98,6 +108,8 @@ public class EstimateVO {
     /**
      * 부가세포함구분코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 부가세코드는 4자리 이하여야합니다." )
     private String vatCvrdDstCd;
 
     /**
@@ -118,6 +130,8 @@ public class EstimateVO {
     /**
      * 견적서상태코드
      */
+    @NotNull
+    @Size(max=4, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 견적서상태코드는 4자리 이하여야합니다." )
     private String estisStatCd;
 
     /**

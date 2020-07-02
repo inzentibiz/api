@@ -1,5 +1,9 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +22,15 @@ public class VRBAnalysisVO {
     /**
      * VRB분석ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" VRB분석ID는 10자리 이하여야합니다." )
     private String vrbAnlyId;
 
     /**
      * 프로젝트ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 프로젝트ID는 10자리 이하여야합니다." )
     private String prjtId;
 
     /**
@@ -108,6 +116,7 @@ public class VRBAnalysisVO {
     /**
      * 영업부서ID
      */
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 영업부서ID는 8자리 이하여야합니다." )
     private String slsDeptId;
 
     /**
@@ -123,6 +132,7 @@ public class VRBAnalysisVO {
     /**
      * 영업사원ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 영업사원ID는 10자리 이하여야합니다." )
     private String slsEmpId;
 
     /**
@@ -164,6 +174,7 @@ public class VRBAnalysisVO {
     /**
      * 등록사원ID
      */
+    @Size(max=10, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 등록사원ID는 10자리 이하여야합니다." )
     private String regEmpId;
 
     /**
@@ -179,6 +190,7 @@ public class VRBAnalysisVO {
     /**
      * 변경사원ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 변경사원ID는 10자리 이하여야합니다." )
     private String chgEmpId;
 
     /**
@@ -250,7 +262,7 @@ public class VRBAnalysisVO {
      */
     private List<Map<String, String>> roleButtonList;
 
-    private ApprovalDetailVO approvalDetail;
+    private ApprovalAuthorizerVO approvalDetail;
 
     private List<VRBBizChanceVO> vrbBizChanceList;
 
@@ -748,11 +760,11 @@ public class VRBAnalysisVO {
         this.roleButtonList = roleButtonList;
     }
 
-    public ApprovalDetailVO getApprovalDetail() {
+    public ApprovalAuthorizerVO getApprovalDetail() {
         return approvalDetail;
     }
 
-    public void setApprovalDetail(ApprovalDetailVO approvalDetail) {
+    public void setApprovalDetail(ApprovalAuthorizerVO approvalDetail) {
         this.approvalDetail = approvalDetail;
     }
 

@@ -131,7 +131,7 @@ public class OfferEstimateService extends AbstractDraftService {
         AccountVO accountVO = requestPayload.getAccountVO();
         EstimateVO estimateVO = requestPayload.getDto();
 
-        ApprovalDetailVO  approvalDetail = new ApprovalDetailVO();
+        ApprovalAuthorizerVO approvalDetail = new ApprovalAuthorizerVO();
         SysUserGroupVO sysUserGroupVO = new SysUserGroupVO();
         List<Map<String, String>> buttonList = new ArrayList<>();
         ApprovalVO approvalVO = new ApprovalVO();

@@ -1,5 +1,11 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BPIP141T : VRB수익분석상세
@@ -11,10 +17,14 @@ public class VRBProfitVO {
     /**
      * 예상손익 ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익ID는 10자리 이하여야합니다." )
     private String fcstPalId;
     /**
      * VRB분석ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" VRB분석ID는 10자리 이하여야합니다." )
     private String vrbAnlyId;
 
     /**
@@ -25,6 +35,8 @@ public class VRBProfitVO {
     /**
      * 상품유형코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 상품유형코드는 4자리 이하여야합니다." )
     private String prodTypeCd;
 
     /**
@@ -35,41 +47,49 @@ public class VRBProfitVO {
     /**
      * LISTPRICE금액
      */
+    @Digits(integer=15,fraction=0)
     private Long lpcAmt;
 
     /**
      * 매출금액
      */
+    @Digits(integer=15,fraction=0)
     private Long sellAmt;
 
     /**
      * 매입원가금액
      */
+    @Digits(integer=15,fraction=0)
     private Long buyCostAmt;
 
     /**
      * 직접원가금액(매입외)
      */
+    @Digits(integer=15,fraction=0)
     private Long drcstAmt;
 
     /**
      * 직접경비금액
      */
+    @Digits(integer=15,fraction=0)
     private Long drexpAmt;
 
     /**
      * 간접원가금액
      */
+    @Digits(integer=15,fraction=0)
     private Long incstAmt;
 
     /**
      * 공헌이익금액
      */
+    @Digits(integer=15,fraction=0)
     private Long ctmgAmt;
 
     /**
      * 투입시간단위코드
      */
+    @Size(max=4, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 투입시간단위코드는 4자리 이하여야합니다." )
     private String putTimeUnitCd;
 
     /**
@@ -80,6 +100,7 @@ public class VRBProfitVO {
     /**
      * 투입인원수
      */
+    @Digits(integer=5,fraction=2)
     private float putNopCount;
 
     public String getFcstPalId() {

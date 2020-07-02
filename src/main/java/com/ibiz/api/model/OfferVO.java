@@ -1,5 +1,10 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 
@@ -13,12 +18,16 @@ public class OfferVO {
     /**
      * 예상손익ID
      */
+    @NotNull
+    @Size(max=10, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익ID는 10자리 이하여야합니다." )
     private String fcstPalId;
 
     // 201911상품변경
     /**
      * 서식코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 서식코드는 4자리 이하여야합니다." )
     private String frmtCd;
 
     /**
@@ -29,6 +38,7 @@ public class OfferVO {
     /**
      * 최종고객ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 최종고객ID는 10자리 이하여야합니다." )
     private String lastCustId;
 
     /**
@@ -39,6 +49,7 @@ public class OfferVO {
     /**
      * 프로젝트ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 프로젝트ID는 10자리 이하여야합니다." )
     private String prjtId;
 
     /**
@@ -49,6 +60,8 @@ public class OfferVO {
     /**
      * 프로젝트유형코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 프로젝트유형코드는 4자리 이하여야합니다." )
     private String prjtTypeCd;
 
     /**
@@ -59,6 +72,7 @@ public class OfferVO {
     /**
      * 사업기회ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 사업기회ID는 10자리 이하여야합니다." )
     private String boptId;
 
     /**
@@ -74,6 +88,7 @@ public class OfferVO {
     /**
      * 발주고객ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 발주고객ID는 10자리 이하여야합니다." )
     private String ordeCustId;
 
     /**
@@ -84,16 +99,19 @@ public class OfferVO {
     /**
      * 계약이행시작연월
      */
+    @Size(max=6, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 계약이행시작연월은 6자리 이하여야합니다." )
     private String cntrTrsfStartYam;
 
     /**
      * 계약이행종료연월
      */
+    @Size(max=6, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 계약이행종료연월은 6자리 이하여야합니다." )
     private String cntrTrsfEndYam;
 
     /**
      * 기술서비스검토사원ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 기술서비스검토사원ID는 10자리 이하여야합니다." )
     private String techSvcRvwEmpId;
 
     /**
@@ -104,6 +122,7 @@ public class OfferVO {
     /**
      * 기술서비스검토부서ID
      */
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 기술서비스검토부서ID는 8자리 이하여야합니다." )
     private String techSvcRvwDeptId;
 
     /**
@@ -129,6 +148,7 @@ public class OfferVO {
     /**
      * 매출금액
      */
+    @Digits(integer=15,fraction=0)
     private Long sellAmt;
 
     /**
@@ -148,6 +168,8 @@ public class OfferVO {
     /**
      * 예상손익진행상태코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익진행상태코드는 4자리 이하여야합니다." )
     private String fcstPalPrgsStatCd;
 
     /**
@@ -158,11 +180,14 @@ public class OfferVO {
     /**
      * 결재ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 결재ID는 10자리 이하여야합니다." )
     private String santId;
 
     /**
      * 영업부서ID
      */
+    @NotNull
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 영업부서ID는 8자리 이하여야합니다." )
     private String slsDeptId;
 
     private String slsDeptNm;
@@ -170,6 +195,8 @@ public class OfferVO {
     /**
      * 영업사원ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 영업사원ID는 10자리 이하여야합니다." )
     private String slsEmpId;
 
     private String slsEmpNm;
@@ -180,6 +207,7 @@ public class OfferVO {
     /**
      * 등록사원ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 등록사원ID는 10자리 이하여야합니다." )
     private String regEmpId;
     /**
      * 등록사원명
@@ -194,6 +222,7 @@ public class OfferVO {
     /**
      * 변경사원ID
      */
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 변경사원ID는 10자리 이하여야합니다." )
     private String chgEmpId;
     /**
      * 변경사원명
@@ -332,7 +361,7 @@ public class OfferVO {
     private String santAppvDt;
 
     /**
-     * 전체 row 수
+     * 전체 row수
      */
     private Integer totalCnt;
 
@@ -898,14 +927,6 @@ public class OfferVO {
         this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 
-    public Boolean getInProgress() {
-        return isInProgress;
-    }
-
-    public void setInProgress(Boolean inProgress) {
-        isInProgress = inProgress;
-    }
-
     public Integer getTotalCnt() {
         return totalCnt;
     }
@@ -913,4 +934,5 @@ public class OfferVO {
     public void setTotalCnt(Integer totalCnt) {
         this.totalCnt = totalCnt;
     }
+
 }

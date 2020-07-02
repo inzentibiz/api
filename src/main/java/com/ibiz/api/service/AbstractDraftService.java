@@ -1,7 +1,7 @@
 package com.ibiz.api.service;
 
 import com.ibiz.api.dao.DraftDao;
-import com.ibiz.api.model.ApprovalDetailVO;
+import com.ibiz.api.model.ApprovalAuthorizerVO;
 import com.ibiz.api.model.ApprovalVO;
 import com.ibiz.api.model.AttachVO;
 import com.ibiz.api.utils.IndexUtils;
@@ -99,9 +99,9 @@ public class AbstractDraftService extends AbstractWebService {
 
     @Transactional
     protected void insertApproverList(ApprovalVO approvalVO) {
-        for (ApprovalDetailVO approvalDetailVO : approvalVO.getApprovalDetailList()) {
-            approvalDetailVO.setSantId(approvalVO.getSantId());
-            draftDao.insertApprover(approvalDetailVO);
+        for (ApprovalAuthorizerVO approvalAuthorizerVO : approvalVO.getApprovalDetailList()) {
+            approvalAuthorizerVO.setSantId(approvalVO.getSantId());
+            draftDao.insertApprover(approvalAuthorizerVO);
         }
     }
 

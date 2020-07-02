@@ -1,4 +1,11 @@
 package com.ibiz.api.model;
+
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BEST100T : 견적서발행내역
@@ -10,16 +17,22 @@ public class EstimateProductPSVO {
     /**
      * 견적ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 견적ID는 10자리 이하여야합니다." )
     private String estiId;
 
     /**
      * 예상손익ID
      */
+    @NotNull
+    @Size(max=10, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익ID는 10자리 이하여야합니다." )
     private String fcstPalId;
 
     /**
      * 상품구분코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 상품유형코드는 4자리 이하여야합니다." )
     private String prodDstCd;
 
     /**
@@ -40,6 +53,8 @@ public class EstimateProductPSVO {
     /**
      * 순번
      */
+    @NotNull
+    @Digits(integer=3,fraction=0)
     private Integer seq;
 
     /**
@@ -90,26 +105,33 @@ public class EstimateProductPSVO {
     /**
      * copy수량(서비스 인원)
      */
+    @NotNull
+    @Digits(integer=10,fraction=5)
     private Double qnt;
 
     /**
      * 기본단가금액
      */
+    @Digits(integer=15,fraction=0)
     private Long bscUpcAmt;
 
     /**
      * ListPrice금액
      */
+    @Digits(integer=15,fraction=0)
     private Long lpcAmt;
 
     /**
      * 공급단가금액
      */
+    @Digits(integer=15,fraction=0)
     private Long splyUpcAmt;
 
     /**
      * 공급금액
      */
+    @NotNull
+    @Digits(integer=15,fraction=0)
     private Long splyAmt;
 
     /**

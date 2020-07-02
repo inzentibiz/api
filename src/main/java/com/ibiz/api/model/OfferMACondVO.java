@@ -1,4 +1,11 @@
 package com.ibiz.api.model;
+
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BEST080T : 유지보수제공조건상세
@@ -9,16 +16,22 @@ public class OfferMACondVO {
     /**
      * 예상손익ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익ID는 10자리 이하여야합니다." )
     private String fcstPalId;
 
     /**
      * 순번
      */
+    @NotNull
+    @Digits(integer=3,fraction=0)
     private Integer seq;
 
     /**
      * 기술서비스코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 기술서비스코드는 4자리 이하여야합니다." )
     private String techSvcCd;
 
     /**
@@ -34,6 +47,7 @@ public class OfferMACondVO {
     /**
      * 서비스단가기준코드
      */
+    @Size(max=4, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 서비스단가코드는 4자리 이하여야합니다." )
     private String svcUpcCritCd;
 
     /**

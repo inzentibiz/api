@@ -1,21 +1,31 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BPIP150T : VRB사업분석내역
  *
  */
 
+
 public class VRBStrategyVO {
 
     /**
      * VRB분석ID
      */
+    @NotNull
+    @Size(max=10, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" VRB분석ID는 10자리 이하여야합니다." )
     private String vrbAnlyId;
 
     /**
      * VRB분석유형코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" VRB분석유형코드는 4자리 이하여야합니다." )
     private String vrbAnlyTypeCd;
 
     /**
@@ -26,6 +36,8 @@ public class VRBStrategyVO {
     /**
      * VRB분석항목코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" VRB분석항목코드는 4자리 이하여야합니다." )
     private String vrbAnlyItmCd;
 
     /**

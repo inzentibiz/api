@@ -139,7 +139,7 @@ public class VRBAnalysisService extends AbstractDraftService {
         AccountVO accountVO = requestPayload.getAccountVO();
         VRBAnalysisVO vrb = requestPayload.getDto();
 
-        ApprovalDetailVO approvalDetail = new ApprovalDetailVO();
+        ApprovalAuthorizerVO approvalDetail = new ApprovalAuthorizerVO();
         ApprovalVO approvalVO = new ApprovalVO();
 
         SysUserGroupVO sysUserGroupVO = new SysUserGroupVO();
@@ -230,7 +230,7 @@ public class VRBAnalysisService extends AbstractDraftService {
         AccountVO accountVO = requestPayload.getAccountVO();
         VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
 
-        ApprovalDetailVO  approvalDetail = new ApprovalDetailVO();
+        ApprovalAuthorizerVO approvalDetail = new ApprovalAuthorizerVO();
         VRBAnalysisVO vrb = new VRBAnalysisVO();
 
         vrb.setProject(vrbAnalysisDAO.selectVRBAnalysisProject(vrbAnalysisVO));

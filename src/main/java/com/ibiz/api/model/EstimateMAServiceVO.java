@@ -1,5 +1,11 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BEST180T : MA서비스상세
@@ -11,16 +17,21 @@ public class EstimateMAServiceVO {
     /**
      * 견적ID
      */
+    @NotNull
+    @Size(max=10, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 견적ID는 10자리 이하여야합니다." )
     private String estiId;
 
     /**
      * 순번
      */
+    @NotNull
+    @Digits(integer=3,fraction=0)
     private Integer seq;
 
     /**
      * 서비스 업무명
      */
+    @NotNull
     private String svcJobNm;
 
     /**

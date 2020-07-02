@@ -1,5 +1,11 @@
 package com.ibiz.api.model;
 
+import com.ibiz.api.exception.ExceptionCode;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * BPIP130T : VRB경쟁사분석내역
@@ -11,16 +17,21 @@ public class VRBCompetitorVO {
     /**
      * VRB분석ID
      */
+    @NotNull
+    @Size(max=10, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" VRB분석ID는 10자리 이하여야합니다." )
     private String vrbAnlyId;
 
     /**
      * 순번
      */
+    @NotNull
+    @Digits(integer=3,fraction=0)
     private Integer seq;
 
     /**
      * 업체명
      */
+    @NotNull
     private String cmpyNm;
 
     /**
@@ -41,6 +52,8 @@ public class VRBCompetitorVO {
     /**
      * 제품경쟁우위코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 제품경쟁우위코드는 4자리 이하여야합니다." )
     private String godsCpttSupCd;
 
     /**
@@ -51,6 +64,8 @@ public class VRBCompetitorVO {
     /**
      * 가격경쟁우위코드
      */
+    @NotNull
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 가격경쟁우위코드는 4자리 이하여야합니다." )
     private String prcCpttSupCd;
 
     /**

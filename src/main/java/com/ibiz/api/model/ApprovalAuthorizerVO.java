@@ -1,6 +1,6 @@
 package com.ibiz.api.model;
 
-public class ApprovalDetailVO {
+public class ApprovalAuthorizerVO {
 
     /**
      * 결재 ID
