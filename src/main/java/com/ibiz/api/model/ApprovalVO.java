@@ -53,7 +53,7 @@ public class ApprovalVO {
     /**
      * 결재 알림 구분 명
      */
-    private String santNtcDstNm;
+    private String santNtcDstCdNm;
 
     /**
      * 긴급 결재 구분 코드
@@ -63,7 +63,7 @@ public class ApprovalVO {
     /**
      * 긴급 결재 구분 명
      */
-    private String emgSantDstNm;
+    private String emgSantDstCdNm;
 
     /**
      * 결재진행상태코드
@@ -73,12 +73,12 @@ public class ApprovalVO {
     /**
      * 결재진행상태명
      */
-    private String santPrgsStatNm;
+    private String santPrgsStatCdNm;
 
     /**
      * 승인구분명
      */
-    private String santAppvDstNm;
+    private String santAppvDstCdNm;
     /**
      * 첨부ID
      */
@@ -355,12 +355,12 @@ public class ApprovalVO {
         this.santNtcDstCd = santNtcDstCd;
     }
 
-    public String getSantNtcDstNm() {
-        return santNtcDstNm;
+    public String getSantNtcDstCdNm() {
+        return santNtcDstCdNm;
     }
 
-    public void setSantNtcDstNm(String santNtcDstNm) {
-        this.santNtcDstNm = santNtcDstNm;
+    public void setSantNtcDstCdNm(String santNtcDstCdNm) {
+        this.santNtcDstCdNm = santNtcDstCdNm;
     }
 
     public String getEmgSantDstCd() {
@@ -371,12 +371,12 @@ public class ApprovalVO {
         this.emgSantDstCd = emgSantDstCd;
     }
 
-    public String getEmgSantDstNm() {
-        return emgSantDstNm;
+    public String getEmgSantDstCdNm() {
+        return emgSantDstCdNm;
     }
 
-    public void setEmgSantDstNm(String emgSantDstNm) {
-        this.emgSantDstNm = emgSantDstNm;
+    public void setEmgSantDstCdNm(String emgSantDstCdNm) {
+        this.emgSantDstCdNm = emgSantDstCdNm;
     }
 
     public String getSantPrgsStatCd() {
@@ -387,20 +387,20 @@ public class ApprovalVO {
         this.santPrgsStatCd = santPrgsStatCd;
     }
 
-    public String getSantPrgsStatNm() {
-        return santPrgsStatNm;
+    public String getSantPrgsStatCdNm() {
+        return santPrgsStatCdNm;
     }
 
-    public void setSantPrgsStatNm(String santPrgsStatNm) {
-        this.santPrgsStatNm = santPrgsStatNm;
+    public void setSantPrgsStatCdNm(String santPrgsStatCdNm) {
+        this.santPrgsStatCdNm = santPrgsStatCdNm;
     }
 
-    public String getSantAppvDstNm() {
-        return santAppvDstNm;
+    public String getSantAppvDstCdNm() {
+        return santAppvDstCdNm;
     }
 
-    public void setSantAppvDstNm(String santAppvDstNm) {
-        this.santAppvDstNm = santAppvDstNm;
+    public void setSantAppvDstCdNm(String santAppvDstCdNm) {
+        this.santAppvDstCdNm = santAppvDstCdNm;
     }
 
     public String getAttcId() {
@@ -787,28 +787,4 @@ public class ApprovalVO {
         this.aprnRoleNm = aprnRoleNm;
     }
 
-    @Override
-    public String toString() {
-        return "ApprovalVO [totalCnt=" + totalCnt + ", santId=" + santId + ", santSeq=" + santSeq + ", santDeptId="
-                + santDeptId + ", docTitl=" + docTitl + ", bdctCont=" + bdctCont + ", santFrmtCd=" + santFrmtCd
-                + ", santFrmtCdNm=" + santFrmtCdNm + ", santNtcDstCd=" + santNtcDstCd + ", santNtcDstNm=" + santNtcDstNm
-                + ", emgSantDstCd=" + emgSantDstCd + ", emgSantDstNm=" + emgSantDstNm + ", santPrgsStatCd="
-                + santPrgsStatCd + ", santPrgsStatNm=" + santPrgsStatNm + ", santAppvDstNm=" + santAppvDstNm
-                + ", attcId=" + attcId + ", regEmpId=" + regEmpId + ", regEmpNm=" + regEmpNm + ", RegDt=" + RegDt
-                + ", chgEmpId=" + chgEmpId + ", chgEmpNm=" + chgEmpNm + ", chgDt=" + chgDt + ", santDt=" + santDt
-                + ", santOpinContCnt=" + santOpinContCnt + ", approvalDetailList=" + approvalDetailList
-                + ", roleButtonList=" + roleButtonList + ", attcFileList=" + attcFileList + ", ongoingSantSeq="
-                + ongoingSantSeq + ", numberToSubmit=" + numberToSubmit + ", numberToApprove=" + numberToApprove
-                + ", numberToCheck=" + numberToCheck + ", result=" + result + ", lastAprnEmpId=" + lastAprnEmpId
-                + ", lastAprnEmpNm=" + lastAprnEmpNm + ", rtosSantDt=" + rtosSantDt + ", lastSantDt=" + lastSantDt
-                + ", rtosEmpId=" + rtosEmpId + ", rtosEmpNm=" + rtosEmpNm + ", rtosAprnEmpNm=" + rtosAprnEmpNm
-                + ", santOpinCount=" + santOpinCount + ", rcvSantDt=" + rcvSantDt + ", cmplSantDt=" + cmplSantDt
-                + ", nextAprnEmpNm=" + nextAprnEmpNm + ", nextAprnRoleCd=" + nextAprnRoleCd + ", nextSantSeq="
-                + nextSantSeq + ", aprnRoleCd=" + aprnRoleCd + ", nextAprnEmpId=" + nextAprnEmpId + ", nextAprnRoleNm="
-                + nextAprnRoleNm + ", aprnEmpId=" + aprnEmpId + ", aprnEmpNm=" + aprnEmpNm + ", aprnResoCd="
-                + aprnResoCd + ", aprnOfpsCd=" + aprnOfpsCd + ", santOpinCont=" + santOpinCont + ", santAppvDstCd="
-                + santAppvDstCd + ", mdtrAprnYn=" + mdtrAprnYn + ", iptChgEmpNm=" + iptChgEmpNm + ", iptRegEmpNm="
-                + iptRegEmpNm + ", errorText=" + errorText + ", approvalChangeList=" + approvalChangeList
-                + ", rtosDate=" + rtosDate + ", lastSantDate=" + lastSantDate + ", aprnRoleNm=" + aprnRoleNm + "]";
-    }
 }
