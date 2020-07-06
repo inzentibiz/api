@@ -18,8 +18,6 @@ public class OfferVO {
     /**
      * 예상손익ID
      */
-    @NotNull
-    @Size(max=10, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익ID는 10자리 이하여야합니다." )
     private String fcstPalId;
 
     // 201911상품변경
@@ -559,11 +557,11 @@ public class OfferVO {
         this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
     }
 
-    public String getFcstPalPrgsStatCdNmNm() {
+    public String getFcstPalPrgsStatCdNm() {
         return fcstPalPrgsStatCdNm;
     }
 
-    public void setFcstPalPrgsStatCdNmNm(String fcstPalPrgsStatCdNm) {
+    public void setFcstPalPrgsStatCdNm(String fcstPalPrgsStatCdNm) {
         this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 
@@ -917,14 +915,6 @@ public class OfferVO {
 
     public void setFcstPalPrgsStatCd(String fcstPalPrgsStatCd) {
         this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
-    }
-
-    public String getFcstPalPrgsStatCdNm() {
-        return fcstPalPrgsStatCdNm;
-    }
-
-    public void setFcstPalPrgsStatCdNm(String fcstPalPrgsStatCdNm) {
-        this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 
     public Integer getTotalCnt() {

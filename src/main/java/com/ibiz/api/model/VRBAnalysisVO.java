@@ -22,8 +22,6 @@ public class VRBAnalysisVO {
     /**
      * VRB분석ID
      */
-    @NotNull
-    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" VRB분석ID는 10자리 이하여야합니다." )
     private String vrbAnlyId;
 
     /**

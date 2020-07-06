@@ -17,11 +17,11 @@ public class WebDao {
      */
 
     public List<String> selectAuthDeptIdList(String userGrpVO) {
-        return mybatis.selectList("WebMapper.Select_authDeptIdList", userGrpVO);
+        return mybatis.selectList("WebMapper.selectAuthDeptIdList", userGrpVO);
     }
 
     public List<String> selectAllAuthDeptIdList(String userGrpVO) {
-        return mybatis.selectList("WebMapper.Select_allAuthDeptIdList", userGrpVO);
+        return mybatis.selectList("WebMapper.selectAllAuthDeptIdList", userGrpVO);
     }
 
 }

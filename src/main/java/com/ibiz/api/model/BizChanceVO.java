@@ -30,8 +30,6 @@ public class BizChanceVO {
     /**
      * 사업기회 ID
      */
-    @NotNull
-    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 사업기회ID는 10자리 이하여야합니다." )
     private String boptId;
 
     /**
@@ -846,11 +844,11 @@ public class BizChanceVO {
         this.santId = santId;
     }
 
-    public String getFcstPalPrgsStatCdNmNm() {
+    public String getFcstPalPrgsStatCdNm() {
         return fcstPalPrgsStatCdNm;
     }
 
-    public void setFcstPalPrgsStatCdNmNm(String fcstPalPrgsStatCdNm) {
+    public void setFcstPalPrgsStatCdNm(String fcstPalPrgsStatCdNm) {
         this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 

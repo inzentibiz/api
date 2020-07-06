@@ -208,11 +208,11 @@ public class ExcelOfferProfitByProdTypeVO {
         this.cntrTrsfEndYam = cntrTrsfEndYam;
     }
 
-    public String getFcstPalPrgsStatCdNmNm() {
+    public String getFcstPalPrgsStatCdNm() {
         return fcstPalPrgsStatCdNm;
     }
 
-    public void setFcstPalPrgsStatCdNmNm(String fcstPalPrgsStatCdNm) {
+    public void setFcstPalPrgsStatCdNm(String fcstPalPrgsStatCdNm) {
         this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 

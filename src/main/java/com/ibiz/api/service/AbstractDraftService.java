@@ -58,8 +58,8 @@ public class AbstractDraftService extends AbstractWebService {
             attachVO.setAttcId(approvalVO.getAttcId());
         }
 
-        draftDao.deleteDraftDetail(approvalVO);
-        draftDao.deleteDraft(approvalVO);
+        draftDao.deleteApprovalAuthorizer(approvalVO);
+        draftDao.deleteApprovalDraft(approvalVO);
     }
 
     @Transactional
@@ -91,7 +91,7 @@ public class AbstractDraftService extends AbstractWebService {
         approvalVO.setSantPrgsStatCd("A");
         approvalVO.setSantId(IndexUtils.generateId(10, prevId));
 
-        draftDao.insertDraft(approvalVO);
+        draftDao.insertApprovalDraft(approvalVO);
         insertApproverList(approvalVO);
 
         return approvalVO.getSantId();
@@ -101,19 +101,19 @@ public class AbstractDraftService extends AbstractWebService {
     protected void insertApproverList(ApprovalVO approvalVO) {
         for (ApprovalAuthorizerVO approvalAuthorizerVO : approvalVO.getApprovalDetailList()) {
             approvalAuthorizerVO.setSantId(approvalVO.getSantId());
-            draftDao.insertApprover(approvalAuthorizerVO);
+            draftDao.insertApprovalAuthorizer(approvalAuthorizerVO);
         }
     }
 
     @Transactional
     protected void updateApproverList(ApprovalVO approvalVO) {
-        draftDao.deleteApproverList(approvalVO);
+        draftDao.deleteApprovalAuthorizer(approvalVO);
         insertApproverList(approvalVO);
     }
 
     @Transactional
     protected void updateDraft(ApprovalVO approvalVO) throws Exception {
 
-        draftDao.updateDraft(approvalVO);
+        draftDao.updateApprovalDraft(approvalVO);
     }
 }

@@ -13,51 +13,48 @@ public class DraftDao {
     private SqlSessionTemplate mybatis;
 
     public ApprovalVO selectSantNtcDstInfo(ApprovalVO approvalVO) {
-        return mybatis.selectOne("DraftMapper.Select_santNtcDstInfo", approvalVO);
+        return mybatis.selectOne("DraftMapper.selectSantNtcDstInfo", approvalVO);
     }
 
     public void updateApprovalState(ApprovalVO approvalVO) {
-        mybatis.update("DraftMapper.Update_approvalState", approvalVO);
+        mybatis.update("DraftMapper.updateApprovalState", approvalVO);
     }
 
     public ApprovalVO selectMaxSantId() {
-        return mybatis.selectOne("DraftMapper.Select_maxSantId");
+        return mybatis.selectOne("DraftMapper.selectMaxSantId");
     }
 
     /*
      * INSERT
      */
 
-    public void insertDraft(ApprovalVO approvalVO) {
-        mybatis.insert("DraftMapper.Insert_draft", approvalVO);
+    public void insertApprovalDraft(ApprovalVO approvalVO) {
+        mybatis.insert("DraftMapper.insertApprovalDraft", approvalVO);
     }
 
-    public void insertApprover(ApprovalAuthorizerVO approvalAuthorizerVO) {
-        mybatis.insert("DraftMapper.Insert_approver", approvalAuthorizerVO);
+    public void insertApprovalAuthorizer(ApprovalAuthorizerVO approvalAuthorizerVO) {
+        mybatis.insert("DraftMapper.insertApprovalAuthorizer", approvalAuthorizerVO);
     }
 
     /*
      * UPDATE
      */
 
-    public void updateDraft(ApprovalVO approvalVO) {
-        mybatis.update("DraftMapper.Update_draft", approvalVO);
+    public void updateApprovalDraft(ApprovalVO approvalVO) {
+        mybatis.update("DraftMapper.updateApprovalDraft", approvalVO);
     }
 
     /*
      * DELTE
      */
 
-    public void deleteDraft(ApprovalVO approvalVO) {
-        mybatis.delete("DraftMapper.Delete_draft", approvalVO);
+    public void deleteApprovalDraft(ApprovalVO approvalVO) {
+        mybatis.delete("DraftMapper.deleteApprovalDraft", approvalVO);
     }
 
-    public void deleteDraftDetail(ApprovalVO approvalVO) {
-        mybatis.delete("DraftMapper.Delete_draftDetail", approvalVO);
+    public void deleteApprovalAuthorizer(ApprovalVO approvalVO) {
+        mybatis.delete("DraftMapper.deleteApprovalAuthorizer", approvalVO);
     }
 
-    public void deleteApproverList(ApprovalVO approvalVO) {
-        mybatis.delete("DraftMapper.Delete_approverList", approvalVO);
-    }
 
 }
