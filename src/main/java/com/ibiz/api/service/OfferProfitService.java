@@ -527,6 +527,7 @@ public class OfferProfitService extends AbstractDraftService {
 
         return bizChanceList;
     }
+/*
 
     @Transactional
     public List<BizChanceVO> selectBizChanceView(Payload<BizChanceSearchVO> requestPayload) throws Exception {
@@ -565,6 +566,7 @@ public class OfferProfitService extends AbstractDraftService {
 
         return bizChanceList;
     }
+*/
 
 
     @Transactional

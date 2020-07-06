@@ -33,14 +33,14 @@ public class BizChanceController extends BaseController {
 
         return super.composePayload(new Payload<List>(bizChanceService.selectBizChanceList(requestPayload)));
     }
-
+/*
     @PostMapping("/selectBizChanceView")
     public ResponseEntity<String> selectBizChanceView(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".selectBizChanceView");
         Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<BizChanceSearchVO>>(){});
 
         return super.composePayload(new Payload<List>(bizChanceService.selectBizChanceView(requestPayload)));
-    }
+    }*/
 
     // BOPT_사업기회 : 사업기회 세부 내용 조회
     @PostMapping("/selectBizChance")

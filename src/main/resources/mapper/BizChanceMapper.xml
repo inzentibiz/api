@@ -5,7 +5,7 @@
 <mapper namespace="BizChanceMapper">
 
     <!-- 사업기회기본 리스트 조회 -->
-    <select id="selectBizChanceView"
+    <!--<select id="selectBizChanceView"
             parameterType="com.ibiz.api.model.BizChanceSearchVO"
             resultType="com.ibiz.api.model.BizChanceVO">
         SELECT
@@ -54,7 +54,7 @@
         </if>
         ORDER BY CNTR_DATE desc
     </select>
-
+-->
     <!-- 사업기회 월별매출매입 리스트 조회 -->
     <select id="selectBizChanceAmtList"
             parameterType="com.ibiz.api.model.BizChanceAmountVO"
@@ -119,7 +119,7 @@
     <select id="selectBizChance"
             parameterType="com.ibiz.api.model.BizChanceVO"
             resultType="com.ibiz.api.model.BizChanceVO">
-		SELECT
+		<!--SELECT
             IBIZ_CUST_NM(bpip.ORDE_CUST_ID) AS ORDE_CUST_NM,
             hmst.SLS_DEPT_NM, hmst.EMP_ID, hmst.SLS_EMP_NM, hmst.SLS_OFPS_CD_NM,
             IBIZ_EMP_NM(bpip.REG_EMP_ID) AS REG_EMP_NM,
@@ -145,7 +145,8 @@
             IBIZ_COM_CD_NM('BOPT_STAT_CD',bpip.BOPT_STAT_CD) as BOPT_STAT_CD_NM,
             IBIZ_COM_CD_NM('BOPT_END_TYPE_CD',bpip.BOPT_END_TYPE_CD) as BOPT_END_TYPE_CD_NM,
             IBIZ_COM_CD_NM('WCT_PRBB_CD',bpip.WCT_PRBB_CD) as WCT_PRBB_CD_NM,
-            bpip.BOPT_ID, bpip.PRJT_ID, bpip.BOPT_NM, bpip.ORDE_CUST_ID, bpip.BSNS_CLSF_CD,
+            bpip.BOPT_ID, bpip.PRJT_ID, bpip.BOPT_NM, bpip.ORDE_CUST_ID,
+            bpip.BSNS_CLSF_CD, IBIZ_COM_CD_NM('BSNS_CLSF_CD',bpip.BSNS_CLSF_CD) as BSNS_CLSF_CD_NM,
             bpip.CNTR_DATE, bpip.CNTR_TRSF_START_YAM, bpip.CNTR_TRSF_END_YAM, bpip.PRPS_FNSH_DATE,
             bpip.BID_FNSH_DATE, bpip.CMPY_SLCT_DATE, bpip.WCT_PRBB_CD, bpip.FCST_RFLC_YN,
             bpip.DTIM_RPRT_DISP_YN, bpip.WCT_DCD_DATE, bpip.BOPT_STAT_CD, bpip.BOPT_END_TYPE_CD,
@@ -170,8 +171,51 @@
 		ON bpip.SLS_EMP_ID = hmst.EMP_ID
 		WHERE 1 = 1
         AND bpip.BOPT_STAT_CD != 'D1'
-		AND BOPT_ID = UPPER(#{boptId})
-
+		AND BOPT_ID = UPPER(#{boptId})-->
+        SELECT
+        IBIZ_CUST_NM(bpip.ORDE_CUST_ID) AS ORDE_CUST_NM,
+        hmst.SLS_DEPT_NM, hmst.EMP_ID, hmst.SLS_EMP_NM,
+        IBIZ_COM_CD_NM('BSNS_CLSF_CD',bpip.BSNS_CLSF_CD) AS BSNS_CLSF_CD_NM,
+        IBIZ_EMP_NM(bpip.REG_EMP_ID) AS  REG_EMP_NM,
+        (
+            SELECT DEPT_NM
+                FROM HMST100T
+                WHERE DEPT_ID = (
+                SELECT BLTO_DEPT_ID
+                    FROM HMST300T
+                    WHERE EMP_ID = bpip.REG_EMP_ID
+                )
+        ) AS  REG_DEPT_NM,
+        IBIZ_EMP_NM(bpip.CHG_EMP_ID) AS CHG_EMP_NM,
+        (
+            SELECT DEPT_NM
+            FROM HMST100T
+            WHERE DEPT_ID = (
+                SELECT BLTO_DEPT_ID
+                FROM HMST300T
+                WHERE EMP_ID = bpip.CHG_EMP_ID
+            )
+        ) AS  CHG_DEPT_NM,
+        IBIZ_COM_CD_NM('BOPT_STAT_CD',bpip.BOPT_STAT_CD) as BOPT_STAT_CD_NM,
+        IBIZ_COM_CD_NM('BOPT_END_TYPE_CD',bpip.BOPT_END_TYPE_CD) as BOPT_END_TYPE_CD_NM,
+        IBIZ_COM_CD_NM('WCT_PRBB_CD',bpip.WCT_PRBB_CD) as WCT_PRBB_CD_NM,
+        bpip.BOPT_ID, bpip.PRJT_ID, bpip.BOPT_NM, bpip.ORDE_CUST_ID, bpip.BSNS_CLSF_CD,
+        bpip.CNTR_DATE, bpip.CNTR_TRSF_START_YAM, bpip.CNTR_TRSF_END_YAM, bpip.PRPS_FNSH_DATE,
+        bpip.BID_FNSH_DATE, bpip.CMPY_SLCT_DATE, bpip.WCT_PRBB_CD, bpip.FCST_RFLC_YN,
+        bpip.DTIM_RPRT_DISP_YN, bpip.WCT_DCD_DATE, bpip.BOPT_STAT_CD, bpip.BOPT_END_TYPE_CD,
+        bpip.SLS_DEPT_ID, bpip.SLS_EMP_ID, bpip.SPCL_CONT, bpip.REG_EMP_ID, bpip.REG_DT, bpip.CHG_EMP_ID, bpip.CHG_DT
+        FROM BPIP000T bpip
+        LEFT JOIN
+        (
+            SELECT hmst1.DEPT_NM AS SLS_DEPT_NM, hmst3.EMP_ID, hmst3.EMP_NM AS SLS_EMP_NM
+            FROM HMST300T hmst3
+            JOIN HMST100T hmst1 ON hmst3.BLTO_DEPT_ID = hmst1.DEPT_ID
+        ) hmst
+        ON bpip.SLS_EMP_ID = hmst.EMP_ID
+        WHERE 1 = 1
+        <if test="boptId != null and boptId != ''">
+            AND BOPT_ID = UPPER(#{boptId})
+        </if>
 	</select>
 
     <!-- 연관 사업기회 조회 -->

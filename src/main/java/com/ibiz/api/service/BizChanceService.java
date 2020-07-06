@@ -35,6 +35,7 @@ public class BizChanceService {
 
         return bizChanceList;
     }
+/*
 
     @Transactional
     public List<BizChanceVO> selectBizChanceView(Payload<BizChanceSearchVO> requestPayload) throws Exception {
@@ -73,6 +74,7 @@ public class BizChanceService {
 
         return bizChanceList;
     }
+*/
 
 
     @Transactional
@@ -93,6 +95,17 @@ public class BizChanceService {
         bizChance.setBizChanceAmtList(amtList);
         bizChance.setBizChanceNopList(nopList);
         bizChance.setChgDtView(bizChance.getChgDt());
+
+        bizChance.setSumPutNopCount(0);
+        for(int j=0; j<nopList.size(); j++) {
+            bizChance.setSumPutNopCount(bizChance.getSumPutNopCount() + nopList.get(j).getPutNopCount());
+        }
+        bizChance.setSumSellAmt(0);
+        bizChance.setSumBuyAmt(0);
+        for(int j=0; j<amtList.size(); j++) {
+            bizChance.setSumSellAmt(bizChance.getSumSellAmt() + (amtList.get(j).getSellAmt()== null? 0: amtList.get(j).getSellAmt()));
+            bizChance.setSumBuyAmt(bizChance.getSumBuyAmt() + (amtList.get(j).getBuyAmt()== null? 0: amtList.get(j).getBuyAmt()) );
+        }
 
         bizChance.setSalesActivityList(bizChanceDAO.selectBizChanceActivityList(bizChanceVO));
 

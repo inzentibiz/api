@@ -17,9 +17,9 @@ public class BizChanceDAO {
      * SELECT
      */
 
-    public List<BizChanceVO> selectBizChanceView(BizChanceSearchVO bizChanceSearchVO) throws Exception {
+  /*  public List<BizChanceVO> selectBizChanceView(BizChanceSearchVO bizChanceSearchVO) throws Exception {
         return mybatis.selectList("BizChanceMapper.selectBizChanceView", bizChanceSearchVO);
-    }
+    }*/
 
     public List<BizChanceAmountVO> selectBizChanceAmtList(BizChanceAmountVO bizChanceAmountVO) throws Exception {
         return mybatis.selectList("BizChanceMapper.selectBizChanceAmtList", bizChanceAmountVO);
