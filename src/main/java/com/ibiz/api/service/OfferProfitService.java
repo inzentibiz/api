@@ -1452,6 +1452,7 @@ public class OfferProfitService extends AbstractDraftService {
                 (super.isBelongToAuthDept(sysUserGroupVO)) || accountVO.getRoleList().contains("AD")) {
             approvalDetail.setSantId(bsnsProfitLoss.getSantId());
             approvalDetail.setSysUserGroupVO(sysUserGroupVO);
+            buttonList.add(new HashMap<String, String>() {{put("button", "복제"); }});
 
             // 버튼 리스트
             if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("A") &&  super.isBelongToAuthDept(sysUserGroupVO) ) {
