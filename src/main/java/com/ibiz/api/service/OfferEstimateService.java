@@ -169,7 +169,7 @@ public class OfferEstimateService extends AbstractDraftService {
 
         estimateVO.setChgEmpId(accountVO.getEmpId());
 
-        String fcstPalPrgsStatCd = offerEstimateDAO.selectEstimateFcstPalPrgsStatCd(estimateVO).getFcstPalPrgsStatCdNmCd();
+        String fcstPalPrgsStatCd = offerEstimateDAO.selectEstimateFcstPalPrgsStatCd(estimateVO).getFcstPalPrgsStatCdNm();
 
         //견적서 상태(등록:A1,임시등록:A2,발행:B1,임시발행:B2,폐기:C)
         if(fcstPalPrgsStatCd.equals("C")) {

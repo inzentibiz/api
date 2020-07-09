@@ -49,7 +49,7 @@ public class OfferProfitService extends AbstractDraftService {
         offerVO.setRegEmpId(accountVO.getEmpId());
 
         // 결재 등록 (미상신)
-        offerVO.setFcstPalPrgsStatCdNmCd("A");
+        offerVO.setFcstPalPrgsStatCdNm("A");
         offerVO.getApproval().setRegEmpId(accountVO.getEmpId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
         offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitTitle(offerVO));
@@ -204,7 +204,7 @@ public class OfferProfitService extends AbstractDraftService {
 
 
             // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
-            if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("W")) {
+            if (bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("W")) {
                 bsnsProfitLoss.setIsInProgress(false);
             } else {
                 bsnsProfitLoss.setIsInProgress(true);
@@ -242,29 +242,29 @@ public class OfferProfitService extends AbstractDraftService {
             buttonList.add(new HashMap<String, String>() {{put("button", "복제"); }});
             
             // 버튼 리스트
-            if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("A") &&  super.isBelongToAuthDept(sysUserGroupVO) ) {
+            if (bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("A") &&  super.isBelongToAuthDept(sysUserGroupVO) ) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "수정"); }});
             }
 
             if (accountVO.getRoleList().contains("AD")
-                    || (sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) && bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("A"))) {
+                    || (sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) && bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("A"))) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "삭제"); }});
             }
 
 
             if(super.isBelongToAuthDept(sysUserGroupVO) ){
                 // 예상손익진행상태가 반려, 폐기가 아닌 경우에만 견적장성버튼 내려줌(요구사항 수정)
-                if(!bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("W") ){
+                if(!bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("W") ){
                     buttonList.add(new HashMap<String, String>() {{put("button", "견적작성"); }});
                 }
-                if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("C")) {
+                if (bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("C")) {
                     // 예상손익진행상태가 승인인 경우 예상손익변경버튼 내려줌
                     buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
                     buttonList.add(new HashMap<String, String>() {{put("button", "수주보고"); }});
                 }
             }
 
-            if ((bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("R"))
+            if ((bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("R"))
                     && sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) ) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "폐기"); }});
             }
@@ -290,7 +290,7 @@ public class OfferProfitService extends AbstractDraftService {
         // 결재 모듈에서 처리된 진행상태값에 따라 서식의 진행상태를 업데이트한다.
         OfferVO offerVO = new OfferVO();
         offerVO.setSantId(approvalVO.getSantId());
-        offerVO.setFcstPalPrgsStatCdNmCd("W");
+        offerVO.setFcstPalPrgsStatCdNm("W");
         offerProfitDAO.updateOfferProfitStat(offerVO);
 
         return approvalVO;
@@ -454,19 +454,19 @@ public class OfferProfitService extends AbstractDraftService {
 
         switch (bsnsProfitLoss.getApproval().getSantPrgsStatCd()) {
             case "A":	// 미상신
-                offerVO.setFcstPalPrgsStatCdNmCd("A"); // 등록
+                offerVO.setFcstPalPrgsStatCdNm("A"); // 등록
                 break;
             case "B":	// 결재중
-                offerVO.setFcstPalPrgsStatCdNmCd("B"); // 결재진행
+                offerVO.setFcstPalPrgsStatCdNm("B"); // 결재진행
                 break;
             case "C":	// 완결
-                offerVO.setFcstPalPrgsStatCdNmCd("C"); // 승인
+                offerVO.setFcstPalPrgsStatCdNm("C"); // 승인
                 break;
             case "R":	// 반려/합의거부
-                offerVO.setFcstPalPrgsStatCdNmCd("R"); // 반려
+                offerVO.setFcstPalPrgsStatCdNm("R"); // 반려
                 break;
             case "W":	// 폐기
-                offerVO.setFcstPalPrgsStatCdNmCd("W"); // 폐기
+                offerVO.setFcstPalPrgsStatCdNm("W"); // 폐기
                 break;
         }
 
@@ -478,7 +478,7 @@ public class OfferProfitService extends AbstractDraftService {
         result = offerProfitDAO.selectFcstPalPrgsStatCd(bsnsProfitLoss);
 
         // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
-        if(result.getFcstPalPrgsStatCdNmCd().equals("D") || result.getFcstPalPrgsStatCdNmCd().equals("W")) {
+        if(result.getFcstPalPrgsStatCdNm().equals("D") || result.getFcstPalPrgsStatCdNm().equals("W")) {
             result.setIsInProgress(false);
         }else {
             result.setIsInProgress(true);
@@ -1082,7 +1082,7 @@ public class OfferProfitService extends AbstractDraftService {
 
         offerVO.setFcstPalId(IndexUtils.generateId(10, prevId));
         offerVO.setRegEmpId(accountVO.getEmpId());
-        offerVO.setFcstPalPrgsStatCdNmCd("A");
+        offerVO.setFcstPalPrgsStatCdNm("A");
 
         offerVO.getApproval().setRegEmpId(accountVO.getEmpId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
@@ -1166,7 +1166,7 @@ public class OfferProfitService extends AbstractDraftService {
         bsnsProfitLoss.setApproval(super.selectApprovalInfo(bsnsProfitLoss.getSantId()));
 
         // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
-        if(bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("W")) {
+        if(bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("W")) {
             bsnsProfitLoss.setIsInProgress(false);
         }else {
             bsnsProfitLoss.setIsInProgress(true);
@@ -1295,13 +1295,13 @@ public class OfferProfitService extends AbstractDraftService {
             befOfferVO.setFcstPalId(offerVO.getBefFcstPalId());
             befOfferVO.setSantId(offerProfitDAO.selectOfferProfitPS2(befOfferVO).getSantId());
 
-           if( !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCdNmCd().equals("C")){
+           if( !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCdNm().equals("C")){
                throw new UpdateDeniedException("변경전 예상손익분석서는 승인상태여야 합니다.", befOfferVO);
            }
         }
 
         // 결재 등록 (미상신)
-        offerVO.setFcstPalPrgsStatCdNmCd("A");
+        offerVO.setFcstPalPrgsStatCdNm("A");
         offerVO.getApproval().setRegEmpId(accountVO.getEmpId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
         offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitPS2Title(offerVO));
@@ -1418,7 +1418,7 @@ public class OfferProfitService extends AbstractDraftService {
             bsnsProfitLoss.setApproval(super.selectApprovalInfo(bsnsProfitLoss.getSantId()));
 
             // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
-            if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("W")) {
+            if (bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("W")) {
                 bsnsProfitLoss.setIsInProgress(false);
             } else {
                 bsnsProfitLoss.setIsInProgress(true);
@@ -1455,29 +1455,29 @@ public class OfferProfitService extends AbstractDraftService {
             buttonList.add(new HashMap<String, String>() {{put("button", "복제"); }});
 
             // 버튼 리스트
-            if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("A") &&  super.isBelongToAuthDept(sysUserGroupVO) ) {
+            if (bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("A") &&  super.isBelongToAuthDept(sysUserGroupVO) ) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "수정"); }});
             }
 
             if (accountVO.getRoleList().contains("AD")
-                    || (sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) && bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("A"))) {
+                    || (sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) && bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("A"))) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "삭제"); }});
             }
 
 
             if(super.isBelongToAuthDept(sysUserGroupVO)){
                 // 예상손익진행상태가 반려, 폐기가 아닌 경우에만 견적작성버튼 내려줌(요구사항 수정)
-                if(!bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("W") ){
+                if(!bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("W") ){
                     buttonList.add(new HashMap<String, String>() {{put("button", "견적작성"); }});
                 }
-                if (bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("C")) {
+                if (bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("C")) {
                     // 예상손익진행상태가 승인인 경우 예상손익변경버튼 내려줌
                     buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
                     buttonList.add(new HashMap<String, String>() {{put("button", "수주보고"); }});
                 }
             }
 
-            if ((bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCdNmCd().equals("R"))
+            if ((bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCdNm().equals("R"))
                     && sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) ) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "폐기"); }});
             }
@@ -1503,7 +1503,7 @@ public class OfferProfitService extends AbstractDraftService {
         // 결재 모듈에서 처리된 진행상태값에 따라 서식의 진행상태를 업데이트한다.
         OfferVO offerVO = new OfferVO();
         offerVO.setSantId(approvalVO.getSantId());
-        offerVO.setFcstPalPrgsStatCdNmCd("W");
+        offerVO.setFcstPalPrgsStatCdNm("W");
         offerProfitDAO.updateOfferProfitStat(offerVO);
 
         return approvalVO;
@@ -1525,7 +1525,7 @@ public class OfferProfitService extends AbstractDraftService {
             befOfferVO.setFcstPalId(offerVO.getBefFcstPalId());
             befOfferVO.setSantId(offerProfitDAO.selectOfferProfitPS2(befOfferVO).getSantId());
 
-            if (!offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCdNmCd().equals("C")) {
+            if (!offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCdNm().equals("C")) {
                 throw new UpdateDeniedException("변경전 예상손익분석서는 승인상태여야 합니다.", befOfferVO);
             }
         }
@@ -1636,19 +1636,19 @@ public class OfferProfitService extends AbstractDraftService {
 
         switch (bsnsProfitLoss.getApproval().getSantPrgsStatCd()) {
             case "A":	// 미상신
-                offerVO.setFcstPalPrgsStatCdNmCd("A"); // 등록
+                offerVO.setFcstPalPrgsStatCdNm("A"); // 등록
                 break;
             case "B":	// 결재중
-                offerVO.setFcstPalPrgsStatCdNmCd("B"); // 결재진행
+                offerVO.setFcstPalPrgsStatCdNm("B"); // 결재진행
                 break;
             case "C":	// 완결
-                offerVO.setFcstPalPrgsStatCdNmCd("C"); // 승인
+                offerVO.setFcstPalPrgsStatCdNm("C"); // 승인
                 break;
             case "R":	// 반려/합의거부
-                offerVO.setFcstPalPrgsStatCdNmCd("R"); // 반려
+                offerVO.setFcstPalPrgsStatCdNm("R"); // 반려
                 break;
             case "W":	// 폐기
-                offerVO.setFcstPalPrgsStatCdNmCd("W"); // 폐기
+                offerVO.setFcstPalPrgsStatCdNm("W"); // 폐기
                 break;
         }
 
@@ -1660,7 +1660,7 @@ public class OfferProfitService extends AbstractDraftService {
         result = offerProfitDAO.selectFcstPalPrgsStatCd(bsnsProfitLoss);
 
         // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
-        if(result.getFcstPalPrgsStatCdNmCd().equals("D") || result.getFcstPalPrgsStatCdNmCd().equals("W")) {
+        if(result.getFcstPalPrgsStatCdNm().equals("D") || result.getFcstPalPrgsStatCdNm().equals("W")) {
             result.setIsInProgress(false);
         }else {
             result.setIsInProgress(true);

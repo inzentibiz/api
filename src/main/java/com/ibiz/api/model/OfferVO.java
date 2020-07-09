@@ -549,22 +549,6 @@ public class OfferVO {
         this.etcMtr = etcMtr;
     }
 
-    public String getFcstPalPrgsStatCdNmCd() {
-        return fcstPalPrgsStatCd;
-    }
-
-    public void setFcstPalPrgsStatCdNmCd(String fcstPalPrgsStatCd) {
-        this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
-    }
-
-    public String getFcstPalPrgsStatCdNm() {
-        return fcstPalPrgsStatCdNm;
-    }
-
-    public void setFcstPalPrgsStatCdNm(String fcstPalPrgsStatCdNm) {
-        this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
-    }
-
     public String getSantId() {
         return santId;
     }
@@ -925,4 +909,19 @@ public class OfferVO {
         this.totalCnt = totalCnt;
     }
 
+    public String getFcstPalPrgsStatCdNm() {
+        return fcstPalPrgsStatCdNm;
+    }
+
+    public void setFcstPalPrgsStatCdNm(String fcstPalPrgsStatCdNm) {
+        this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
+    }
+
+    public Boolean getInProgress() {
+        return isInProgress;
+    }
+
+    public void setInProgress(Boolean inProgress) {
+        isInProgress = inProgress;
+    }
 }
