@@ -369,8 +369,8 @@
 
 	<!-- VRB분석항목코드 조회  -->
 	<select id="selectVRBAnlyItmCdList"
-			parameterType="com.ibiz.api.model.CommonGroupVO"
-			resultType="com.ibiz.api.model.CommonGroupVO">
+			parameterType="com.ibiz.api.model.CommonGroupCodeVO"
+			resultType="com.ibiz.api.model.CommonGroupCodeVO">
 
 		SELECT HGRK_COM_CD AS HGRK_COM_GRP_CD,
 		    COM_CD AS COM_GRP_CD,

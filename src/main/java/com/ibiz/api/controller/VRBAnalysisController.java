@@ -2,7 +2,7 @@ package com.ibiz.api.controller;
 
 import com.google.gson.reflect.TypeToken;
 import com.ibiz.api.model.ApprovalVO;
-import com.ibiz.api.model.CommonGroupVO;
+import com.ibiz.api.model.CommonGroupCodeVO;
 import com.ibiz.api.model.Payload;
 import com.ibiz.api.model.VRBAnalysisVO;
 import com.ibiz.api.service.VRBAnalysisService;
@@ -132,7 +132,7 @@ public class VRBAnalysisController extends BaseController {
     @PostMapping("/selectVRBAnlyItmCdList")
     public ResponseEntity<String> selectVRBAnlyItmCdList(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".selectVRBAnlyItmCdList");
-        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<CommonGroupVO>>(){});
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<CommonGroupCodeVO>>(){});
 
         return super.composePayload(new Payload<List>(vrbAnalysisService.selectVRBAnlyItmCdList(requestPayload)));
     }

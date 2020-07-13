@@ -41,8 +41,8 @@ public class VRBAnalysisDAO {
         return mybatis.selectList("VRBAnalysisMapper.selectVRBAnalysisList", vrbAnalysisVO);
     }
 
-    public List<CommonGroupVO> selectVRBAnlyItmCdList(CommonGroupVO commonGroupVO) {
-        return mybatis.selectList("VRBAnalysisMapper.selectVRBAnlyItmCdList", commonGroupVO);
+    public List<CommonGroupCodeVO> selectVRBAnlyItmCdList(CommonGroupCodeVO commonGroupCodeVO) {
+        return mybatis.selectList("VRBAnalysisMapper.selectVRBAnlyItmCdList", commonGroupCodeVO);
     }
 
     public VRBAnalysisVO selectMaxVRBAnlyId() {
