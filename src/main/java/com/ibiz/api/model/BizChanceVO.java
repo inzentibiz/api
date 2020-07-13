@@ -354,6 +354,11 @@ public class BizChanceVO {
         return bizChanceChangeList;
     }
 
+    /**
+     * 계약금액
+     */
+    private long cntrAmt;
+
     public void setBizChanceChangeList(List<BizChanceVO> bizChanceChangeList) {
         this.bizChanceChangeList = bizChanceChangeList;
     }
