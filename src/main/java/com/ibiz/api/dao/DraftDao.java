@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository(value = "draftDao")
-public class DraftDAO {
+public class DraftDao {
 
     @Autowired
     private SqlSessionTemplate mybatis;
