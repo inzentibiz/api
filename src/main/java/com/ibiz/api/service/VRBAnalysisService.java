@@ -1,6 +1,6 @@
 package com.ibiz.api.service;
 
-import com.ibiz.api.dao.DraftDao;
+import com.ibiz.api.dao.DraftDAO;
 import com.ibiz.api.dao.VRBAnalysisDAO;
 import com.ibiz.api.model.*;
 import com.ibiz.api.utils.IndexUtils;
@@ -22,7 +22,7 @@ public class VRBAnalysisService extends AbstractDraftService {
     private VRBAnalysisDAO vrbAnalysisDAO;
 
     @Resource(name="draftDao")
-    private DraftDao draftDao;
+    private DraftDAO draftDao;
 
     @Transactional
     public List<VRBAnalysisVO> selectVRBAnalysisList(Payload<VRBAnalysisVO> requestPayload) throws Exception {

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository(value = "webDao")
-public class WebDao {
+@Repository(value = "deptDAO")
+public class DeptDAO {
 
     @Autowired
     private SqlSessionTemplate mybatis;
@@ -17,11 +17,11 @@ public class WebDao {
      */
 
     public List<String> selectAuthDeptIdList(String userGrpVO) {
-        return mybatis.selectList("WebMapper.selectAuthDeptIdList", userGrpVO);
+        return mybatis.selectList("DeptMapper.selectAuthDeptIdList", userGrpVO);
     }
 
     public List<String> selectAllAuthDeptIdList(String userGrpVO) {
-        return mybatis.selectList("WebMapper.selectAllAuthDeptIdList", userGrpVO);
+        return mybatis.selectList("DeptMapper.selectAllAuthDeptIdList", userGrpVO);
     }
 
 }

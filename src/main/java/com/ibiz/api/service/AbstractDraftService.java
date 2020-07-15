@@ -1,6 +1,6 @@
 package com.ibiz.api.service;
 
-import com.ibiz.api.dao.DraftDao;
+import com.ibiz.api.dao.DraftDAO;
 import com.ibiz.api.model.ApprovalAuthorizerVO;
 import com.ibiz.api.model.ApprovalVO;
 import com.ibiz.api.model.AttachVO;
@@ -40,7 +40,7 @@ public class AbstractDraftService extends AbstractWebService {
 
 
     @Resource(name = "draftDao")
-    private DraftDao draftDao;
+    private DraftDAO draftDao;
 
     @Transactional
     protected ApprovalVO selectApprovalInfo(String santId) {

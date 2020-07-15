@@ -1,7 +1,7 @@
 package com.ibiz.api.service;
 
 import com.ibiz.api.dao.BizChanceDAO;
-import com.ibiz.api.dao.DraftDao;
+import com.ibiz.api.dao.DraftDAO;
 import com.ibiz.api.dao.OfferProfitDAO;
 import com.ibiz.api.dao.VRBAnalysisDAO;
 import com.ibiz.api.exception.DeleteDeniedException;
@@ -32,7 +32,7 @@ public class OfferProfitService extends AbstractDraftService {
     private VRBAnalysisDAO vrbAnalysisDAO;
 
     @Resource(name = "draftDao")
-    private DraftDao draftDao;
+    private DraftDAO draftDao;
 
     /*
      * 예상손익분석서(P&S) ver 1
