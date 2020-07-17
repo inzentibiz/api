@@ -320,11 +320,11 @@ public class OfferProfitSearchVO {
         this.pageNumber = pageNumber;
     }
 
-    public String getFcstPalPrgsStatCdNmCd() {
+    public String getFcstPalPrgsStatCdNm() {
         return fcstPalPrgsStatCd;
     }
 
-    public void setFcstPalPrgsStatCdNmCd(String fcstPalPrgsStatCd) {
+    public void setFcstPalPrgsStatCdNm(String fcstPalPrgsStatCd) {
         this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
     }
 

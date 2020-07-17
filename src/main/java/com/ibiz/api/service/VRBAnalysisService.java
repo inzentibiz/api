@@ -258,11 +258,11 @@ public class VRBAnalysisService extends AbstractDraftService {
     }
 
     @Transactional
-    public List<CommonGroupVO> selectVRBAnlyItmCdList(Payload<CommonGroupVO> requestPayload) throws Exception {
+    public List<CommonGroupCodeVO> selectVRBAnlyItmCdList(Payload<CommonGroupCodeVO> requestPayload) throws Exception {
         log.info("Call Service : " + this.getClass().getName() + ".selectVRBAnlyItmCdList");
         AccountVO accountVO = requestPayload.getAccountVO();
-        CommonGroupVO commonGroupVO = requestPayload.getDto();
-        List<CommonGroupVO> list =  vrbAnalysisDAO.selectVRBAnlyItmCdList(commonGroupVO);
+        CommonGroupCodeVO commonGroupCodeVO = requestPayload.getDto();
+        List<CommonGroupCodeVO> list =  vrbAnalysisDAO.selectVRBAnlyItmCdList(commonGroupCodeVO);
 
         return list;
     }

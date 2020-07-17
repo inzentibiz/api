@@ -2,7 +2,7 @@ package com.ibiz.api.model;
 
 import java.util.List;
 
-public class CommonGroupVO {
+public class CommonGroupCodeVO {
 
     private String comGrpCd;
 

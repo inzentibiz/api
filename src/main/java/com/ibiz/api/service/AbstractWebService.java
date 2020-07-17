@@ -1,6 +1,6 @@
 package com.ibiz.api.service;
 
-import com.ibiz.api.dao.WebDao;
+import com.ibiz.api.dao.DeptDAO;
 import com.ibiz.api.model.SysUserGroupVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ import java.util.List;
 @Slf4j
 public class AbstractWebService {
 
-    @Resource(name = "webDao")
-    private WebDao webDao;
+    @Resource(name = "deptDAO")
+    private DeptDAO deptDAO;
 
     @Transactional
     protected boolean isBelongToAuthDept(SysUserGroupVO sysUserGroupVO) {
@@ -26,14 +26,14 @@ public class AbstractWebService {
         int preSize;
         int postSize;
 
-        List<String> sourceDeptIdList = webDao.selectAuthDeptIdList(sysUserGroupVO.getSourceUserId());
+        List<String> sourceDeptIdList = deptDAO.selectAuthDeptIdList(sysUserGroupVO.getSourceUserId());
         for (String sourceDeptId : sourceDeptIdList) {
-            allSourceDeptIdSet.addAll(webDao.selectAllAuthDeptIdList(sourceDeptId));
+            allSourceDeptIdSet.addAll(deptDAO.selectAllAuthDeptIdList(sourceDeptId));
         }
 
-        List<String> targetDeptIdList = webDao.selectAuthDeptIdList(sysUserGroupVO.getTargetUserId());
+        List<String> targetDeptIdList = deptDAO.selectAuthDeptIdList(sysUserGroupVO.getTargetUserId());
         for (String targetDeptId : targetDeptIdList) {
-            allTargetDeptIdSet.addAll(webDao.selectAllAuthDeptIdList(targetDeptId));
+            allTargetDeptIdSet.addAll(deptDAO.selectAllAuthDeptIdList(targetDeptId));
         }
 
         preSize = allSourceDeptIdSet.size() + allTargetDeptIdSet.size();
