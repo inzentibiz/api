@@ -904,4 +904,12 @@ public class BizChanceVO {
     public void setBizChanceActivityVO(BizChanceActivityVO bizChanceActivityVO) {
         this.bizChanceActivityVO = bizChanceActivityVO;
     }
+
+    public long getCntrAmt() {
+        return cntrAmt;
+    }
+
+    public void setCntrAmt(long cntrAmt) {
+        this.cntrAmt = cntrAmt;
+    }
 }
