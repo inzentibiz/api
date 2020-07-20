@@ -415,6 +415,16 @@ public class BizChanceHistoryVO {
      */
     private String chgEndDate;
 
+    /**
+     * 계약금액
+     */
+    private long cntrAmt;
+
+    /**
+     * 변경전 계약금액
+     */
+    private String befCntrAmt;
+
     public Integer getTotalCnt() {
         return totalCnt;
     }
@@ -956,4 +966,23 @@ public class BizChanceHistoryVO {
         this.chgEndDate = chgEndDate;
     }
 
+    public long getCntrAmt() {
+        return cntrAmt;
+    }
+
+    public void setCntrAmt(long cntrAmt) {
+        this.cntrAmt = cntrAmt;
+    }
+
+    public String getBefCntrAmt() {
+        return befCntrAmt;
+    }
+
+    public void setBefCntrAmt(String befCntrAmt) {
+        this.befCntrAmt = befCntrAmt;
+    }
+
+    public void setTotalCnt(Integer totalCnt) {
+        this.totalCnt = totalCnt;
+    }
 }
