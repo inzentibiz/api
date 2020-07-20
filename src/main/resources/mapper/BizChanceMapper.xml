@@ -1907,12 +1907,12 @@
             resultType="com.ibiz.api.model.BizChanceVO">
         SELECT ROWNUMBER, TOTAL_CNT, PRJT_ID, SLS_DEPT_ID, SLS_EMP_ID
                 ,BOPT_ID, LAST_CUST_NM ,BOPT_NM, ORDE_CUST_NM
-                ,CNTR_DATE, CNT_AMT, CNT_AMT, SUM_SELL_AMT ,SLS_DEPT_NM, SLS_EMP_NM ,BOPT_STAT_CD_NM
+                ,CNTR_DATE, CNTR_AMT, SUM_SELL_AMT ,SLS_DEPT_NM, SLS_EMP_NM ,BOPT_STAT_CD_NM
         FROM ( SELECT ROWNUM AS ROWNUMBER, Z.TOTAL_CNT,
                     Z.PRJT_ID, Z.SLS_DEPT_ID, Z.SLS_EMP_ID
                     ,Z.BOPT_ID, Z.LAST_CUST_NM
                     ,Z.BOPT_NM, Z.ORDE_CUST_NM
-                    ,Z.CNTR_DATE, Z.CNT_AMT, Z.SUM_SELL_AMT
+                    ,Z.CNTR_DATE, Z.CNTR_AMT, Z.SUM_SELL_AMT
                     ,Z.SLS_DEPT_NM, Z.SLS_EMP_NM
                     ,Z.BOPT_STAT_CD_NM
                 FROM ( SELECT COUNT(1) OVER() AS TOTAL_CNT,
@@ -1922,7 +1922,7 @@
                             ,T1.BOPT_NM
                             ,IBIZ_CUST_NM(T1.ORDE_CUST_ID) AS ORDE_CUST_NM
                             ,T1.CNTR_DATE
-                            ,T1.CNT_AMT
+                            ,T1.CNTR_AMT
                             ,( SELECT SUM(SELL_AMT)
                                 FROM BPIP020T
                                 WHERE BOPT_ID = T1.BOPT_ID
@@ -1978,7 +1978,7 @@
             IBIZ_COM_CD_NM('BOPT_END_TYPE_CD', bpip.BOPT_END_TYPE_CD) AS BOPT_END_TYPE_CD_NM,
             IBIZ_COM_CD_NM('WCT_PRBB_CD', bpip.WCT_PRBB_CD) AS WCT_PRBB_CD_NM,
             bpip.BOPT_ID, bpip.PRJT_ID, bpip.BOPT_NM, bpip.ORDE_CUST_ID, bpip.BSNS_CLSF_CD,
-            bpip.CNTR_DATE, bpip.CNT_AMT, bpip.CNTR_TRSF_START_YAM, bpip.CNTR_TRSF_END_YAM, bpip.PRPS_FNSH_DATE,
+            bpip.CNTR_DATE, bpip.CNTR_AMT, bpip.CNTR_TRSF_START_YAM, bpip.CNTR_TRSF_END_YAM, bpip.PRPS_FNSH_DATE,
             bpip.BID_FNSH_DATE, bpip.CMPY_SLCT_DATE, bpip.WCT_PRBB_CD, bpip.FCST_RFLC_YN,
             bpip.DTIM_RPRT_DISP_YN, bpip.WCT_DCD_DATE, bpip.BOPT_STAT_CD, bpip.BOPT_END_TYPE_CD,
             bpip.SLS_DEPT_ID, bpip.SLS_EMP_ID, bpip.SPCL_CONT, bpip.REG_EMP_ID, bpip.REG_DT, bpip.CHG_EMP_ID
