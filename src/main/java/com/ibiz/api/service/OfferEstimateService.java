@@ -151,7 +151,7 @@ public class OfferEstimateService extends AbstractDraftService {
             }*/
 
             if (accountVO.getRoleList().contains("AD")
-                    || (sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) && estimateVO.getEstisStatCd().equals("A"))) {
+                    || (sysUserGroupVO.getTargetUserId().equals(sysUserGroupVO.getSourceUserId()) && ( estimateVO.getEstisStatCd().equals("A1") || estimateVO.getEstisStatCd().equals("A2")) )) {
                 buttonList.add(new HashMap<String, String>() {{put("button", "삭제"); }});
             }
 
