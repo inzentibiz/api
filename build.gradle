@@ -54,3 +54,6 @@ dependencyManagement {
 test {
     useJUnitPlatform()
 }
+bootJar {
+    archiveFileName = 'ibiz-sales-order-7300.jar'
+}
