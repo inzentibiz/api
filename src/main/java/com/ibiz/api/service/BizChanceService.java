@@ -369,10 +369,6 @@ public class BizChanceService {
         AccountVO accountVO = requestPayload.getAccountVO();
         BizChanceSearchVO bizChanceSearchVO = requestPayload.getDto();
 
-        if(bizChanceSearchVO.getSlsEmpId() != "" && bizChanceSearchVO.getSlsEmpId() != null) {
-            bizChanceSearchVO.setSlsDeptId(null);
-        }
-
         bizChanceSearchVO.setUserId(accountVO.getEmpId());
 
         // 데이터 받을 준비
