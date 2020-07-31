@@ -1945,7 +1945,9 @@
                             AND T1.SLS_Emp_ID = #{slsEmpId}
                         </if>
                         <if test="slsDeptId != null and slsDeptId != ''">
-                            AND T1.SLS_DEPT_ID = #{slsDeptId}
+                            AND T1.SLS_DEPT_ID IN (SELECT DEPT_ID FROM HMST100T
+                            START WITH DEPT_ID = #{slsDeptId}  -- ★조회조건 대상부서
+                            CONNECT BY PRIOR DEPT_ID = HGRK_DEPT_ID)
                         </if>
                         ORDER BY IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
                     )Z
