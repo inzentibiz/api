@@ -477,6 +477,21 @@ public class BizChanceSearchVO {
      */
     private String exceptContractComplete;
 
+    /**
+     * 사업기회상태 리스트
+     */
+    private List<String> boptStatCdList;
+
+    /**
+     * 수주가능성 코드
+     */
+    private String wctPsbltCd;
+
+    /**
+     * 수주가능성코드 리스트
+     */
+    private List<String> wctPsbltCdList;
+
     public String getWinPopupCd() {
         return winPopupCd;
     }
@@ -1074,6 +1089,26 @@ public class BizChanceSearchVO {
         this.exceptContractComplete = exceptContractComplete;
     }
 
+    public List<String> getBoptStatCdList() {
+        return boptStatCdList;
+    }
+    public void setBoptStatCdList(List<String> boptStatCdList) {
+        this.boptStatCdList = boptStatCdList;
+    }
+
+    public String getWctPsbltCd() {
+        return wctPsbltCd;
+    }
+    public void setWctPsbltCd(String wctPsbltCd) {
+        this.wctPsbltCd = wctPsbltCd;
+    }
+    public List<String> getWctPsbltCdList() {
+        return wctPsbltCdList;
+    }
+    public void setWctPsbltCdList(List<String> wctPsbltCdList) {
+        this.wctPsbltCdList = wctPsbltCdList;
+    }
+
     @Override
     public String toString() {
         return "BizChanceSearchVO [prjtId=" + prjtId + ", prjtSearchId=" + prjtSearchId + ", prjtNm=" + prjtNm
@@ -1106,7 +1141,7 @@ public class BizChanceSearchVO {
                 + ", befCntrStartDate=" + befCntrStartDate + ", befCntrEndDate=" + befCntrEndDate + ", befSellStartDate="
                 + befSellStartDate + ", befSellEndDate=" + befSellEndDate + ", befBuyStartDate=" + befBuyStartDate
                 + ", befBuyEndDate=" + befBuyEndDate + ", chgStartDate=" + chgStartDate + ", chgEndDate=" + chgEndDate
-                + ", userId=" + userId + ", totalCnt=" + totalCnt + ", exceptContractComplete=" + exceptContractComplete + "]";
+                + ", userId=" + userId + ", totalCnt=" + totalCnt + ", exceptContractComplete=" + exceptContractComplete
+                + ", boptStatCdList=" + boptStatCdList + ", wctPsbltCd=" + wctPsbltCd+ ", wctPsbltCdList=" + wctPsbltCdList+ "]";
     }
-
 }
