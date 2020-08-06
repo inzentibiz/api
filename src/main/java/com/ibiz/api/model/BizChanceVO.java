@@ -30,6 +30,8 @@ public class BizChanceVO {
     /**
      * 사업기회 ID
      */
+    @NotNull
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 사업기회ID는 10자리 이하여야합니다." )
     private String boptId;
 
     /**
@@ -171,7 +173,7 @@ public class BizChanceVO {
      * 영업사원ID
      */
     @NotNull
-    @Size(max=8, message= ExceptionCode.OUTOFSIZE_EXCEPTION+" 영업사원ID는 8자리 이하여야합니다." )
+    @Size(max=8, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 영업사원ID는 8자리 이하여야합니다." )
     private String slsEmpId;
 
     /**
@@ -350,14 +352,29 @@ public class BizChanceVO {
 
     private BizChanceActivityVO bizChanceActivityVO;
 
-    public List<BizChanceVO> getBizChanceChangeList() {
-        return bizChanceChangeList;
-    }
-
     /**
      * 계약금액
      */
     private long cntrAmt;
+
+    /**
+     * 사업기회상태 리스트
+     */
+    private List<String> boptStatCdList;
+
+    /**
+     * 수주가능성 코드
+     */
+    private String wctPsbltCd;
+
+    /**
+     * 수주가능성코드 리스트
+     */
+    private List<String> wctPsbltCdList;
+
+    public List<BizChanceVO> getBizChanceChangeList() {
+        return bizChanceChangeList;
+    }
 
     public void setBizChanceChangeList(List<BizChanceVO> bizChanceChangeList) {
         this.bizChanceChangeList = bizChanceChangeList;
@@ -912,4 +929,29 @@ public class BizChanceVO {
     public void setCntrAmt(long cntrAmt) {
         this.cntrAmt = cntrAmt;
     }
+
+    public List<String> getBoptStatCdList() {
+        return boptStatCdList;
+    }
+
+    public void setBoptStatCdList(List<String> boptStatCdList) {
+        this.boptStatCdList = boptStatCdList;
+    }
+
+    public String getWctPsbltCd() {
+        return wctPsbltCd;
+    }
+
+    public void setWctPsbltCd(String wctPsbltCd) {
+        this.wctPsbltCd = wctPsbltCd;
+    }
+
+    public List<String> getWctPsbltCdList() {
+        return wctPsbltCdList;
+    }
+
+    public void setWctPsbltCdList(List<String> wctPsbltCdList) {
+        this.wctPsbltCdList = wctPsbltCdList;
+    }
+
 }
