@@ -467,11 +467,11 @@
             <if test='boptStatCd == "TRUE" '>
                 AND
                 <foreach item="item" collection="boptStatCdList" open="(" separator="OR" close=")" >
-                    BOPT_STAT_CD  =  #{item}
+                    T1.BOPT_STAT_CD  =  #{item}
                 </foreach>
             </if>
             <if test='boptStatCd == "FALSE" '>
-                AND BOPT_STAT_CD IS NULL
+                AND T1.BOPT_STAT_CD IS NULL
             </if>
             <if test='wctPsbltCd == "TRUE" '>
                 AND
@@ -479,29 +479,29 @@
                     <choose>
                         <when test='item == "A" '>
                             <![CDATA[
-                                IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', WCT_PRBB_CD)  =  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 100%
+                                IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  =  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 100%
                             ]]>
                         </when>
                         <when test='item == "B" '>
                             <![CDATA[
-                                IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', WCT_PRBB_CD)  >=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 80%이상
+                                IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  >=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 80%이상
                             ]]>
                         </when>
                         <when test='item == "C" '>
                             <![CDATA[
-                                IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', WCT_PRBB_CD)  >=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 50%이상
+                                IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  >=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 50%이상
                             ]]>
                         </when>
                         <when test='item == "D" '>
                             <![CDATA[
-                                IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', WCT_PRBB_CD)  <=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 50%미만
+                                IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  <=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 50%미만
                             ]]>
                         </when>
                     </choose>
                 </foreach>
             </if>
             <if test='wctPsbltCd == "FALSE" '>
-                AND WCT_PRBB_CD IS NULL
+                AND T1.WCT_PRBB_CD IS NULL
             </if>
             <choose>
                 <when test='orderByCd == "CP" '>
