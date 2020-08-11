@@ -58,12 +58,12 @@ public class ApprovalVO {
     /**
      * 긴급 결재 구분 코드
      */
-    private String emgSantDstCd;
+    private String emgDstCd;
 
     /**
      * 긴급 결재 구분 명
      */
-    private String emgSantDstCdNm;
+    private String emgDstCdNm;
 
     /**
      * 결재진행상태코드
@@ -363,20 +363,20 @@ public class ApprovalVO {
         this.santNtcDstCdNm = santNtcDstCdNm;
     }
 
-    public String getEmgSantDstCd() {
-        return emgSantDstCd;
+    public String getEmgDstCd() {
+        return emgDstCd;
     }
 
-    public void setEmgSantDstCd(String emgSantDstCd) {
-        this.emgSantDstCd = emgSantDstCd;
+    public void setEmgDstCd(String emgDstCd) {
+        this.emgDstCd = emgDstCd;
     }
 
-    public String getEmgSantDstCdNm() {
-        return emgSantDstCdNm;
+    public String getEmgDstCdNm() {
+        return emgDstCdNm;
     }
 
-    public void setEmgSantDstCdNm(String emgSantDstCdNm) {
-        this.emgSantDstCdNm = emgSantDstCdNm;
+    public void setEmgDstCdNm(String emgDstCdNm) {
+        this.emgDstCdNm = emgDstCdNm;
     }
 
     public String getSantPrgsStatCd() {

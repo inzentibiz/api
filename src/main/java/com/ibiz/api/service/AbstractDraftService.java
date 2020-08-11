@@ -55,7 +55,7 @@ public class AbstractDraftService extends AbstractWebService {
         AttachVO attachVO = new AttachVO();
 
         if (approvalVO.getAttcId() != null && !approvalVO.getAttcId().equals("")) {
-            attachVO.setAttcId(approvalVO.getAttcId());
+            attachVO.setFileAttcId(approvalVO.getAttcId());
         }
 
         draftDao.deleteApprovalAuthorizer(approvalVO);
@@ -89,7 +89,7 @@ public class AbstractDraftService extends AbstractWebService {
 
         approvalVO.setSantId(IndexUtils.generateId(10, prevId));
         approvalVO.setSantPrgsStatCd("A");
-        approvalVO.setSantId(IndexUtils.generateId(10, prevId));
+        //approvalVO.setSantId(IndexUtils.generateId(10, prevId));
 
         draftDao.insertApprovalDraft(approvalVO);
         insertApproverList(approvalVO);

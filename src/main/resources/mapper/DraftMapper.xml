@@ -17,7 +17,7 @@
 				SANT_ID,
 			    SANT_PRGS_STAT_CD,
 			    SANT_NTC_DST_CD,
-			    EMG_SANT_DST_CD,
+			    EMG_DST_CD,
 			    IBIZ_COM_CD_NM('SANT_NTC_DST_CD',SANT_NTC_DST_CD) AS SANT_NTC_DST_CD_NM
 			FROM
 			    AAPR100T
@@ -56,7 +56,7 @@
 			</if>
 			SANT_FRMT_CD,
 			SANT_NTC_DST_CD,
-			EMG_SANT_DST_CD,
+			EMG_DST_CD,
 			SANT_PRGS_STAT_CD,
 			<if test="attcId != null and attcId != ''">
 				ATTC_ID,
@@ -74,7 +74,7 @@
 			</if>
 			#{santFrmtCd},
 			#{santNtcDstCd},
-			#{emgSantDstCd},
+			#{emgDstCd},
 			#{santPrgsStatCd},
 			<if test="attcId != null and attcId != ''">
 				#{attcId},
@@ -143,7 +143,7 @@
 			parameterType="com.ibiz.api.model.ApprovalVO">
 			UPDATE AAPR100T
 			    SET
-			        EMG_SANT_DST_CD = #{emgSantDstCd},
+			        EMG_DST_CD = #{emgDstCd},
 			        SANT_NTC_DST_CD = #{santNtcDstCd}
 
 			        , DOC_TITL = #{docTitl}
