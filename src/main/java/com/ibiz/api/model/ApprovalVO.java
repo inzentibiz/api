@@ -82,7 +82,7 @@ public class ApprovalVO {
     /**
      * 첨부ID
      */
-    private String attcId;
+    private String fileAttcId;
 
     /**
      * 등록사원 ID
@@ -281,6 +281,11 @@ public class ApprovalVO {
      */
     private String aprnRoleNm;
 
+    /**
+     * 화면 첨부ID
+     */
+    private String scrnAttcId;
+
     private List<Map<String, String>> buttonList;
 
     public Integer getTotalCnt() {
@@ -403,12 +408,12 @@ public class ApprovalVO {
         this.santAppvDstCdNm = santAppvDstCdNm;
     }
 
-    public String getAttcId() {
-        return attcId;
+    public String getFileAttcId() {
+        return fileAttcId;
     }
 
-    public void setAttcId(String attcId) {
-        this.attcId = attcId;
+    public void setFileAttcId(String fileAttcId) {
+        this.fileAttcId = fileAttcId;
     }
 
     public String getRegEmpId() {
@@ -787,4 +792,11 @@ public class ApprovalVO {
         this.aprnRoleNm = aprnRoleNm;
     }
 
+    public String getScrnAttcId() {
+        return scrnAttcId;
+    }
+
+    public void setScrnAttcId(String scrnAttcId) {
+        this.scrnAttcId = scrnAttcId;
+    }
 }

@@ -54,8 +54,8 @@ public class AbstractDraftService extends AbstractWebService {
     protected void deleteCascadingDraft(ApprovalVO approvalVO) throws Exception {
         AttachVO attachVO = new AttachVO();
 
-        if (approvalVO.getAttcId() != null && !approvalVO.getAttcId().equals("")) {
-            attachVO.setFileAttcId(approvalVO.getAttcId());
+        if (approvalVO.getFileAttcId() != null && !approvalVO.getFileAttcId().equals("")) {
+            attachVO.setFileAttcId(approvalVO.getFileAttcId());
         }
 
         draftDao.deleteApprovalAuthorizer(approvalVO);

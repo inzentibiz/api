@@ -58,8 +58,11 @@
 			SANT_NTC_DST_CD,
 			EMG_DST_CD,
 			SANT_PRGS_STAT_CD,
-			<if test="attcId != null and attcId != ''">
-				ATTC_ID,
+			<if test="fileAttcId != null and fileAttcId != ''">
+				FILE_ATTC_ID,
+			</if>
+			<if test="scrnAttcId != null and scrnAttcId != ''">
+				SCRN_ATTC_ID,
 			</if>
 			REG_EMP_ID,
 			REG_DT,
@@ -76,8 +79,11 @@
 			#{santNtcDstCd},
 			#{emgDstCd},
 			#{santPrgsStatCd},
-			<if test="attcId != null and attcId != ''">
-				#{attcId},
+			<if test="fileAttcId != null and fileAttcId != ''">
+				#{fileAttcId},
+			</if>
+			<if test="scrnAttcId != null and scrnAttcId != ''">
+				#{scrnAttcId},
 			</if>
 			#{regEmpId},
 			SYSDATE,
@@ -152,7 +158,8 @@
 			        , BDCT_CONT = #{bdctCont}
 
 
-			        , ATTC_ID = #{attcId}
+					, FILE_ATTC_ID = #{fileAttcId}
+					, SCRN_ATTC_ID = #{scrnAttcId}
 
 			WHERE
 			    SANT_ID = #{santId}
