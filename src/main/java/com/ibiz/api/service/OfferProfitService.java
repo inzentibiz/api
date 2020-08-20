@@ -64,6 +64,8 @@ public class OfferProfitService extends AbstractDraftService {
         offerProfitDAO.insertOfferProfit(offerVO);
 */
 
+        offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
+
         // 문서서식채번 포함하여 기본테이블 INSERT
         offerProfitDAO.insertOfferProfit(offerVO);
 
@@ -306,9 +308,6 @@ public class OfferProfitService extends AbstractDraftService {
             throw new UpdateDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
         }
 
-        offerVO.setChgEmpId(accountVO.getEmpId());
-
-        offerProfitDAO.updateOfferProfit(offerVO);
 
 
         offerProfitDAO.deleteOfferProfitPSProductDC(offerVO); // BEST011T
@@ -357,6 +356,10 @@ public class OfferProfitService extends AbstractDraftService {
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
         offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitTitle(offerVO));
         offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
+
+        offerVO.setChgEmpId(accountVO.getEmpId());
+        offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
+        offerProfitDAO.updateOfferProfit(offerVO);
 
         if (offerVO.getApproval().getApprovalDetailList() != null)
             super.updateApproverList(offerVO.getApproval());
@@ -1097,6 +1100,7 @@ public class OfferProfitService extends AbstractDraftService {
         offerProfitDAO.insertOfferProfit(offerVO);
 */
 
+        offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
         // 문서서식채번 포함하여 기본테이블 INSERT
         offerProfitDAO.insertOfferProfit(offerVO);
 
@@ -1181,10 +1185,6 @@ public class OfferProfitService extends AbstractDraftService {
         OfferVO offerVO = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
 
-        offerVO.setChgEmpId(accountVO.getEmpId());
-
-        offerProfitDAO.updateOfferProfit(offerVO);
-
         offerProfitDAO.deleteOfferProfitPSProduct(offerVO);
         // 유지보수, 타사구매내역 동일한 VO
         if (offerVO.getBsnsProdDetailList() != null) {
@@ -1242,6 +1242,10 @@ public class OfferProfitService extends AbstractDraftService {
         offerVO.getApproval().setSantId(offerVO.getSantId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
         offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitTitle(offerVO));
+
+        offerVO.setChgEmpId(accountVO.getEmpId());
+        offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
+        offerProfitDAO.updateOfferProfit(offerVO);
 
         if (offerVO.getApproval().getApprovalDetailList() != null)
             super.updateApproverList(offerVO.getApproval());
@@ -1312,6 +1316,7 @@ public class OfferProfitService extends AbstractDraftService {
         String fcstPalId = offerProfitDAO.selectNewFcstPalId(offerVO).getFcstPalId();
         // 문서서식채번 포함하여 기본테이블 INSERT
         offerVO.setFcstPalId(fcstPalId);
+        offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
         offerProfitDAO.insertOfferProfitPS2(offerVO);
 
         // LC, SD, SS, TS, OP
@@ -1529,9 +1534,7 @@ public class OfferProfitService extends AbstractDraftService {
                 throw new UpdateDeniedException("변경전 예상손익분석서는 승인상태여야 합니다.", befOfferVO);
             }
         }
-        offerVO.setChgEmpId(accountVO.getEmpId());
 
-        offerProfitDAO.updateOfferProfitPS2(offerVO); // BEST000T
         offerProfitDAO.deleteOfferProfitPSProductDC(offerVO); // BEST011T
         offerProfitDAO.deleteOfferProfitPSProduct(offerVO); // BEST010T
         offerProfitDAO.deleteOfferProfitPSExpense(offerVO); // BEST050T
@@ -1571,6 +1574,10 @@ public class OfferProfitService extends AbstractDraftService {
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
         offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitPS2Title(offerVO));
         offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
+
+        offerVO.setChgEmpId(accountVO.getEmpId());
+        offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
+        offerProfitDAO.updateOfferProfitPS2(offerVO); // BEST000T
 
         if (offerVO.getApproval().getApprovalDetailList() != null)
             super.updateApproverList(offerVO.getApproval());

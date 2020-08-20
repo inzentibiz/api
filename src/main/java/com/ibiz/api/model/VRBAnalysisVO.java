@@ -324,6 +324,11 @@ public class VRBAnalysisVO {
     private String docNo;
 
     /**
+     * 문서제목
+     */
+    private String docTitl;
+
+    /**
      * 윈도우팝업여부
      */
     private String winPopupCd;
@@ -932,5 +937,13 @@ public class VRBAnalysisVO {
 
     public void setSantFrmtCd(String santFrmtCd) {
         this.santFrmtCd = santFrmtCd;
+    }
+
+    public String getDocTitl() {
+        return docTitl;
+    }
+
+    public void setDocTitl(String docTitl) {
+        this.docTitl = docTitl;
     }
 }
