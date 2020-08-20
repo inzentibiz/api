@@ -52,7 +52,7 @@ public class OfferProfitService extends AbstractDraftService {
         offerVO.setFcstPalPrgsStatCd("A");
         offerVO.getApproval().setRegEmpId(accountVO.getEmpId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
-        offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitTitle(offerVO));
+        offerVO.getApproval().setDocTitl(offerProfitDAO.selectApprovalTitle(offerVO));
         offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
         offerVO.setSantId(super.insertDraft(offerVO.getApproval()));
 /* 구소스
@@ -354,7 +354,7 @@ public class OfferProfitService extends AbstractDraftService {
 
         offerVO.getApproval().setSantId(offerVO.getSantId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
-        offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitTitle(offerVO));
+        offerVO.getApproval().setDocTitl(offerProfitDAO.selectApprovalTitle(offerVO));
         offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
 
         offerVO.setChgEmpId(accountVO.getEmpId());
@@ -1089,7 +1089,7 @@ public class OfferProfitService extends AbstractDraftService {
 
         offerVO.getApproval().setRegEmpId(accountVO.getEmpId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
-        offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitTitle(offerVO));
+        offerVO.getApproval().setDocTitl(offerProfitDAO.selectApprovalTitle(offerVO));
         offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
         offerVO.setSantId(super.insertDraft(offerVO.getApproval()));
   /* 구소스
@@ -1241,7 +1241,7 @@ public class OfferProfitService extends AbstractDraftService {
 
         offerVO.getApproval().setSantId(offerVO.getSantId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
-        offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitTitle(offerVO));
+        offerVO.getApproval().setDocTitl(offerProfitDAO.selectApprovalTitle(offerVO));
 
         offerVO.setChgEmpId(accountVO.getEmpId());
         offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
@@ -1308,7 +1308,7 @@ public class OfferProfitService extends AbstractDraftService {
         offerVO.setFcstPalPrgsStatCd("A");
         offerVO.getApproval().setRegEmpId(accountVO.getEmpId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
-        offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitPS2Title(offerVO));
+        offerVO.getApproval().setDocTitl(offerProfitDAO.selectApprovalTitle(offerVO));
         offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
         offerVO.setSantId(super.insertDraft(offerVO.getApproval()));
 
@@ -1572,7 +1572,7 @@ public class OfferProfitService extends AbstractDraftService {
 
         offerVO.getApproval().setSantId(offerVO.getSantId());
         offerVO.setSantFrmtCd(offerVO.getFrmtCd());
-        offerVO.getApproval().setDocTitl(offerProfitDAO.selectDraftOfferProfitPS2Title(offerVO));
+        offerVO.getApproval().setDocTitl(offerProfitDAO.selectApprovalTitle(offerVO));
         offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
 
         offerVO.setChgEmpId(accountVO.getEmpId());

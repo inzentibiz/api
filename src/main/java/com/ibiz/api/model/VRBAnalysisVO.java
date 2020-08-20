@@ -317,6 +317,16 @@ public class VRBAnalysisVO {
      */
     private String santFrmtCd;
 
+    /**
+     * 서식코드
+     */
+    private String frmtCd;
+
+    /**
+     * 서식코드명
+     */
+    private String frmtCdNm;
+
 
     /**
      * 문서번호
@@ -945,5 +955,21 @@ public class VRBAnalysisVO {
 
     public void setDocTitl(String docTitl) {
         this.docTitl = docTitl;
+    }
+
+    public String getFrmtCd() {
+        return frmtCd;
+    }
+
+    public void setFrmtCd(String frmtCd) {
+        this.frmtCd = frmtCd;
+    }
+
+    public String getFrmtCdNm() {
+        return frmtCdNm;
+    }
+
+    public void setFrmtCdNm(String frmtCdNm) {
+        this.frmtCdNm = frmtCdNm;
     }
 }

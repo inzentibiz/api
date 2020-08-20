@@ -46,6 +46,21 @@ public class EstimateVO {
     private String docNo;
 
     /**
+     * 문서제목
+     */
+    private String docTitl;
+
+    /**
+     * 서식코드
+     */
+    private String frmtCd;
+    
+    /**
+     * 서식코드명
+     */
+    private String frmtCdNm;
+
+    /**
      * 수신업체명
      */
     private String rcvCmpyNm;
@@ -456,6 +471,8 @@ public class EstimateVO {
      * 공급업체 고객ID
      */
     private String splyCmpyCustId;
+
+    private String docKindCd;
 
     public String getEstiId() {
         return estiId;
@@ -1156,37 +1173,43 @@ public class EstimateVO {
         this.splyCmpyCustId = splyCmpyCustId;
     }
 
-    @Override
-    public String toString() {
-        return "EstimateVO [estiId=" + estiId + ", fcstPalId=" + fcstPalId + ", estiWrtDate=" + estiWrtDate
-                + ", docNo=" + docNo + ", rcvCmpyNm=" + rcvCmpyNm + ", rcvChrrNm=" + rcvChrrNm
-                + ", trsmtChrrNm=" + trsmtChrrNm + ", trsmtTelNo=" + trsmtTelNo + ", trsmtEmlAdrs=" + trsmtEmlAdrs
-                + ", bsnsNm=" + bsnsNm + ", splyCmpyNm=" + splyCmpyNm + ", splyCmpyBsnnNo=" + splyCmpyBsnnNo
-                + ", splyCmpyAdrs=" + splyCmpyAdrs + ", splyCmpyTelNo=" + splyCmpyTelNo + ", splyCmpyFaxNo="
-                + splyCmpyFaxNo + ", vatCvrdDstCd=" + vatCvrdDstCd + ", qltyGarntSvcCont=" + qltyGarntSvcCont
-                + ", etcMtr=" + etcMtr + ", estisStatCd=" + estisStatCd + ", isuDt=" + isuDt + ", regEmpId=" + regEmpId
-                + ", regDt=" + regDt + ", chgEmpId=" + chgEmpId + ", chgDt=" + chgDt + ", rprnCustId=" + rprnCustId
-                + ", productList=" + productList + ", serviceList=" + serviceList + ", otherProductList="
-                + otherProductList + ", totalLpcAmt=" + totalLpcAmt + ", totalSplyAmt=" + totalSplyAmt + ", vat=" + vat
-                + ", totalAmt=" + totalAmt + ", totalProdLpcAmt=" + totalProdLpcAmt + ", totalProdSplyAmt="
-                + totalProdSplyAmt + ", totalSVLpcAmt=" + totalSVLpcAmt + ", totalSVSplyAmt=" + totalSVSplyAmt
-                + ", totalOPLpcAmt=" + totalOPLpcAmt + ", totalOPSplyAmt=" + totalOPSplyAmt + ", prodVATLpcAmt="
-                + prodVATLpcAmt + ", prodVATSplyAmt=" + prodVATSplyAmt + ", estiIssueMAList=" + estiIssueMAList
-                + ", estiIssueMAServiceList=" + estiIssueMAServiceList + ", sumMAMnthMndnAmt=" + sumMAMnthMndnAmt
-                + ", sumMASplyAmt=" + sumMASplyAmt + ", maVATMnthMndnAmt=" + maVATMnthMndnAmt + ", maVATSplyAmt="
-                + maVATSplyAmt + ", totalMAMnthMndnAmt=" + totalMAMnthMndnAmt + ", totalMASplyAmt=" + totalMASplyAmt
-                + ", totalSVPerson=" + totalSVPerson + ", lastCustId=" + lastCustId + ", lastCustNm=" + lastCustNm
-                + ", prjtId=" + prjtId + ", prjtNm=" + prjtNm + ", boptId=" + boptId + ", boptNm=" + boptNm
-                + ", ordeCustId=" + ordeCustId + ", ordeCustNm=" + ordeCustNm + ", prjtTypeCd=" + prjtTypeCd
-                + ", prjtTypeCdNm=" + prjtTypeCdNm + ", sellAmt=" + sellAmt + ", slsDeptNm=" + slsDeptNm
-                + ", slsDeptId=" + slsDeptId + ", slsEmpNm=" + slsEmpNm + ", slsEmpId=" + slsEmpId
-                + ", estisStatCdNm=" + estisStatCdNm + ", splyCmpyRprnNm=" + splyCmpyRprnNm + ", santId=" + santId
-                + ", fromRegDt=" + fromRegDt + ", toRegDt=" + toRegDt +  ", pageSize=" + pageSize + ", pageNumber=" + pageNumber
-                + ", santFrmtCd=" + santFrmtCd + ", totalCnt=" + totalCnt + ", rowNumber=" + rowNumber + ", estiIssuePnsList=" + estiIssuePnsList
-                + ", regEmpNm=" + regEmpNm + ", chgEmpNm=" + chgEmpNm + ", fcstPalPrgsStatCd=" + fcstPalPrgsStatCd
-                + ", winPrintCd=" + winPrintCd + ", slsEmpInfo=" + slsEmpInfo + ", prodpNm=" + prodpNm + ", vatCvrdDstCdNm=" + vatCvrdDstCdNm
-                + ", custNm=" + custNm + ", ofpsNm=" + ofpsNm +"]";
+    public String getDocTitl() {
+        return docTitl;
     }
 
+    public void setDocTitl(String docTitl) {
+        this.docTitl = docTitl;
+    }
 
+    public String getFrmtCd() {
+        return frmtCd;
+    }
+
+    public void setFrmtCd(String frmtCd) {
+        this.frmtCd = frmtCd;
+    }
+
+    public String getFrmtCdNm() {
+        return frmtCdNm;
+    }
+
+    public void setFrmtCdNm(String frmtCdNm) {
+        this.frmtCdNm = frmtCdNm;
+    }
+
+    public String getFcstPalPrgsStatCd() {
+        return fcstPalPrgsStatCd;
+    }
+
+    public void setFcstPalPrgsStatCd(String fcstPalPrgsStatCd) {
+        this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
+    }
+
+    public String getDocKindCd() {
+        return docKindCd;
+    }
+
+    public void setDocKindCd(String docKindCd) {
+        this.docKindCd = docKindCd;
+    }
 }

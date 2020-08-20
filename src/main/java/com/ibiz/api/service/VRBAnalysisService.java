@@ -282,7 +282,7 @@ public class VRBAnalysisService extends AbstractDraftService {
         vrbAnalysisVO.getApproval().setRegEmpId(accountVO.getEmpId());
         vrbAnalysisVO.getApproval().setSantFrmtCd("B03");
         vrbAnalysisVO.setSantFrmtCd("B03");
-        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectDraftVRBAnalysisTitle(vrbAnalysisVO));
+        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectApprovalTitle(vrbAnalysisVO));
         vrbAnalysisVO.setSantId(super.insertDraft(vrbAnalysisVO.getApproval()));
 
         //문서번호 갖고오기
@@ -384,7 +384,7 @@ public class VRBAnalysisService extends AbstractDraftService {
         vrbAnalysisVO.setApproval(vrbAnalysisVO.getApproval());
         vrbAnalysisVO.getApproval().setSantFrmtCd("B03");
         vrbAnalysisVO.setSantFrmtCd("B03");
-        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectDraftVRBAnalysisTitle(vrbAnalysisVO));
+        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectApprovalTitle(vrbAnalysisVO));
 
         vrbAnalysisVO.setChgEmpId(accountVO.getEmpId());
         vrbAnalysisVO.setDocTitl(vrbAnalysisVO.getApproval().getDocTitl());

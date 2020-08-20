@@ -659,6 +659,7 @@
 		INSERT INTO BPIP100T (
 			VRB_ANLY_ID
 			,PRJT_ID
+			,FRMT_CD
 			<if test="docNo != null and docNo != ''">
 				,DOC_NO
 			</if>
@@ -705,6 +706,7 @@
 		) VALUES (
 			#{vrbAnlyId}
 			,#{prjtId}
+			,#{frmtCd}
 			<if test="docNo != null and docNo != ''">
 				,#{docNo}
 			</if>
@@ -988,7 +990,8 @@
 
 			UPDATE BPIP100T
 			    SET
-					DOC_TITL = #{docTitl}
+					FRMT_CD = #{frmtCd}
+					, DOC_TITL = #{docTitl}
 			    	, CHG_EMP_ID = #{chgEmpId}
 					, CHG_DT = SYSDATE
 					, PRJT_ID = #{prjtId}
@@ -1068,5 +1071,15 @@
 			    VRB_ANLY_ID = #{vrbAnlyId}
 
 	</delete>
+
+	<!-- 문서제목 구성정보 조회  -->
+	<select id="selectApprovalTitle"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="java.lang.String">
+
+		SELECT  '['|| IBIZ_COM_CD_NM('DOC_KIND_CD','BVA') ||'] '|| IBIZ_CUST_NM(LAST_CUST_ID) ||' / '|| PRJT_NM AS DOC_TITL
+		FROM APRJ000T
+		WHERE PRJT_ID = #{prjtId}
+	</select>
 
 </mapper>

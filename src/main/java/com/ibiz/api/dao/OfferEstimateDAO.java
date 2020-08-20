@@ -141,4 +141,8 @@ public class OfferEstimateDAO {
         mybatis.delete("OfferEstimateMapper.deleteOfferEstimateMAService", estimateVO);
     }
 
+    //결재문서 title 구성
+    public String selectApprovalTitle(EstimateVO estimateVO) {
+        return mybatis.selectOne("OfferEstimateMapper.selectApprovalTitle", estimateVO);
+    }
 }

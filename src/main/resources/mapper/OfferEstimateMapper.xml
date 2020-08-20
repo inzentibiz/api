@@ -18,7 +18,7 @@
 			,PRJT_TYPE_CD,SELL_AMT,SLS_DEPT_NM ,SLS_EMP_NM,ESTIS_STAT_CD_NM,ESTIS_STAT_CD
 		FROM
 		( SELECT  COUNT(1) OVER() AS TOTAL_CNT, ROWNUM AS ROWNUMBER,
-			Z.DOC_NO,Z.ESTI_ID,Z.FCST_PAL_ID,Z.ISU_DT,Z.ESTI_WRT_DATE
+			Z.DOC_NO, Z.DOC_TITL, Z.FRMT_CD, Z.ESTI_ID,Z.FCST_PAL_ID,Z.ISU_DT,Z.ESTI_WRT_DATE
 			,Z.REG_DT,Z.CHG_DT,Z.LAST_CUST_ID,Z.LAST_CUST_NM,Z.PRJT_NM
 			,Z.BOPT_NM,Z.ORDE_CUST_ID,Z.ORDE_CUST_NM,Z.PRJT_TYPE_CD_NM
 			,Z.PRJT_TYPE_CD,Z.SELL_AMT,Z.SLS_DEPT_NM
@@ -26,6 +26,9 @@
 		FROM(
 			SELECT DISTINCT
 				T1.DOC_NO
+				,T1.DOC_TITL
+				,T1.FRMT_CD
+				,IBIZ_COM_CD_NM('FRMT_CD',T1.FRMT_CD) AS FRMT_CD_NM
 				,T1.ESTI_ID
 				,T1.FCST_PAL_ID
 				,T1.ISU_DT
@@ -110,7 +113,8 @@
 	<select id="selectOfferEstimate"
 			parameterType="com.ibiz.api.model.EstimateVO"
 			resultType="com.ibiz.api.model.EstimateVO" >
-		SELECT ESTI_ID, T1.FCST_PAL_ID, T1.ESTI_WRT_DATE, T1.DOC_NO, T1.RCV_CMPY_NM, T1.RCV_CHRR_NM,
+		SELECT ESTI_ID, T1.FCST_PAL_ID, T1.ESTI_WRT_DATE, T1.FRMT_CD, IBIZ_COM_CD_NM('FRMT_CD',T1.FRMT_CD) AS FRMT_CD_NM,
+			T1.DOC_NO, T1.DOC_TITL, T1.RCV_CMPY_NM, T1.RCV_CHRR_NM,
     		T1.TRSMT_CHRR_NM,T1.TRSMT_TEL_NO, T1.TRSMT_EML_ADRS, T1.BSNS_NM,
     		T1.SPLY_CMPY_NM, T1.SPLY_CMPY_BSNN_NO, T1.SPLY_CMPY_RPRN_NM, T1.SPLY_CMPY_ADRS,
     		T1.SPLY_CMPY_TEL_NO, T1.SPLY_CMPY_FAX_NO, T1.VAT_CVRD_DST_CD, IBIZ_COM_CD_NM('VAT_CVRD_DST_CD',T1.VAT_CVRD_DST_CD) AS VAT_CVRD_DST_CD_NM,
@@ -352,7 +356,9 @@
 		ESTI_ID,
 		FCST_PAL_ID,
 		ESTI_WRT_DATE,
+		FRMT_CD,
 		DOC_NO,
+		DOC_TITL,
 		RCV_CMPY_NM,
 		<if test="rcvChrrNm != null and rcvChrrNm != ''">
 			RCV_CHRR_NM,
@@ -390,9 +396,11 @@
 		SELECT #{estiId} AS ESTI_ID
 		,T000.FCST_PAL_ID
 		, #{estiWrtDate} AS ESTI_WRT_DATE
+		, #{frmtCd}
 		<if test="docNo != null and docNo != ''">
 			, #{docNo}  AS DOC_NO
 		</if>
+		,#{docTitl}
 		,(
 		SELECT CUST_NM
 		FROM CMST000T
@@ -600,7 +608,9 @@
 			UPDATE BEST100T
 			    SET
 			        ESTI_WRT_DATE = #{estiWrtDate},
+					FRMT_CD = #{frmtCd},
 			    	DOC_NO = #{docNo},
+					DOC_TITL = #{docTitl},
 			    	RCV_CHRR_NM = #{rcvChrrNm},
 			    	TRSMT_CHRR_NM = #{trsmtChrrNm},
 			    	TRSMT_TEL_NO = #{trsmtTelNo},
@@ -653,5 +663,14 @@
 			 WHERE ESTI_ID = #{estiId}
 	</delete>
 
+
+	<!-- 문서제목 구성정보 조회  -->
+	<select id="selectApprovalTitle"
+			parameterType="com.ibiz.api.model.EstimateVO"
+			resultType="java.lang.String">
+			SELECT
+				'['|| IBIZ_COM_CD_NM('DOC_KIND_CD', #{docKindCd}) ||'] '|| #{bsnsNm} AS DOC_TITL
+			FROM DUAL
+	</select>
 
 </mapper>

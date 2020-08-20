@@ -2445,4 +2445,13 @@
 		WHERE BOPT_ID =	#{boptId}
 	</select>
 
+	<!-- 문서제목 구성정보 조회  -->
+	<select id="selectApprovalTitle"
+			parameterType="com.ibiz.api.model.OfferVO"
+			resultType="java.lang.String">
+
+		SELECT  '['|| IBIZ_HGRK_COM_CD_NM('FRMT_CD',#{frmtCd}) ||'] '|| IBIZ_CUST_NM(#{lastCustId}) ||' / '|| BOPT_NM AS DOC_TITL
+		FROM BPIP000T
+		WHERE BOPT_ID  = #{boptId}
+	</select>
 </mapper>
