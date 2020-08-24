@@ -41,9 +41,9 @@ public class OfferProfitDAO {
     /**
      * 프로젝트 및 최종고객 정보조회
      */
-    public String selectDraftOfferProfitTitle(OfferVO offerVO) {
-        return mybatis.selectOne("OfferProfitMapper.selectDraftOfferProfitTitle", offerVO);
-    }
+//    public String selectDraftOfferProfitTitle(OfferVO offerVO) {
+//        return mybatis.selectOne("OfferProfitMapper.selectDraftOfferProfitTitle", offerVO);
+//    }
 
     /**
      * MAX(FCST_PAL_ID) 조회
@@ -243,6 +243,10 @@ public class OfferProfitDAO {
     public Integer selectIsRelatedWithVrb(OfferVO offerVO) {
         return mybatis.selectOne("OfferProfitMapper.selectIsRelatedWithVrb", offerVO);
     }
+    //견적서 등록여부 조회
+    public Integer selectIsRelatedWithEstimate(OfferVO offerVO) {
+        return mybatis.selectOne("OfferProfitMapper.selectIsRelatedWithEstimate", offerVO);
+    }
 
     //수익변경보고 등록여부 조회
     public Integer selectIsRelatedWithBefProfitAnalysis(OfferVO offerVO) {
@@ -280,9 +284,9 @@ public class OfferProfitDAO {
     }
 
     //결재문서 title 구성
-    public String selectDraftOfferProfitPS2Title(OfferVO offerVO) {
-        return mybatis.selectOne("OfferProfitMapper.selectDraftOfferProfitPS2Title", offerVO);
-    }
+//    public String selectDraftOfferProfitPS2Title(OfferVO offerVO) {
+//        return mybatis.selectOne("OfferProfitMapper.selectDraftOfferProfitPS2Title", offerVO);
+//    }
 
     //VRB 대상선정 및 평가결과 : VRB 대상선정 기준항목 조회
     public List<VRBSelectCriteriaVO> selectOfferProfitPS2VRBSelectCriteriaList(OfferVO offerVO) {
@@ -375,4 +379,8 @@ public class OfferProfitDAO {
         mybatis.update("OfferProfitMapper.updateOfferProfitStat", offerVO);
     }
 
+    //문서 title 구성
+    public String selectApprovalTitle(OfferVO offerVO) {
+        return mybatis.selectOne("OfferProfitMapper.selectApprovalTitle", offerVO);
+    }
 }

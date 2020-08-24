@@ -58,12 +58,12 @@ public class ApprovalVO {
     /**
      * 긴급 결재 구분 코드
      */
-    private String emgSantDstCd;
+    private String emgDstCd;
 
     /**
      * 긴급 결재 구분 명
      */
-    private String emgSantDstCdNm;
+    private String emgDstCdNm;
 
     /**
      * 결재진행상태코드
@@ -82,7 +82,7 @@ public class ApprovalVO {
     /**
      * 첨부ID
      */
-    private String attcId;
+    private String fileAttcId;
 
     /**
      * 등록사원 ID
@@ -281,6 +281,11 @@ public class ApprovalVO {
      */
     private String aprnRoleNm;
 
+    /**
+     * 화면 첨부ID
+     */
+    private String scrnAttcId;
+
     private List<Map<String, String>> buttonList;
 
     public Integer getTotalCnt() {
@@ -363,20 +368,20 @@ public class ApprovalVO {
         this.santNtcDstCdNm = santNtcDstCdNm;
     }
 
-    public String getEmgSantDstCd() {
-        return emgSantDstCd;
+    public String getEmgDstCd() {
+        return emgDstCd;
     }
 
-    public void setEmgSantDstCd(String emgSantDstCd) {
-        this.emgSantDstCd = emgSantDstCd;
+    public void setEmgDstCd(String emgDstCd) {
+        this.emgDstCd = emgDstCd;
     }
 
-    public String getEmgSantDstCdNm() {
-        return emgSantDstCdNm;
+    public String getEmgDstCdNm() {
+        return emgDstCdNm;
     }
 
-    public void setEmgSantDstCdNm(String emgSantDstCdNm) {
-        this.emgSantDstCdNm = emgSantDstCdNm;
+    public void setEmgDstCdNm(String emgDstCdNm) {
+        this.emgDstCdNm = emgDstCdNm;
     }
 
     public String getSantPrgsStatCd() {
@@ -403,12 +408,12 @@ public class ApprovalVO {
         this.santAppvDstCdNm = santAppvDstCdNm;
     }
 
-    public String getAttcId() {
-        return attcId;
+    public String getFileAttcId() {
+        return fileAttcId;
     }
 
-    public void setAttcId(String attcId) {
-        this.attcId = attcId;
+    public void setFileAttcId(String fileAttcId) {
+        this.fileAttcId = fileAttcId;
     }
 
     public String getRegEmpId() {
@@ -787,4 +792,11 @@ public class ApprovalVO {
         this.aprnRoleNm = aprnRoleNm;
     }
 
+    public String getScrnAttcId() {
+        return scrnAttcId;
+    }
+
+    public void setScrnAttcId(String scrnAttcId) {
+        this.scrnAttcId = scrnAttcId;
+    }
 }

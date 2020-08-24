@@ -16,7 +16,7 @@ public class AttachVO {
     /**
      * 첨부아이디
      */
-    private String attcId;
+    private String fileAttcId;
 
     /**
      * 첨부순번
@@ -100,12 +100,12 @@ public class AttachVO {
         this.useCategoryId = useCategoryId;
     }
 
-    public String getAttcId() {
-        return attcId;
+    public String getFileAttcId() {
+        return fileAttcId;
     }
 
-    public void setAttcId(String attcId) {
-        this.attcId = attcId;
+    public void setFileAttcId(String fileAttcId) {
+        this.fileAttcId = fileAttcId;
     }
 
     public String getAttcSeq() {

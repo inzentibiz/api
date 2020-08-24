@@ -184,11 +184,13 @@ public class OfferEstimateService extends AbstractDraftService {
         String kind = null;
         if(estimateVO.getPrjtTypeCd().equals("B1")) {
             //PNS면
-            estimateVO.setSantFrmtCd("B04");
+            estimateVO.setSantFrmtCd("B05");
+            estimateVO.setFrmtCd("B05");
             kind = "BES";
         }else{
             //MA면
-            estimateVO.setSantFrmtCd("B05");
+            estimateVO.setSantFrmtCd("B06");
+            estimateVO.setFrmtCd("B06");
             kind = "BEM";
         }
 
@@ -213,7 +215,11 @@ public class OfferEstimateService extends AbstractDraftService {
         estimateVO.setEstiId(IndexUtils.generateId(10, prevId));
         estimateVO.setRegEmpId(accountVO.getEmpId());
 
-        //견적서 내역 저장
+        // 문서제목
+        estimateVO.setDocKindCd(kind);
+        estimateVO.setDocTitl(offerEstimateDAO.selectApprovalTitle(estimateVO));
+
+       //견적서 내역 저장
         offerEstimateDAO.insertOfferEstimate(estimateVO);
 
         //견적서 종류는 총 두가지(솔루션과 MA)이므로 프로젝트 유형 거르기
@@ -252,11 +258,13 @@ public class OfferEstimateService extends AbstractDraftService {
         String kind = null;
         if(estimateVO.getPrjtTypeCd().equals("B1")) {
             //PNS면
-            estimateVO.setSantFrmtCd("B04");
+            estimateVO.setSantFrmtCd("B05");
+            estimateVO.setFrmtCd("B05");
             kind = "BES";
         }else{
             //MA면
-            estimateVO.setSantFrmtCd("B05");
+            estimateVO.setSantFrmtCd("B06");
+            estimateVO.setFrmtCd("B06");
             kind = "BEM";
         }
 
@@ -280,6 +288,10 @@ public class OfferEstimateService extends AbstractDraftService {
 
         // 견적서 상태값이 등록일 경우에만 업데이트
         EstimateVO model = offerEstimateDAO.selectOfferEstimateStat(estimateVO);
+
+        // 문서제목 생성
+        estimateVO.setDocKindCd(kind);
+        estimateVO.setDocTitl(offerEstimateDAO.selectApprovalTitle(estimateVO));
 
         offerEstimateDAO.updateOfferEstimate(estimateVO);
 
@@ -342,6 +354,11 @@ public class OfferEstimateService extends AbstractDraftService {
             }
             offerEstimateDAO.deleteOfferEstimate(estimateVO);
 
+            if (estimateVO.getSantId() != null) {
+                ApprovalVO approvalVO = new ApprovalVO();
+                approvalVO.setSantId(estimateVO.getSantId());
+                super.deleteCascadingDraft(approvalVO);
+            }
         }
 
         return cnt;

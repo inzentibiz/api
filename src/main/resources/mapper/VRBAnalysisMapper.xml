@@ -15,7 +15,7 @@
 			parameterType="com.ibiz.api.model.VRBAnalysisVO"
 			resultType="com.ibiz.api.model.VRBAnalysisVO">
 
-			SELECT VRB_ANLY_ID, DOC_NO, PRJT_ID, EFCM_DATE, CUST_DMD_MTR,
+			SELECT VRB_ANLY_ID, DOC_NO, DOC_TITL, PRJT_ID, EFCM_DATE, CUST_DMD_MTR,
 				BSNS_CHRC_CONT, COPE_SCHM_CONT, CMPY_SLCT_WAY_CONT,
 				CMPY_EVAL_WAY_CONT, PRTC_CMPY_PRSCD_CONT, SLS_DEPT_ID,
 				SLS_EMP_ID, VRB_UDWG_RST_CD, VRB_PRGS_STAT_CD, SANT_ID,
@@ -32,7 +32,7 @@
 			resultType="com.ibiz.api.model.VRBAnalysisVO">
 
 			SELECT
-			    VRB_ANLY_ID,DOC_NO, SANT_ID, EFCM_DATE, VRB_UDWG_RST_CD, IBIZ_COM_CD_NM('VRB_UDWG_RST_CD',VRB_UDWG_RST_CD) AS VRB_UDWG_RST_CD_NM,
+			    VRB_ANLY_ID,DOC_NO, DOC_TITL, SANT_ID, EFCM_DATE, VRB_UDWG_RST_CD, IBIZ_COM_CD_NM('VRB_UDWG_RST_CD',VRB_UDWG_RST_CD) AS VRB_UDWG_RST_CD_NM,
 			    VRB_PRGS_STAT_CD, IBIZ_COM_CD_NM('VRB_PRGS_STAT_CD',VRB_PRGS_STAT_CD) AS VRB_PRGS_STAT_CD_NM
 			FROM
 			    BPIP100T
@@ -220,6 +220,7 @@
 		SELECT BEST.REG_DT AS ANLY_DT
 				,BEST.FCST_PAL_ID
 				,BEST.DOC_NO
+				,BEST.DOC_TITL
 				,BEST.SANT_ID
 				,BEST.PRJT_ID
 				,BPIP.BOPT_ID, BPIP.BOPT_NM
@@ -235,6 +236,7 @@
 		INNER JOIN ( SELECT FCST_PAL_ID,
 							BOPT_ID,
 							DOC_NO,
+							DOC_TITL,
 							PRJT_ID,
 							SANT_ID,
 							REG_DT,
@@ -349,7 +351,7 @@
 			resultType="com.ibiz.api.model.VRBAnalysisVO">
 
 			SELECT
-				VRB_ANLY_ID ,PRJT_ID ,DOC_NO
+				VRB_ANLY_ID ,PRJT_ID ,DOC_NO, BPIP.DOC_TITL
 			    ,CUST_DMD_MTR, BSNS_CHRC_CONT, COPE_SCHM_CONT -- 고객요구사항, 사업특성내용, 대응방안내용
 			    ,CMPY_SLCT_WAY_CONT, CMPY_EVAL_WAY_CONT, PRTC_CMPY_PRSCD_CONT -- 경쟁사분석: 업체선정방식내용, 업체평가방식내용, 참여업체현황내용
 			    ,EFCM_DATE -- 시행일자
@@ -657,9 +659,11 @@
 		INSERT INTO BPIP100T (
 			VRB_ANLY_ID
 			,PRJT_ID
+			,FRMT_CD
 			<if test="docNo != null and docNo != ''">
 				,DOC_NO
 			</if>
+			,DOC_TITL
 			<if test="efcmDate != null and efcmDate != ''">
 				,EFCM_DATE
 			</if>
@@ -702,9 +706,11 @@
 		) VALUES (
 			#{vrbAnlyId}
 			,#{prjtId}
+			,#{frmtCd}
 			<if test="docNo != null and docNo != ''">
 				,#{docNo}
 			</if>
+			,#{docTitl}
 			<if test="efcmDate != null and efcmDate != ''">
 				,#{efcmDate}
 			</if>
@@ -984,7 +990,9 @@
 
 			UPDATE BPIP100T
 			    SET
-			    	CHG_EMP_ID = #{chgEmpId}
+					FRMT_CD = #{frmtCd}
+					, DOC_TITL = #{docTitl}
+			    	, CHG_EMP_ID = #{chgEmpId}
 					, CHG_DT = SYSDATE
 					, PRJT_ID = #{prjtId}
 			        , CUST_DMD_MTR = #{custDmdMtr}
@@ -1063,5 +1071,15 @@
 			    VRB_ANLY_ID = #{vrbAnlyId}
 
 	</delete>
+
+	<!-- 문서제목 구성정보 조회  -->
+	<select id="selectApprovalTitle"
+			parameterType="com.ibiz.api.model.VRBAnalysisVO"
+			resultType="java.lang.String">
+
+		SELECT  '['|| IBIZ_COM_CD_NM('DOC_KIND_CD','BVA') ||'] '|| IBIZ_CUST_NM(LAST_CUST_ID) ||' / '|| PRJT_NM AS DOC_TITL
+		FROM APRJ000T
+		WHERE PRJT_ID = #{prjtId}
+	</select>
 
 </mapper>

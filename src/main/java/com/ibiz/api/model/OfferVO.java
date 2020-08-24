@@ -319,6 +319,11 @@ public class OfferVO {
     private String docNo;
 
     /**
+     * 문서제목
+     */
+    private String docTitl;
+
+    /**
      * 문서타입코드
      */
     private String docTypeCd;
@@ -923,5 +928,13 @@ public class OfferVO {
 
     public void setInProgress(Boolean inProgress) {
         isInProgress = inProgress;
+    }
+
+    public String getDocTitl() {
+        return docTitl;
+    }
+
+    public void setDocTitl(String docTitl) {
+        this.docTitl = docTitl;
     }
 }

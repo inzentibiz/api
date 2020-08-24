@@ -33,9 +33,9 @@ public class VRBAnalysisDAO {
         return mybatis.selectOne("VRBAnalysisMapper.selectVRBAnalysisErnnAnly", vrbAnalysisVO);
     }
 
-    public String selectDraftVRBAnalysisTitle(VRBAnalysisVO vrbAnalysisVO) {
+    /*public String selectDraftVRBAnalysisTitle(VRBAnalysisVO vrbAnalysisVO) {
         return mybatis.selectOne("VRBAnalysisMapper.selectDraftVRBAnalysisTitle", vrbAnalysisVO);
-    }
+    }*/
 
     public List<VRBAnalysisVO> selectVRBAnalysisList(VRBAnalysisVO vrbAnalysisVO) {
         return mybatis.selectList("VRBAnalysisMapper.selectVRBAnalysisList", vrbAnalysisVO);
@@ -164,4 +164,7 @@ public class VRBAnalysisDAO {
         mybatis.delete("VRBAnalysisMapper.deleteVRBOpinion", vrbAnalysisVO);
     }
 
+    public String selectApprovalTitle(VRBAnalysisVO vrbAnalysisVO) {
+        return mybatis.selectOne("VRBAnalysisMapper.selectApprovalTitle", vrbAnalysisVO);
+    }
 }

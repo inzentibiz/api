@@ -282,12 +282,14 @@ public class VRBAnalysisService extends AbstractDraftService {
         vrbAnalysisVO.getApproval().setRegEmpId(accountVO.getEmpId());
         vrbAnalysisVO.getApproval().setSantFrmtCd("B03");
         vrbAnalysisVO.setSantFrmtCd("B03");
-        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectDraftVRBAnalysisTitle(vrbAnalysisVO));
+        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectApprovalTitle(vrbAnalysisVO));
         vrbAnalysisVO.setSantId(super.insertDraft(vrbAnalysisVO.getApproval()));
 
         //문서번호 갖고오기
         String prevDocNo = vrbAnalysisDAO.selectVRBAnalysisMaxDocNo(vrbAnalysisVO).getDocNo();
         vrbAnalysisVO.setDocNo(super.generateDocId(3, prevDocNo));
+
+        vrbAnalysisVO.setDocTitl(vrbAnalysisVO.getApproval().getDocTitl());
 
         vrbAnalysisDAO.insertVRBAnalysis(vrbAnalysisVO);
 
@@ -338,9 +340,6 @@ public class VRBAnalysisService extends AbstractDraftService {
         AccountVO accountVO = requestPayload.getAccountVO();
         VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
 
-        vrbAnalysisVO.setChgEmpId(accountVO.getEmpId());
-        vrbAnalysisDAO.updateVRBAnalysis(vrbAnalysisVO);
-
         // 고객분석내역
         if (vrbAnalysisVO.getVrbCustomerAnalysisList() != null) {
             vrbAnalysisDAO.deleteVRBCustomer(vrbAnalysisVO);
@@ -385,7 +384,11 @@ public class VRBAnalysisService extends AbstractDraftService {
         vrbAnalysisVO.setApproval(vrbAnalysisVO.getApproval());
         vrbAnalysisVO.getApproval().setSantFrmtCd("B03");
         vrbAnalysisVO.setSantFrmtCd("B03");
-        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectDraftVRBAnalysisTitle(vrbAnalysisVO));
+        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectApprovalTitle(vrbAnalysisVO));
+
+        vrbAnalysisVO.setChgEmpId(accountVO.getEmpId());
+        vrbAnalysisVO.setDocTitl(vrbAnalysisVO.getApproval().getDocTitl());
+        vrbAnalysisDAO.updateVRBAnalysis(vrbAnalysisVO);
 
         if (vrbAnalysisVO.getApproval().getApprovalDetailList() != null)
             super.updateApproverList(vrbAnalysisVO.getApproval());
