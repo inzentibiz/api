@@ -1378,6 +1378,20 @@
 
 	</select>
 
+	<!-- 견적서 등록여부 조회
+	  	예상손익을 삭제하는 경우 견적서 등록여부를 체크하기 위한 쿼리 -->
+	<select id="selectIsRelatedWithEstimate"
+			parameterType="com.ibiz.api.model.OfferVO"
+			resultType="java.lang.Integer">
+
+		SELECT
+			NVL(COUNT(1),0)
+		FROM
+		BEST100T
+		WHERE
+		FCST_PAL_ID = #{fcstPalId}
+
+	</select>
 
 
 	<!-- 예상손익기본 상세  -->

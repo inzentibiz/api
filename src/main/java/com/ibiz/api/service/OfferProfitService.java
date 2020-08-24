@@ -303,10 +303,11 @@ public class OfferProfitService extends AbstractDraftService {
         log.info("Call Service : " + this.getClass().getName() + ".updateOfferProfitPS1");
         OfferVO offerVO = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
-
+/*
         if (offerProfitDAO.selectIsRelatedWithVrb(offerVO) > 0 ) {
             throw new UpdateDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
         }
+*/
 
 
 
@@ -380,6 +381,10 @@ public class OfferProfitService extends AbstractDraftService {
         if (offerProfitDAO.selectIsRelatedWithVrb(offerVO) > 0) {
             throw new DeleteDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
         }
+        if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
+            throw new DeleteDeniedException("견적서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+        }
+
 
         ApprovalVO approvalVO = new ApprovalVO();
 
@@ -1264,6 +1269,9 @@ public class OfferProfitService extends AbstractDraftService {
         if (offerVO.getFcstPalId() == null || offerVO.getFcstPalId().equals("")) {
             offerVO.setFcstPalId(offerProfitDAO.selectFcstPalId(offerVO));
         }
+        if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
+            throw new DeleteDeniedException("견적서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+        }
         offerProfitDAO.deleteOfferProfitPSProductDC(offerVO); // BEST011T
         offerProfitDAO.deleteOfferProfitPSProduct(offerVO); // BEST010T
         offerProfitDAO.deleteOfferMACond(offerVO); // BEST080T
@@ -1520,10 +1528,9 @@ public class OfferProfitService extends AbstractDraftService {
         OfferVO offerVO = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
 
-        if (offerProfitDAO.selectIsRelatedWithVrb(offerVO) > 0) {
+        /*if (offerProfitDAO.selectIsRelatedWithVrb(offerVO) > 0) {
             throw new UpdateDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
-        }
-
+        }*/
         // 변경전예상손익ID가 존재하는 경우 해당 문서의 진행상태가 승인이 아닌 경우 insert를 하지않는다.
         OfferVO befOfferVO = new OfferVO();
         if(offerVO.getBefFcstPalId() != null) {
@@ -1597,6 +1604,9 @@ public class OfferProfitService extends AbstractDraftService {
         }
         if (offerProfitDAO.selectIsRelatedWithVrb(offerVO) > 0) {
             throw new DeleteDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+        }
+        if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
+            throw new DeleteDeniedException("견적서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
         }
         if (offerProfitDAO.selectIsRelatedWithBefProfitAnalysis(offerVO) > 0) {
             throw new DeleteDeniedException("손익변경보고로 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);

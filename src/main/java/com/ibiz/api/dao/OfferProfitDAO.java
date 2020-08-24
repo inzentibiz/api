@@ -243,6 +243,10 @@ public class OfferProfitDAO {
     public Integer selectIsRelatedWithVrb(OfferVO offerVO) {
         return mybatis.selectOne("OfferProfitMapper.selectIsRelatedWithVrb", offerVO);
     }
+    //견적서 등록여부 조회
+    public Integer selectIsRelatedWithEstimate(OfferVO offerVO) {
+        return mybatis.selectOne("OfferProfitMapper.selectIsRelatedWithEstimate", offerVO);
+    }
 
     //수익변경보고 등록여부 조회
     public Integer selectIsRelatedWithBefProfitAnalysis(OfferVO offerVO) {
