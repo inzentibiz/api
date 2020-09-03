@@ -1,6 +1,8 @@
 package com.ibiz.api.service;
 
 import com.ibiz.api.dao.OfferEstimateDAO;
+import com.ibiz.api.exception.DeleteDeniedException;
+import com.ibiz.api.exception.UpdateDeniedException;
 import com.ibiz.api.model.*;
 import com.ibiz.api.utils.IndexUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -161,154 +163,130 @@ public class OfferEstimateService extends AbstractDraftService {
         return approvalVO;
     }
 
-    @Transactional
-    public EstimateVO insertOfferEstimate(Payload<EstimateVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public EstimateVO insertOfferEstimate(Payload<EstimateVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".insertOfferEstimate");
         AccountVO accountVO = requestPayload.getAccountVO();
         EstimateVO estimateVO = requestPayload.getDto();
 
         estimateVO.setChgEmpId(accountVO.getEmpId());
 
-        String fcstPalPrgsStatCd = offerEstimateDAO.selectEstimateFcstPalPrgsStatCd(estimateVO).getFcstPalPrgsStatCdNm();
+        try {
 
-        //견적서 상태(등록:A1,임시등록:A2,발행:B1,임시발행:B2,폐기:C)
-        if(fcstPalPrgsStatCd.equals("C")) {
-            estimateVO.setEstisStatCd("A1");//등록
-        }else {
-            estimateVO.setEstisStatCd("A2");
-        }
+            String fcstPalPrgsStatCd = offerEstimateDAO.selectEstimateFcstPalPrgsStatCd(estimateVO).getFcstPalPrgsStatCdNm();
 
-        //프로젝트 유형 갖고오기
-        estimateVO.setPrjtTypeCd(offerEstimateDAO.selectEstimatePrjtTypeCd(estimateVO).getPrjtTypeCd());
+            //견적서 상태(등록:A1,임시등록:A2,발행:B1,임시발행:B2,폐기:C)
+            if(fcstPalPrgsStatCd.equals("C")) {
+                estimateVO.setEstisStatCd("A1");//등록
+            }else {
+                estimateVO.setEstisStatCd("A2");
+            }
 
-        String kind = null;
-        if(estimateVO.getPrjtTypeCd().equals("B1")) {
-            //PNS면
-            estimateVO.setSantFrmtCd("B05");
-            estimateVO.setFrmtCd("B05");
-            kind = "BES";
-        }else{
-            //MA면
-            estimateVO.setSantFrmtCd("B06");
-            estimateVO.setFrmtCd("B06");
-            kind = "BEM";
-        }
+            //프로젝트 유형 갖고오기
+            estimateVO.setPrjtTypeCd(offerEstimateDAO.selectEstimatePrjtTypeCd(estimateVO).getPrjtTypeCd());
 
-        //문서번호 갖고오기
-        String prevDocNo = offerEstimateDAO.selectEstiMaxDocNo(estimateVO).getDocNo();
-        String estiWrtDate = estimateVO.getEstiWrtDate();
-        String docNum = prevDocNo.split("-")[3];
-        String docNo = null;
-        int nextSequence;
-        if(docNum.equals("00")) {
-            nextSequence = 1;
-        }else {
-            nextSequence = Integer.parseInt(docNum) + 1;
-        }
+            String kind = null;
+            if(estimateVO.getPrjtTypeCd().equals("B1")) {
+                //PNS면
+                estimateVO.setSantFrmtCd("B05");
+                estimateVO.setFrmtCd("B05");
+                kind = "BES";
+            }else{
+                //MA면
+                estimateVO.setSantFrmtCd("B06");
+                estimateVO.setFrmtCd("B06");
+                kind = "BEM";
+            }
 
-        //docNo= prevDocNo.split("-")[0]+"-"+ prevDocNo.split("-")[1]+"-"+ estiWrtDate +"-"+ String.format("%03d", nextSequence);
-        docNo= prevDocNo.split("-")[0]+"-"+ kind+"-"+ estiWrtDate +"-"+ String.format("%03d", nextSequence);
-        estimateVO.setDocNo(docNo);
+            //견적 id 생성
+            String estiId = offerEstimateDAO.selectNewEstiId().getEstiId();
+            estimateVO.setEstiId(estiId);
+            estimateVO.setRegEmpId(accountVO.getEmpId());
 
-        //견적 id 생성
-        String prevId = offerEstimateDAO.selectMaxEstiId().getEstiId();
-        estimateVO.setEstiId(IndexUtils.generateId(10, prevId));
-        estimateVO.setRegEmpId(accountVO.getEmpId());
+            // 문서제목
+            estimateVO.setDocKindCd(kind);
+            estimateVO.setDocTitl(offerEstimateDAO.selectApprovalTitle(estimateVO));
 
-        // 문서제목
-        estimateVO.setDocKindCd(kind);
-        estimateVO.setDocTitl(offerEstimateDAO.selectApprovalTitle(estimateVO));
+            //견적서 내역 저장
+            offerEstimateDAO.insertOfferEstimate(estimateVO);
 
-       //견적서 내역 저장
-        offerEstimateDAO.insertOfferEstimate(estimateVO);
-
-        //견적서 종류는 총 두가지(솔루션과 MA)이므로 프로젝트 유형 거르기
-        if(estimateVO.getPrjtTypeCd().equals("B1")) {
-            //견적내역(견적사항의  (서비스(외주포함)SV), (자사제품LC), (타사상품(H/W, S/W)OP)
-            if (estimateVO.getEstiIssuePnsList() != null) {
-                for(EstimateProductPSVO estimateProductPSVO :  estimateVO.getEstiIssuePnsList()) {
-                    estimateProductPSVO.setEstiId(estimateVO.getEstiId());
-                    offerEstimateDAO.insertOfferEstimatePS(estimateProductPSVO);
+            //견적서 종류는 총 두가지(솔루션과 MA)이므로 프로젝트 유형 거르기
+            if(estimateVO.getPrjtTypeCd().equals("B1")) {
+                //견적내역(견적사항의  (서비스(외주포함)SV), (자사제품LC), (타사상품(H/W, S/W)OP)
+                if (estimateVO.getEstiIssuePnsList() != null) {
+                    for(EstimateProductPSVO estimateProductPSVO :  estimateVO.getEstiIssuePnsList()) {
+                        estimateProductPSVO.setEstiId(estimateVO.getEstiId());
+                        offerEstimateDAO.insertOfferEstimatePS(estimateProductPSVO);
+                    }
+                }
+            }else{
+                //견적내역(유지보수 견적내역, 서비스 제공조건(유지보수 서비스), 기타사항)
+                if (estimateVO.getEstiIssueMAList() != null) {
+                    offerEstimateDAO.insertOfferEstimateMA(estimateVO);
+                    for(EstimateMAServiceVO estimateMAServiceVO : estimateVO.getEstiIssueMAServiceList()) {
+                        estimateMAServiceVO.setEstiId(estimateVO.getEstiId());
+                        offerEstimateDAO.insertOfferEstimateMAService(estimateMAServiceVO);
+                    }
                 }
             }
-        }else{
-            //견적내역(유지보수 견적내역, 서비스 제공조건(유지보수 서비스), 기타사항)
-            if (estimateVO.getEstiIssueMAList() != null) {
-                offerEstimateDAO.insertOfferEstimateMA(estimateVO);
-                for(EstimateMAServiceVO estimateMAServiceVO : estimateVO.getEstiIssueMAServiceList()) {
-                    estimateMAServiceVO.setEstiId(estimateVO.getEstiId());
-                    offerEstimateDAO.insertOfferEstimateMAService(estimateMAServiceVO);
-                }
-            }
+
+        }catch (Exception e){
+            throw new UpdateDeniedException("견적서 등록 중 문제가 발생했습니다.", estimateVO);
         }
+
 
         return estimateVO;
     }
 
-    @Transactional
-    public EstimateVO updateOfferEstimate(Payload<EstimateVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public EstimateVO updateOfferEstimate(Payload<EstimateVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".updateOfferEstimate");
         AccountVO accountVO = requestPayload.getAccountVO();
         EstimateVO estimateVO = requestPayload.getDto();
         estimateVO.setChgEmpId(accountVO.getEmpId());
 
-        //프로젝트 유형 갖고오기
-        estimateVO.setPrjtTypeCd(offerEstimateDAO.selectEstimatePrjtTypeCd(estimateVO).getPrjtTypeCd());
+        try{
 
-        String kind = null;
-        if(estimateVO.getPrjtTypeCd().equals("B1")) {
-            //PNS면
-            estimateVO.setSantFrmtCd("B05");
-            estimateVO.setFrmtCd("B05");
-            kind = "BES";
-        }else{
-            //MA면
-            estimateVO.setSantFrmtCd("B06");
-            estimateVO.setFrmtCd("B06");
-            kind = "BEM";
-        }
+            //프로젝트 유형 갖고오기
+            estimateVO.setPrjtTypeCd(offerEstimateDAO.selectEstimatePrjtTypeCd(estimateVO).getPrjtTypeCd());
 
-        String prevDocDate = estimateVO.getDocNo().split("-")[2];
-        if(!(prevDocDate.equals(estimateVO.getEstiWrtDate()))) {
-            //문서번호 갖고오기
-            String prevDocNo = offerEstimateDAO.selectEstiMaxDocNo(estimateVO).getDocNo();
-            String estiWrtDate = estimateVO.getEstiWrtDate();
-            String docNum = prevDocNo.split("-")[3];
-            String docNo = null;
-            int nextSequence;
-            if(docNum.equals("00")) {
-                nextSequence = 1;
-            }else {
-                nextSequence = Integer.parseInt(docNum) + 1;
+            String kind = null;
+            if(estimateVO.getPrjtTypeCd().equals("B1")) {
+                //PNS면
+                estimateVO.setSantFrmtCd("B05");
+                estimateVO.setFrmtCd("B05");
+                kind = "BES";
+            }else{
+                //MA면
+                estimateVO.setSantFrmtCd("B06");
+                estimateVO.setFrmtCd("B06");
+                kind = "BEM";
             }
 
-            docNo= prevDocNo.split("-")[0]+"-"+ kind+"-"+ estiWrtDate +"-"+ String.format("%03d", nextSequence);
-            estimateVO.setDocNo(docNo);
-        }
+            // 문서제목 생성
+            estimateVO.setDocKindCd(kind);
+            estimateVO.setDocTitl(offerEstimateDAO.selectApprovalTitle(estimateVO));
 
-        // 견적서 상태값이 등록일 경우에만 업데이트
-        EstimateVO model = offerEstimateDAO.selectOfferEstimateStat(estimateVO);
+            offerEstimateDAO.updateOfferEstimate(estimateVO);
 
-        // 문서제목 생성
-        estimateVO.setDocKindCd(kind);
-        estimateVO.setDocTitl(offerEstimateDAO.selectApprovalTitle(estimateVO));
-
-        offerEstimateDAO.updateOfferEstimate(estimateVO);
-
-        if(estimateVO.getPrjtTypeCd().equals("B1")) {
-            offerEstimateDAO.deleteOfferEstimatePS(estimateVO);
-            if (estimateVO.getEstiIssuePnsList() != null) {
-                for(EstimateProductPSVO estimateProductPSVO :  estimateVO.getEstiIssuePnsList()) {
-                    estimateProductPSVO.setEstiId(estimateVO.getEstiId());
-                    offerEstimateDAO.insertOfferEstimatePS(estimateProductPSVO);
+            if(estimateVO.getPrjtTypeCd().equals("B1")) {
+                offerEstimateDAO.deleteOfferEstimatePS(estimateVO);
+                if (estimateVO.getEstiIssuePnsList() != null) {
+                    for(EstimateProductPSVO estimateProductPSVO :  estimateVO.getEstiIssuePnsList()) {
+                        estimateProductPSVO.setEstiId(estimateVO.getEstiId());
+                        offerEstimateDAO.insertOfferEstimatePS(estimateProductPSVO);
+                    }
+                }
+            }else {
+                offerEstimateDAO.deleteOfferEstimateMAService(estimateVO);
+                for(EstimateMAServiceVO estimateMAServiceVO : estimateVO.getEstiIssueMAServiceList()) {
+                    estimateMAServiceVO.setEstiId(estimateVO.getEstiId());
+                    offerEstimateDAO.insertOfferEstimateMAService(estimateMAServiceVO);
                 }
             }
-        }else {
-            offerEstimateDAO.deleteOfferEstimateMAService(estimateVO);
-            for(EstimateMAServiceVO estimateMAServiceVO : estimateVO.getEstiIssueMAServiceList()) {
-                estimateMAServiceVO.setEstiId(estimateVO.getEstiId());
-                offerEstimateDAO.insertOfferEstimateMAService(estimateMAServiceVO);
-            }
+
+        }catch (Exception e){
+            throw new UpdateDeniedException(estimateVO);
         }
 
         return estimateVO;
@@ -335,30 +313,36 @@ public class OfferEstimateService extends AbstractDraftService {
         return estimateVO;
     }
 
-    @Transactional
-    public Integer deleteOfferEstimate(Payload<EstimateVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public Integer deleteOfferEstimate(Payload<EstimateVO> requestPayload) throws DeleteDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".deleteOfferEstimate");
         EstimateVO estimateVO = requestPayload.getDto();
         int cnt = 0;
-        cnt = offerEstimateDAO.selectIsExistsOfferEstimate(estimateVO);
 
-        if( cnt > 0 ) {
-            //프로젝트 유형 갖고오기
-            estimateVO.setPrjtTypeCd(offerEstimateDAO.selectEstimatePrjtTypeCd(estimateVO).getPrjtTypeCd());
+        try{
+            cnt = offerEstimateDAO.selectIsExistsOfferEstimate(estimateVO);
 
-            if(estimateVO.getPrjtTypeCd().equals("B1")) {
-                offerEstimateDAO.deleteOfferEstimatePS(estimateVO);
-            }else {
-                offerEstimateDAO.deleteOfferEstimateMA(estimateVO);
-                offerEstimateDAO.deleteOfferEstimateMAService(estimateVO);
+
+            if( cnt > 0 ) {
+                //프로젝트 유형 갖고오기
+                estimateVO.setPrjtTypeCd(offerEstimateDAO.selectEstimatePrjtTypeCd(estimateVO).getPrjtTypeCd());
+
+                if(estimateVO.getPrjtTypeCd().equals("B1")) {
+                    offerEstimateDAO.deleteOfferEstimatePS(estimateVO);
+                }else {
+                    offerEstimateDAO.deleteOfferEstimateMA(estimateVO);
+                    offerEstimateDAO.deleteOfferEstimateMAService(estimateVO);
+                }
+                offerEstimateDAO.deleteOfferEstimate(estimateVO);
+
+                if (estimateVO.getSantId() != null) {
+                    ApprovalVO approvalVO = new ApprovalVO();
+                    approvalVO.setSantId(estimateVO.getSantId());
+                    super.deleteApprovalDraft(approvalVO);
+                }
             }
-            offerEstimateDAO.deleteOfferEstimate(estimateVO);
-
-            if (estimateVO.getSantId() != null) {
-                ApprovalVO approvalVO = new ApprovalVO();
-                approvalVO.setSantId(estimateVO.getSantId());
-                super.deleteCascadingDraft(approvalVO);
-            }
+        }catch (Exception e){
+            throw new DeleteDeniedException(estimateVO);
         }
 
         return cnt;

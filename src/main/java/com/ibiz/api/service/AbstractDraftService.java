@@ -1,10 +1,14 @@
 package com.ibiz.api.service;
 
-import com.ibiz.api.dao.DraftDao;
+import com.ibiz.api.dao.SanctionDAO;
+import com.ibiz.api.exception.ApprovalSaveException;
+import com.ibiz.api.exception.ApprovalStateException;
+import com.ibiz.api.exception.DeleteDeniedException;
+import com.ibiz.api.exception.UpdateDeniedException;
 import com.ibiz.api.model.ApprovalAuthorizerVO;
 import com.ibiz.api.model.ApprovalVO;
 import com.ibiz.api.model.AttachVO;
-import com.ibiz.api.utils.IndexUtils;
+import com.ibiz.api.model.CommonCodeMappingVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,46 +24,15 @@ import java.util.Map;
 @Slf4j
 public class AbstractDraftService extends AbstractWebService {
 
-    private static final Map<String, String> SUBMIT_BUTTON = new HashMap<String, String>() {{put("sortSeqc", "2"); put("button", "상신"); put("value", "A");}};
-
-    private static final Map<String, String> APPROVE_BUTTON = new HashMap<String, String>() {{put("sortSeqc", "3"); put("button", "승인"); put("value", "B");}};
-
-    private static final Map<String, String> REJECT_BUTTON = new HashMap<String, String>() {{put("sortSeqc", "4"); put("button", "반려"); put("value", "C");}};
-
-    private static final Map<String, String> AGREE_BUTTON = new HashMap<String, String>() {{put("sortSeqc", "5"); put("button", "합의"); put("value", "D");}};
-
-    private static final Map<String, String> REJECT_AGREEMENT_BUTTON = new HashMap<String, String>() {{put("sortSeqc", "6"); put("button", "합의거부"); put("value", "E");}};
-
-    private static final Map<String, String> WITHDRAW_APPROVAL_BUTTON = new HashMap<String, String>() {{put("sortSeqc", "8"); put("button", "결재회수"); put("value", "G");}};
-
-    private static final Map<String, String> CHANGE_APPROVAL_OPINION_BUTTON = new HashMap<String, String>() {{put("sortSeqc", "7"); put("button", "결재의견변경"); put("value", "H");}};
-
-    private static final Map<String, String> CHANGE_APPROVAL_LINE_BUTTON = new HashMap<String, String>() {{put("sortSeqc", "1"); put("button", "결재라인변경"); put("value", "I");}};
-
-    private static final Map<String, String> RECEIVE_BUTTON = new HashMap<String, String>() {{put("sortSeqc", "9"); put("button", "수신"); put("value", "F");}};
-
-
-    @Resource(name = "draftDao")
-    private DraftDao draftDao;
+    @Resource(name = "sanctionDAO")
+    private SanctionDAO sanctionDAO;
 
     @Transactional
     protected ApprovalVO selectApprovalInfo(String santId) {
         ApprovalVO approvalVO = new ApprovalVO();
         approvalVO.setSantId(santId);
 
-        return draftDao.selectSantNtcDstInfo(approvalVO);
-    }
-
-    @Transactional
-    protected void deleteCascadingDraft(ApprovalVO approvalVO) throws Exception {
-        AttachVO attachVO = new AttachVO();
-
-        if (approvalVO.getFileAttcId() != null && !approvalVO.getFileAttcId().equals("")) {
-            attachVO.setFileAttcId(approvalVO.getFileAttcId());
-        }
-
-        draftDao.deleteApprovalAuthorizer(approvalVO);
-        draftDao.deleteApprovalDraft(approvalVO);
+        return sanctionDAO.selectSantNtcDstInfo(approvalVO);
     }
 
     @Transactional
@@ -84,36 +57,84 @@ public class AbstractDraftService extends AbstractWebService {
     }
 
     @Transactional
-    protected String insertDraft(ApprovalVO approvalVO) throws Exception {
-        String prevId = draftDao.selectMaxSantId().getSantId();
+    protected String insertApprovalDraft(ApprovalVO approvalVO) throws ApprovalSaveException {
 
-        approvalVO.setSantId(IndexUtils.generateId(10, prevId));
-        approvalVO.setSantPrgsStatCd("A");
-        //approvalVO.setSantId(IndexUtils.generateId(10, prevId));
+        try{
+            approvalVO.setSantPrgsStatCd("A");
+            approvalVO.setSantId(sanctionDAO.selectNewSantId().getSantId());
 
-        draftDao.insertApprovalDraft(approvalVO);
-        insertApproverList(approvalVO);
+            sanctionDAO.insertApprovalDraft(approvalVO);
+            insertApproverList(approvalVO);
+        }catch (Exception e){
+            throw new ApprovalSaveException(approvalVO);
+        }
 
         return approvalVO.getSantId();
     }
 
     @Transactional
-    protected void insertApproverList(ApprovalVO approvalVO) {
-        for (ApprovalAuthorizerVO approvalAuthorizerVO : approvalVO.getApprovalDetailList()) {
-            approvalAuthorizerVO.setSantId(approvalVO.getSantId());
-            draftDao.insertApprovalAuthorizer(approvalAuthorizerVO);
+    protected void insertApproverList(ApprovalVO approvalVO) throws ApprovalSaveException {
+        try {
+            for (ApprovalAuthorizerVO approvalAuthorizerVO : approvalVO.getApprovalDetailList()) {
+                approvalAuthorizerVO.setSantId(approvalVO.getSantId());
+                sanctionDAO.insertApprovalAuthorizer(approvalAuthorizerVO);
+            }
+        }catch (Exception e){
+            throw new ApprovalSaveException(approvalVO);
         }
     }
 
     @Transactional
-    protected void updateApproverList(ApprovalVO approvalVO) {
-        draftDao.deleteApprovalAuthorizer(approvalVO);
-        insertApproverList(approvalVO);
+    protected void updateApproverList(ApprovalVO approvalVO) throws UpdateDeniedException{
+        try {
+            sanctionDAO.deleteApprovalAuthorizer(approvalVO);
+            this.insertApproverList(approvalVO);
+        }catch (Exception e){
+            throw new UpdateDeniedException(approvalVO);
+        }
     }
 
     @Transactional
-    protected void updateDraft(ApprovalVO approvalVO) throws Exception {
-
-        draftDao.updateApprovalDraft(approvalVO);
+    protected void updateApprovalDraft(ApprovalVO approvalVO) throws UpdateDeniedException {
+        try {
+            sanctionDAO.updateApprovalDraft(approvalVO);
+        }catch (Exception e){
+            throw new UpdateDeniedException(approvalVO);
+        }
     }
+
+
+    // 비즈니스 진행상태에 따른 결재 진행상태 조회
+    @Transactional
+    protected ApprovalVO selectSyncronizedPrgsStatCd(CommonCodeMappingVO commonCodeMappingVO)  {
+        // 비즈니스 진행상태에 따른 결재 진행상태 조회
+        return sanctionDAO.selectSyncronizedPrgsStatCd(commonCodeMappingVO);
+    }
+
+    // 결재 진행상태 업데이트
+    @Transactional
+    protected void updatePrgsStatCd(ApprovalVO approvalVO) throws ApprovalStateException {
+        try {
+            sanctionDAO.updateApprovalState(approvalVO);
+        }catch (Exception e){
+            throw new ApprovalStateException(approvalVO);
+        }
+    }
+
+    // 비즈니스 문서 삭제에 따른 결재 삭제
+    @Transactional(rollbackFor = Exception.class)
+    protected void deleteApprovalDraft(ApprovalVO approvalVO) throws DeleteDeniedException {
+        AttachVO attachVO = new AttachVO();
+
+        if (approvalVO.getFileAttcId() != null && !approvalVO.getFileAttcId().equals("")) {
+            attachVO.setFileAttcId(approvalVO.getFileAttcId());
+        }
+        try{
+            sanctionDAO.deleteApprovalAuthorizer(approvalVO);
+            sanctionDAO.deleteApprovalDraft(approvalVO);
+        }catch (Exception e){   
+            throw new DeleteDeniedException("결재문서 삭제 중 오류가 발생했습니다.", approvalVO);
+        }
+    }
+
 }

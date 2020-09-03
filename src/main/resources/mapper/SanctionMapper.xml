@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="DraftMapper">
+<mapper namespace="com.inzent.ibiz.svc.sanction.SanctionMapper">
     <!--
 
         SELECT
@@ -197,5 +197,18 @@
 			    SANT_ID = #{santId}
 	</delete>
 
+
+	<!-- 비즈니스 상태에 따른 결재 진행상태코드 조회  -->
+	<select id="selectSyncronizedPrgsStatCd"
+			parameterType="com.ibiz.api.model.CommonCodeMappingVO"
+			resultType="com.ibiz.api.model.ApprovalVO">
+			SELECT IBIZ_MAPP_COM_CD (#{mappClmnNm}, #{comCd}, 'SANT_PRGS_STAT_CD') AS SANT_PRGS_STAT_CD FROM DUAL
+	</select>
+
+	<!-- 결재 key 생성 -->
+	<select id="selectNewSantId"
+			resultType="com.ibiz.api.model.ApprovalVO">
+		SELECT IBIZ_NEW_ID('AAPR100T','SANT_ID','YYYY######') AS SANT_ID FROM DUAL
+	</select>
 
 </mapper>

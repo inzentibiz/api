@@ -99,7 +99,7 @@ public class VRBAnalysisController extends BaseController {
     @PostMapping("/updateVRBAnalysisDss")
     public ResponseEntity<String> updateVRBAnalysisDss(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".updateVRBAnalysisDss");
-        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<ApprovalVO>>(){});
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<VRBAnalysisVO>>(){});
 
         return super.composePayload(new Payload<VRBAnalysisVO>(vrbAnalysisService.updateVRBAnalysisDss(requestPayload)));
     }

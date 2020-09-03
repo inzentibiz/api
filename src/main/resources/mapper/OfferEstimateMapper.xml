@@ -9,6 +9,12 @@
 
      -->
 
+	<!-- 견적서 key select -->
+	<select id="selectNewEstiId"
+			resultType="com.ibiz.api.model.EstimateVO">
+		SELECT IBIZ_NEW_ID('BEST100T','ESTI_ID','YYYY######') AS ESTI_ID FROM DUAL
+	</select>
+
 	<!-- 견적서 발행이력 리스트 -->
 	<select id="selectOfferEstimateList"
 			parameterType="com.ibiz.api.model.EstimateVO"
@@ -261,47 +267,6 @@
 
 	</select>
 
-	<!-- MAX(ESTI_ID) 조회 -->
-	<select id="selectMaxEstiId"
-			resultType="com.ibiz.api.model.EstimateVO">
-			SELECT
-			        CASE
-			            WHEN MAX(ESTI_ID) IS NOT NULL THEN MAX(ESTI_ID)
-			            ELSE TO_CHAR(SYSDATE,'yyyy') || '000000'
-			        END
-			    AS ESTI_ID
-			FROM
-			    BEST100T
-	</select>
-
-	<!-- MAX(DOC_NO) 조회 -->
-	<select id="selectEstiMaxDocNo"
-			parameterType="com.ibiz.api.model.EstimateVO"
-			resultType="com.ibiz.api.model.EstimateVO">
-        SELECT CASE WHEN (
-	                SELECT
-	                	 MAX(T1.DOC_NO)
-		            FROM
-		                BEST100T T1
-                    INNER JOIN BEST000T T2 ON T2.PRJT_TYPE_CD = #{prjtTypeCd} AND T2.FCST_PAL_ID = T1.FCST_PAL_ID
-		            WHERE SUBSTR(T1.DOC_NO,8,8) IN #{estiWrtDate}
-	        )IS NULL THEN
-            'IZ-' || ( SELECT COM_CD
-	                  FROM ACOM010T WHERE COM_GRP_CD = (
-	                        SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'DOC_KIND_CD')
-	                        AND COM_CD_CHAR_VAL = #{santFrmtCd}
-	                )  || '-' || #{estiWrtDate} ||  '-' || '00'
-                    ELSE (
-	                SELECT
-		                MAX(T1.DOC_NO)
-		            FROM
-		                BEST100T T1
-                    INNER JOIN BEST000T T2 ON T2.PRJT_TYPE_CD = #{prjtTypeCd} AND T2.FCST_PAL_ID = T1.FCST_PAL_ID
-		            WHERE SUBSTR(T1.DOC_NO,8,8) = #{estiWrtDate}
-	        )
-	        END AS DOC_NO
-            FROM DUAL
-	</select>
 
 	<!-- 삭제할 견적서가 존재하는지 여부 조회 -->
 	<select id="selectIsExistsOfferEstimate"
@@ -397,9 +362,7 @@
 		,T000.FCST_PAL_ID
 		, #{estiWrtDate} AS ESTI_WRT_DATE
 		, #{frmtCd}
-		<if test="docNo != null and docNo != ''">
-			, #{docNo}  AS DOC_NO
-		</if>
+		, (SELECT IBIZ_NEW_DOC_NO('BEST100T','DOC_NO','FRMT_CD',#{frmtCd}) FROM DUAL )
 		,#{docTitl}
 		,(
 		SELECT CUST_NM
@@ -609,7 +572,6 @@
 			    SET
 			        ESTI_WRT_DATE = #{estiWrtDate},
 					FRMT_CD = #{frmtCd},
-			    	DOC_NO = #{docNo},
 					DOC_TITL = #{docTitl},
 			    	RCV_CHRR_NM = #{rcvChrrNm},
 			    	TRSMT_CHRR_NM = #{trsmtChrrNm},

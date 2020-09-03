@@ -2251,7 +2251,7 @@
 			parameterType="com.ibiz.api.model.OfferVO">
 			UPDATE BEST000T
 			    SET
-			        FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}
+			        FCST_PAL_PRGS_STAT_CD = NVL(IBIZ_MAPP_COM_CD ('SANT_PRGS_STAT_CD', #{fcstPalPrgsStatCd}, 'FCST_PAL_PRGS_STAT_CD'), #{fcstPalPrgsStatCd} )
 			WHERE
 			    SANT_ID = #{santId}
 	</update>

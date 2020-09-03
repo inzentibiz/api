@@ -2,6 +2,8 @@ package com.ibiz.api.service;
 
 import com.ibiz.api.dao.BizChanceDAO;
 import com.ibiz.api.dao.OfferProfitDAO;
+import com.ibiz.api.exception.DeleteDeniedException;
+import com.ibiz.api.exception.UpdateDeniedException;
 import com.ibiz.api.model.*;
 import com.ibiz.api.utils.IndexUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -143,54 +145,58 @@ public class BizChanceService {
     }
 
     // INSERT
-
-    @Transactional
-    public BizChanceVO insertBizChance(Payload<BizChanceVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public BizChanceVO insertBizChance(Payload<BizChanceVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".insertBizChance");
 
         BizChanceVO bizChanceVO = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
 
-        String prevId = bizChanceDAO.selectMaxBoptId().getBoptId();
+        try{
 
-        bizChanceVO.setBoptId(IndexUtils.generateId(10, prevId));
-        bizChanceVO.setRegEmpId(accountVO.getEmpId());
-        bizChanceVO.setChgEmpId(accountVO.getEmpId());
+            String boptId = bizChanceDAO.selectNewBoptId().getBoptId();
 
-        long currDateTime = new Date().getTime();
-        Timestamp currDateTimestamp = new Timestamp(currDateTime);
+            bizChanceVO.setBoptId(boptId);
+            bizChanceVO.setRegEmpId(accountVO.getEmpId());
+            bizChanceVO.setChgEmpId(accountVO.getEmpId());
 
-        //날짜
-        String date = currDateTimestamp.toString();
-        int idx = date.indexOf(".");
-        String chgDt = date.substring(0, idx);
+            long currDateTime = new Date().getTime();
+            Timestamp currDateTimestamp = new Timestamp(currDateTime);
 
-        bizChanceVO.setChgDt(chgDt);
-        bizChanceDAO.insertBizChance(bizChanceVO);
-        bizChanceDAO.insertBizChanceHistory(bizChanceVO);
+            //날짜
+            String date = currDateTimestamp.toString();
+            int idx = date.indexOf(".");
+            String chgDt = date.substring(0, idx);
 
-        if(bizChanceVO.getBizChanceAmtList() != null) {
-            int amtSeq = 1;
-            for(BizChanceAmountVO bizChanceAmountVO : bizChanceVO.getBizChanceAmtList()) {
-                bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
-                bizChanceAmountVO.setChgDt(chgDt);
-                bizChanceAmountVO.setSeq(amtSeq);
-                bizChanceAmountVO.setSellAmt( (bizChanceAmountVO.getSellAmt() == null? 0: bizChanceAmountVO.getSellAmt() * 1000) );
-                bizChanceAmountVO.setBuyAmt( (bizChanceAmountVO.getBuyAmt() == null? 0: bizChanceAmountVO.getBuyAmt() * 1000) );
-                bizChanceDAO.insertBizChanceAmt(bizChanceAmountVO);
-                bizChanceDAO.insertBizChanceHistoryAmt(bizChanceAmountVO);
-                amtSeq++;
+            bizChanceVO.setChgDt(chgDt);
+            bizChanceDAO.insertBizChance(bizChanceVO);
+            bizChanceDAO.insertBizChanceHistory(bizChanceVO);
+
+            if(bizChanceVO.getBizChanceAmtList() != null) {
+                int amtSeq = 1;
+                for(BizChanceAmountVO bizChanceAmountVO : bizChanceVO.getBizChanceAmtList()) {
+                    bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
+                    bizChanceAmountVO.setChgDt(chgDt);
+                    bizChanceAmountVO.setSeq(amtSeq);
+                    bizChanceAmountVO.setSellAmt( (bizChanceAmountVO.getSellAmt() == null? 0: bizChanceAmountVO.getSellAmt() * 1000) );
+                    bizChanceAmountVO.setBuyAmt( (bizChanceAmountVO.getBuyAmt() == null? 0: bizChanceAmountVO.getBuyAmt() * 1000) );
+                    bizChanceDAO.insertBizChanceAmt(bizChanceAmountVO);
+                    bizChanceDAO.insertBizChanceHistoryAmt(bizChanceAmountVO);
+                    amtSeq++;
+                }
             }
-        }
-        if(bizChanceVO.getBizChanceNopList() != null) {
-            for(BizChancePersonVO bizChancePersonVO : bizChanceVO.getBizChanceNopList()) {
-                bizChancePersonVO.setBoptId(bizChanceVO.getBoptId());
-                bizChancePersonVO.setPutTimeUnitCd("A");
-                bizChancePersonVO.setChgDt(chgDt);
+            if(bizChanceVO.getBizChanceNopList() != null) {
+                for(BizChancePersonVO bizChancePersonVO : bizChanceVO.getBizChanceNopList()) {
+                    bizChancePersonVO.setBoptId(bizChanceVO.getBoptId());
+                    bizChancePersonVO.setPutTimeUnitCd("A");
+                    bizChancePersonVO.setChgDt(chgDt);
 
-                bizChanceDAO.insertBizChanceNop(bizChancePersonVO);
-                bizChanceDAO.insertBizChanceHistoryNop(bizChancePersonVO);
+                    bizChanceDAO.insertBizChanceNop(bizChancePersonVO);
+                    bizChanceDAO.insertBizChanceHistoryNop(bizChancePersonVO);
+                }
             }
+        }catch (Exception e){
+            throw new UpdateDeniedException("사업기회 등록 중 문제가 발생했습니다.", bizChanceVO);
         }
 
         return bizChanceVO;
@@ -198,60 +204,66 @@ public class BizChanceService {
 
     // UPDATE
 
-    @Transactional
-    public BizChanceVO updateBizChance(Payload<BizChanceVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public BizChanceVO updateBizChance(Payload<BizChanceVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".updateBizChance");
         BizChanceVO bizChanceVO = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
         bizChanceVO.setChgEmpId(accountVO.getEmpId());
 
-        long currDateTime = new Date().getTime();
-        Timestamp currDateTimestamp = new Timestamp(currDateTime);
-        //날짜
-        String date = currDateTimestamp.toString();
-        int idx = date.indexOf(".");
-        String chgDt = date.substring(0, idx);
+        try{
 
-        bizChanceVO.setChgDt(chgDt);
-        bizChanceDAO.updateBizChance(bizChanceVO);
-        // 변경이력(히스토리) 테이블에 적재..
-        // 동일한 날짜로 이력된게 있으면 지우고 적재..
-        if( bizChanceDAO.selectBizChanceHistoryCount(bizChanceVO) > 0) {
-            bizChanceDAO.deleteBizChanceHistoryAmt(bizChanceVO);
-            bizChanceDAO.deleteBizChanceHistoryNop(bizChanceVO);
-            bizChanceDAO.deleteBizChanceHistory(bizChanceVO);
-        }
-        bizChanceDAO.insertBizChanceHistory(bizChanceVO);
+            long currDateTime = new Date().getTime();
+            Timestamp currDateTimestamp = new Timestamp(currDateTime);
+            //날짜
+            String date = currDateTimestamp.toString();
+            int idx = date.indexOf(".");
+            String chgDt = date.substring(0, idx);
 
-        if(bizChanceVO.getBizChanceAmtList() != null) {
-            bizChanceDAO.deleteBizChanceAmtAll(bizChanceVO);
-
-            int amtSeq = 1;
-            for(BizChanceAmountVO bizChanceAmountVO : bizChanceVO.getBizChanceAmtList()) {
-                bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
-                bizChanceAmountVO.setChgDt(chgDt);
-                bizChanceAmountVO.setSeq(amtSeq);
-
-                bizChanceAmountVO.setSellAmt( (bizChanceAmountVO.getSellAmt() == null? 0: bizChanceAmountVO.getSellAmt() * 1000) );
-                bizChanceAmountVO.setBuyAmt( (bizChanceAmountVO.getBuyAmt() == null? 0: bizChanceAmountVO.getBuyAmt() * 1000) );
-                bizChanceDAO.insertBizChanceAmt(bizChanceAmountVO);
-                bizChanceDAO.insertBizChanceHistoryAmt(bizChanceAmountVO);
-                amtSeq++;
+            bizChanceVO.setChgDt(chgDt);
+            bizChanceDAO.updateBizChance(bizChanceVO);
+            // 변경이력(히스토리) 테이블에 적재..
+            // 동일한 날짜로 이력된게 있으면 지우고 적재..
+            if( bizChanceDAO.selectBizChanceHistoryCount(bizChanceVO) > 0) {
+                bizChanceDAO.deleteBizChanceHistoryAmt(bizChanceVO);
+                bizChanceDAO.deleteBizChanceHistoryNop(bizChanceVO);
+                bizChanceDAO.deleteBizChanceHistory(bizChanceVO);
             }
-        }
+            bizChanceDAO.insertBizChanceHistory(bizChanceVO);
 
-        if(bizChanceVO.getBizChanceNopList() != null) {
-            bizChanceDAO.deleteBizChanceNopAll(bizChanceVO);
+            if(bizChanceVO.getBizChanceAmtList() != null) {
+                bizChanceDAO.deleteBizChanceAmtAll(bizChanceVO);
 
-            for(BizChancePersonVO bizChancePersonVO : bizChanceVO.getBizChanceNopList()) {
-                bizChancePersonVO.setBoptId(bizChanceVO.getBoptId());
-                bizChancePersonVO.setPutTimeUnitCd("A");
-                bizChancePersonVO.setChgDt(chgDt);
+                int amtSeq = 1;
+                for(BizChanceAmountVO bizChanceAmountVO : bizChanceVO.getBizChanceAmtList()) {
+                    bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
+                    bizChanceAmountVO.setChgDt(chgDt);
+                    bizChanceAmountVO.setSeq(amtSeq);
 
-                bizChanceDAO.insertBizChanceNop(bizChancePersonVO);
-                bizChanceDAO.insertBizChanceHistoryNop(bizChancePersonVO);
-
+                    bizChanceAmountVO.setSellAmt( (bizChanceAmountVO.getSellAmt() == null? 0: bizChanceAmountVO.getSellAmt() * 1000) );
+                    bizChanceAmountVO.setBuyAmt( (bizChanceAmountVO.getBuyAmt() == null? 0: bizChanceAmountVO.getBuyAmt() * 1000) );
+                    bizChanceDAO.insertBizChanceAmt(bizChanceAmountVO);
+                    bizChanceDAO.insertBizChanceHistoryAmt(bizChanceAmountVO);
+                    amtSeq++;
+                }
             }
+
+            if(bizChanceVO.getBizChanceNopList() != null) {
+                bizChanceDAO.deleteBizChanceNopAll(bizChanceVO);
+
+                for(BizChancePersonVO bizChancePersonVO : bizChanceVO.getBizChanceNopList()) {
+                    bizChancePersonVO.setBoptId(bizChanceVO.getBoptId());
+                    bizChancePersonVO.setPutTimeUnitCd("A");
+                    bizChancePersonVO.setChgDt(chgDt);
+
+                    bizChanceDAO.insertBizChanceNop(bizChancePersonVO);
+                    bizChanceDAO.insertBizChanceHistoryNop(bizChancePersonVO);
+
+                }
+            }
+
+        }catch (Exception e){
+            throw new UpdateDeniedException(bizChanceVO);
         }
 
         return bizChanceVO;
@@ -259,72 +271,78 @@ public class BizChanceService {
 
     // DELETE
 
-    @Transactional
-    public Boolean deleteBizChance(Payload<BizChanceVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean deleteBizChance(Payload<BizChanceVO> requestPayload) throws DeleteDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".deleteBizChance");
         AccountVO accountVO = requestPayload.getAccountVO();
         BizChanceVO bizChanceVO = requestPayload.getDto();
         BizChanceVO bizChanceVO2 = new BizChanceVO();
         Boolean YN = true;
 
-        //현재 날짜 구하기
-        SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd", Locale.KOREA );
-        Date currentTime = new Date ();
-        String today = mSimpleDateFormat.format (currentTime);
+        try {
 
-        //ChgDt
-        long currDateTime = new Date().getTime();
-        Timestamp currDateTimestamp = new Timestamp(currDateTime);
-        //날짜
-        String date = currDateTimestamp.toString();
-        int idx = date.indexOf(".");
-        String chgDt = date.substring(0, idx);
+            //현재 날짜 구하기
+            SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd", Locale.KOREA );
+            Date currentTime = new Date ();
+            String today = mSimpleDateFormat.format (currentTime);
 
-        bizChanceVO.setChgDt(chgDt);
+            //ChgDt
+            long currDateTime = new Date().getTime();
+            Timestamp currDateTimestamp = new Timestamp(currDateTime);
+            //날짜
+            String date = currDateTimestamp.toString();
+            int idx = date.indexOf(".");
+            String chgDt = date.substring(0, idx);
 
-        // 예상손익분석/견적서가 존재하는지 여부를 확인 후 삭제시도.. 존재할 경우 "예상손익분석/견적서가 존재하여 삭제 불가능합니다."
-        OfferVO offerVO = new OfferVO();
-        offerVO.setBoptId(bizChanceVO.getBoptId());
+            bizChanceVO.setChgDt(chgDt);
 
-        if( !(offerProfitDAO.selectisExistsOffer(offerVO) > 0)) {	//예상손익&견적서 있는 지 비교
-            if(!bizChanceVO.getRegDt().equals(today)) {
+            // 예상손익분석/견적서가 존재하는지 여부를 확인 후 삭제시도.. 존재할 경우 "예상손익분석/견적서가 존재하여 삭제 불가능합니다."
+            OfferVO offerVO = new OfferVO();
+            offerVO.setBoptId(bizChanceVO.getBoptId());
 
-                bizChanceVO = bizChanceDAO.selectBizChaneInfo(bizChanceVO);
+            if( !(offerProfitDAO.selectisExistsOffer(offerVO) > 0)) {	//예상손익&견적서 있는 지 비교
+                if(!bizChanceVO.getRegDt().equals(today)) {
 
-                bizChanceVO.setBoptStatCd("D1");
-                bizChanceVO.setChgDt(chgDt);
+                    bizChanceVO = bizChanceDAO.selectBizChaneInfo(bizChanceVO);
 
-                bizChanceDAO.updateBizChanceStatus(bizChanceVO);//상태 변경
+                    bizChanceVO.setBoptStatCd("D1");
+                    bizChanceVO.setChgDt(chgDt);
 
-                //삭제 변경하면서 매출 매입, 투입인원 삭제 + 영업활동내역도 삭제
-                bizChanceDAO.deleteBizChanceAmtAll(bizChanceVO); //월별 매출매입삭제
-                bizChanceDAO.deleteBizChanceNopAll(bizChanceVO); //투입인원 삭제
-                bizChanceDAO.deleteBizChanceActivityAll(bizChanceVO); //영업활동내역 삭제
+                    bizChanceDAO.updateBizChanceStatus(bizChanceVO);//상태 변경
+
+                    //삭제 변경하면서 매출 매입, 투입인원 삭제 + 영업활동내역도 삭제
+                    bizChanceDAO.deleteBizChanceAmtAll(bizChanceVO); //월별 매출매입삭제
+                    bizChanceDAO.deleteBizChanceNopAll(bizChanceVO); //투입인원 삭제
+                    bizChanceDAO.deleteBizChanceActivityAll(bizChanceVO); //영업활동내역 삭제
 
 
-                //이력 등록 당일 이력 중복이 체크하고 등록
-                if( bizChanceDAO.selectBizChanceHistoryCount(bizChanceVO) > 0) {
-                    bizChanceDAO.deleteBizChanceHistoryAmt(bizChanceVO);
-                    bizChanceDAO.deleteBizChanceHistoryNop(bizChanceVO);
-                    bizChanceDAO.deleteBizChanceHistory(bizChanceVO);
+                    //이력 등록 당일 이력 중복이 체크하고 등록
+                    if( bizChanceDAO.selectBizChanceHistoryCount(bizChanceVO) > 0) {
+                        bizChanceDAO.deleteBizChanceHistoryAmt(bizChanceVO);
+                        bizChanceDAO.deleteBizChanceHistoryNop(bizChanceVO);
+                        bizChanceDAO.deleteBizChanceHistory(bizChanceVO);
+                    }
+
+                    bizChanceDAO.insertBizChanceHistory(bizChanceVO);
+
+
+                }else {
+                    bizChanceDAO.deleteBizChanceAmtAll(bizChanceVO); //월별 매출매입삭제
+                    bizChanceDAO.deleteBizChanceNopAll(bizChanceVO); //투입인원 삭제
+                    bizChanceDAO.deleteBizChanceHistoryAmtAll(bizChanceVO); //월별 매출매입 이력삭제
+                    bizChanceDAO.deleteBizChanceHistoryNopAll(bizChanceVO);	//투입인원 이력삭제
+                    bizChanceDAO.deleteBizChanceHistoryAll(bizChanceVO); //사업기회 이력삭제
+                    bizChanceDAO.deleteBizChanceActivityAll(bizChanceVO); //영업활동내역 삭제
+                    bizChanceDAO.deleteBizChance(bizChanceVO); //사업기회 삭제
                 }
 
-                bizChanceDAO.insertBizChanceHistory(bizChanceVO);
-
-
+                YN = true;
             }else {
-                bizChanceDAO.deleteBizChanceAmtAll(bizChanceVO); //월별 매출매입삭제
-                bizChanceDAO.deleteBizChanceNopAll(bizChanceVO); //투입인원 삭제
-                bizChanceDAO.deleteBizChanceHistoryAmtAll(bizChanceVO); //월별 매출매입 이력삭제
-                bizChanceDAO.deleteBizChanceHistoryNopAll(bizChanceVO);	//투입인원 이력삭제
-                bizChanceDAO.deleteBizChanceHistoryAll(bizChanceVO); //사업기회 이력삭제
-                bizChanceDAO.deleteBizChanceActivityAll(bizChanceVO); //영업활동내역 삭제
-                bizChanceDAO.deleteBizChance(bizChanceVO); //사업기회 삭제
+                YN = false;
             }
 
-            YN = true;
-        }else {
-            YN = false;
+        }catch (Exception e){
+            throw new DeleteDeniedException(bizChanceVO);
         }
 
         return YN;
@@ -377,8 +395,8 @@ public class BizChanceService {
         return data;
     }
 
-    @Transactional
-    public BizChanceVO updateBizChanceSalesEmp(Payload<BizChanceVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public BizChanceVO updateBizChanceSalesEmp(Payload<BizChanceVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".updateBizChanceSalesEmp");
         AccountVO accountVO = requestPayload.getAccountVO();
         BizChanceVO bizChanceVO = requestPayload.getDto();
@@ -429,10 +447,7 @@ public class BizChanceService {
                 bizChanceDAO.insertBizChanceHistoryNopSalesEmp(transferBizChanceVO);
             }
         } catch (Exception e) {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            e.printStackTrace();
-
-            return bizChanceVO;
+            throw new UpdateDeniedException(bizChanceVO);
         }
 
         return bizChanceVO;
@@ -541,40 +556,50 @@ public class BizChanceService {
     }
 
     @Transactional
-    public BizChanceActivityVO insertBizChanceActivity(Payload<BizChanceActivityVO> requestPayload) throws Exception {
+    public BizChanceActivityVO insertBizChanceActivity(Payload<BizChanceActivityVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".insertBizChanceActivity");
         AccountVO accountVO = requestPayload.getAccountVO();
         BizChanceActivityVO bizChanceActivityVO = requestPayload.getDto();
 
-        String prevId = bizChanceDAO.selectMaxSlsActId().getSlsActId();
-
-        bizChanceActivityVO.setSlsActId(IndexUtils.generateId(10, prevId));
         bizChanceActivityVO.setRegEmpId(accountVO.getEmpId());
 
-        bizChanceDAO.insertBizChanceActivity(bizChanceActivityVO);
+        try {
+            bizChanceDAO.insertBizChanceActivity(bizChanceActivityVO);
+        }catch (Exception e){
+            throw new UpdateDeniedException("영업활동 등록 중 문제가 발생했습니다.", bizChanceActivityVO);
+        }
+
 
         return bizChanceActivityVO;
     }
 
     @Transactional
-    public BizChanceActivityVO updateBizChanceActivity(Payload<BizChanceActivityVO> requestPayload) {
+    public BizChanceActivityVO updateBizChanceActivity(Payload<BizChanceActivityVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".updateBizChanceActivity");
         AccountVO accountVO = requestPayload.getAccountVO();
         BizChanceActivityVO bizChanceActivityVO = requestPayload.getDto();
 
-        bizChanceActivityVO.setChgEmpId(accountVO.getEmpId());
-        bizChanceDAO.updateBizChanceActivity(bizChanceActivityVO);
+        try {
+            bizChanceActivityVO.setChgEmpId(accountVO.getEmpId());
+            bizChanceDAO.updateBizChanceActivity(bizChanceActivityVO);
+        }catch (Exception e){
+            throw new UpdateDeniedException(bizChanceActivityVO);
+        }
 
         return bizChanceActivityVO;
     }
 
     @Transactional
-    public BizChanceActivityVO deleteBizChanceActivity(Payload<BizChanceActivityVO> requestPayload) {
+    public BizChanceActivityVO deleteBizChanceActivity(Payload<BizChanceActivityVO> requestPayload) throws DeleteDeniedException{
         log.info("Call Service : " + this.getClass().getName() + ".deleteBizChanceActivity");
         AccountVO accountVO = requestPayload.getAccountVO();
         BizChanceActivityVO bizChanceActivityVO = requestPayload.getDto();
 
-        bizChanceDAO.deleteBizChanceActivity(bizChanceActivityVO);
+        try {
+            bizChanceDAO.deleteBizChanceActivity(bizChanceActivityVO);
+        }catch (Exception e){
+            throw new DeleteDeniedException(bizChanceActivityVO);
+        }
 
         return bizChanceActivityVO;
     }

@@ -575,6 +575,13 @@
 			    BPIP100T
 	</select>
 
+
+	<!-- VRB key select -->
+	<select id="selectNewVrbAnlyId"
+			resultType="com.ibiz.api.model.VRBAnalysisVO">
+		SELECT IBIZ_NEW_ID('BPIP100T','VRB_ANLY_ID','YYYY######') AS VRB_ANLY_ID FROM DUAL
+	</select>
+
 	<!-- MAX(DOC_NO) 조회 -->
 	<select id="selectVRBAnalysisMaxDocNo"
 			parameterType="com.ibiz.api.model.VRBAnalysisVO"
@@ -660,9 +667,7 @@
 			VRB_ANLY_ID
 			,PRJT_ID
 			,FRMT_CD
-			<if test="docNo != null and docNo != ''">
-				,DOC_NO
-			</if>
+			,DOC_NO
 			,DOC_TITL
 			<if test="efcmDate != null and efcmDate != ''">
 				,EFCM_DATE
@@ -707,9 +712,7 @@
 			#{vrbAnlyId}
 			,#{prjtId}
 			,#{frmtCd}
-			<if test="docNo != null and docNo != ''">
-				,#{docNo}
-			</if>
+			,(SELECT IBIZ_NEW_DOC_NO('BPIP100T','DOC_NO','FRMT_CD',#{frmtCd}) FROM DUAL )
 			,#{docTitl}
 			<if test="efcmDate != null and efcmDate != ''">
 				,#{efcmDate}
@@ -965,7 +968,7 @@
 			parameterType="com.ibiz.api.model.VRBAnalysisVO" >
 		UPDATE BPIP100T
 			SET
-				VRB_PRGS_STAT_CD = #{vrbPrgsStatCd}
+				VRB_PRGS_STAT_CD = NVL(IBIZ_MAPP_COM_CD ('SANT_PRGS_STAT_CD', #{vrbPrgsStatCd}, 'VRB_PRGS_STAT_CD'), #{vrbPrgsStatCd} )
 		WHERE
 		    SANT_ID = #{santId}
 	</update>

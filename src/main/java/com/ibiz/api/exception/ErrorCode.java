@@ -14,7 +14,11 @@ public enum ErrorCode {
     SQL_INVALID(HttpStatus.BAD_REQUEST, "203", "The request is bad"),
 
     DELETE_DENIED_ERROR(HttpStatus.UNAUTHORIZED, "333", "삭제가 불가능합니다"),
-    UPDATE_DENIED_ERROR(HttpStatus.UNAUTHORIZED, "333", "수정이 불가능합니다");
+    UPDATE_DENIED_ERROR(HttpStatus.UNAUTHORIZED, "333", "수정이 불가능합니다"),
+
+    APPROVAL_STATE_EXCEPTION_MESSAGE(HttpStatus.UNAUTHORIZED, "333", "문서상태가 변경되어 결재진행이 불가능합니다."),
+    APPROVER_STATE_EXCEPTION_MESSAGE(HttpStatus.UNAUTHORIZED, "333", "결재자 정보가 변경되어 결재진행이 불가능합니다."),
+    APPROVAL_SAVE_EXCEPTION_MESSAGE(HttpStatus.UNAUTHORIZED, "333", "결재정보 변경 중 오류가 발생했습니다.");
     
     private final HttpStatus status;
     private final String code;
