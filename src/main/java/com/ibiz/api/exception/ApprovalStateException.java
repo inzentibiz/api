@@ -1,6 +1,7 @@
 package com.ibiz.api.exception;
 
 import lombok.Getter;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 @Getter
 public class ApprovalStateException extends Exception {
@@ -11,17 +12,20 @@ public class ApprovalStateException extends Exception {
 
     public ApprovalStateException(String message) {
         this.message = message;
-        this.errorCode = ErrorCode.APPROVER_STATE_EXCEPTION_MESSAGE;
+        this.errorCode = ErrorCode.APPROVAL_STATE_EXCEPTION_MESSAGE;
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     public ApprovalStateException(Object object) {
-        this.errorCode = ErrorCode.APPROVER_STATE_EXCEPTION_MESSAGE;
+        this.errorCode = ErrorCode.APPROVAL_STATE_EXCEPTION_MESSAGE;
         this.errorObject = object;
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     public ApprovalStateException(String message, Object object) {
         this.message = message;
-        this.errorCode = ErrorCode.APPROVER_STATE_EXCEPTION_MESSAGE;
+        this.errorCode = ErrorCode.APPROVAL_STATE_EXCEPTION_MESSAGE;
         this.errorObject = object;
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 }
