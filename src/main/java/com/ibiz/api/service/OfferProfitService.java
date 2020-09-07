@@ -278,8 +278,8 @@ public class OfferProfitService extends AbstractDraftService {
     }
 
     @Transactional
-    public OfferVO updateOfferProfitDss(Payload<OfferVO> requestPayload) throws UpdateDeniedException {
-        log.info("Call Service : " + this.getClass().getName() + ".updateOfferProfitDss");
+    public OfferVO updateOfferProfitDisposal(Payload<OfferVO> requestPayload) throws UpdateDeniedException {
+        log.info("Call Service : " + this.getClass().getName() + ".updateOfferProfitDisposal");
         OfferVO offerVO= requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
 

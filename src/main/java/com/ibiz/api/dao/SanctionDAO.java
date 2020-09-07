@@ -19,10 +19,6 @@ public class SanctionDAO {
         return mybatis.selectOne(MAPPER_PATH + "SanctionMapper.selectSantNtcDstInfo", approvalVO);
     }
 
-   /* public ApprovalVO selectMaxSantId() {
-        return mybatis.selectOne("SanctionMapper.selectMaxSantId");
-    }*/
-
     public ApprovalVO selectNewSantId()  {
         return mybatis.selectOne(MAPPER_PATH + "SanctionMapper.selectNewSantId");
     }
@@ -30,8 +26,13 @@ public class SanctionDAO {
     public ApprovalVO selectSyncronizedPrgsStatCd(CommonCodeMappingVO commonCodeMappingVO)  {
         return mybatis.selectOne(MAPPER_PATH + "SanctionMapper.selectSyncronizedPrgsStatCd", commonCodeMappingVO);
     }
+/*
 
-
+    // 전체 결재자수와 결재를 수행한 결재자수 조회
+    public ApprovalVO selectTotalAprnCntWithAppvCnt(ApprovalVO approvalVO) {
+        return mybatis.selectOne(MAPPER_PATH + "SanctionMapper.selectTotalAprnCntWithAppvCnt", approvalVO);
+    }
+*/
 
 
 

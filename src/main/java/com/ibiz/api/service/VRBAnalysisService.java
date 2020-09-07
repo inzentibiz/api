@@ -226,8 +226,8 @@ public class VRBAnalysisService extends AbstractDraftService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public VRBAnalysisVO updateVRBAnalysisDss(Payload<VRBAnalysisVO> requestPayload) throws UpdateDeniedException {
-        log.info("Call Service : " + this.getClass().getName() + ".updateVRBAnalysisDss");
+    public VRBAnalysisVO updateVRBAnalysisDisposal(Payload<VRBAnalysisVO> requestPayload) throws UpdateDeniedException {
+        log.info("Call Service : " + this.getClass().getName() + ".updateVRBAnalysisDisposal");
         AccountVO accountVO = requestPayload.getAccountVO();
         VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
 

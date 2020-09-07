@@ -211,4 +211,19 @@
 		SELECT IBIZ_NEW_ID('AAPR100T','SANT_ID','YYYY######') AS SANT_ID FROM DUAL
 	</select>
 
+
+	<!-- 전체 결재자수와 결재를 수행한 결재자수 조회 -->
+	<!--
+	<select id="selectTotalAprnCntWithAppvCnt"
+			parameterType="com.ibiz.api.model.ApprovalVO"
+			resultType="com.ibiz.api.model.ApprovalVO">
+			SELECT COUNT(1) AS APRN_CNT, SUM(CASE WHEN SANT_APPV_DST_CD IS NOT NULL THEN 1 ELSE 0 END) AS APPV_CNT
+			  FROM AAPR110T
+			 WHERE SANT_ID = #{santId}
+			AND APRN_ROLE_CD IN ('A','B','C','E','F') &#45;&#45; D.수신 제외
+	</select>
+-->
+
+
+
 </mapper>

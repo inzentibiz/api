@@ -286,6 +286,11 @@ public class ApprovalVO {
      */
     private String scrnAttcId;
 
+    // 전체 결재자수
+    private Integer aprnCnt;
+    // 결재를 수행한 결재자수
+    private Integer appvCnt;
+
     private List<Map<String, String>> buttonList;
 
     public Integer getTotalCnt() {
@@ -798,5 +803,21 @@ public class ApprovalVO {
 
     public void setScrnAttcId(String scrnAttcId) {
         this.scrnAttcId = scrnAttcId;
+    }
+
+    public Integer getAprnCnt() {
+        return aprnCnt;
+    }
+
+    public void setAprnCnt(Integer aprnCnt) {
+        this.aprnCnt = aprnCnt;
+    }
+
+    public Integer getAppvCnt() {
+        return appvCnt;
+    }
+
+    public void setAppvCnt(Integer appvCnt) {
+        this.appvCnt = appvCnt;
     }
 }

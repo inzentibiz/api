@@ -113,12 +113,12 @@ public class OfferProfitController extends BaseController {
     }
 
     // 예상손익분석서 폐기
-    @PostMapping("/updateOfferProfitDss")
-    public ResponseEntity<String> updateOfferProfitDss(@RequestParam("payload") String payload) throws Exception {
-        log.info("Call Controller : " + this.getClass().getName() + ".updateOfferProfitDss");
+    @PostMapping("/updateOfferProfitDisposal")
+    public ResponseEntity<String> updateOfferProfitDisposal(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".updateOfferProfitDisposal");
         Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferVO>>(){});
 
-        return super.composePayload(new Payload<OfferVO>(offerProfitService.updateOfferProfitDss(requestPayload)));
+        return super.composePayload(new Payload<OfferVO>(offerProfitService.updateOfferProfitDisposal(requestPayload)));
     }
 
     /*

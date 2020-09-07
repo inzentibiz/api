@@ -102,9 +102,37 @@ public class AbstractDraftService extends AbstractWebService {
             throw new UpdateDeniedException(approvalVO);
         }
     }
+/*
+
+    // 폐기시 유효성 확인 함수
+    // 테스트
+    @Transactional
+    protected void updateApprovalDraftDisposal(ApprovalVO approvalVO) throws Exception {
+        try {
+            // 폐기는 결재완료(반려/승인) 이후에 가능
+
+
+            // 폐기 전 유효성 체크 ???
+            // 전체 결재자수와 결재 수행한 결재자수 조회(유효성체크1)
+            ApprovalVO avlChkApprovalVO = sanctionDAO.selectTotalAprnCntWithAppvCnt(approvalVO);
+            avlChkApprovalVO.setSantId(approvalVO.getSantId());
+
+            if(avlChkApprovalVO.getAppvCnt() > 0){
+                // 결재 진행상태 업데이트
+                sanctionDAO.updateApprovalState(approvalVO);
+
+            }
+
+
+        }catch (Exception e){
+            throw new UpdateDeniedException(approvalVO);
+        }
+    }
+*/
 
 
     // 비즈니스 진행상태에 따른 결재 진행상태 조회
+    // 폐기시 호출
     @Transactional
     protected ApprovalVO selectSyncronizedPrgsStatCd(CommonCodeMappingVO commonCodeMappingVO)  {
         // 비즈니스 진행상태에 따른 결재 진행상태 조회
@@ -112,6 +140,7 @@ public class AbstractDraftService extends AbstractWebService {
     }
 
     // 결재 진행상태 업데이트
+    // 폐기시 호출
     @Transactional
     protected void updatePrgsStatCd(ApprovalVO approvalVO) throws ApprovalStateException {
         try {
