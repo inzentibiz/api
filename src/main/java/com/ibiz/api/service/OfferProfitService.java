@@ -381,7 +381,7 @@ public class OfferProfitService extends AbstractDraftService {
             offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
             offerProfitDAO.updateOfferProfit(offerVO);
 
-            if (offerVO.getApproval().getApprovalDetailList() != null){
+            if (offerVO.getApproval().getApprovalAuthorizerList() != null){
                 super.updateApproverList(offerVO.getApproval());
             }
 
@@ -702,7 +702,7 @@ public class OfferProfitService extends AbstractDraftService {
             offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
             offerProfitDAO.updateOfferProfit(offerVO);
 
-            if (offerVO.getApproval().getApprovalDetailList() != null)
+            if (offerVO.getApproval().getApprovalAuthorizerList() != null)
             {
                 super.updateApproverList(offerVO.getApproval());
             }
@@ -1056,7 +1056,7 @@ public class OfferProfitService extends AbstractDraftService {
             offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
             offerProfitDAO.updateOfferProfitPS2(offerVO); // BEST000T
 
-            if (offerVO.getApproval().getApprovalDetailList() != null){
+            if (offerVO.getApproval().getApprovalAuthorizerList() != null){
                 super.updateApproverList(offerVO.getApproval());
             }
 

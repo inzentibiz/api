@@ -124,7 +124,7 @@ public class ApprovalVO {
     /**
      * 결재자 상세 리스트
      */
-    private List<ApprovalAuthorizerVO> approvalDetailList;
+    private List<ApprovalAuthorizerVO> approvalAuthorizerList;
 
     /**
      * 결재역할별 버튼 리스트
@@ -485,12 +485,12 @@ public class ApprovalVO {
         this.santOpinContCnt = santOpinContCnt;
     }
 
-    public List<ApprovalAuthorizerVO> getApprovalDetailList() {
-        return approvalDetailList;
+    public List<ApprovalAuthorizerVO> getApprovalAuthorizerList() {
+        return approvalAuthorizerList;
     }
 
-    public void setApprovalDetailList(List<ApprovalAuthorizerVO> approvalDetailList) {
-        this.approvalDetailList = approvalDetailList;
+    public void setApprovalAuthorizerList(List<ApprovalAuthorizerVO> approvalAuthorizerList) {
+        this.approvalAuthorizerList = approvalAuthorizerList;
     }
 
     public List<Map<String, String>> getRoleButtonList() {

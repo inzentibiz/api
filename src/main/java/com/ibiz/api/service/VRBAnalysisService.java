@@ -441,7 +441,7 @@ public class VRBAnalysisService extends AbstractDraftService {
             vrbAnalysisVO.setDocTitl(vrbAnalysisVO.getApproval().getDocTitl());
             vrbAnalysisDAO.updateVRBAnalysis(vrbAnalysisVO);
 
-            if (vrbAnalysisVO.getApproval().getApprovalDetailList() != null){
+            if (vrbAnalysisVO.getApproval().getApprovalAuthorizerList() != null){
                 super.updateApproverList(vrbAnalysisVO.getApproval());
             }
 

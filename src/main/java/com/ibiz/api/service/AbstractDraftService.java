@@ -75,7 +75,7 @@ public class AbstractDraftService extends AbstractWebService {
     @Transactional
     protected void insertApproverList(ApprovalVO approvalVO) throws ApprovalSaveException {
         try {
-            for (ApprovalAuthorizerVO approvalAuthorizerVO : approvalVO.getApprovalDetailList()) {
+            for (ApprovalAuthorizerVO approvalAuthorizerVO : approvalVO.getApprovalAuthorizerList()) {
                 approvalAuthorizerVO.setSantId(approvalVO.getSantId());
                 sanctionDAO.insertApprovalAuthorizer(approvalAuthorizerVO);
             }
