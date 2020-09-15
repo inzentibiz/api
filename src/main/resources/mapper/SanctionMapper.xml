@@ -103,8 +103,7 @@
 			SANT_DEPT_ID,
 			APRN_EMP_ID,
 			APRN_RESO_CD,
-			APRN_OFPS_CD,
-			MDTR_APRN_YN
+			APRN_OFPS_CD
 
 			<if test="santOpinCont != null and santOpinCont != ''">
 				,SANT_OPIN_CONT
@@ -123,8 +122,7 @@
 			#{santDeptId},
 			#{aprnEmpId},
 			#{aprnResoCd},
-			#{aprnOfpsCd},
-			#{mdtrAprnYn}
+			#{aprnOfpsCd}
 
 			<if test="santOpinCont != null and santOpinCont != ''">
 				,#{santOpinCont}
