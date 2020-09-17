@@ -285,7 +285,7 @@ public class OfferProfitService extends AbstractDraftService {
 
         CommonCodeMappingVO commonCodeMappingVO = new CommonCodeMappingVO();
         commonCodeMappingVO.setComCd("W");
-        commonCodeMappingVO.setMappClmnNm("FCST_PRGS_STAT_CD");
+        commonCodeMappingVO.setMappClmnNm("FCST_PAL_PRGS_STAT_CD");
 
         ApprovalVO approvalVO = new ApprovalVO();
 
