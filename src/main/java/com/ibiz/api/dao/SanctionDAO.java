@@ -40,8 +40,8 @@ public class SanctionDAO {
      * INSERT
      */
 
-    public void insertApprovalDraft(ApprovalVO approvalVO) {
-        mybatis.insert(MAPPER_PATH + "SanctionMapper.insertApprovalDraft", approvalVO);
+    public void insertApprovalInfo(ApprovalVO approvalVO) {
+        mybatis.insert(MAPPER_PATH + "SanctionMapper.insertApprovalInfo", approvalVO);
     }
 
     public void insertApprovalAuthorizer(ApprovalAuthorizerVO approvalAuthorizerVO) {
@@ -52,8 +52,8 @@ public class SanctionDAO {
      * UPDATE
      */
 
-    public void updateApprovalDraft(ApprovalVO approvalVO) {
-        mybatis.update(MAPPER_PATH + "SanctionMapper.updateApprovalDraft", approvalVO);
+    public void updateApprovalInfo(ApprovalVO approvalVO) {
+        mybatis.update(MAPPER_PATH + "SanctionMapper.updateApprovalInfo", approvalVO);
     }
 
     public void updateApprovalState(ApprovalVO approvalVO) {
@@ -64,8 +64,8 @@ public class SanctionDAO {
      * DELTE
      */
 
-    public void deleteApprovalDraft(ApprovalVO approvalVO) {
-        mybatis.delete(MAPPER_PATH + "SanctionMapper.deleteApprovalDraft", approvalVO);
+    public void deleteApprovalInfo(ApprovalVO approvalVO) {
+        mybatis.delete(MAPPER_PATH + "SanctionMapper.deleteApprovalInfo", approvalVO);
     }
 
     public void deleteApprovalAuthorizer(ApprovalVO approvalVO) {

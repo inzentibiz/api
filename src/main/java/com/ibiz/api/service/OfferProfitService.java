@@ -55,7 +55,7 @@ public class OfferProfitService extends AbstractDraftService {
             offerVO.setSantFrmtCd(offerVO.getFrmtCd());
             offerVO.getApproval().setDocTitl(offerProfitDAO.selectApprovalTitle(offerVO));
             offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
-            offerVO.setSantId(super.insertApprovalDraft(offerVO.getApproval()));
+            offerVO.setSantId(super.insertApprovalInfo(offerVO.getApproval()));
 
             offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
 
@@ -385,7 +385,7 @@ public class OfferProfitService extends AbstractDraftService {
                 super.updateApproverList(offerVO.getApproval());
             }
 
-            super.updateApprovalDraft(offerVO.getApproval());
+            super.updateApprovalInfo(offerVO.getApproval());
 
         }catch (Exception e){
             throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
@@ -424,7 +424,7 @@ public class OfferProfitService extends AbstractDraftService {
 
             if (offerVO.getSantId() != null) {
                 approvalVO.setSantId(offerVO.getSantId());
-                super.deleteApprovalDraft(approvalVO);
+                super.deleteApprovalInfo(approvalVO);
             }
 
             offerProfitDAO.deleteOfferProfitPS(offerVO);
@@ -555,7 +555,7 @@ public class OfferProfitService extends AbstractDraftService {
             offerVO.setSantFrmtCd(offerVO.getFrmtCd());
             offerVO.getApproval().setDocTitl(offerProfitDAO.selectApprovalTitle(offerVO));
             offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
-            offerVO.setSantId(super.insertApprovalDraft(offerVO.getApproval()));
+            offerVO.setSantId(super.insertApprovalInfo(offerVO.getApproval()));
 
             offerVO.setDocTitl(offerVO.getApproval().getDocTitl());
             // 문서서식채번 포함하여 기본테이블 INSERT
@@ -707,7 +707,7 @@ public class OfferProfitService extends AbstractDraftService {
                 super.updateApproverList(offerVO.getApproval());
             }
 
-            super.updateApprovalDraft(offerVO.getApproval());
+            super.updateApprovalInfo(offerVO.getApproval());
 
         }catch (Exception e){
             throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
@@ -738,7 +738,7 @@ public class OfferProfitService extends AbstractDraftService {
 
             if (offerVO.getSantId() != null) {
                 approvalVO.setSantId(offerVO.getSantId());
-                super.deleteApprovalDraft(approvalVO);
+                super.deleteApprovalInfo(approvalVO);
             }
 
             offerProfitDAO.deleteOfferProfitPS(offerVO); // BEST000T
@@ -780,7 +780,7 @@ public class OfferProfitService extends AbstractDraftService {
             offerVO.setSantFrmtCd(offerVO.getFrmtCd());
             offerVO.getApproval().setDocTitl(offerProfitDAO.selectApprovalTitle(offerVO));
             offerVO.getApproval().setSantFrmtCd(offerVO.getFrmtCd());
-            offerVO.setSantId(super.insertApprovalDraft(offerVO.getApproval()));
+            offerVO.setSantId(super.insertApprovalInfo(offerVO.getApproval()));
 
             offerVO.setRegEmpId(accountVO.getEmpId());
             String fcstPalId = offerProfitDAO.selectNewFcstPalId(offerVO).getFcstPalId();
@@ -1060,7 +1060,7 @@ public class OfferProfitService extends AbstractDraftService {
                 super.updateApproverList(offerVO.getApproval());
             }
 
-            super.updateApprovalDraft(offerVO.getApproval());
+            super.updateApprovalInfo(offerVO.getApproval());
 
         }catch (Exception e){
             throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
@@ -1098,7 +1098,7 @@ public class OfferProfitService extends AbstractDraftService {
 
             if (offerVO.getSantId() != null) {
                 approvalVO.setSantId(offerVO.getSantId());
-                super.deleteApprovalDraft(approvalVO);
+                super.deleteApprovalInfo(approvalVO);
             }
 
             offerProfitDAO.deleteOfferProfitPS(offerVO);

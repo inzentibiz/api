@@ -57,13 +57,13 @@ public class AbstractDraftService extends AbstractWebService {
     }
 
     @Transactional
-    protected String insertApprovalDraft(ApprovalVO approvalVO) throws ApprovalSaveException {
+    protected String insertApprovalInfo(ApprovalVO approvalVO) throws ApprovalSaveException {
 
         try{
             approvalVO.setSantPrgsStatCd("A");
             approvalVO.setSantId(sanctionDAO.selectNewSantId().getSantId());
 
-            sanctionDAO.insertApprovalDraft(approvalVO);
+            sanctionDAO.insertApprovalInfo(approvalVO);
             insertApproverList(approvalVO);
         }catch (Exception e){
             throw new ApprovalSaveException(approvalVO);
@@ -95,9 +95,9 @@ public class AbstractDraftService extends AbstractWebService {
     }
 
     @Transactional
-    protected void updateApprovalDraft(ApprovalVO approvalVO) throws UpdateDeniedException {
+    protected void updateApprovalInfo(ApprovalVO approvalVO) throws UpdateDeniedException {
         try {
-            sanctionDAO.updateApprovalDraft(approvalVO);
+            sanctionDAO.updateApprovalInfo(approvalVO);
         }catch (Exception e){
             throw new UpdateDeniedException(approvalVO);
         }
@@ -152,7 +152,7 @@ public class AbstractDraftService extends AbstractWebService {
 
     // 비즈니스 문서 삭제에 따른 결재 삭제
     @Transactional(rollbackFor = Exception.class)
-    protected void deleteApprovalDraft(ApprovalVO approvalVO) throws DeleteDeniedException {
+    protected void deleteApprovalInfo(ApprovalVO approvalVO) throws DeleteDeniedException {
         AttachVO attachVO = new AttachVO();
 
         if (approvalVO.getFileAttcId() != null && !approvalVO.getFileAttcId().equals("")) {
@@ -160,7 +160,7 @@ public class AbstractDraftService extends AbstractWebService {
         }
         try{
             sanctionDAO.deleteApprovalAuthorizer(approvalVO);
-            sanctionDAO.deleteApprovalDraft(approvalVO);
+            sanctionDAO.deleteApprovalInfo(approvalVO);
         }catch (Exception e){   
             throw new DeleteDeniedException("결재문서 삭제 중 오류가 발생했습니다.", approvalVO);
         }

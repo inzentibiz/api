@@ -212,7 +212,7 @@ public class VRBAnalysisService extends AbstractDraftService {
             ApprovalVO approvalVO = new ApprovalVO();
             if (vrbAnalysisVO.getSantId() != null) {
                 approvalVO.setSantId(vrbAnalysisVO.getSantId());
-                super.deleteApprovalDraft(approvalVO);
+                super.deleteApprovalInfo(approvalVO);
             }
 
             vrbAnalysisDAO.deleteVRBAnalysis(vrbAnalysisVO);
@@ -333,7 +333,7 @@ public class VRBAnalysisService extends AbstractDraftService {
             vrbAnalysisVO.getApproval().setSantFrmtCd("B03");
             vrbAnalysisVO.setSantFrmtCd("B03");
             vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectApprovalTitle(vrbAnalysisVO));
-            vrbAnalysisVO.setSantId(super.insertApprovalDraft(vrbAnalysisVO.getApproval()));
+            vrbAnalysisVO.setSantId(super.insertApprovalInfo(vrbAnalysisVO.getApproval()));
 
             vrbAnalysisVO.setDocTitl(vrbAnalysisVO.getApproval().getDocTitl());
 
@@ -445,7 +445,7 @@ public class VRBAnalysisService extends AbstractDraftService {
                 super.updateApproverList(vrbAnalysisVO.getApproval());
             }
 
-            super.updateApprovalDraft(vrbAnalysisVO.getApproval());
+            super.updateApprovalInfo(vrbAnalysisVO.getApproval());
 
         }catch (Exception e){
             throw new UpdateDeniedException("VRB 변경 중 오류가 발생했습니다.", vrbAnalysisVO);

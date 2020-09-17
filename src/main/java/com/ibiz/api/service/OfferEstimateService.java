@@ -335,11 +335,6 @@ public class OfferEstimateService extends AbstractDraftService {
                 }
                 offerEstimateDAO.deleteOfferEstimate(estimateVO);
 
-                if (estimateVO.getSantId() != null) {
-                    ApprovalVO approvalVO = new ApprovalVO();
-                    approvalVO.setSantId(estimateVO.getSantId());
-                    super.deleteApprovalDraft(approvalVO);
-                }
             }
         }catch (Exception e){
             throw new DeleteDeniedException(estimateVO);
