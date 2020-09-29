@@ -2,6 +2,7 @@ package com.ibiz.api.service;
 
 import com.ibiz.api.dao.OfferEstimateDAO;
 import com.ibiz.api.exception.DeleteDeniedException;
+import com.ibiz.api.exception.ExceptionCode;
 import com.ibiz.api.exception.UpdateDeniedException;
 import com.ibiz.api.model.*;
 import com.ibiz.api.utils.IndexUtils;
@@ -231,7 +232,14 @@ public class OfferEstimateService extends AbstractDraftService {
             }
 
         }catch (Exception e){
-            throw new UpdateDeniedException("견적서 등록 중 문제가 발생했습니다.", estimateVO);
+            //throw new UpdateDeniedException("견적서 등록 중 문제가 발생했습니다.", estimateVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), estimateVO);
+            }else{
+                //견적서 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_ESTIMATE_DATA_EXCEPTION_MESSAGE, estimateVO);
+            }
         }
 
 
@@ -286,7 +294,14 @@ public class OfferEstimateService extends AbstractDraftService {
             }
 
         }catch (Exception e){
-            throw new UpdateDeniedException(estimateVO);
+            //throw new UpdateDeniedException(estimateVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), estimateVO);
+            }else{
+                //견적서 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_ESTIMATE_DATA_EXCEPTION_MESSAGE, estimateVO);
+            }
         }
 
         return estimateVO;
@@ -337,7 +352,14 @@ public class OfferEstimateService extends AbstractDraftService {
 
             }
         }catch (Exception e){
-            throw new DeleteDeniedException(estimateVO);
+            //throw new DeleteDeniedException(estimateVO);
+
+            if(e.getMessage() != null){
+                throw new DeleteDeniedException(e.getMessage(), estimateVO);
+            }else{
+                //견적서 삭제 중 오류가 발생했습니다.
+                throw new DeleteDeniedException(ExceptionCode.DELETE_ESTIMATE_DATA_EXCEPTION_MESSAGE, estimateVO);
+            }
         }
 
         return cnt;

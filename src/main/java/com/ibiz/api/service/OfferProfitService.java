@@ -5,6 +5,7 @@ import com.ibiz.api.dao.SanctionDAO;
 import com.ibiz.api.dao.OfferProfitDAO;
 import com.ibiz.api.dao.VRBAnalysisDAO;
 import com.ibiz.api.exception.DeleteDeniedException;
+import com.ibiz.api.exception.ExceptionCode;
 import com.ibiz.api.exception.UpdateDeniedException;
 import com.ibiz.api.model.*;
 import com.ibiz.api.utils.IndexUtils;
@@ -99,7 +100,14 @@ public class OfferProfitService extends AbstractDraftService {
             }
 
         }catch (Exception e){
-            throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
         }
         return offerVO;
     }
@@ -303,7 +311,14 @@ public class OfferProfitService extends AbstractDraftService {
             offerProfitDAO.updateOfferProfitStat(offerVO);
 
         }catch (Exception e){
-            throw new UpdateDeniedException("진행상태 변경 중 오류가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("진행상태 변경 중 오류가 발생했습니다.", offerVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 진행상태 변경 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_STATE_EXCEPTION_MESSAGE, offerVO);
+            }
         }
 
         /*
@@ -388,7 +403,14 @@ public class OfferProfitService extends AbstractDraftService {
             super.updateApprovalInfo(offerVO.getApproval());
 
         }catch (Exception e){
-            throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
         }
 
         return offerVO;
@@ -429,7 +451,12 @@ public class OfferProfitService extends AbstractDraftService {
 
             offerProfitDAO.deleteOfferProfitPS(offerVO);
         }catch (Exception e){
-            throw new DeleteDeniedException("예상손익분석서 삭제 중 문제가 발생했습니다.", offerVO);
+            if(e.getMessage() != null){
+                throw new DeleteDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 삭제 중 오류가 발생했습니다.
+                throw new DeleteDeniedException(ExceptionCode.DELETE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
         }
 
         return offerVO;
@@ -494,7 +521,14 @@ public class OfferProfitService extends AbstractDraftService {
             result = offerProfitDAO.selectFcstPalPrgsStatCd(bsnsProfitLoss);
 
         }catch (Exception e){
-            throw new UpdateDeniedException("진행상태 변경 중 문제가 발생했습니다.",bsnsProfitLoss);
+            //throw new UpdateDeniedException("진행상태 변경 중 문제가 발생했습니다.",bsnsProfitLoss);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), bsnsProfitLoss);
+            }else{
+                //예상손익분석서 진행상태 변경 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_STATE_EXCEPTION_MESSAGE, bsnsProfitLoss);
+            }
         }
 
         return result;
@@ -604,7 +638,14 @@ public class OfferProfitService extends AbstractDraftService {
             }
 
         }catch (Exception e){
-            throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
         }
         return offerVO;
     }
@@ -710,7 +751,14 @@ public class OfferProfitService extends AbstractDraftService {
             super.updateApprovalInfo(offerVO.getApproval());
 
         }catch (Exception e){
-            throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
         }
         
         return offerVO;
@@ -744,7 +792,12 @@ public class OfferProfitService extends AbstractDraftService {
             offerProfitDAO.deleteOfferProfitPS(offerVO); // BEST000T
 
         }catch (Exception e){
-            throw new DeleteDeniedException("예상손익분석서 삭제 중 문제가 발생했습니다.", offerVO);
+            if(e.getMessage() != null){
+                throw new DeleteDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 삭제 중 오류가 발생했습니다.
+                throw new DeleteDeniedException(ExceptionCode.DELETE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
         }
         
         return offerVO;
@@ -818,7 +871,14 @@ public class OfferProfitService extends AbstractDraftService {
                 }
             }
         }catch (Exception e){
-            throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
         }
 
         return offerVO;
@@ -1063,7 +1123,14 @@ public class OfferProfitService extends AbstractDraftService {
             super.updateApprovalInfo(offerVO.getApproval());
 
         }catch (Exception e){
-            throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
         }
 
         return offerVO;
@@ -1104,7 +1171,12 @@ public class OfferProfitService extends AbstractDraftService {
             offerProfitDAO.deleteOfferProfitPS(offerVO);
 
         }catch (Exception e){
-            throw new DeleteDeniedException("예상손익분석서 삭제 중 문제가 발생했습니다.", offerVO);
+            if(e.getMessage() != null){
+                throw new DeleteDeniedException(e.getMessage(), offerVO);
+            }else{
+                //예상손익분석서 삭제 중 오류가 발생했습니다.
+                throw new DeleteDeniedException(ExceptionCode.DELETE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
         }
         return offerVO;
     }

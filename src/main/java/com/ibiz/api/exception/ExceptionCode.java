@@ -204,4 +204,39 @@ public class ExceptionCode {
 
 
 
+    public static final String UPDATE_PROFIT_DATA_EXCEPTION = "IBIZ_350200";
+    public static final String UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE = "예상손익분석서 저장 중 오류가 발생했습니다.";
+
+    public static final String UPDATE_PROFIT_STATE_EXCEPTION = "IBIZ_350201";
+    public static final String UPDATE_PROFIT_STATE_EXCEPTION_MESSAGE = "예상손익분석서 진행상태 변경 중 오류가 발생했습니다.";
+
+    public static final String DELETE_PROFIT_DATA_EXCEPTION = "IBIZ_350300";
+    public static final String DELETE_PROFIT_DATA_EXCEPTION_MESSAGE = "예상손익분석서 삭제 중 오류가 발생했습니다.";
+
+
+
+
+    public static final String UPDATE_VRB_DATA_EXCEPTION = "IBIZ_360200";
+    public static final String UPDATE_VRB_DATA_EXCEPTION_MESSAGE = "VRB 저장 중 오류가 발생했습니다.";
+
+    public static final String UPDATE_VRB_STATE_EXCEPTION = "IBIZ_360201";
+    public static final String UPDATE_VRB_STATE_EXCEPTION_MESSAGE = "VRB 진행상태 변경 중 오류가 발생했습니다.";
+
+    public static final String DELETE_VRB_DATA_EXCEPTION = "IBIZ_360300";
+    public static final String DELETE_VRB_DATA_EXCEPTION_MESSAGE = "VRB 삭제 중 오류가 발생했습니다.";
+
+
+
+
+    public static final String UPDATE_ESTIMATE_DATA_EXCEPTION = "IBIZ_370200";
+    public static final String UPDATE_ESTIMATE_DATA_EXCEPTION_MESSAGE = "견적서 저장 중 오류가 발생했습니다.";
+
+    public static final String UPDATE_ESTIMATE_STATE_EXCEPTION = "IBIZ_370201";
+    public static final String UPDATE_ESTIMATE_STATE_EXCEPTION_MESSAGE = "견적서 진행상태 변경 중 오류가 발생했습니다.";
+
+    public static final String DELETE_ESTIMATE_DATA_EXCEPTION = "IBIZ_370300";
+    public static final String DELETE_ESTIMATE_DATA_EXCEPTION_MESSAGE = "견적서 삭제 중 오류가 발생했습니다.";
+
+
+
 }

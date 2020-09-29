@@ -3,6 +3,7 @@ package com.ibiz.api.service;
 import com.ibiz.api.dao.SanctionDAO;
 import com.ibiz.api.dao.VRBAnalysisDAO;
 import com.ibiz.api.exception.DeleteDeniedException;
+import com.ibiz.api.exception.ExceptionCode;
 import com.ibiz.api.exception.UpdateDeniedException;
 import com.ibiz.api.model.*;
 import com.ibiz.api.utils.IndexUtils;
@@ -26,6 +27,9 @@ public class VRBAnalysisService extends AbstractDraftService {
     @Resource(name="sanctionDAO")
     private SanctionDAO sanctionDAO;
 
+    public VRBAnalysisService() {
+    }
+
     @Transactional
     public List<VRBAnalysisVO> selectVRBAnalysisList(Payload<VRBAnalysisVO> requestPayload) throws Exception {
         log.info("Call Service : " + this.getClass().getName() + ".selectVRBAnalysisList");
@@ -45,8 +49,9 @@ public class VRBAnalysisService extends AbstractDraftService {
         VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
         VRBAnalysisVO vrb;
 
-        if (vrbAnalysisVO.getVrbAnlyId() != null)
+        if (vrbAnalysisVO.getVrbAnlyId() != null){
             vrbAnalysisVO = vrbAnalysisDAO.selectVRBAnlyId(vrbAnalysisVO);
+        }
 
         vrb = vrbAnalysisDAO.selectVRBAnalysis(vrbAnalysisVO);
         vrb.setProject(vrbAnalysisDAO.selectVRBAnalysisProject(vrbAnalysisVO));
@@ -128,7 +133,14 @@ public class VRBAnalysisService extends AbstractDraftService {
                 vrb.setIsInProgress(true);
             }*/
         }catch (Exception e){
-            throw new UpdateDeniedException("진행상태 변경 중 문제가 발생했습니다.", vrbAnalysisVO);
+            //throw new UpdateDeniedException("진행상태 변경 중 문제가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 진행상태 변경 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_VRB_STATE_EXCEPTION_MESSAGE, vrbAnalysisVO);
+            }
         }
 
 
@@ -218,7 +230,14 @@ public class VRBAnalysisService extends AbstractDraftService {
             vrbAnalysisDAO.deleteVRBAnalysis(vrbAnalysisVO);
             
         }catch (Exception e){
-            throw new DeleteDeniedException("VRB 삭제 중 오류가 발생했습니다.", vrbAnalysisVO);
+            //throw new DeleteDeniedException("VRB 삭제 중 오류가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new DeleteDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 삭제 중 오류가 발생했습니다.
+                throw new DeleteDeniedException(ExceptionCode.DELETE_VRB_DATA_EXCEPTION_MESSAGE, vrbAnalysisVO);
+            }
         }
         
 
@@ -252,7 +271,14 @@ public class VRBAnalysisService extends AbstractDraftService {
             vrbAnalysisDAO.updateVrbPrgsStatCd(vrbAnalysisVO);
 
         }catch (Exception e){
-            throw new UpdateDeniedException("진행상태 변경 중 오류가 발생했습니다.", vrbAnalysisVO);
+            //throw new UpdateDeniedException("진행상태 변경 중 오류가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 진행상태 변경 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_VRB_STATE_EXCEPTION_MESSAGE, vrbAnalysisVO);
+            }
         }
 
 /*
@@ -377,7 +403,14 @@ public class VRBAnalysisService extends AbstractDraftService {
                 }
             }
         }catch(Exception e){
-            throw new UpdateDeniedException("VRB 등록 중 문제가 발생했습니다.", vrbAnalysisVO);
+            //throw new UpdateDeniedException("VRB 등록 중 문제가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_VRB_DATA_EXCEPTION_MESSAGE, vrbAnalysisVO);
+            }
         }
 
         return vrbAnalysisVO;
@@ -448,7 +481,14 @@ public class VRBAnalysisService extends AbstractDraftService {
             super.updateApprovalInfo(vrbAnalysisVO.getApproval());
 
         }catch (Exception e){
-            throw new UpdateDeniedException("VRB 변경 중 오류가 발생했습니다.", vrbAnalysisVO);
+            //throw new UpdateDeniedException("VRB 변경 중 오류가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_VRB_DATA_EXCEPTION_MESSAGE, vrbAnalysisVO);
+            }
         }
 
         return vrbAnalysisVO;
