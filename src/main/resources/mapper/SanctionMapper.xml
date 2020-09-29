@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="DraftMapper">
+<mapper namespace="com.inzent.ibiz.svc.sanction.SanctionMapper">
     <!--
 
         SELECT
@@ -45,7 +45,7 @@
 	 -->
 
 	<!-- 기안서 등록 -->
-	<insert id="insertApprovalDraft"
+	<insert id="insertApprovalInfo"
 			parameterType="com.ibiz.api.model.ApprovalVO">
 		INSERT
 		INTO AAPR100T (
@@ -103,8 +103,7 @@
 			SANT_DEPT_ID,
 			APRN_EMP_ID,
 			APRN_RESO_CD,
-			APRN_OFPS_CD,
-			MDTR_APRN_YN
+			APRN_OFPS_CD
 
 			<if test="santOpinCont != null and santOpinCont != ''">
 				,SANT_OPIN_CONT
@@ -123,8 +122,7 @@
 			#{santDeptId},
 			#{aprnEmpId},
 			#{aprnResoCd},
-			#{aprnOfpsCd},
-			#{mdtrAprnYn}
+			#{aprnOfpsCd}
 
 			<if test="santOpinCont != null and santOpinCont != ''">
 				,#{santOpinCont}
@@ -145,7 +143,7 @@
     -->
 
 	<!-- 기안서 수정 -->
-	<update id="updateApprovalDraft"
+	<update id="updateApprovalInfo"
 			parameterType="com.ibiz.api.model.ApprovalVO">
 			UPDATE AAPR100T
 			    SET
@@ -184,7 +182,7 @@
     -->
 
 	<!-- 기안서 삭제 -->
-	<delete id="deleteApprovalDraft"
+	<delete id="deleteApprovalInfo"
 			parameterType="com.ibiz.api.model.ApprovalVO">
 			DELETE FROM AAPR100T WHERE
 			    SANT_ID = #{santId}
@@ -196,6 +194,34 @@
 			DELETE FROM AAPR110T WHERE
 			    SANT_ID = #{santId}
 	</delete>
+
+
+	<!-- 비즈니스 상태에 따른 결재 진행상태코드 조회  -->
+	<select id="selectSyncronizedPrgsStatCd"
+			parameterType="com.ibiz.api.model.CommonCodeMappingVO"
+			resultType="com.ibiz.api.model.ApprovalVO">
+			SELECT IBIZ_MAPP_COM_CD (#{mappClmnNm}, #{comCd}, 'SANT_PRGS_STAT_CD') AS SANT_PRGS_STAT_CD FROM DUAL
+	</select>
+
+	<!-- 결재 key 생성 -->
+	<select id="selectNewSantId"
+			resultType="com.ibiz.api.model.ApprovalVO">
+		SELECT IBIZ_NEW_ID('AAPR100T','SANT_ID','YYYY######') AS SANT_ID FROM DUAL
+	</select>
+
+
+	<!-- 전체 결재자수와 결재를 수행한 결재자수 조회 -->
+	<!--
+	<select id="selectTotalAprnCntWithAppvCnt"
+			parameterType="com.ibiz.api.model.ApprovalVO"
+			resultType="com.ibiz.api.model.ApprovalVO">
+			SELECT COUNT(1) AS APRN_CNT, SUM(CASE WHEN SANT_APPV_DST_CD IS NOT NULL THEN 1 ELSE 0 END) AS APPV_CNT
+			  FROM AAPR110T
+			 WHERE SANT_ID = #{santId}
+			AND APRN_ROLE_CD IN ('A','B','C','E','F') &#45;&#45; D.수신 제외
+	</select>
+-->
+
 
 
 </mapper>

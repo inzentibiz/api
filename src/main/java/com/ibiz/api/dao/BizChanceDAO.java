@@ -21,6 +21,10 @@ public class BizChanceDAO {
         return mybatis.selectList("BizChanceMapper.selectBizChanceView", bizChanceSearchVO);
     }*/
 
+    public BizChanceVO selectNewBoptId() throws Exception {
+        return mybatis.selectOne("BizChanceMapper.selectNewBoptId");
+    }
+
     public List<BizChanceAmountVO> selectBizChanceAmtList(BizChanceAmountVO bizChanceAmountVO) throws Exception {
         return mybatis.selectList("BizChanceMapper.selectBizChanceAmtList", bizChanceAmountVO);
     }
@@ -31,9 +35,6 @@ public class BizChanceDAO {
 
     public BizChanceVO selectBizChance(BizChanceVO bizChanceVO) throws Exception {
         return mybatis.selectOne("BizChanceMapper.selectBizChance", bizChanceVO);
-    }
-    public BizChanceVO selectMaxBoptId() throws Exception {
-        return mybatis.selectOne("BizChanceMapper.selectMaxBoptId");
     }
 
     public List<BizChanceVO> selectBizChancePopupList(BizChanceSearchVO bizChanceSearchVO) throws Exception {
@@ -191,10 +192,6 @@ public class BizChanceDAO {
 
     public List<BizChanceActivityVO> selectBizChanceActivityList(BizChanceVO bizChanceVO) {
         return mybatis.selectList("BizChanceMapper.selectBizChanceActivityList", bizChanceVO);
-    }
-
-    public BizChanceActivityVO selectMaxSlsActId() {
-        return mybatis.selectOne("BizChanceMapper.selectMaxSlsActId");
     }
 
     public void insertBizChanceActivity(BizChanceActivityVO bizChanceActivityVO) {

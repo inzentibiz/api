@@ -113,12 +113,12 @@ public class OfferProfitController extends BaseController {
     }
 
     // 예상손익분석서 폐기
-    @PostMapping("/updateOfferProfitDss")
-    public ResponseEntity<String> updateOfferProfitDss(@RequestParam("payload") String payload) throws Exception {
-        log.info("Call Controller : " + this.getClass().getName() + ".updateOfferProfitDss");
-        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<ApprovalVO>>(){});
+    @PostMapping("/updateOfferProfitDisposal")
+    public ResponseEntity<String> updateOfferProfitDisposal(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".updateOfferProfitDisposal");
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferVO>>(){});
 
-        return super.composePayload(new Payload<ApprovalVO>(offerProfitService.updateOfferProfitDss(requestPayload)));
+        return super.composePayload(new Payload<OfferVO>(offerProfitService.updateOfferProfitDisposal(requestPayload)));
     }
 
     /*
@@ -162,7 +162,7 @@ public class OfferProfitController extends BaseController {
     }
 
 
-    // updateVRBAnalysisStat 결재진행상태 동기화 > 결재버튼 활성화 여부체크 > 진행상태값 바인딩
+    // updateOfferProfitStat 결재진행상태 동기화
     @PostMapping("/updateOfferProfitStat")
     public ResponseEntity<String> updateOfferProfitStat(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".updateOfferProfitStat");
@@ -279,6 +279,7 @@ public class OfferProfitController extends BaseController {
         return super.composePayload(new Payload<ApprovalVO>(offerProfitService.selectOfferProfitPS2DrfBtnList(requestPayload)));
     }
 
+/*
     // 예상손익분석서2 폐기
     @PostMapping("/updateOfferProfitPS2Dss")
     public ResponseEntity<String> updateOfferProfitPS2Dss(@RequestParam("payload") String payload) throws Exception {
@@ -287,9 +288,11 @@ public class OfferProfitController extends BaseController {
 
         return super.composePayload(new Payload<ApprovalVO>(offerProfitService.updateOfferProfitPS2Dss(requestPayload)));
     }
+*/
 
+/*
 
-    // updateVRBAnalysisStat 결재진행상태 동기화 > 결재버튼 활성화 여부체크 > 진행상태값 바인딩
+    // updateVRBAnalysisStat 결재진행상태 동기화
     @PostMapping("/updateOfferProfitPS2Stat")
     public ResponseEntity<String> updateOfferProfitPS2Stat(@RequestParam("payload") String payload) throws Exception {
         log.info("Call Controller : " + this.getClass().getName() + ".updateOfferProfitPS2Stat");
@@ -297,6 +300,7 @@ public class OfferProfitController extends BaseController {
 
         return super.composePayload(new Payload<OfferVO>(offerProfitService.updateOfferProfitPS2Stat(requestPayload)));
     }
+*/
 
     // 실적집계 조회
     @PostMapping("/selectEstimateRslSmryList")

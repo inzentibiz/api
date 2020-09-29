@@ -96,12 +96,12 @@ public class VRBAnalysisController extends BaseController {
     /**
      * VRB분석서 폐기
      */
-    @PostMapping("/updateVRBAnalysisDss")
-    public ResponseEntity<String> updateVRBAnalysisDss(@RequestParam("payload") String payload) throws Exception {
-        log.info("Call Controller : " + this.getClass().getName() + ".updateVRBAnalysisDss");
-        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<ApprovalVO>>(){});
+    @PostMapping("/updateVRBAnalysisDisposal")
+    public ResponseEntity<String> updateVRBAnalysisDisposal(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".updateVRBAnalysisDisposal");
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<VRBAnalysisVO>>(){});
 
-        return super.composePayload(new Payload<VRBAnalysisVO>(vrbAnalysisService.updateVRBAnalysisDss(requestPayload)));
+        return super.composePayload(new Payload<VRBAnalysisVO>(vrbAnalysisService.updateVRBAnalysisDisposal(requestPayload)));
     }
 
     /**

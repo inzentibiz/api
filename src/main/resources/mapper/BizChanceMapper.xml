@@ -4,6 +4,12 @@
 
 <mapper namespace="BizChanceMapper">
 
+    <!-- 사업기회 key select -->
+    <select id="selectNewBoptId"
+            resultType="com.ibiz.api.model.BizChanceVO">
+        SELECT IBIZ_NEW_ID('BPIP000T','BOPT_ID','YYYY######') AS BOPT_ID FROM DUAL
+    </select>
+
     <!-- 사업기회기본 리스트 조회 -->
     <!--<select id="selectBizChanceView"
             parameterType="com.ibiz.api.model.BizChanceSearchVO"
@@ -333,18 +339,6 @@
         ORDER BY T1.REG_DT
     </select>
 
-    <!-- MAX(BOPT_ID) 조회 -->
-    <select id="selectMaxBoptId"
-            resultType="com.ibiz.api.model.BizChanceVO">
-			SELECT
-			        CASE
-			            WHEN MAX(BOPT_ID) IS NOT NULL THEN MAX(BOPT_ID)
-			            ELSE TO_CHAR(SYSDATE,'yyyy') || '000000'
-			        END
-			    AS BOPT_ID
-			FROM
-			    BPIP000T
-	</select>
 
     <!-- 사업기회목록리스트 -->
     <select id = "selectBizChanceList"
@@ -2219,19 +2213,6 @@
 
     </select>
 
-    <!-- MAX(SLS_ACT_ID) 조회 -->
-    <select id="selectMaxSlsActId"
-            resultType="com.ibiz.api.model.BizChanceActivityVO">
-        SELECT
-        CASE
-        WHEN MAX(SLS_ACT_ID) IS NOT NULL THEN MAX(SLS_ACT_ID)
-        ELSE TO_CHAR(SYSDATE,'yyyy') || '000000'
-        END
-        AS SLS_ACT_ID
-        FROM
-        BPIP250T
-    </select>
-
     <!--  영업활동내역 등록 -->
     <insert id="insertBizChanceActivity"
             parameterType="com.ibiz.api.model.BizChanceActivityVO" >
@@ -2248,7 +2229,7 @@
         CHG_EMP_ID,
         CHG_DT
         ) VALUES (
-        #{slsActId},
+        IBIZ_NEW_ID('BPIP250T','SlS_ACT_ID','YYYY######'),
         #{boptId},
         #{prmryActCont},
         <if test="actPlanCont != null and actPlanCont != ''">

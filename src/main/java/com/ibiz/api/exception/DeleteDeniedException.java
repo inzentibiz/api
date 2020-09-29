@@ -1,6 +1,7 @@
 package com.ibiz.api.exception;
 
 import lombok.Getter;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 @Getter
 public class DeleteDeniedException extends Exception {
@@ -12,17 +13,20 @@ public class DeleteDeniedException extends Exception {
     public DeleteDeniedException(String message) {
         this.message = message;
         this.errorCode = ErrorCode.DELETE_DENIED_ERROR;
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     public DeleteDeniedException(Object object) {
         this.errorCode = ErrorCode.DELETE_DENIED_ERROR;
         this.errorObject = object;
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     public DeleteDeniedException(String message, Object object) {
         this.message = message;
         this.errorCode = ErrorCode.DELETE_DENIED_ERROR;
         this.errorObject = object;
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
     /*private String errorNumber;
 

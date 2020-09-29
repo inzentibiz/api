@@ -1,7 +1,10 @@
 package com.ibiz.api.service;
 
-import com.ibiz.api.dao.DraftDao;
+import com.ibiz.api.dao.SanctionDAO;
 import com.ibiz.api.dao.VRBAnalysisDAO;
+import com.ibiz.api.exception.DeleteDeniedException;
+import com.ibiz.api.exception.ExceptionCode;
+import com.ibiz.api.exception.UpdateDeniedException;
 import com.ibiz.api.model.*;
 import com.ibiz.api.utils.IndexUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +24,11 @@ public class VRBAnalysisService extends AbstractDraftService {
     @Resource(name = "vrbAnalysisDAO")
     private VRBAnalysisDAO vrbAnalysisDAO;
 
-    @Resource(name="draftDao")
-    private DraftDao draftDao;
+    @Resource(name="sanctionDAO")
+    private SanctionDAO sanctionDAO;
+
+    public VRBAnalysisService() {
+    }
 
     @Transactional
     public List<VRBAnalysisVO> selectVRBAnalysisList(Payload<VRBAnalysisVO> requestPayload) throws Exception {
@@ -43,8 +49,9 @@ public class VRBAnalysisService extends AbstractDraftService {
         VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
         VRBAnalysisVO vrb;
 
-        if (vrbAnalysisVO.getVrbAnlyId() != null)
+        if (vrbAnalysisVO.getVrbAnlyId() != null){
             vrbAnalysisVO = vrbAnalysisDAO.selectVRBAnlyId(vrbAnalysisVO);
+        }
 
         vrb = vrbAnalysisDAO.selectVRBAnalysis(vrbAnalysisVO);
         vrb.setProject(vrbAnalysisDAO.selectVRBAnalysisProject(vrbAnalysisVO));
@@ -71,6 +78,7 @@ public class VRBAnalysisService extends AbstractDraftService {
         }
 
         vrb.setApproval(super.selectApprovalInfo(vrbAnalysisVO.getSantId()));
+/*
 
         //폐기일때 false
         if(vrb.getVrbPrgsStatCd().equals('W')) {
@@ -78,17 +86,19 @@ public class VRBAnalysisService extends AbstractDraftService {
         }else {
             vrb.setIsInProgress(true);
         }
+*/
 
         return vrb;
     }
 
     @Transactional
-    public VRBAnalysisVO updateVRBAnalysisStat(Payload<VRBAnalysisVO> requestPayload) throws Exception {
+    public VRBAnalysisVO updateVRBAnalysisStat(Payload<VRBAnalysisVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".updateVRBAnalysisStat");
         AccountVO accountVO = requestPayload.getAccountVO();
         VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
         VRBAnalysisVO vrb = new VRBAnalysisVO();
 
+/*
         // 결재 모듈에서 처리된 진행상태값에 따라 서식의 진행상태를 업데이트한다.
         switch (vrbAnalysisVO.getSantPrgsStatCd()) {
             case "A":	// 미상신
@@ -106,18 +116,33 @@ public class VRBAnalysisService extends AbstractDraftService {
             case "W":	// 폐기
                 vrbAnalysisVO.setVrbPrgsStatCd("W"); // 폐기
                 break;
+        }*/
+
+        try{
+            vrbAnalysisVO.setVrbPrgsStatCd(vrbAnalysisVO.getSantPrgsStatCd());
+            // 진행상태 업데이트
+            vrbAnalysisDAO.updateVrbPrgsStatCd(vrbAnalysisVO);
+
+            //화면 바인딩을 위해 진행상태코드명 조회
+            vrb = vrbAnalysisDAO.selectVRBPrgsStatCd(vrbAnalysisVO);
+
+/*
+            if(vrbAnalysisVO.getSantPrgsStatCd().equals("W")){
+                vrb.setIsInProgress(false);
+            }else {
+                vrb.setIsInProgress(true);
+            }*/
+        }catch (Exception e){
+            //throw new UpdateDeniedException("진행상태 변경 중 문제가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 진행상태 변경 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_VRB_STATE_EXCEPTION_MESSAGE, vrbAnalysisVO);
+            }
         }
 
-        vrbAnalysisDAO.updateVrbPrgsStatCd(vrbAnalysisVO);
-
-        //화면 바인딩을 위함
-        vrb = vrbAnalysisDAO.selectVRBPrgsStatCd(vrbAnalysisVO);
-
-        if(vrbAnalysisVO.getSantPrgsStatCd().equals("W")){
-            vrb.setIsInProgress(false);
-        }else {
-            vrb.setIsInProgress(true);
-        }
 
         return vrb;
     }
@@ -181,45 +206,93 @@ public class VRBAnalysisService extends AbstractDraftService {
         return approvalVO;
     }
 
-    @Transactional
-    public VRBAnalysisVO deleteVRBAnalysis(Payload<VRBAnalysisVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public VRBAnalysisVO deleteVRBAnalysis(Payload<VRBAnalysisVO> requestPayload) throws DeleteDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".deleteVRBAnalysis");
         AccountVO accountVO = requestPayload.getAccountVO();
         VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
 
-        // '수익가치 분석' 의 경우 '예상손익분석' 기획이 나온뒤에 추가해야함
-        vrbAnalysisDAO.deleteVRBProfit(vrbAnalysisVO);
-        vrbAnalysisDAO.deleteVRBStrategy(vrbAnalysisVO);
-        vrbAnalysisDAO.deleteVRBOpinion(vrbAnalysisVO);
-        vrbAnalysisDAO.deleteVRBCompetitor(vrbAnalysisVO);
-        vrbAnalysisDAO.deleteVRBCustomer(vrbAnalysisVO);
+        try {
+            
+            // '수익가치 분석' 의 경우 '예상손익분석' 기획이 나온뒤에 추가해야함
+            vrbAnalysisDAO.deleteVRBProfit(vrbAnalysisVO);
+            vrbAnalysisDAO.deleteVRBStrategy(vrbAnalysisVO);
+            vrbAnalysisDAO.deleteVRBOpinion(vrbAnalysisVO);
+            vrbAnalysisDAO.deleteVRBCompetitor(vrbAnalysisVO);
+            vrbAnalysisDAO.deleteVRBCustomer(vrbAnalysisVO);
 
-        ApprovalVO approvalVO = new ApprovalVO();
-        if (vrbAnalysisVO.getSantId() != null) {
-            approvalVO.setSantId(vrbAnalysisVO.getSantId());
-            super.deleteCascadingDraft(approvalVO);
+            ApprovalVO approvalVO = new ApprovalVO();
+            if (vrbAnalysisVO.getSantId() != null) {
+                approvalVO.setSantId(vrbAnalysisVO.getSantId());
+                super.deleteApprovalInfo(approvalVO);
+            }
+
+            vrbAnalysisDAO.deleteVRBAnalysis(vrbAnalysisVO);
+            
+        }catch (Exception e){
+            //throw new DeleteDeniedException("VRB 삭제 중 오류가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new DeleteDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 삭제 중 오류가 발생했습니다.
+                throw new DeleteDeniedException(ExceptionCode.DELETE_VRB_DATA_EXCEPTION_MESSAGE, vrbAnalysisVO);
+            }
         }
-
-        vrbAnalysisDAO.deleteVRBAnalysis(vrbAnalysisVO);
+        
 
         return vrbAnalysisVO;
     }
 
-    @Transactional
-    public VRBAnalysisVO updateVRBAnalysisDss(Payload<ApprovalVO> requestPayload) throws Exception {
-        log.info("Call Service : " + this.getClass().getName() + ".updateVRBAnalysisDss");
+    @Transactional(rollbackFor = Exception.class)
+    public VRBAnalysisVO updateVRBAnalysisDisposal(Payload<VRBAnalysisVO> requestPayload) throws UpdateDeniedException {
+        log.info("Call Service : " + this.getClass().getName() + ".updateVRBAnalysisDisposal");
         AccountVO accountVO = requestPayload.getAccountVO();
-        ApprovalVO approvalVO = requestPayload.getDto();
+        VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
+
+        CommonCodeMappingVO commonCodeMappingVO = new CommonCodeMappingVO();
+        commonCodeMappingVO.setComCd("W");
+        commonCodeMappingVO.setMappClmnNm("VRB_PRGS_STAT_CD");
+
+        ApprovalVO approvalVO = new ApprovalVO();
+
+        // 폐기코드 <> 결재매핑 정보 조회
+        approvalVO = super.selectSyncronizedPrgsStatCd(commonCodeMappingVO);
+
+        try{
+
+            // 결재 진행상태 업데이트
+            approvalVO.setSantId(vrbAnalysisVO.getSantId());
+            approvalVO.setChgEmpId(accountVO.getEmpId());
+            super.updatePrgsStatCd(approvalVO);
+
+            // 결재서식(vrb) 진행상태 업데이트
+            vrbAnalysisVO.setVrbPrgsStatCd(commonCodeMappingVO.getComCd());
+            vrbAnalysisDAO.updateVrbPrgsStatCd(vrbAnalysisVO);
+
+        }catch (Exception e){
+            //throw new UpdateDeniedException("진행상태 변경 중 오류가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 진행상태 변경 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_VRB_STATE_EXCEPTION_MESSAGE, vrbAnalysisVO);
+            }
+        }
+
+/*
 
         approvalVO.setSantPrgsStatCd("W");
         approvalVO.setChgEmpId(accountVO.getEmpId());
-        draftDao.updateApprovalState(approvalVO);
+        sanctionDAO.updateApprovalState(approvalVO);
 
         // 결재 모듈에서 처리된 진행상태값에 따라 서식의 진행상태를 업데이트한다.
         VRBAnalysisVO vrbAnalysisVO = new VRBAnalysisVO();
         vrbAnalysisVO.setSantId(approvalVO.getSantId());
         vrbAnalysisVO.setVrbPrgsStatCd("W");
         vrbAnalysisDAO.updateVrbPrgsStatCd(vrbAnalysisVO);
+*/
 
         return vrbAnalysisVO;
     }
@@ -267,133 +340,156 @@ public class VRBAnalysisService extends AbstractDraftService {
         return list;
     }
 
-    @Transactional
-    public VRBAnalysisVO insertVRBAnalysis(Payload<VRBAnalysisVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public VRBAnalysisVO insertVRBAnalysis(Payload<VRBAnalysisVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".insertVRBAnalysis");
         AccountVO accountVO = requestPayload.getAccountVO();
         VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
 
-        String prevId = vrbAnalysisDAO.selectMaxVRBAnlyId().getVrbAnlyId();
-        vrbAnalysisVO.setVrbAnlyId(IndexUtils.generateId(10, prevId));
-        vrbAnalysisVO.setRegEmpId(accountVO.getEmpId());
+        try{
 
-        // 결재 등록 (미상신)
-        vrbAnalysisVO.setVrbPrgsStatCd("A");
-        vrbAnalysisVO.getApproval().setRegEmpId(accountVO.getEmpId());
-        vrbAnalysisVO.getApproval().setSantFrmtCd("B03");
-        vrbAnalysisVO.setSantFrmtCd("B03");
-        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectApprovalTitle(vrbAnalysisVO));
-        vrbAnalysisVO.setSantId(super.insertDraft(vrbAnalysisVO.getApproval()));
+            String vrbAnlyId = vrbAnalysisDAO.selectNewVrbAnlyId().getVrbAnlyId();
 
-        //문서번호 갖고오기
-        String prevDocNo = vrbAnalysisDAO.selectVRBAnalysisMaxDocNo(vrbAnalysisVO).getDocNo();
-        vrbAnalysisVO.setDocNo(super.generateDocId(3, prevDocNo));
+            vrbAnalysisVO.setVrbAnlyId(vrbAnlyId);
+            vrbAnalysisVO.setRegEmpId(accountVO.getEmpId());
 
-        vrbAnalysisVO.setDocTitl(vrbAnalysisVO.getApproval().getDocTitl());
+            // 결재 등록 (미상신)
+            vrbAnalysisVO.setVrbPrgsStatCd("A");
+            vrbAnalysisVO.getApproval().setRegEmpId(accountVO.getEmpId());
+            vrbAnalysisVO.getApproval().setSantFrmtCd("B03");
+            vrbAnalysisVO.setSantFrmtCd("B03");
+            vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectApprovalTitle(vrbAnalysisVO));
+            vrbAnalysisVO.setSantId(super.insertApprovalInfo(vrbAnalysisVO.getApproval()));
 
-        vrbAnalysisDAO.insertVRBAnalysis(vrbAnalysisVO);
+            vrbAnalysisVO.setDocTitl(vrbAnalysisVO.getApproval().getDocTitl());
 
-        // 고객분석내역
-        if (vrbAnalysisVO.getVrbCustomerAnalysisList() != null) {
-            for (VRBCustomerVO vrbCustomerVO : vrbAnalysisVO.getVrbCustomerAnalysisList()) {
-                vrbCustomerVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.insertVRBCustomer(vrbCustomerVO);
+            vrbAnalysisDAO.insertVRBAnalysis(vrbAnalysisVO);
+
+            // 고객분석내역
+            if (vrbAnalysisVO.getVrbCustomerAnalysisList() != null) {
+                for (VRBCustomerVO vrbCustomerVO : vrbAnalysisVO.getVrbCustomerAnalysisList()) {
+                    vrbCustomerVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.insertVRBCustomer(vrbCustomerVO);
+                }
             }
-        }
 
-        if (vrbAnalysisVO.getVrbProfitAnalysisDetailList() != null) {
-            for (VRBProfitVO vrbProfitVO : vrbAnalysisVO.getVrbProfitAnalysisDetailList()) {
-                vrbProfitVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.insertOfferProfitIntoVrbAnalysis(vrbProfitVO);
+            if (vrbAnalysisVO.getVrbProfitAnalysisDetailList() != null) {
+                for (VRBProfitVO vrbProfitVO : vrbAnalysisVO.getVrbProfitAnalysisDetailList()) {
+                    vrbProfitVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.insertOfferProfitIntoVrbAnalysis(vrbProfitVO);
+                }
             }
-        }
 
-        // 사업분석내역 : 전략적사업가치, 사업수행리스크, 수주&수행전략
-        if (vrbAnalysisVO.getVrbBusinessAnalysisList() != null) {
-            for (VRBStrategyVO vrbStrategyVO : vrbAnalysisVO.getVrbBusinessAnalysisList()) {
-                vrbStrategyVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.insertVRBStrategy(vrbStrategyVO);
+            // 사업분석내역 : 전략적사업가치, 사업수행리스크, 수주&수행전략
+            if (vrbAnalysisVO.getVrbBusinessAnalysisList() != null) {
+                for (VRBStrategyVO vrbStrategyVO : vrbAnalysisVO.getVrbBusinessAnalysisList()) {
+                    vrbStrategyVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.insertVRBStrategy(vrbStrategyVO);
+                }
             }
-        }
 
-        // 경쟁사 분석 리스트
-        if (vrbAnalysisVO.getVrbCompetitorAnalysisList() != null) {
-            for (VRBCompetitorVO vrbCompetitorVO : vrbAnalysisVO.getVrbCompetitorAnalysisList()) {
-                vrbCompetitorVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.insertVRBCompetitor(vrbCompetitorVO);
+            // 경쟁사 분석 리스트
+            if (vrbAnalysisVO.getVrbCompetitorAnalysisList() != null) {
+                for (VRBCompetitorVO vrbCompetitorVO : vrbAnalysisVO.getVrbCompetitorAnalysisList()) {
+                    vrbCompetitorVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.insertVRBCompetitor(vrbCompetitorVO);
+                }
             }
-        }
 
-        if (vrbAnalysisVO.getVrbParticipantList() != null) {
-            for (VRBOpinionVO vrbOpinionVO : vrbAnalysisVO.getVrbParticipantList()) {
-                vrbOpinionVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.insertVRBOpinion(vrbOpinionVO);
+            if (vrbAnalysisVO.getVrbParticipantList() != null) {
+                for (VRBOpinionVO vrbOpinionVO : vrbAnalysisVO.getVrbParticipantList()) {
+                    vrbOpinionVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.insertVRBOpinion(vrbOpinionVO);
+                }
+            }
+        }catch(Exception e){
+            //throw new UpdateDeniedException("VRB 등록 중 문제가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_VRB_DATA_EXCEPTION_MESSAGE, vrbAnalysisVO);
             }
         }
 
         return vrbAnalysisVO;
     }
 
-    @Transactional
-    public VRBAnalysisVO updateVRBAnalysis(Payload<VRBAnalysisVO> requestPayload) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public VRBAnalysisVO updateVRBAnalysis(Payload<VRBAnalysisVO> requestPayload) throws UpdateDeniedException {
         log.info("Call Service : " + this.getClass().getName() + ".updateVRBAnalysis");
         AccountVO accountVO = requestPayload.getAccountVO();
         VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
 
-        // 고객분석내역
-        if (vrbAnalysisVO.getVrbCustomerAnalysisList() != null) {
-            vrbAnalysisDAO.deleteVRBCustomer(vrbAnalysisVO);
-            for (VRBCustomerVO vrbCustomerVO : vrbAnalysisVO.getVrbCustomerAnalysisList()) {
-                vrbCustomerVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.insertVRBCustomer(vrbCustomerVO);
+        try {
+
+            // 고객분석내역
+            if (vrbAnalysisVO.getVrbCustomerAnalysisList() != null) {
+                vrbAnalysisDAO.deleteVRBCustomer(vrbAnalysisVO);
+                for (VRBCustomerVO vrbCustomerVO : vrbAnalysisVO.getVrbCustomerAnalysisList()) {
+                    vrbCustomerVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.insertVRBCustomer(vrbCustomerVO);
+                }
+            }
+
+            if (vrbAnalysisVO.getVrbProfitAnalysisDetailList() != null) {
+                vrbAnalysisDAO.deleteVRBProfit(vrbAnalysisVO);
+                for (VRBProfitVO vrbProfitVO : vrbAnalysisVO.getVrbProfitAnalysisDetailList()) {
+                    vrbProfitVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.insertOfferProfitIntoVrbAnalysis(vrbProfitVO);
+                }
+            }
+
+            // 사업분석내역 : 전략적사업가치, 사업수행리스크, 수주&수행전략
+            if (vrbAnalysisVO.getVrbBusinessAnalysisList() != null) {
+                for (VRBStrategyVO vrbStrategyVO : vrbAnalysisVO.getVrbBusinessAnalysisList()) {
+                    vrbStrategyVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.updateVRBStrategy(vrbStrategyVO);
+                }
+            }
+
+            if (vrbAnalysisVO.getVrbCompetitorAnalysisList() != null) {
+                vrbAnalysisDAO.deleteVRBCompetitor(vrbAnalysisVO);
+                for (VRBCompetitorVO vrbCompetitorVO : vrbAnalysisVO.getVrbCompetitorAnalysisList()) {
+                    vrbCompetitorVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.insertVRBCompetitor(vrbCompetitorVO);
+                }
+            }
+
+            if (vrbAnalysisVO.getVrbParticipantList() != null) {
+                vrbAnalysisDAO.deleteVRBOpinion(vrbAnalysisVO);
+                for (VRBOpinionVO vrbOpinionVO : vrbAnalysisVO.getVrbParticipantList()) {
+                    vrbOpinionVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
+                    vrbAnalysisDAO.insertVRBOpinion(vrbOpinionVO);
+                }
+            }
+
+            vrbAnalysisVO.setApproval(vrbAnalysisVO.getApproval());
+            vrbAnalysisVO.getApproval().setSantFrmtCd("B03");
+            vrbAnalysisVO.setSantFrmtCd("B03");
+            vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectApprovalTitle(vrbAnalysisVO));
+
+            vrbAnalysisVO.setChgEmpId(accountVO.getEmpId());
+            vrbAnalysisVO.setDocTitl(vrbAnalysisVO.getApproval().getDocTitl());
+            vrbAnalysisDAO.updateVRBAnalysis(vrbAnalysisVO);
+
+            if (vrbAnalysisVO.getApproval().getApprovalAuthorizerList() != null){
+                super.updateApproverList(vrbAnalysisVO.getApproval());
+            }
+
+            super.updateApprovalInfo(vrbAnalysisVO.getApproval());
+
+        }catch (Exception e){
+            //throw new UpdateDeniedException("VRB 변경 중 오류가 발생했습니다.", vrbAnalysisVO);
+
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), vrbAnalysisVO);
+            }else{
+                //VRB 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_VRB_DATA_EXCEPTION_MESSAGE, vrbAnalysisVO);
             }
         }
-
-        if (vrbAnalysisVO.getVrbProfitAnalysisDetailList() != null) {
-            vrbAnalysisDAO.deleteVRBProfit(vrbAnalysisVO);
-            for (VRBProfitVO vrbProfitVO : vrbAnalysisVO.getVrbProfitAnalysisDetailList()) {
-                vrbProfitVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.insertOfferProfitIntoVrbAnalysis(vrbProfitVO);
-            }
-        }
-
-        // 사업분석내역 : 전략적사업가치, 사업수행리스크, 수주&수행전략
-        if (vrbAnalysisVO.getVrbBusinessAnalysisList() != null) {
-            for (VRBStrategyVO vrbStrategyVO : vrbAnalysisVO.getVrbBusinessAnalysisList()) {
-                vrbStrategyVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.updateVRBStrategy(vrbStrategyVO);
-            }
-        }
-
-        if (vrbAnalysisVO.getVrbCompetitorAnalysisList() != null) {
-            vrbAnalysisDAO.deleteVRBCompetitor(vrbAnalysisVO);
-            for (VRBCompetitorVO vrbCompetitorVO : vrbAnalysisVO.getVrbCompetitorAnalysisList()) {
-                vrbCompetitorVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.insertVRBCompetitor(vrbCompetitorVO);
-            }
-        }
-
-        if (vrbAnalysisVO.getVrbParticipantList() != null) {
-            vrbAnalysisDAO.deleteVRBOpinion(vrbAnalysisVO);
-            for (VRBOpinionVO vrbOpinionVO : vrbAnalysisVO.getVrbParticipantList()) {
-                vrbOpinionVO.setVrbAnlyId(vrbAnalysisVO.getVrbAnlyId());
-                vrbAnalysisDAO.insertVRBOpinion(vrbOpinionVO);
-            }
-        }
-
-        vrbAnalysisVO.setApproval(vrbAnalysisVO.getApproval());
-        vrbAnalysisVO.getApproval().setSantFrmtCd("B03");
-        vrbAnalysisVO.setSantFrmtCd("B03");
-        vrbAnalysisVO.getApproval().setDocTitl(vrbAnalysisDAO.selectApprovalTitle(vrbAnalysisVO));
-
-        vrbAnalysisVO.setChgEmpId(accountVO.getEmpId());
-        vrbAnalysisVO.setDocTitl(vrbAnalysisVO.getApproval().getDocTitl());
-        vrbAnalysisDAO.updateVRBAnalysis(vrbAnalysisVO);
-
-        if (vrbAnalysisVO.getApproval().getApprovalDetailList() != null)
-            super.updateApproverList(vrbAnalysisVO.getApproval());
-
-        super.updateDraft(vrbAnalysisVO.getApproval());
 
         return vrbAnalysisVO;
     }

@@ -124,7 +124,7 @@ public class ApprovalVO {
     /**
      * 결재자 상세 리스트
      */
-    private List<ApprovalAuthorizerVO> approvalDetailList;
+    private List<ApprovalAuthorizerVO> approvalAuthorizerList;
 
     /**
      * 결재역할별 버튼 리스트
@@ -285,6 +285,11 @@ public class ApprovalVO {
      * 화면 첨부ID
      */
     private String scrnAttcId;
+
+    // 전체 결재자수
+    private Integer aprnCnt;
+    // 결재를 수행한 결재자수
+    private Integer appvCnt;
 
     private List<Map<String, String>> buttonList;
 
@@ -480,12 +485,12 @@ public class ApprovalVO {
         this.santOpinContCnt = santOpinContCnt;
     }
 
-    public List<ApprovalAuthorizerVO> getApprovalDetailList() {
-        return approvalDetailList;
+    public List<ApprovalAuthorizerVO> getApprovalAuthorizerList() {
+        return approvalAuthorizerList;
     }
 
-    public void setApprovalDetailList(List<ApprovalAuthorizerVO> approvalDetailList) {
-        this.approvalDetailList = approvalDetailList;
+    public void setApprovalAuthorizerList(List<ApprovalAuthorizerVO> approvalAuthorizerList) {
+        this.approvalAuthorizerList = approvalAuthorizerList;
     }
 
     public List<Map<String, String>> getRoleButtonList() {
@@ -798,5 +803,21 @@ public class ApprovalVO {
 
     public void setScrnAttcId(String scrnAttcId) {
         this.scrnAttcId = scrnAttcId;
+    }
+
+    public Integer getAprnCnt() {
+        return aprnCnt;
+    }
+
+    public void setAprnCnt(Integer aprnCnt) {
+        this.aprnCnt = aprnCnt;
+    }
+
+    public Integer getAppvCnt() {
+        return appvCnt;
+    }
+
+    public void setAppvCnt(Integer appvCnt) {
+        this.appvCnt = appvCnt;
     }
 }

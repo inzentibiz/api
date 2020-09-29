@@ -13,6 +13,10 @@ public class OfferEstimateDAO {
     @Autowired
     private SqlSessionTemplate mybatis;
 
+    public EstimateVO selectNewEstiId() {
+        return mybatis.selectOne("OfferEstimateMapper.selectNewEstiId");
+    }
+
     /* 견적서 리스트 조회*/
     public List<EstimateVO> selectOfferEstimateList(EstimateVO estimateVO) throws Exception {
         return mybatis.selectList("OfferEstimateMapper.selectOfferEstimateList", estimateVO);
@@ -69,13 +73,6 @@ public class OfferEstimateDAO {
         return mybatis.selectOne("OfferEstimateMapper.selectEstimateFcstPalPrgsStatCd", estimateVO);
     }
 
-    public EstimateVO selectMaxEstiId() {
-        return mybatis.selectOne("OfferEstimateMapper.selectMaxEstiId");
-    }
-
-    public EstimateVO selectEstiMaxDocNo(EstimateVO estimateVO) {
-        return mybatis.selectOne("OfferEstimateMapper.selectEstiMaxDocNo", estimateVO);
-    }
 
     /* 견적서 프로젝트 유형 조회*/
     public EstimateVO selectEstimatePrjtTypeCd(EstimateVO estimateVO) {

@@ -1,6 +1,7 @@
 package com.ibiz.api.exception;
 
 import lombok.Getter;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 @Getter
 public class UpdateDeniedException extends Exception {
@@ -13,17 +14,20 @@ public class UpdateDeniedException extends Exception {
     public UpdateDeniedException(String message) {
         this.message = message;
         this.errorCode = ErrorCode.UPDATE_DENIED_ERROR;
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     public UpdateDeniedException(Object object) {
         this.errorCode = ErrorCode.UPDATE_DENIED_ERROR;
         this.errorObject = object;
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     public UpdateDeniedException(String message, Object object) {
         this.message = message;
         this.errorCode = ErrorCode.UPDATE_DENIED_ERROR;
         this.errorObject = object;
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
 

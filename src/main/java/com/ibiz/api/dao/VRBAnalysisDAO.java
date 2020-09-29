@@ -45,10 +45,15 @@ public class VRBAnalysisDAO {
         return mybatis.selectList("VRBAnalysisMapper.selectVRBAnlyItmCdList", commonGroupCodeVO);
     }
 
+    public VRBAnalysisVO selectNewVrbAnlyId() {
+        return mybatis.selectOne("VRBAnalysisMapper.selectNewVrbAnlyId");
+    }
+
+    /*
     public VRBAnalysisVO selectMaxVRBAnlyId() {
         return mybatis.selectOne("VRBAnalysisMapper.selectMaxVRBAnlyId");
     }
-
+*/
     public VRBAnalysisVO selectVRBAnalysisMaxDocNo(VRBAnalysisVO vrbAnalysisVO) {
         return mybatis.selectOne("VRBAnalysisMapper.selectVRBAnalysisMaxDocNo", vrbAnalysisVO);
     }

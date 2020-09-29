@@ -368,6 +368,8 @@ public class OfferVO {
      */
     private Integer totalCnt;
 
+    private String santPrgsStatCd;
+
     public String getFrmtCdNm() {
         return frmtCdNm;
     }
@@ -936,5 +938,13 @@ public class OfferVO {
 
     public void setDocTitl(String docTitl) {
         this.docTitl = docTitl;
+    }
+
+    public String getSantPrgsStatCd() {
+        return santPrgsStatCd;
+    }
+
+    public void setSantPrgsStatCd(String santPrgsStatCd) {
+        this.santPrgsStatCd = santPrgsStatCd;
     }
 }
