@@ -430,7 +430,7 @@ public class OfferProfitService extends AbstractDraftService {
                 throw new DeleteDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
-                throw new DeleteDeniedException("견적서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+                throw new DeleteDeniedException("견적서가 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
             }
 
 
@@ -776,7 +776,7 @@ public class OfferProfitService extends AbstractDraftService {
                 offerVO.setFcstPalId(offerProfitDAO.selectFcstPalId(offerVO));
             }
             if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
-                throw new DeleteDeniedException("견적서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+                throw new DeleteDeniedException("견적서가 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             offerProfitDAO.deleteOfferProfitPSProductDC(offerVO); // BEST011T
             offerProfitDAO.deleteOfferProfitPSProduct(offerVO); // BEST010T
@@ -1150,7 +1150,7 @@ public class OfferProfitService extends AbstractDraftService {
                 throw new DeleteDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
-                throw new DeleteDeniedException("견적서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+                throw new DeleteDeniedException("견적서가 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             if (offerProfitDAO.selectIsRelatedWithBefProfitAnalysis(offerVO) > 0) {
                 throw new DeleteDeniedException("손익변경보고로 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
