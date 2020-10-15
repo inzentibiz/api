@@ -566,6 +566,18 @@ public class OfferProfitService extends AbstractDraftService {
         return result;
     }
 
+    @Transactional
+    public List<OfferVO> selectProfitAnalysisListByPrjtId(Payload<OfferVO> requestPayload) throws Exception {
+        log.info("Call Service : " + this.getClass().getName() + ".selectProfitAnalysisListByPrjtId");
+        OfferVO offerVO = requestPayload.getDto();
+        AccountVO accountVO = requestPayload.getAccountVO();
+
+        List<OfferVO> result =  new ArrayList();
+        result = offerProfitDAO.selectProfitAnalysisListByPrjtId(offerVO);
+
+        return result;
+    }
+
 
     /*
      * 예상손익분석서(ma) ver 1

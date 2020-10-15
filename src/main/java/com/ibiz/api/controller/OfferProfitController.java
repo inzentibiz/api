@@ -189,6 +189,17 @@ public class OfferProfitController extends BaseController {
         return super.composePayload(new Payload<List>(offerProfitService.selectOfferRstProdTypeView(requestPayload)));
     }
 
+    // 프로젝트에 연관된 예상손익 조회
+    @PostMapping("/selectProfitAnalysisListByPrjtId")
+    public ResponseEntity<String> selectProfitAnalysisListByPrjtId(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".selectProfitAnalysisListByPrjtId");
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferVO>>(){});
+
+        return super.composePayload(new Payload<List>(offerProfitService.selectProfitAnalysisListByPrjtId(requestPayload)));
+    }
+
+
+
     // excel 엑셀
 
     // 예상손익 기본리스트 엑셀 다운로드

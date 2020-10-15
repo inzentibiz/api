@@ -309,6 +309,12 @@ public class OfferProfitDAO {
         return mybatis.selectOne("OfferProfitMapper.selectNewFcstPalId", offerVO);
     }
 
+    // 프로젝트에 연관된 예상손익 조회
+    public List<OfferVO> selectProfitAnalysisListByPrjtId(OfferVO offerVO) {
+        return mybatis.selectList("OfferProfitMapper.selectProfitAnalysisListByPrjtId", offerVO);
+    }
+
+
     /*
      * INSERT
      */

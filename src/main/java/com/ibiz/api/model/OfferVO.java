@@ -370,6 +370,31 @@ public class OfferVO {
 
     private String santPrgsStatCd;
 
+    /**
+     * 매출금액 총합
+     */
+    private long sumSellAmt;
+
+    /**
+     * 사업기회 별 총매출액
+     */
+    private long sumBuyAmt;
+
+    /**
+     * 공헌이익
+     */
+    private long ctmgAmt;
+
+    /**
+     * 사업기회 별 총투입MM
+     */
+    private float sumPutNopCount;
+
+    /**
+     * 투입 단위
+     */
+    private String putTimeUnitCd;
+
     public String getFrmtCdNm() {
         return frmtCdNm;
     }
@@ -946,5 +971,45 @@ public class OfferVO {
 
     public void setSantPrgsStatCd(String santPrgsStatCd) {
         this.santPrgsStatCd = santPrgsStatCd;
+    }
+
+    public long getSumSellAmt() {
+        return sumSellAmt;
+    }
+
+    public void setSumSellAmt(long sumSellAmt) {
+        this.sumSellAmt = sumSellAmt;
+    }
+
+    public long getSumBuyAmt() {
+        return sumBuyAmt;
+    }
+
+    public void setSumBuyAmt(long sumBuyAmt) {
+        this.sumBuyAmt = sumBuyAmt;
+    }
+
+    public long getCtmgAmt() {
+        return ctmgAmt;
+    }
+
+    public void setCtmgAmt(long ctmgAmt) {
+        this.ctmgAmt = ctmgAmt;
+    }
+
+    public float getSumPutNopCount() {
+        return sumPutNopCount;
+    }
+
+    public void setSumPutNopCount(float sumPutNopCount) {
+        this.sumPutNopCount = sumPutNopCount;
+    }
+
+    public String getPutTimeUnitCd() {
+        return putTimeUnitCd;
+    }
+
+    public void setPutTimeUnitCd(String putTimeUnitCd) {
+        this.putTimeUnitCd = putTimeUnitCd;
     }
 }
