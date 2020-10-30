@@ -313,12 +313,12 @@ public class BizChanceHistoryVO {
     /**
      * 변경전 매출금액
      */
-    private Integer befSellAmt;
+    private Long befSellAmt;
 
     /**
      * 변경전 매입금액
      */
-    private Integer befBuyAmt;
+    private Long befBuyAmt;
 
     /**
      * 변경전 매출확률금액
@@ -803,16 +803,16 @@ public class BizChanceHistoryVO {
     public void setBefFcstYam(String befFcstYam) {
         this.befFcstYam = befFcstYam;
     }
-    public Integer getBefSellAmt() {
+    public Long getBefSellAmt() {
         return befSellAmt;
     }
-    public void setBefSellAmt(Integer befSellAmt) {
+    public void setBefSellAmt(Long befSellAmt) {
         this.befSellAmt = befSellAmt;
     }
-    public Integer getBefBuyAmt() {
+    public Long getBefBuyAmt() {
         return befBuyAmt;
     }
-    public void setBefBuyAmt(Integer befBuyAmt) {
+    public void setBefBuyAmt(Long befBuyAmt) {
         this.befBuyAmt = befBuyAmt;
     }
     public String getBefSellPrbbAmt() {
