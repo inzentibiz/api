@@ -1583,6 +1583,13 @@
                                AND TO_CHAR(CHG_DT,'yyyymmdd') <=  #{chgEndDate}
                            ]]>
                 </if>
+
+                <if test="allCntrStartDate != null and allCntrStartDate != '' and allCntrEndDate != null and allCntrEndDate != '' ">
+                    <![CDATA[
+                                AND ((BEF_CNTR_YAM >= #{allCntrStartDate} AND BEF_CNTR_YAM <= #{allCntrEndDate} ) OR ( CNTR_YAM >= #{allCntrStartDate} AND CNTR_YAM <= #{allCntrEndDate} ))
+                           ]]>
+                </if>
+
                 <if test="befCntrStartDate != null and befCntrStartDate != '' ">
                     <![CDATA[
                                AND BEF_CNTR_YAM >= #{befCntrStartDate}
@@ -1688,6 +1695,13 @@
                         <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                             AND BSNS_CLSF_CD = #{bsnsClsfCd}
                         </if>
+
+                        <if test="allSellStartDate != null and allSellStartDate != '' and allSellEndDate != null and allSellEndDate != ''">
+                            <![CDATA[
+                                       AND ((BEF_FCST_YAM >= #{allSellStartDate} AND BEF_FCST_YAM <= #{allSellEndDate} ) OR ( FCST_YAM >= #{allSellStartDate} AND FCST_YAM <= #{allSellEndDate} ))
+                                   ]]>
+                        </if>
+
                         <if test="befSellStartDate != null and befSellStartDate != '' ">
                             <![CDATA[
                                        AND BEF_FCST_YAM >= #{befSellStartDate}
@@ -1806,6 +1820,13 @@
                         <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                             AND BSNS_CLSF_CD = #{bsnsClsfCd}
                         </if>
+
+                        <if test="allBuyStartDate != null and allBuyStartDate != '' and allBuyEndDate != null and allBuyEndDate != ''">
+                            <![CDATA[
+                                       AND ((BEF_FCST_YAM >= #{allBuyStartDate} AND BEF_FCST_YAM <= #{allBuyEndDate} ) OR ( FCST_YAM >= #{allBuyStartDate} AND FCST_YAM <= #{allBuyEndDate} ))
+                                   ]]>
+                        </if>
+
                         <if test="befBuyStartDate != null and befBuyStartDate != '' ">
                             <![CDATA[
                                        AND BEF_FCST_YAM >= #{befBuyStartDate}
@@ -1920,6 +1941,13 @@
                         <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                             AND BSNS_CLSF_CD = #{bsnsClsfCd}
                         </if>
+
+                        <if test="allCntrStartDate != null and allCntrStartDate != '' and allCntrEndDate != null and allCntrEndDate != '' ">
+                            <![CDATA[
+                                       AND ((BEF_CNTR_YAM >= #{allCntrStartDate} AND BEF_CNTR_YAM <= #{allCntrEndDate} ) OR ( CNTR_YAM >= #{allCntrStartDate} AND CNTR_YAM <= #{allCntrEndDate} ))
+                                   ]]>
+                        </if>
+
                         <if test="befCntrStartDate != null and befCntrStartDate != '' ">
                             <![CDATA[
                                        AND BEF_CNTR_YAM >= #{befCntrStartDate}

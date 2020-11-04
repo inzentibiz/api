@@ -376,6 +376,16 @@ public class BizChanceHistoryVO {
     private Integer totalCnt;
 
     /**
+     * 변경전후 계약시작일
+     */
+    private String allCntrStartDate;
+
+    /**
+     * 변경전후 계약종료일
+     */
+    private String allCntrEndDate;
+
+    /**
      * 변경전 계약시작일
      */
     private String befCntrStartDate;
@@ -386,6 +396,16 @@ public class BizChanceHistoryVO {
     private String befCntrEndDate;
 
     /**
+     * 변경전후 매출시작일
+     */
+    private String allSellStartDate;
+
+    /**
+     * 변경전후 매출종료일
+     */
+    private String allSellEndDate;
+
+    /**
      * 변경전 매출시작일
      */
     private String befSellStartDate;
@@ -394,6 +414,16 @@ public class BizChanceHistoryVO {
      * 변경전 매출종료일
      */
     private String befSellEndDate;
+
+    /**
+     * 변경전후 매입시작일
+     */
+    private String allBuyStartDate;
+
+    /**
+     * 변경전후 매입종료일
+     */
+    private String allBuyEndDate;
 
     /**
      * 변경전 매입시작일
@@ -424,38 +454,6 @@ public class BizChanceHistoryVO {
      * 변경전 계약금액
      */
     private String befCntrAmt;
-
-    public Integer getTotalCnt() {
-        return totalCnt;
-    }
-
-    public void setTotalcnt(Integer totalCnt) {
-        this.totalCnt = totalCnt;
-    }
-
-    public void setHistoryGroupCd(String historyGroupCd) {
-        this.historyGroupCd = historyGroupCd;
-    }
-
-    public String getHistoryGroupCd() {
-        return historyGroupCd;
-    }
-
-    public String getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(String pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public String getPageNumber() {
-        return pageNumber;
-    }
-
-    public void setPageNumber(String pageNumber) {
-        this.pageNumber = pageNumber;
-    }
 
     public String getBoptId() {
         return boptId;
@@ -489,12 +487,60 @@ public class BizChanceHistoryVO {
         this.prjtNm = prjtNm;
     }
 
+    public String getOrdeCustId() {
+        return ordeCustId;
+    }
+
+    public void setOrdeCustId(String ordeCustId) {
+        this.ordeCustId = ordeCustId;
+    }
+
+    public String getOrdeCustNm() {
+        return ordeCustNm;
+    }
+
+    public void setOrdeCustNm(String ordeCustNm) {
+        this.ordeCustNm = ordeCustNm;
+    }
+
     public String getBsnsClsfCd() {
         return bsnsClsfCd;
     }
 
     public void setBsnsClsfCd(String bsnsClsfCd) {
         this.bsnsClsfCd = bsnsClsfCd;
+    }
+
+    public String getBsnsClsfCdNm() {
+        return bsnsClsfCdNm;
+    }
+
+    public void setBsnsClsfCdNm(String bsnsClsfCdNm) {
+        this.bsnsClsfCdNm = bsnsClsfCdNm;
+    }
+
+    public String getCntrDate() {
+        return cntrDate;
+    }
+
+    public void setCntrDate(String cntrDate) {
+        this.cntrDate = cntrDate;
+    }
+
+    public String getCntrTrsfStartYam() {
+        return cntrTrsfStartYam;
+    }
+
+    public void setCntrTrsfStartYam(String cntrTrsfStartYam) {
+        this.cntrTrsfStartYam = cntrTrsfStartYam;
+    }
+
+    public String getCntrTrsfEndYam() {
+        return cntrTrsfEndYam;
+    }
+
+    public void setCntrTrsfEndYam(String cntrTrsfEndYam) {
+        this.cntrTrsfEndYam = cntrTrsfEndYam;
     }
 
     public String getWctPrbbCd() {
@@ -521,6 +567,14 @@ public class BizChanceHistoryVO {
         this.boptStatCd = boptStatCd;
     }
 
+    public String getBoptStatCdNm() {
+        return boptStatCdNm;
+    }
+
+    public void setBoptStatCdNm(String boptStatCdNm) {
+        this.boptStatCdNm = boptStatCdNm;
+    }
+
     public String getBoptEndTypeCd() {
         return boptEndTypeCd;
     }
@@ -537,6 +591,13 @@ public class BizChanceHistoryVO {
         this.slsDeptId = slsDeptId;
     }
 
+    public String getSlsDeptNm() {
+        return slsDeptNm;
+    }
+
+    public void setSlsDeptNm(String slsDeptNm) {
+        this.slsDeptNm = slsDeptNm;
+    }
 
     public String getSlsEmpId() {
         return slsEmpId;
@@ -552,6 +613,102 @@ public class BizChanceHistoryVO {
 
     public void setSlsEmpNm(String slsEmpNm) {
         this.slsEmpNm = slsEmpNm;
+    }
+
+    public String getChgEmpId() {
+        return chgEmpId;
+    }
+
+    public void setChgEmpId(String chgEmpId) {
+        this.chgEmpId = chgEmpId;
+    }
+
+    public String getChgEmpNm() {
+        return chgEmpNm;
+    }
+
+    public void setChgEmpNm(String chgEmpNm) {
+        this.chgEmpNm = chgEmpNm;
+    }
+
+    public String getChgDt() {
+        return chgDt;
+    }
+
+    public void setChgDt(String chgDt) {
+        this.chgDt = chgDt;
+    }
+
+    public String getFcstYam() {
+        return fcstYam;
+    }
+
+    public void setFcstYam(String fcstYam) {
+        this.fcstYam = fcstYam;
+    }
+
+    public String getProdDstCd() {
+        return prodDstCd;
+    }
+
+    public void setProdDstCd(String prodDstCd) {
+        this.prodDstCd = prodDstCd;
+    }
+
+    public String getGodsClsfCd() {
+        return godsClsfCd;
+    }
+
+    public void setGodsClsfCd(String godsClsfCd) {
+        this.godsClsfCd = godsClsfCd;
+    }
+
+    public long getSellAmt() {
+        return sellAmt;
+    }
+
+    public void setSellAmt(long sellAmt) {
+        this.sellAmt = sellAmt;
+    }
+
+    public long getBuyAmt() {
+        return buyAmt;
+    }
+
+    public void setBuyAmt(long buyAmt) {
+        this.buyAmt = buyAmt;
+    }
+
+    public String getBexcRoleCd() {
+        return bexcRoleCd;
+    }
+
+    public void setBexcRoleCd(String bexcRoleCd) {
+        this.bexcRoleCd = bexcRoleCd;
+    }
+
+    public String getBexcRoleCdNm() {
+        return bexcRoleCdNm;
+    }
+
+    public void setBexcRoleCdNm(String bexcRoleCdNm) {
+        this.bexcRoleCdNm = bexcRoleCdNm;
+    }
+
+    public String getPutTimeUnitCd() {
+        return putTimeUnitCd;
+    }
+
+    public void setPutTimeUnitCd(String putTimeUnitCd) {
+        this.putTimeUnitCd = putTimeUnitCd;
+    }
+
+    public float getPutNopCount() {
+        return putNopCount;
+    }
+
+    public void setPutNopCount(float putNopCount) {
+        this.putNopCount = putNopCount;
     }
 
     public String getRmrkCont() {
@@ -586,296 +743,300 @@ public class BizChanceHistoryVO {
         this.prjtTypeCd = prjtTypeCd;
     }
 
-    public String getBsnsClsfCdNm() {
-        return bsnsClsfCdNm;
-    }
-    public void setBsnsClsfCdNm(String bsnsClsfCdNm) {
-        this.bsnsClsfCdNm = bsnsClsfCdNm;
-    }
-    public String getCntrDate() {
-        return cntrDate;
-    }
-    public void setCntrDate(String cntrDate) {
-        this.cntrDate = cntrDate;
-    }
-    public String getCntrTrsfStartYam() {
-        return cntrTrsfStartYam;
-    }
-    public void setCntrTrsfStartYam(String cntrTrsfStartYam) {
-        this.cntrTrsfStartYam = cntrTrsfStartYam;
-    }
-    public String getCntrTrsfEndYam() {
-        return cntrTrsfEndYam;
-    }
-    public void setCntrTrsfEndYam(String cntrTrsfEndYam) {
-        this.cntrTrsfEndYam = cntrTrsfEndYam;
-    }
-    public String getBoptStatCdNm() {
-        return boptStatCdNm;
-    }
-    public void setBoptStatCdNm(String boptStatCdNm) {
-        this.boptStatCdNm = boptStatCdNm;
-    }
-    public String getSlsDeptNm() {
-        return slsDeptNm;
-    }
-    public void setSlsDeptNm(String slsDeptNm) {
-        this.slsDeptNm = slsDeptNm;
-    }
-    public String getOrdeCustId() {
-        return ordeCustId;
-    }
-    public void setOrdeCustId(String ordeCustId) {
-        this.ordeCustId = ordeCustId;
-    }
-    public String getOrdeCustNm() {
-        return ordeCustNm;
-    }
-    public void setOrdeCustNm(String ordeCustNm) {
-        this.ordeCustNm = ordeCustNm;
-    }
-    public String getChgEmpId() {
-        return chgEmpId;
-    }
-    public void setChgEmpId(String chgEmpId) {
-        this.chgEmpId = chgEmpId;
-    }
-    public String getChgEmpNm() {
-        return chgEmpNm;
-    }
-    public void setChgEmpNm(String chgEmpNm) {
-        this.chgEmpNm = chgEmpNm;
-    }
-    public String getFcstYam() {
-        return fcstYam;
-    }
-    public void setFcstYam(String fcstYam) {
-        this.fcstYam = fcstYam;
-    }
-    public String getProdDstCd() {
-        return prodDstCd;
-    }
-    public void setProdDstCd(String prodDstCd) {
-        this.prodDstCd = prodDstCd;
-    }
-    public String getGodsClsfCd() {
-        return godsClsfCd;
-    }
-    public void setGodsClsfCd(String godsClsfCd) {
-        this.godsClsfCd = godsClsfCd;
-    }
-    public String getChgDt() {
-        return chgDt;
-    }
-    public void setChgDt(String chgDt) {
-        this.chgDt = chgDt;
-    }
-    public String getBexcRoleCd() {
-        return bexcRoleCd;
-    }
-    public void setBexcRoleCd(String bexcRoleCd) {
-        this.bexcRoleCd = bexcRoleCd;
-    }
-    public String getBexcRoleCdNm() {
-        return bexcRoleCdNm;
-    }
-    public void setBexcRoleCdNm(String bexcRoleCdNm) {
-        this.bexcRoleCdNm = bexcRoleCdNm;
-    }
-    public String getPutTimeUnitCd() {
-        return putTimeUnitCd;
-    }
-    public void setPutTimeUnitCd(String putTimeUnitCd) {
-        this.putTimeUnitCd = putTimeUnitCd;
-    }
-    public float getPutNopCount() {
-        return putNopCount;
-    }
-    public void setPutNopCount(float putNopCount) {
-        this.putNopCount = putNopCount;
-    }
-    public long getSumSellAmt() {
-        return sumSellAmt;
-    }
-    public void setSumSellAmt(long sumSellAmt) {
-        this.sumSellAmt = sumSellAmt;
-    }
-    public String getWctPrbbCdNm() {
-        return wctPrbbCdNm;
-    }
-    public void setWctPrbbCdNm(String wctPrbbCdNm) {
-        this.wctPrbbCdNm = wctPrbbCdNm;
-    }
-
-    public String getBefBoptStatCdNm() {
-        return befBoptStatCdNm;
-    }
-    public void setBefBoptStatCdNm(String befBoptStatCdNm) {
-        this.befBoptStatCdNm = befBoptStatCdNm;
-    }
-    public String getBefChgDt() {
-        return befChgDt;
-    }
-    public void setBefChgDt(String befChgDt) {
-        this.befChgDt = befChgDt;
-    }
-    public String getBefCntrBuyAmt() {
-        return befCntrBuyAmt;
-    }
-    public void setBefCntrBuyAmt(String befCntrBuyAmt) {
-        this.befCntrBuyAmt = befCntrBuyAmt;
-    }
-    public String getCntrBuyAmt() {
-        return cntrBuyAmt;
-    }
-    public void setCntrBuyAmt(String cntrBuyAmt) {
-        this.cntrBuyAmt = cntrBuyAmt;
-    }
-    public String getBefCntrYam() {
-        return befCntrYam;
-    }
-    public void setBefCntrYam(String befCntrYam) {
-        this.befCntrYam = befCntrYam;
-    }
-    public String getCntrYam() {
-        return cntrYam;
-    }
-    public void setCntrYam(String cntrYam) {
-        this.cntrYam = cntrYam;
-    }
-    public String getBefWctPrbbNumVal() {
-        return befWctPrbbNumVal;
-    }
-    public void setBefWctPrbbNumVal(String befWctPrbbNumVal) {
-        this.befWctPrbbNumVal = befWctPrbbNumVal;
-    }
-    public String getWctPrbbNumVal() {
-        return wctPrbbNumVal;
-    }
-    public void setWctPrbbNumVal(String wctPrbbNumVal) {
-        this.wctPrbbNumVal = wctPrbbNumVal;
-    }
-    public String getBefWctPrbbCdNm() {
-        return befWctPrbbCdNm;
-    }
-    public void setBefWctPrbbCdNm(String befWctPrbbCdNm) {
-        this.befWctPrbbCdNm = befWctPrbbCdNm;
-    }
-    public String getBefFcstRflcYn() {
-        return befFcstRflcYn;
-    }
-    public void setBefFcstRflcYn(String befFcstRflcYn) {
-        this.befFcstRflcYn = befFcstRflcYn;
-    }
-    public String getBefCntrSellPrbbAmt() {
-        return befCntrSellPrbbAmt;
-    }
-    public void setBefCntrSellPrbbAmt(String befCntrSellPrbbAmt) {
-        this.befCntrSellPrbbAmt = befCntrSellPrbbAmt;
-    }
-    public String getCntrSellPrbbAmt() {
-        return cntrSellPrbbAmt;
-    }
-    public void setCntrSellPrbbAmt(String cntrSellPrbbAmt) {
-        this.cntrSellPrbbAmt = cntrSellPrbbAmt;
-    }
-    public String getBefCntrSellAmt() {
-        return befCntrSellAmt;
-    }
-    public void setBefCntrSellAmt(String befCntrSellAmt) {
-        this.befCntrSellAmt = befCntrSellAmt;
-    }
-    public String getBefCntrBuyPrbbAmt() {
-        return befCntrBuyPrbbAmt;
-    }
-    public void setBefCntrBuyPrbbAmt(String befCntrBuyPrbbAmt) {
-        this.befCntrBuyPrbbAmt = befCntrBuyPrbbAmt;
-    }
-    public String getCntrBuyPrbbAmt() {
-        return cntrBuyPrbbAmt;
-    }
-    public void setCntrBuyPrbbAmt(String cntrBuyPrbbAmt) {
-        this.cntrBuyPrbbAmt = cntrBuyPrbbAmt;
-    }
-    public String getBefFcstYam() {
-        return befFcstYam;
-    }
-    public void setBefFcstYam(String befFcstYam) {
-        this.befFcstYam = befFcstYam;
-    }
-    public Long getBefSellAmt() {
-        return befSellAmt;
-    }
-    public void setBefSellAmt(Long befSellAmt) {
-        this.befSellAmt = befSellAmt;
-    }
-    public Long getBefBuyAmt() {
-        return befBuyAmt;
-    }
-    public void setBefBuyAmt(Long befBuyAmt) {
-        this.befBuyAmt = befBuyAmt;
-    }
-    public String getBefSellPrbbAmt() {
-        return befSellPrbbAmt;
-    }
-    public void setBefSellPrbbAmt(String befSellPrbbAmt) {
-        this.befSellPrbbAmt = befSellPrbbAmt;
-    }
-    public String getSellPrbbAmt() {
-        return sellPrbbAmt;
-    }
-    public void setSellPrbbAmt(String sellPrbbAmt) {
-        this.sellPrbbAmt = sellPrbbAmt;
-    }
-    public String getBefBuyPrbbAmt() {
-        return befBuyPrbbAmt;
-    }
-    public void setBefBuyPrbbAmt(String befBuyPrbbAmt) {
-        this.befBuyPrbbAmt = befBuyPrbbAmt;
-    }
-    public String getBuyPrbbAmt() {
-        return buyPrbbAmt;
-    }
-    public void setBuyPrbbAmt(String buyPrbbAmt) {
-        this.buyPrbbAmt = buyPrbbAmt;
-    }
-    public String getBefBexcRoleCd() {
-        return befBexcRoleCd;
-    }
-    public void setBefBexcRoleCd(String befBexcRoleCd) {
-        this.befBexcRoleCd = befBexcRoleCd;
-    }
-    public String getBefBexcRoleCdNm() {
-        return befBexcRoleCdNm;
-    }
-    public void setBefBexcRoleCdNm(String befBexcRoleCdNm) {
-        this.befBexcRoleCdNm = befBexcRoleCdNm;
-    }
-    public float getBefPutNopCount() {
-        return befPutNopCount;
-    }
-    public void setBefPutNopCount(float befPutNopCount) {
-        this.befPutNopCount = befPutNopCount;
-    }
-    public float getBefPutPrbbNopCount() {
-        return befPutPrbbNopCount;
-    }
-    public void setBefPutPrbbNopCount(float befPutPrbbNopCount) {
-        this.befPutPrbbNopCount = befPutPrbbNopCount;
-    }
-    public float getPutPrbbNopCount() {
-        return putPrbbNopCount;
-    }
-    public void setPutPrbbNopCount(float putPrbbNopCount) {
-        this.putPrbbNopCount = putPrbbNopCount;
-    }
-
     public String getPrjtTypeCdNm() {
         return prjtTypeCdNm;
     }
 
     public void setPrjtTypeCdNm(String prjtTypeCdNm) {
         this.prjtTypeCdNm = prjtTypeCdNm;
+    }
+
+    public long getSumSellAmt() {
+        return sumSellAmt;
+    }
+
+    public void setSumSellAmt(long sumSellAmt) {
+        this.sumSellAmt = sumSellAmt;
+    }
+
+    public String getWctPrbbCdNm() {
+        return wctPrbbCdNm;
+    }
+
+    public void setWctPrbbCdNm(String wctPrbbCdNm) {
+        this.wctPrbbCdNm = wctPrbbCdNm;
+    }
+
+    public String getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(String pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(String pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public String getBefBoptStatCdNm() {
+        return befBoptStatCdNm;
+    }
+
+    public void setBefBoptStatCdNm(String befBoptStatCdNm) {
+        this.befBoptStatCdNm = befBoptStatCdNm;
+    }
+
+    public String getBefChgDt() {
+        return befChgDt;
+    }
+
+    public void setBefChgDt(String befChgDt) {
+        this.befChgDt = befChgDt;
+    }
+
+    public String getBefCntrBuyAmt() {
+        return befCntrBuyAmt;
+    }
+
+    public void setBefCntrBuyAmt(String befCntrBuyAmt) {
+        this.befCntrBuyAmt = befCntrBuyAmt;
+    }
+
+    public String getCntrBuyAmt() {
+        return cntrBuyAmt;
+    }
+
+    public void setCntrBuyAmt(String cntrBuyAmt) {
+        this.cntrBuyAmt = cntrBuyAmt;
+    }
+
+    public String getBefCntrYam() {
+        return befCntrYam;
+    }
+
+    public void setBefCntrYam(String befCntrYam) {
+        this.befCntrYam = befCntrYam;
+    }
+
+    public String getCntrYam() {
+        return cntrYam;
+    }
+
+    public void setCntrYam(String cntrYam) {
+        this.cntrYam = cntrYam;
+    }
+
+    public String getBefWctPrbbNumVal() {
+        return befWctPrbbNumVal;
+    }
+
+    public void setBefWctPrbbNumVal(String befWctPrbbNumVal) {
+        this.befWctPrbbNumVal = befWctPrbbNumVal;
+    }
+
+    public String getWctPrbbNumVal() {
+        return wctPrbbNumVal;
+    }
+
+    public void setWctPrbbNumVal(String wctPrbbNumVal) {
+        this.wctPrbbNumVal = wctPrbbNumVal;
+    }
+
+    public String getBefWctPrbbCdNm() {
+        return befWctPrbbCdNm;
+    }
+
+    public void setBefWctPrbbCdNm(String befWctPrbbCdNm) {
+        this.befWctPrbbCdNm = befWctPrbbCdNm;
+    }
+
+    public String getBefFcstRflcYn() {
+        return befFcstRflcYn;
+    }
+
+    public void setBefFcstRflcYn(String befFcstRflcYn) {
+        this.befFcstRflcYn = befFcstRflcYn;
+    }
+
+    public String getBefCntrSellPrbbAmt() {
+        return befCntrSellPrbbAmt;
+    }
+
+    public void setBefCntrSellPrbbAmt(String befCntrSellPrbbAmt) {
+        this.befCntrSellPrbbAmt = befCntrSellPrbbAmt;
+    }
+
+    public String getCntrSellPrbbAmt() {
+        return cntrSellPrbbAmt;
+    }
+
+    public void setCntrSellPrbbAmt(String cntrSellPrbbAmt) {
+        this.cntrSellPrbbAmt = cntrSellPrbbAmt;
+    }
+
+    public String getBefCntrSellAmt() {
+        return befCntrSellAmt;
+    }
+
+    public void setBefCntrSellAmt(String befCntrSellAmt) {
+        this.befCntrSellAmt = befCntrSellAmt;
+    }
+
+    public long getCntrSellAmt() {
+        return cntrSellAmt;
+    }
+
+    public void setCntrSellAmt(long cntrSellAmt) {
+        this.cntrSellAmt = cntrSellAmt;
+    }
+
+    public String getBefCntrBuyPrbbAmt() {
+        return befCntrBuyPrbbAmt;
+    }
+
+    public void setBefCntrBuyPrbbAmt(String befCntrBuyPrbbAmt) {
+        this.befCntrBuyPrbbAmt = befCntrBuyPrbbAmt;
+    }
+
+    public String getCntrBuyPrbbAmt() {
+        return cntrBuyPrbbAmt;
+    }
+
+    public void setCntrBuyPrbbAmt(String cntrBuyPrbbAmt) {
+        this.cntrBuyPrbbAmt = cntrBuyPrbbAmt;
+    }
+
+    public String getBefFcstYam() {
+        return befFcstYam;
+    }
+
+    public void setBefFcstYam(String befFcstYam) {
+        this.befFcstYam = befFcstYam;
+    }
+
+    public Long getBefSellAmt() {
+        return befSellAmt;
+    }
+
+    public void setBefSellAmt(Long befSellAmt) {
+        this.befSellAmt = befSellAmt;
+    }
+
+    public Long getBefBuyAmt() {
+        return befBuyAmt;
+    }
+
+    public void setBefBuyAmt(Long befBuyAmt) {
+        this.befBuyAmt = befBuyAmt;
+    }
+
+    public String getBefSellPrbbAmt() {
+        return befSellPrbbAmt;
+    }
+
+    public void setBefSellPrbbAmt(String befSellPrbbAmt) {
+        this.befSellPrbbAmt = befSellPrbbAmt;
+    }
+
+    public String getSellPrbbAmt() {
+        return sellPrbbAmt;
+    }
+
+    public void setSellPrbbAmt(String sellPrbbAmt) {
+        this.sellPrbbAmt = sellPrbbAmt;
+    }
+
+    public String getBefBuyPrbbAmt() {
+        return befBuyPrbbAmt;
+    }
+
+    public void setBefBuyPrbbAmt(String befBuyPrbbAmt) {
+        this.befBuyPrbbAmt = befBuyPrbbAmt;
+    }
+
+    public String getBuyPrbbAmt() {
+        return buyPrbbAmt;
+    }
+
+    public void setBuyPrbbAmt(String buyPrbbAmt) {
+        this.buyPrbbAmt = buyPrbbAmt;
+    }
+
+    public String getBefBexcRoleCd() {
+        return befBexcRoleCd;
+    }
+
+    public void setBefBexcRoleCd(String befBexcRoleCd) {
+        this.befBexcRoleCd = befBexcRoleCd;
+    }
+
+    public String getBefBexcRoleCdNm() {
+        return befBexcRoleCdNm;
+    }
+
+    public void setBefBexcRoleCdNm(String befBexcRoleCdNm) {
+        this.befBexcRoleCdNm = befBexcRoleCdNm;
+    }
+
+    public float getBefPutNopCount() {
+        return befPutNopCount;
+    }
+
+    public void setBefPutNopCount(float befPutNopCount) {
+        this.befPutNopCount = befPutNopCount;
+    }
+
+    public float getBefPutPrbbNopCount() {
+        return befPutPrbbNopCount;
+    }
+
+    public void setBefPutPrbbNopCount(float befPutPrbbNopCount) {
+        this.befPutPrbbNopCount = befPutPrbbNopCount;
+    }
+
+    public float getPutPrbbNopCount() {
+        return putPrbbNopCount;
+    }
+
+    public void setPutPrbbNopCount(float putPrbbNopCount) {
+        this.putPrbbNopCount = putPrbbNopCount;
+    }
+
+    public String getHistoryGroupCd() {
+        return historyGroupCd;
+    }
+
+    public void setHistoryGroupCd(String historyGroupCd) {
+        this.historyGroupCd = historyGroupCd;
+    }
+
+    public Integer getTotalCnt() {
+        return totalCnt;
+    }
+
+    public void setTotalCnt(Integer totalCnt) {
+        this.totalCnt = totalCnt;
+    }
+
+    public String getAllCntrStartDate() {
+        return allCntrStartDate;
+    }
+
+    public void setAllCntrStartDate(String allCntrStartDate) {
+        this.allCntrStartDate = allCntrStartDate;
+    }
+
+    public String getAllCntrEndDate() {
+        return allCntrEndDate;
+    }
+
+    public void setAllCntrEndDate(String allCntrEndDate) {
+        this.allCntrEndDate = allCntrEndDate;
     }
 
     public String getBefCntrStartDate() {
@@ -894,6 +1055,22 @@ public class BizChanceHistoryVO {
         this.befCntrEndDate = befCntrEndDate;
     }
 
+    public String getAllSellStartDate() {
+        return allSellStartDate;
+    }
+
+    public void setAllSellStartDate(String allSellStartDate) {
+        this.allSellStartDate = allSellStartDate;
+    }
+
+    public String getAllSellEndDate() {
+        return allSellEndDate;
+    }
+
+    public void setAllSellEndDate(String allSellEndDate) {
+        this.allSellEndDate = allSellEndDate;
+    }
+
     public String getBefSellStartDate() {
         return befSellStartDate;
     }
@@ -910,6 +1087,22 @@ public class BizChanceHistoryVO {
         this.befSellEndDate = befSellEndDate;
     }
 
+    public String getAllBuyStartDate() {
+        return allBuyStartDate;
+    }
+
+    public void setAllBuyStartDate(String allBuyStartDate) {
+        this.allBuyStartDate = allBuyStartDate;
+    }
+
+    public String getAllBuyEndDate() {
+        return allBuyEndDate;
+    }
+
+    public void setAllBuyEndDate(String allBuyEndDate) {
+        this.allBuyEndDate = allBuyEndDate;
+    }
+
     public String getBefBuyStartDate() {
         return befBuyStartDate;
     }
@@ -924,30 +1117,6 @@ public class BizChanceHistoryVO {
 
     public void setBefBuyEndDate(String befBuyEndDate) {
         this.befBuyEndDate = befBuyEndDate;
-    }
-
-    public long getSellAmt() {
-        return sellAmt;
-    }
-
-    public void setSellAmt(long sellAmt) {
-        this.sellAmt = sellAmt;
-    }
-
-    public long getBuyAmt() {
-        return buyAmt;
-    }
-
-    public void setBuyAmt(long buyAmt) {
-        this.buyAmt = buyAmt;
-    }
-
-    public long getCntrSellAmt() {
-        return cntrSellAmt;
-    }
-
-    public void setCntrSellAmt(long cntrSellAmt) {
-        this.cntrSellAmt = cntrSellAmt;
     }
 
     public String getChgStartDate() {
@@ -982,7 +1151,4 @@ public class BizChanceHistoryVO {
         this.befCntrAmt = befCntrAmt;
     }
 
-    public void setTotalCnt(Integer totalCnt) {
-        this.totalCnt = totalCnt;
-    }
 }
