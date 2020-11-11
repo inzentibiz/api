@@ -1280,6 +1280,16 @@ public class OfferProfitService extends AbstractDraftService {
     }
 
 
+    @Transactional
+    public List<ProfitReportVO> selectProfitReportInfo(Payload<OfferVO> requestPayload) throws Exception {
+        log.info("Call Service : " + this.getClass().getName() + ".selectProfitReportInfo");
+        OfferVO offerVO = requestPayload.getDto();
+
+        List<ProfitReportVO> result = offerProfitDAO.selectProfitReportInfo(offerVO);
+
+        return result;
+    }
+
     // excel
 
 

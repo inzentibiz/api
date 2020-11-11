@@ -389,4 +389,12 @@ public class OfferProfitDAO {
     public String selectApprovalTitle(OfferVO offerVO) {
         return mybatis.selectOne("OfferProfitMapper.selectApprovalTitle", offerVO);
     }
+
+
+    // 수익보고 상세조회
+    public List<ProfitReportVO> selectProfitReportInfo(OfferVO offerVO) {
+        return mybatis.selectList("OfferProfitMapper.selectProfitReportInfo", offerVO);
+    }
+
+
 }

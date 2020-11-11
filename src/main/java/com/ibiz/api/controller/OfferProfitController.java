@@ -331,5 +331,18 @@ public class OfferProfitController extends BaseController {
         return super.composePayload(new Payload<OfferVO>(offerProfitService.selectBeforeEstimatedPSAnalysis(requestPayload)));
     }
 
+
+
+    // 수익보고 상세조회
+    @PostMapping("/selectProfitReportInfo")
+    public ResponseEntity<String> selectProfitReportInfo(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".selectProfitReportInfo");
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferVO>>(){});
+
+        return super.composePayload(new Payload<List>(offerProfitService.selectProfitReportInfo(requestPayload)));
+    }
+
+
+
 }
 
