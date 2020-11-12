@@ -396,5 +396,17 @@ public class OfferProfitDAO {
         return mybatis.selectList("OfferProfitMapper.selectProfitReportInfo", offerVO);
     }
 
+    //  수익보고 등록
+    public void insertProfitReportInfo(ProfitReportVO profitReportVO) {
+        mybatis.insert("OfferProfitMapper.insertProfitReportInfo", profitReportVO);
+    }
 
+    //  수익보고 전체삭제
+    public void deleteProfitReportInfo(ProfitReportVO profitReportVO) {
+        mybatis.delete("OfferProfitMapper.deleteProfitReportInfo", profitReportVO);
+    }
+    // 수익보고 key 생성
+    public ProfitReportVO selectNewErnnRprtId() {
+        return mybatis.selectOne("OfferProfitMapper.selectNewErnnRprtId");
+    }
 }

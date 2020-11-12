@@ -98,6 +98,21 @@ public class OfferProfitService extends AbstractDraftService {
                     offerProfitDAO.insertOfferProfitResult(offerResultVO);
                 }
             }
+            // 수익보고
+            if(offerVO.getProfitReportList() != null){
+                ProfitReportVO prptVO = new ProfitReportVO();
+                prptVO.setFcstPalId(offerVO.getFcstPalId());
+                offerProfitDAO.deleteProfitReportInfo(prptVO);
+
+                String ernnRprtId = offerProfitDAO.selectNewErnnRprtId().getErnnRprtId();
+
+                for(ProfitReportVO profitReportVO : offerVO.getProfitReportList()) {
+                    profitReportVO.setErnnRprtId(ernnRprtId);
+                    profitReportVO.setPrjtId(offerVO.getPrjtId());
+                    profitReportVO.setFcstPalId(offerVO.getFcstPalId());
+                    offerProfitDAO.insertProfitReportInfo(profitReportVO);
+                }
+            }
 
         }catch (Exception e){
             //throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
@@ -386,6 +401,28 @@ public class OfferProfitService extends AbstractDraftService {
                     offerProfitDAO.insertOfferProfitResult(offerResultVO);
                 }
             }
+            // 수익보고
+            if(offerVO.getProfitReportList() != null){
+                List<ProfitReportVO> originList = offerProfitDAO.selectProfitReportInfo(offerVO);
+                String ernnRprtId = "";
+                if(originList.size() > 0){
+                    ernnRprtId = offerProfitDAO.selectProfitReportInfo(offerVO).get(0).getErnnRprtId();
+                }else{
+                    ernnRprtId = offerProfitDAO.selectNewErnnRprtId().getErnnRprtId();
+                }
+
+                ProfitReportVO prptVO = new ProfitReportVO();
+                prptVO.setFcstPalId(offerVO.getFcstPalId());
+                offerProfitDAO.deleteProfitReportInfo(prptVO);
+
+
+                for(ProfitReportVO profitReportVO : offerVO.getProfitReportList()) {
+                    profitReportVO.setErnnRprtId(ernnRprtId);
+                    profitReportVO.setPrjtId(offerVO.getPrjtId());
+                    profitReportVO.setFcstPalId(offerVO.getFcstPalId());
+                    offerProfitDAO.insertProfitReportInfo(profitReportVO);
+                }
+            }
 
             offerVO.getApproval().setSantId(offerVO.getSantId());
             offerVO.setSantFrmtCd(offerVO.getFrmtCd());
@@ -449,7 +486,13 @@ public class OfferProfitService extends AbstractDraftService {
                 super.deleteApprovalInfo(approvalVO);
             }
 
+            // 수익보고
+            ProfitReportVO prptVO = new ProfitReportVO();
+            prptVO.setFcstPalId(offerVO.getFcstPalId());
+            offerProfitDAO.deleteProfitReportInfo(prptVO);
+
             offerProfitDAO.deleteOfferProfitPS(offerVO);
+
         }catch (Exception e){
             if(e.getMessage() != null){
                 throw new DeleteDeniedException(e.getMessage(), offerVO);
@@ -649,6 +692,22 @@ public class OfferProfitService extends AbstractDraftService {
                 }
             }
 
+            // 수익보고
+            if(offerVO.getProfitReportList() != null){
+                ProfitReportVO prptVO = new ProfitReportVO();
+                prptVO.setFcstPalId(offerVO.getFcstPalId());
+                offerProfitDAO.deleteProfitReportInfo(prptVO);
+
+                String ernnRprtId = offerProfitDAO.selectNewErnnRprtId().getErnnRprtId();
+
+                for(ProfitReportVO profitReportVO : offerVO.getProfitReportList()) {
+                    profitReportVO.setErnnRprtId(ernnRprtId);
+                    profitReportVO.setPrjtId(offerVO.getPrjtId());
+                    profitReportVO.setFcstPalId(offerVO.getFcstPalId());
+                    offerProfitDAO.insertProfitReportInfo(profitReportVO);
+                }
+            }
+
         }catch (Exception e){
             //throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
 
@@ -746,6 +805,28 @@ public class OfferProfitService extends AbstractDraftService {
                     offerProfitDAO.insertOfferProfitResult(offerResultVO);
                 }
             }
+            // 수익보고
+            if(offerVO.getProfitReportList() != null){
+                List<ProfitReportVO> originList = offerProfitDAO.selectProfitReportInfo(offerVO);
+                String ernnRprtId = "";
+                if(originList.size() > 0){
+                    ernnRprtId = offerProfitDAO.selectProfitReportInfo(offerVO).get(0).getErnnRprtId();
+                }else{
+                    ernnRprtId = offerProfitDAO.selectNewErnnRprtId().getErnnRprtId();
+                }
+
+                ProfitReportVO prptVO = new ProfitReportVO();
+                prptVO.setFcstPalId(offerVO.getFcstPalId());
+                offerProfitDAO.deleteProfitReportInfo(prptVO);
+
+
+                for(ProfitReportVO profitReportVO : offerVO.getProfitReportList()) {
+                    profitReportVO.setErnnRprtId(ernnRprtId);
+                    profitReportVO.setPrjtId(offerVO.getPrjtId());
+                    profitReportVO.setFcstPalId(offerVO.getFcstPalId());
+                    offerProfitDAO.insertProfitReportInfo(profitReportVO);
+                }
+            }
 
             offerVO.getApproval().setSantId(offerVO.getSantId());
             offerVO.setSantFrmtCd(offerVO.getFrmtCd());
@@ -800,6 +881,11 @@ public class OfferProfitService extends AbstractDraftService {
                 approvalVO.setSantId(offerVO.getSantId());
                 super.deleteApprovalInfo(approvalVO);
             }
+
+            // 수익보고
+            ProfitReportVO prptVO = new ProfitReportVO();
+            prptVO.setFcstPalId(offerVO.getFcstPalId());
+            offerProfitDAO.deleteProfitReportInfo(prptVO);
 
             offerProfitDAO.deleteOfferProfitPS(offerVO); // BEST000T
 
@@ -882,6 +968,22 @@ public class OfferProfitService extends AbstractDraftService {
                     offerProfitDAO.insertOfferProfitPS2Result(offerResultVO);
                 }
             }
+            // 수익보고
+            if(offerVO.getProfitReportList() != null){
+                ProfitReportVO prptVO = new ProfitReportVO();
+                prptVO.setFcstPalId(fcstPalId);
+                offerProfitDAO.deleteProfitReportInfo(prptVO);
+
+                String ernnRprtId = offerProfitDAO.selectNewErnnRprtId().getErnnRprtId();
+
+                for(ProfitReportVO profitReportVO : offerVO.getProfitReportList()) {
+                    profitReportVO.setErnnRprtId(ernnRprtId);
+                    profitReportVO.setPrjtId(offerVO.getPrjtId());
+                    profitReportVO.setFcstPalId(fcstPalId);
+                    offerProfitDAO.insertProfitReportInfo(profitReportVO);
+                }
+            }
+
         }catch (Exception e){
             //throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
 
@@ -1118,6 +1220,28 @@ public class OfferProfitService extends AbstractDraftService {
                     offerProfitDAO.insertOfferProfitPS2Result(offerResultVO);
                 }
             }
+            // 수익보고
+            if(offerVO.getProfitReportList() != null){
+                List<ProfitReportVO> originList = offerProfitDAO.selectProfitReportInfo(offerVO);
+                String ernnRprtId = "";
+                if(originList.size() > 0){
+                    ernnRprtId = offerProfitDAO.selectProfitReportInfo(offerVO).get(0).getErnnRprtId();
+                }else{
+                    ernnRprtId = offerProfitDAO.selectNewErnnRprtId().getErnnRprtId();
+                }
+
+                ProfitReportVO prptVO = new ProfitReportVO();
+                prptVO.setFcstPalId(offerVO.getFcstPalId());
+                offerProfitDAO.deleteProfitReportInfo(prptVO);
+
+
+                for(ProfitReportVO profitReportVO : offerVO.getProfitReportList()) {
+                    profitReportVO.setErnnRprtId(ernnRprtId);
+                    profitReportVO.setPrjtId(offerVO.getPrjtId());
+                    profitReportVO.setFcstPalId(offerVO.getFcstPalId());
+                    offerProfitDAO.insertProfitReportInfo(profitReportVO);
+                }
+            }
 
             offerVO.getApproval().setSantId(offerVO.getSantId());
             offerVO.setSantFrmtCd(offerVO.getFrmtCd());
@@ -1180,7 +1304,13 @@ public class OfferProfitService extends AbstractDraftService {
                 super.deleteApprovalInfo(approvalVO);
             }
 
+            // 수익보고
+            ProfitReportVO prptVO = new ProfitReportVO();
+            prptVO.setFcstPalId(offerVO.getFcstPalId());
+            offerProfitDAO.deleteProfitReportInfo(prptVO);
+
             offerProfitDAO.deleteOfferProfitPS(offerVO);
+
 
         }catch (Exception e){
             if(e.getMessage() != null){

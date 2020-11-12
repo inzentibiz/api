@@ -1,10 +1,7 @@
 package com.ibiz.api.controller;
 
 import com.google.gson.reflect.TypeToken;
-import com.ibiz.api.model.ApprovalVO;
-import com.ibiz.api.model.OfferProfitSearchVO;
-import com.ibiz.api.model.OfferVO;
-import com.ibiz.api.model.Payload;
+import com.ibiz.api.model.*;
 import com.ibiz.api.service.OfferProfitService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -341,8 +338,6 @@ public class OfferProfitController extends BaseController {
 
         return super.composePayload(new Payload<List>(offerProfitService.selectProfitReportInfo(requestPayload)));
     }
-
-
 
 }
 

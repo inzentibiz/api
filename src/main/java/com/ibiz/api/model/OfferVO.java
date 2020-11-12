@@ -395,6 +395,10 @@ public class OfferVO {
      */
     private String putTimeUnitCd;
 
+    // 수익보고 매칭 리스트
+    private List<ProfitReportVO> profitReportList;
+
+
     public String getFrmtCdNm() {
         return frmtCdNm;
     }
@@ -1011,5 +1015,13 @@ public class OfferVO {
 
     public void setPutTimeUnitCd(String putTimeUnitCd) {
         this.putTimeUnitCd = putTimeUnitCd;
+    }
+
+    public List<ProfitReportVO> getProfitReportList() {
+        return profitReportList;
+    }
+
+    public void setProfitReportList(List<ProfitReportVO> profitReportList) {
+        this.profitReportList = profitReportList;
     }
 }

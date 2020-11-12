@@ -2542,4 +2542,61 @@
 
 
 
+	<!-- 수익보고 등록 -->
+	<insert id="insertProfitReportInfo"
+			parameterType="com.ibiz.api.model.ProfitReportVO" >
+
+		INSERT INTO WMST200T (
+			ERNN_RPRT_ID,
+			PRJT_ID,
+			FCST_PAL_ID,
+		<if test="wctAmt != null and wctAmt != '' ">
+			WCT_AMT,
+		</if>
+		<if test="expTypeCd != null and expTypeCd != '' ">
+			EXP_TYPE_CD,
+		</if>
+		<if test="expTypeAmt != null and expTypeAmt != '' ">
+			EXP_TYPE_AMT,
+		</if>
+		<if test="cmptCritCont != null and cmptCritCont != '' ">
+			CMPT_CRIT_CONT,
+		</if>
+			ERPT_PRGS_STAT_CD
+		) VALUES (
+			#{ernnRprtId},
+			#{prjtId},
+			#{fcstPalId},
+			<if test="wctAmt != null and wctAmt != '' ">
+				#{wctAmt},
+			</if>
+			<if test="expTypeCd != null and expTypeCd != '' ">
+				#{expTypeCd},
+			</if>
+			<if test="expTypeAmt != null and expTypeAmt != '' ">
+				#{expTypeAmt},
+			</if>
+			<if test="cmptCritCont != null and cmptCritCont != '' ">
+				#{cmptCritCont},
+			</if>
+			'A'
+		)
+	</insert>
+
+
+	<!-- 수익보고 전체 삭제 -->
+	<delete id= "deleteProfitReportInfo"
+			parameterType="com.ibiz.api.model.ProfitReportVO"  >
+
+		DELETE WMST200T
+		WHERE FCST_PAL_ID = #{fcstPalId}
+
+	</delete>
+
+	<!-- 수익보고 key select -->
+	<select id="selectNewErnnRprtId"
+			resultType="com.ibiz.api.model.ProfitReportVO">
+		SELECT IBIZ_NEW_ID('WMST200T','ERNN_RPRT_ID','EYY######') AS ERNN_RPRT_ID FROM DUAL
+	</select>
+
 </mapper>
