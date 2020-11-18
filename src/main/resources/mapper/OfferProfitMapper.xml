@@ -2599,4 +2599,14 @@
 		SELECT IBIZ_NEW_ID('WMST200T','ERNN_RPRT_ID','EYY######') AS ERNN_RPRT_ID FROM DUAL
 	</select>
 
+	<!-- 수익보고 횟수 카운트 조회 -->
+	<select id="selectProfitReportCnt"
+			parameterType="com.ibiz.api.model.OfferVO"
+			resultType="java.lang.Integer">
+		SELECT COUNT(1) FROM BEST000T
+		START WITH BEF_FCST_PAL_ID = #{befFcstPalId}
+		CONNECT BY PRIOR BEF_FCST_PAL_ID = FCST_PAL_ID
+	</select>
+
+
 </mapper>

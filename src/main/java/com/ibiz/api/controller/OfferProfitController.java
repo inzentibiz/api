@@ -339,5 +339,14 @@ public class OfferProfitController extends BaseController {
         return super.composePayload(new Payload<List>(offerProfitService.selectProfitReportInfo(requestPayload)));
     }
 
+    // 수익보고 횟수 카운트 조회
+    @PostMapping("/selectProfitReportCnt")
+    public ResponseEntity<String> selectProfitReportCnt(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".selectProfitReportCnt");
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferVO>>(){});
+
+        return super.composePayload(new Payload<Integer>(offerProfitService.selectProfitReportCnt(requestPayload)));
+    }
+
 }
 

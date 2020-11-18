@@ -409,4 +409,11 @@ public class OfferProfitDAO {
     public ProfitReportVO selectNewErnnRprtId() {
         return mybatis.selectOne("OfferProfitMapper.selectNewErnnRprtId");
     }
+
+    // 수익보고 횟수 카운트 조회
+    public Integer selectProfitReportCnt(OfferVO offerVO) {
+        return mybatis.selectOne("OfferProfitMapper.selectProfitReportCnt",offerVO);
+    }
+
+
 }

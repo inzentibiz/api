@@ -1504,4 +1504,17 @@ public class OfferProfitService extends AbstractDraftService {
 
         return list;
     }
+
+
+    @Transactional
+    public Integer selectProfitReportCnt(Payload<OfferVO> requestPayload) throws UpdateDeniedException {
+        log.info("Call Service : " + this.getClass().getName() + ".selectProfitReportCnt");
+        OfferVO offerVO = requestPayload.getDto();
+        AccountVO accountVO = requestPayload.getAccountVO();
+
+        int profitReportCnt = offerProfitDAO.selectProfitReportCnt(offerVO);
+
+        return profitReportCnt;
+    }
+
 }
