@@ -1703,7 +1703,7 @@
                     AND FCST_PAL_ID NOT IN (
                         SELECT BEF_FCST_PAL_ID
                         FROM BEST000T
-                        WHERE PRJT_ID = UPPER('P2051462') AND BEF_FCST_PAL_ID IS NOT NULL
+                        WHERE PRJT_ID = UPPER(#{prjtId}) AND BEF_FCST_PAL_ID IS NOT NULL
                     )
             ) T1
 			LEFT JOIN (SELECT FCST_PAL_ID, NVL(SUM(SELL_AMT), 0) AS SUM_SELL_AMT, NVL(SUM(BUY_COST_AMT), 0) AS SUM_BUY_AMT,
