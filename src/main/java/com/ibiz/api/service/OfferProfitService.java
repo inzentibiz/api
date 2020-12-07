@@ -1,5 +1,6 @@
 package com.ibiz.api.service;
 
+import com.ibiz.api.connection.ConnectionFactory;
 import com.ibiz.api.dao.BizChanceDAO;
 import com.ibiz.api.dao.SanctionDAO;
 import com.ibiz.api.dao.OfferProfitDAO;
@@ -8,14 +9,13 @@ import com.ibiz.api.exception.DeleteDeniedException;
 import com.ibiz.api.exception.ExceptionCode;
 import com.ibiz.api.exception.UpdateDeniedException;
 import com.ibiz.api.model.*;
-import com.ibiz.api.utils.IndexUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -34,6 +34,9 @@ public class OfferProfitService extends AbstractDraftService {
 
     @Resource(name = "sanctionDAO")
     private SanctionDAO sanctionDAO;
+
+    @Autowired
+    private ConnectionFactory connectionFactory;
 
     /*
      * 예상손익분석서(P&S) ver 1
@@ -325,6 +328,29 @@ public class OfferProfitService extends AbstractDraftService {
             offerVO.setFcstPalPrgsStatCd(commonCodeMappingVO.getComCd());
             offerProfitDAO.updateOfferProfitStat(offerVO);
 
+            // 수주등록이 되어있는 경우 삭제 불가
+            String requestUri = "http://"+offerVO.getPrgsStatUrl().split("/")[2]+"/contract/selectCntrInfoRelatedFcstPalIdCountAjax.do";
+
+            if(!requestUri.equals("") && requestUri != null){
+
+                // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                RestTemplate restTemplate = connectionFactory.getRestTemplate();
+                String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
+
+                restTemplate.postForObject(checkRestTemp, offerVO, JsonObject.class);
+
+                JsonObject returnResult = restTemplate.postForObject(requestUri, offerVO, JsonObject.class);
+
+                if(returnResult.IsSucceed != true){
+                    // 실패시
+                    throw new UpdateDeniedException(offerVO);
+                }else if(returnResult.IsSucceed == true && (Integer)returnResult.Data > 0){
+                    // 계약테이블에 연결된 예상손익이 존재하는 경우
+                    throw new UpdateDeniedException("연결된 계약, 수주정보가 존재하여 폐기할 수 없습니다.",offerVO);
+
+                }
+            }
+
         }catch (Exception e){
             //throw new UpdateDeniedException("진행상태 변경 중 오류가 발생했습니다.", offerVO);
 
@@ -469,6 +495,28 @@ public class OfferProfitService extends AbstractDraftService {
             if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
                 throw new DeleteDeniedException("견적서가 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
             }
+            // 수주등록이 되어있는 경우 삭제 불가
+            String requestUri = "http://"+offerVO.getPrgsStatUrl().split("/")[2]+"/contract/selectCntrInfoRelatedFcstPalIdCountAjax.do";
+
+            if(!requestUri.equals("") && requestUri != null){
+
+                // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                RestTemplate restTemplate = connectionFactory.getRestTemplate();
+                String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
+
+                restTemplate.postForObject(checkRestTemp, offerVO, JsonObject.class);
+
+                JsonObject returnResult = restTemplate.postForObject(requestUri, offerVO, JsonObject.class);
+
+                if(returnResult.IsSucceed != true){
+                    // 실패시
+                    throw new UpdateDeniedException(offerVO);
+                }else if(returnResult.IsSucceed == true && (Integer)returnResult.Data > 0){
+                    // 계약테이블에 연결된 예상손익이 존재하는 경우
+                    throw new UpdateDeniedException("연결된 계약, 수주정보가 존재하여 삭제할 수 없습니다.",offerVO);
+
+                }
+            }
 
 
             ApprovalVO approvalVO = new ApprovalVO();
@@ -560,6 +608,39 @@ public class OfferProfitService extends AbstractDraftService {
             // 결재진행상태 업데이트
             offerProfitDAO.updateOfferProfitStat(bsnsProfitLoss);
 
+            if (bsnsProfitLoss.getFcstPalId() == null){
+                bsnsProfitLoss.setFcstPalId(offerProfitDAO.selectFcstPalId(bsnsProfitLoss));
+            }
+            OfferVO targetVO = offerProfitDAO.selectOfferProfit(bsnsProfitLoss);
+            bsnsProfitLoss.setBefFcstPalId(targetVO.getBefFcstPalId()); // 이전 예상손익ID 대입
+
+            // 수익보고 상태가 승인완료이고 이전 예상손익ID가 존재한다면 연결된 수주정보가 존재하는지 확인 필요
+            if(bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C") && bsnsProfitLoss.getBefFcstPalId() != null){ 
+
+                if(bsnsProfitLoss.getPrgsStatUrl() != null){
+                    String requestUri = "http://"+bsnsProfitLoss.getPrgsStatUrl().split("/")[2]+"/contract/updateContractRelatedFcstPalIdAjax.do";
+
+                    if(!requestUri.equals("") && requestUri != null){
+
+                        // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                        RestTemplate restTemplate = connectionFactory.getRestTemplate();
+                        String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
+
+                        restTemplate.postForObject(checkRestTemp, bsnsProfitLoss, JsonObject.class);
+
+
+                        JsonObject returnResult = restTemplate.postForObject(requestUri, bsnsProfitLoss, JsonObject.class);
+
+                        if(returnResult.IsSucceed != true){
+                            // 실패시
+                            throw new UpdateDeniedException(bsnsProfitLoss);
+                        }
+                    }
+                }
+
+            }
+
+            
             //화면 바인딩을 위해 진행상태코드명 조회
             result = offerProfitDAO.selectFcstPalPrgsStatCd(bsnsProfitLoss);
 
@@ -870,6 +951,28 @@ public class OfferProfitService extends AbstractDraftService {
             }
             if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
                 throw new DeleteDeniedException("견적서가 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+            }
+            // 수주등록이 되어있는 경우 삭제 불가
+            String requestUri = "http://"+offerVO.getPrgsStatUrl().split("/")[2]+"/contract/selectCntrInfoRelatedFcstPalIdCountAjax.do";
+
+            if(!requestUri.equals("") && requestUri != null){
+
+                // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                RestTemplate restTemplate = connectionFactory.getRestTemplate();
+                String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
+
+                restTemplate.postForObject(checkRestTemp, offerVO, JsonObject.class);
+
+                JsonObject returnResult = restTemplate.postForObject(requestUri, offerVO, JsonObject.class);
+
+                if(returnResult.IsSucceed != true){
+                    // 실패시
+                    throw new UpdateDeniedException(offerVO);
+                }else if(returnResult.IsSucceed == true && (Integer)returnResult.Data > 0){
+                    // 계약테이블에 연결된 예상손익이 존재하는 경우
+                    throw new UpdateDeniedException("연결된 계약, 수주정보가 존재하여 삭제할 수 없습니다.",offerVO);
+
+                }
             }
             offerProfitDAO.deleteOfferProfitPSProductDC(offerVO); // BEST011T
             offerProfitDAO.deleteOfferProfitPSProduct(offerVO); // BEST010T
@@ -1290,6 +1393,28 @@ public class OfferProfitService extends AbstractDraftService {
             }
             if (offerProfitDAO.selectIsRelatedWithBefProfitAnalysis(offerVO) > 0) {
                 throw new DeleteDeniedException("손익변경보고로 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+            }
+            // 수주등록이 되어있는 경우 삭제 불가
+            String requestUri = "http://"+offerVO.getPrgsStatUrl().split("/")[2]+"/contract/selectCntrInfoRelatedFcstPalIdCountAjax.do";
+
+            if(!requestUri.equals("") && requestUri != null){
+
+                // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                RestTemplate restTemplate = connectionFactory.getRestTemplate();
+                String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
+
+                restTemplate.postForObject(checkRestTemp, offerVO, JsonObject.class);
+
+                JsonObject returnResult = restTemplate.postForObject(requestUri, offerVO, JsonObject.class);
+
+                if(returnResult.IsSucceed != true){
+                    // 실패시
+                    throw new UpdateDeniedException(offerVO);
+                }else if(returnResult.IsSucceed == true && (Integer)returnResult.Data > 0){
+                    // 계약테이블에 연결된 예상손익이 존재하는 경우
+                    throw new UpdateDeniedException("연결된 계약, 수주정보가 존재하여 삭제할 수 없습니다.",offerVO);
+
+                }
             }
 
             ApprovalVO approvalVO = new ApprovalVO();

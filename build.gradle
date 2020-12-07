@@ -34,6 +34,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
     implementation files ('libs/ojdbc7-12.1.0.2.jar')
+    implementation files ('/libs/httpclient-4.5.1.jar')
 
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.10.7'
     runtimeOnly 'io.jsonwebtoken:jjwt-orgjson:0.10.7'

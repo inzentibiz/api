@@ -398,6 +398,8 @@ public class OfferVO {
     // 수익보고 매칭 리스트
     private List<ProfitReportVO> profitReportList;
 
+    // 결재서식 진행상태 업데이트 url (수익변경보고)
+    private String prgsStatUrl;
 
     public String getFrmtCdNm() {
         return frmtCdNm;
@@ -1023,5 +1025,13 @@ public class OfferVO {
 
     public void setProfitReportList(List<ProfitReportVO> profitReportList) {
         this.profitReportList = profitReportList;
+    }
+
+    public String getPrgsStatUrl() {
+        return prgsStatUrl;
+    }
+
+    public void setPrgsStatUrl(String prgsStatUrl) {
+        this.prgsStatUrl = prgsStatUrl;
     }
 }
