@@ -283,9 +283,9 @@ public class OfferProfitService extends AbstractDraftService {
                 if(!bsnsProfitLoss.getFcstPalPrgsStatCd().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W") ){
                     buttonList.add(new HashMap<String, String>() {{put("button", "견적작성"); }});
                 }
-                if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C")) {
+                if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D")) {
                     // 예상손익진행상태가 승인인 경우 예상손익변경버튼 내려줌
-                    buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
+                    // buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
                     buttonList.add(new HashMap<String, String>() {{put("button", "수주보고"); }});
                 }
             }
@@ -1023,7 +1023,7 @@ public class OfferProfitService extends AbstractDraftService {
                 befOfferVO.setFcstPalId(offerVO.getBefFcstPalId());
                 befOfferVO.setSantId(offerProfitDAO.selectOfferProfitPS2(befOfferVO).getSantId());
 
-                if( !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("C")){
+                if( !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("C") && !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("D")  ){
                     throw new UpdateDeniedException("변경전 예상손익분석서는 승인상태여야 합니다.", befOfferVO);
                 }
             }
@@ -1227,7 +1227,7 @@ public class OfferProfitService extends AbstractDraftService {
                 if(!bsnsProfitLoss.getFcstPalPrgsStatCd().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W") ){
                     buttonList.add(new HashMap<String, String>() {{put("button", "견적작성"); }});
                 }
-                if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C")) {
+                if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D")) {
                     // 예상손익진행상태가 승인인 경우 예상손익변경버튼 내려줌
                     buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
                     buttonList.add(new HashMap<String, String>() {{put("button", "수주보고"); }});
@@ -1284,7 +1284,7 @@ public class OfferProfitService extends AbstractDraftService {
                 befOfferVO.setFcstPalId(offerVO.getBefFcstPalId());
                 befOfferVO.setSantId(offerProfitDAO.selectOfferProfitPS2(befOfferVO).getSantId());
 
-                if (!offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("C")) {
+                if (!offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("C") && !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("D") ) {
                     throw new UpdateDeniedException("변경전 예상손익분석서는 승인상태여야 합니다.", befOfferVO);
                 }
             }
