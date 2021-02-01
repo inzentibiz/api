@@ -522,6 +522,11 @@ public class BizChanceSearchVO {
      */
     private List<String> wctPsbltCdList;
 
+    /**
+     * 프로젝트인입경로 코드
+     */
+    private String prjtInputCd;
+
     public String getPrjtId() {
         return prjtId;
     }
@@ -1591,6 +1596,15 @@ public class BizChanceSearchVO {
         this.wctPsbltCdList = wctPsbltCdList;
     }
 
+    public String getPrjtInputCd() {
+        return prjtInputCd;
+    }
+
+
+    public void setPrjtInputCd(String prjtInputCd) {
+        this.prjtInputCd = prjtInputCd;
+    }
+
 
     @Override
     public String toString() {
@@ -1629,7 +1643,8 @@ public class BizChanceSearchVO {
                 + ", allBuyEndDate=" + allBuyEndDate + ", befBuyEndDate=" + befBuyEndDate
                 + ", chgStartDate=" + chgStartDate + ", chgEndDate=" + chgEndDate
                 + ", userId=" + userId + ", totalCnt=" + totalCnt + ", exceptContractComplete=" + exceptContractComplete
-                + ", boptStatCdList=" + boptStatCdList + ", wctPsbltCd=" + wctPsbltCd+ ", wctPsbltCdList=" + wctPsbltCdList+ "]";
+                + ", boptStatCdList=" + boptStatCdList + ", wctPsbltCd=" + wctPsbltCd+ ", wctPsbltCdList=" + wctPsbltCdList
+                + ", prjtInputCd=" + prjtInputCd + "]";
     }
 
 }
