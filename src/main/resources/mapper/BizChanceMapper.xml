@@ -428,6 +428,9 @@
             <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                 AND BSNS_CLSF_CD = #{bsnsClsfCd}
             </if>
+            <if test="prjtInputCd != null and prjtInputCd != ''">
+                AND T3.PRJT_INPUT_CD = #{prjtInputCd}
+            </if>
             <if test="cntrStartDate != null and cntrStartDate != '' ">
                 <![CDATA[
                            AND   #{cntrStartDate} <= TO_CHAR(TO_DATE(T1.CNTR_DATE,'YYYYMMDD'),'YYYYMMDD')

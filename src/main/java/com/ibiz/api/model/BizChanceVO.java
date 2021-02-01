@@ -372,6 +372,11 @@ public class BizChanceVO {
      */
     private List<String> wctPsbltCdList;
 
+    /**
+     * 프로젝트인입경로 코드
+     */
+    private String prjtInputCd;
+
     public List<BizChanceVO> getBizChanceChangeList() {
         return bizChanceChangeList;
     }
@@ -953,5 +958,14 @@ public class BizChanceVO {
     public void setWctPsbltCdList(List<String> wctPsbltCdList) {
         this.wctPsbltCdList = wctPsbltCdList;
     }
+
+    public String getPrjtInputCd() {
+        return prjtInputCd;
+    }
+
+    public void setPrjtInputCd(String prjtInputCd) {
+        this.prjtInputCd = prjtInputCd;
+    }
+
 
 }
