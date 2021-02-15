@@ -401,6 +401,12 @@ public class OfferVO {
     // 결재서식 진행상태 업데이트 url (수익변경보고)
     private String prgsStatUrl;
 
+    // 수익보고 내자
+    private long exptTurnKeyAmt;
+
+    // 수익보고 외주비(Turn-key)
+    private long turnKeyAmt;
+
     public String getFrmtCdNm() {
         return frmtCdNm;
     }
@@ -1033,5 +1039,21 @@ public class OfferVO {
 
     public void setPrgsStatUrl(String prgsStatUrl) {
         this.prgsStatUrl = prgsStatUrl;
+    }
+
+    public long getExptTurnKeyAmt() {
+        return exptTurnKeyAmt;
+    }
+
+    public void setExptTurnKeyAmt(long exptTurnKeyAmt) {
+        this.exptTurnKeyAmt = exptTurnKeyAmt;
+    }
+
+    public long getTurnKeyAmt() {
+        return turnKeyAmt;
+    }
+
+    public void setTurnKeyAmt(long turnKeyAmt) {
+        this.turnKeyAmt = turnKeyAmt;
     }
 }
