@@ -1637,6 +1637,14 @@ public class OfferProfitService extends AbstractDraftService {
         OfferVO offerVO = requestPayload.getDto();
         AccountVO accountVO = requestPayload.getAccountVO();
 
+        OfferVO optionVO = offerProfitDAO.selectProfitReportCntOption(offerVO);
+
+        if(optionVO != null){
+            offerVO.setTotalCnt(1);
+        }else{
+            offerVO.setTotalCnt(0);
+        }
+
         int profitReportCnt = offerProfitDAO.selectProfitReportCnt(offerVO);
 
         return profitReportCnt;
