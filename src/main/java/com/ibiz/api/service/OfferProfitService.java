@@ -285,7 +285,7 @@ public class OfferProfitService extends AbstractDraftService {
                 }
                 if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D")) {
                     // 예상손익진행상태가 승인인 경우 예상손익변경버튼 내려줌
-                    // buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
+                    buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
                     buttonList.add(new HashMap<String, String>() {{put("button", "수주보고"); }});
                 }
             }
@@ -1515,8 +1515,10 @@ public class OfferProfitService extends AbstractDraftService {
 
         List<OfferResultVO> result =  new ArrayList();
 
-        if (bsnsProfitLoss.getSantId() != null)
+        if (bsnsProfitLoss.getSantId() != null) {
             bsnsProfitLoss.setFcstPalId(offerProfitDAO.selectFcstPalId(bsnsProfitLoss));
+            bsnsProfitLoss.setPrjtTypeCd(offerProfitDAO.selectOfferProfit(bsnsProfitLoss).getPrjtTypeCd());
+        }
 
         result = offerProfitDAO.selectOfferProfitPS2ResultList(bsnsProfitLoss);
 

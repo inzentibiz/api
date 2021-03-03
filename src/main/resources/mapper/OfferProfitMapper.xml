@@ -425,6 +425,9 @@
 		<if test="cntrSpclCont != null and cntrSpclCont != ''">
 			CNTR_SPCL_CONT,
 		</if>
+		<if test="befFcstPalId != null and befFcstPalId != ''">
+			BEF_FCST_PAL_ID,
+		</if>
 		SELL_AMT,
 		FCST_PAL_PRGS_STAT_CD,
 		SLS_DEPT_ID,
@@ -465,6 +468,9 @@
 		</if>
 		<if test="cntrSpclCont != null and cntrSpclCont != ''">
 			#{cntrSpclCont},
+		</if>
+		<if test="befFcstPalId != null and befFcstPalId != ''">
+			#{befFcstPalId},
 		</if>
 		#{sellAmt},
 		#{fcstPalPrgsStatCd},
@@ -951,6 +957,7 @@
 		VRB_SLCT_RST_CD = #{vrbSlctRstCd},
 		SELL_AMT = #{sellAmt},
 		CNTR_SPCL_CONT = #{cntrSpclCont},
+		BEF_FCST_PAL_ID = #{befFcstPalId},
 		CHG_EMP_ID = #{chgEmpId},
 		CHG_DT = SYSDATE
 		WHERE
@@ -1608,7 +1615,9 @@
 							 JOIN ACOM010T C10 ON (C20.COM_GRP_CD = C10.COM_GRP_CD)
 					   WHERE C20.CLMN_NM = 'PROD_TYPE_CD'
 						 AND C10.USE_YN = 'Y'
+						<if test="prjtTypeCd != 'B2' or (prjtTypeCd == null and prjtTypeCd == '') ">
 						 AND C10.COM_CD_CHAR_VAL = 'S' --Solution에 해당하는 상품유형
+						</if>
 					 ) ACOM
 			   ON ( B.FCST_PAL_ID = #{fcstPalId} AND B.PROD_TYPE_CD = ACOM.PROD_TYPE_CD )
 		GROUP BY FCST_PAL_ID, ACOM.PROD_TYPE_CD, ACOM.PROD_TYPE_CD_NM, PROD_TYPE_SEQC
