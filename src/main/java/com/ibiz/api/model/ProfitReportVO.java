@@ -39,6 +39,17 @@ public class ProfitReportVO {
     // 산출내용
     private String cmptCritCont;
 
+    // CBS코드
+    private String cbsCd;
+
+    // 기준연도
+    private String critYear;
+
+    // 기준월
+    private String critMon;
+
+    // 부서
+    private String slsDeptId;
 
     public String getErnnRprtId() {
         return ernnRprtId;
@@ -134,5 +145,13 @@ public class ProfitReportVO {
 
     public void setCmptCritCont(String cmptCritCont) {
         this.cmptCritCont = cmptCritCont;
+    }
+
+    public String getCbsCd() {
+        return cbsCd;
+    }
+
+    public void setCbsCd(String cbsCd) {
+        this.cbsCd = cbsCd;
     }
 }
