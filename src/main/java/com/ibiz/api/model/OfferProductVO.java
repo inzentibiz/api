@@ -433,9 +433,6 @@ public class OfferProductVO {
     @Digits(integer=10,fraction=5)
     private Double maGodsSplyQnt;
 
-    // Turn-Key 여부
-    private String turnKeyYn;
-
 
     public String getFcstPalId() {
         return fcstPalId;
@@ -1029,11 +1026,4 @@ public class OfferProductVO {
         this.maGodsSplyQnt = maGodsSplyQnt;
     }
 
-    public String getTurnKeyYn() {
-        return turnKeyYn;
-    }
-
-    public void setTurnKeyYn(String turnKeyYn) {
-        this.turnKeyYn = turnKeyYn;
-    }
 }

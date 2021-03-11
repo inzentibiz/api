@@ -1550,7 +1550,6 @@
 			   B.DRCST_AMT, B.INCST_AMT,
 			   B.EMB_GODS_YN,
 			   B.SPLM_PCHS_YN,
-				B.TURN_KEY_YN,
 			   B.ESTI_RMRK_CONT,
 			   B.COST_RMRK_CONT
 		  FROM BEST010T B
@@ -1987,9 +1986,6 @@
 			<if test="maEndDate != null and maEndDate != ''">
 				MA_END_DATE,
 			</if>
-			<if test="turnKeyYn != null and turnKeyYn != ''">
-				TURN_KEY_YN,
-			</if>
 			GODS_CLSF_CD
 		) VALUES (
 			#{fcstPalId},
@@ -2118,9 +2114,6 @@
 			</if>
 			<if test="maEndDate != null and maEndDate != ''">
 				#{maEndDate},
-			</if>
-			<if test="turnKeyYn != null and turnKeyYn != ''">
-				#{turnKeyYn},
 			</if>
 			#{godsClsfCd}
 		)
