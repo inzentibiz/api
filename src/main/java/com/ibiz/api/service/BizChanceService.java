@@ -178,8 +178,8 @@ public class BizChanceService {
                     bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
                     bizChanceAmountVO.setChgDt(chgDt);
                     bizChanceAmountVO.setSeq(amtSeq);
-                    bizChanceAmountVO.setSellAmt( (bizChanceAmountVO.getSellAmt() == null? 0: bizChanceAmountVO.getSellAmt() * 1000) );
-                    bizChanceAmountVO.setBuyAmt( (bizChanceAmountVO.getBuyAmt() == null? 0: bizChanceAmountVO.getBuyAmt() * 1000) );
+                    bizChanceAmountVO.setSellAmt( (bizChanceAmountVO.getSellAmt() == null? 0: bizChanceAmountVO.getSellAmt() ) );
+                    bizChanceAmountVO.setBuyAmt( (bizChanceAmountVO.getBuyAmt() == null? 0: bizChanceAmountVO.getBuyAmt() ) );
                     bizChanceDAO.insertBizChanceAmt(bizChanceAmountVO);
                     bizChanceDAO.insertBizChanceHistoryAmt(bizChanceAmountVO);
                     amtSeq++;
@@ -240,8 +240,8 @@ public class BizChanceService {
                     bizChanceAmountVO.setChgDt(chgDt);
                     bizChanceAmountVO.setSeq(amtSeq);
 
-                    bizChanceAmountVO.setSellAmt( (bizChanceAmountVO.getSellAmt() == null? 0: bizChanceAmountVO.getSellAmt() * 1000) );
-                    bizChanceAmountVO.setBuyAmt( (bizChanceAmountVO.getBuyAmt() == null? 0: bizChanceAmountVO.getBuyAmt() * 1000) );
+                    bizChanceAmountVO.setSellAmt( (bizChanceAmountVO.getSellAmt() == null? 0: bizChanceAmountVO.getSellAmt() ) );
+                    bizChanceAmountVO.setBuyAmt( (bizChanceAmountVO.getBuyAmt() == null? 0: bizChanceAmountVO.getBuyAmt() ) );
                     bizChanceDAO.insertBizChanceAmt(bizChanceAmountVO);
                     bizChanceDAO.insertBizChanceHistoryAmt(bizChanceAmountVO);
                     amtSeq++;

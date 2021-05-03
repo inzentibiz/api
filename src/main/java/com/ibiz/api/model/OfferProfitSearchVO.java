@@ -208,6 +208,12 @@ public class OfferProfitSearchVO {
      */
     private String befFcstPalId;
 
+    // 사업분류코드
+    private String bsnsClsfCd;
+
+    // 제품분류코드
+    private String godsClsfCd;
+
     public String getDocNo() {
         return docNo;
     }
@@ -574,5 +580,21 @@ public class OfferProfitSearchVO {
 
     public void setBefFcstPalId(String befFcstPalId) {
         this.befFcstPalId = befFcstPalId;
+    }
+
+    public String getBsnsClsfCd() {
+        return bsnsClsfCd;
+    }
+
+    public void setBsnsClsfCd(String bsnsClsfCd) {
+        this.bsnsClsfCd = bsnsClsfCd;
+    }
+
+    public String getGodsClsfCd() {
+        return godsClsfCd;
+    }
+
+    public void setGodsClsfCd(String godsClsfCd) {
+        this.godsClsfCd = godsClsfCd;
     }
 }

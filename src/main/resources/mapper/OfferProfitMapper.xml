@@ -1116,6 +1116,20 @@
 		<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != ''">
 			AND A.FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}  --★ 검색조건:진행상태
 		</if>
+		<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+			AND EXISTS (SELECT 1 FROM BPIP020T T2
+			WHERE T2.BOPT_ID = A.BOPT_ID
+			  <if test="godsClsfCd != null and  godsClsfCd != ''">
+			  AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
+			  </if>
+			  <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+			  AND EXISTS (SELECT COM_CD FROM ACOM010T GC
+						   WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
+							 AND T2.GODS_CLSF_CD = GC.COM_CD
+							 AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
+				</if>
+		  )
+		</if>
 		GROUP BY A.FCST_PAL_ID, A.DOC_NO,
 		A.SLS_DEPT_ID, --영업부서
 		A.SLS_EMP_ID, --영업대표
@@ -1128,7 +1142,6 @@
 		A.FCST_PAL_PRGS_STAT_CD, --예상손익진행상태코드
 		A.REG_EMP_ID, A.REG_DT, A.CHG_DT --등록자,등록일시, 최종변경일시
 		ORDER BY A.REG_DT DESC
-
 	</select>
 
 	<!-- 예상손익 상품유형별 리스트 조회 For 엑셀 -->
@@ -1214,6 +1227,20 @@
 		<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != ''">
 			AND A.FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}  --★ 검색조건:진행상태
 		</if>
+        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+            AND EXISTS (SELECT 1 FROM BPIP020T T2
+            WHERE T2.BOPT_ID = A.BOPT_ID
+              <if test="godsClsfCd != null and  godsClsfCd != ''">
+              AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
+              </if>
+              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+              AND EXISTS (SELECT COM_CD FROM ACOM010T GC
+                           WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
+                             AND T2.GODS_CLSF_CD = GC.COM_CD
+                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
+                </if>
+          )
+        </if>
 		GROUP BY A.FCST_PAL_ID, A.DOC_NO,
 		A.SLS_DEPT_ID, --영업부서
 		A.SLS_EMP_ID, --영업대표
@@ -1349,6 +1376,20 @@
 		<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != ''">
 			AND A.FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}  --★ 검색조건:진행상태
 		</if>
+        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+            AND EXISTS (SELECT 1 FROM BPIP020T T2
+            WHERE T2.BOPT_ID = A.BOPT_ID
+              <if test="godsClsfCd != null and  godsClsfCd != ''">
+              AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
+              </if>
+              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+              AND EXISTS (SELECT COM_CD FROM ACOM010T GC
+                           WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
+                             AND T2.GODS_CLSF_CD = GC.COM_CD
+                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
+                </if>
+          )
+        </if>
 		--★★★★★★ AND ( ESTI_RMRK_CONT IS NOT NULL AND COST_RMRK_CONT IS NOT NULL ) (★★★★ 견적비고, 원가비고 통합 검토)
 		ORDER BY A.REG_DT DESC, PTC010T.SORT_SEQC, B.PROD_SEQ --등록일시, 상품유형코드 정렬순서, 예상손익상품순서
 
@@ -2525,6 +2566,20 @@
 						<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != null">
 							AND FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}
 						</if>
+                        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                            AND EXISTS (SELECT 1 FROM BPIP020T T2
+                            WHERE T2.BOPT_ID = TEMP.BOPT_ID
+                              <if test="godsClsfCd != null and  godsClsfCd != ''">
+                              AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
+                              </if>
+                              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                              AND EXISTS (SELECT COM_CD FROM ACOM010T GC
+                                           WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
+                                             AND T2.GODS_CLSF_CD = GC.COM_CD
+                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
+                                </if>
+                          )
+                        </if>
 						<if test="pageSearchType == 'PP'">
 							ORDER BY LAST_CUST_NM ASC, PRJT_NM ASC, ORDE_CUST_NM ASC, REG_DT DESC
 						</if>
@@ -2539,6 +2594,7 @@
 		WHERE
 		ROWNUMBER BETWEEN #{pageSize} * (#{pageNumber} - 1) + 1
 		AND #{pageSize} * (#{pageNumber} - 1) + #{pageSize}
+
 
 	</select>
 
