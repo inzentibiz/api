@@ -1912,7 +1912,7 @@
             IBIZ_COM_CD_NM('BOPT_STAT_CD', bpip.BOPT_STAT_CD) AS BOPT_STAT_CD_NM,
             IBIZ_COM_CD_NM('BOPT_END_TYPE_CD', bpip.BOPT_END_TYPE_CD) AS BOPT_END_TYPE_CD_NM,
             IBIZ_COM_CD_NM('WCT_PRBB_CD', bpip.WCT_PRBB_CD) AS WCT_PRBB_CD_NM,
-            bpip.BOPT_ID, bpip.PRJT_ID, bpip.BOPT_NM, bpip.ORDE_CUST_ID, bpip.BSNS_CLSF_CD,
+            bpip.BOPT_ID, bpip.PRJT_ID, bpip.BOPT_NM, bpip.ORDE_CUST_ID,
             bpip.CNTR_DATE, bpip.CNTR_AMT, bpip.CNTR_TRSF_START_YAM, bpip.CNTR_TRSF_END_YAM, bpip.PRPS_FNSH_DATE,
             bpip.BID_FNSH_DATE, bpip.CMPY_SLCT_DATE, bpip.WCT_PRBB_CD, bpip.FCST_RFLC_YN,
             bpip.DTIM_RPRT_DISP_YN, bpip.WCT_DCD_DATE, bpip.BOPT_STAT_CD, bpip.BOPT_END_TYPE_CD,
