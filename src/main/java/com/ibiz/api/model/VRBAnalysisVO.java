@@ -357,6 +357,16 @@ public class VRBAnalysisVO {
      */
     private Integer totalCnt;
 
+    /**
+     * 첨부파일리스트
+     */
+    private List<AttachVO> attcFileList;
+
+    /**
+     * 파일첨부 ID
+     */
+    private String fileAttcId;
+
     public String getWinPopupCd() {
         return winPopupCd;
     }
@@ -971,5 +981,29 @@ public class VRBAnalysisVO {
 
     public void setFrmtCdNm(String frmtCdNm) {
         this.frmtCdNm = frmtCdNm;
+    }
+
+    public Boolean getInProgress() {
+        return isInProgress;
+    }
+
+    public void setInProgress(Boolean inProgress) {
+        isInProgress = inProgress;
+    }
+
+    public List<AttachVO> getAttcFileList() {
+        return attcFileList;
+    }
+
+    public void setAttcFileList(List<AttachVO> attcFileList) {
+        this.attcFileList = attcFileList;
+    }
+
+    public String getFileAttcId() {
+        return fileAttcId;
+    }
+
+    public void setFileAttcId(String fileAttcId) {
+        this.fileAttcId = fileAttcId;
     }
 }
