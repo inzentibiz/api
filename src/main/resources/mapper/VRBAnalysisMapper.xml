@@ -358,7 +358,7 @@
 			    ,VRB_UDWG_RST_CD, IBIZ_COM_CD_NM('VRB_UDWG_RST_CD', VRB_UDWG_RST_CD) AS VRB_UDWG_RST_CD_NM -- VRB심서결과코드
 			    ,VRB_PRGS_STAT_CD, IBIZ_COM_CD_NM('VRB_PRGS_STAT_CD', VRB_PRGS_STAT_CD) AS VRB_PRGS_STAT_CD_NM -- VRB 진행상태코드
 			    ,BPIP.SLS_DEPT_ID, IBIZ_DEPT_NM(BPIP.SLS_DEPT_ID) AS SLS_DEPT_NM, BPIP.SLS_EMP_ID, IBIZ_EMP_NM(BPIP.SLS_EMP_ID) AS SLS_EMP_NM
-			    ,BPIP.REG_DT, BPIP.CHG_DT
+			    , BPIP.FILE_ATTC_ID, BPIP.REG_DT, BPIP.CHG_DT
 			    ,BPIP.REG_EMP_ID, IBIZ_EMP_NM(BPIP.REG_EMP_ID) AS REG_EMP_NM
 			    ,BPIP.CHG_EMP_ID, IBIZ_EMP_NM(BPIP.CHG_EMP_ID) AS CHG_EMP_NM
 			    ,AAPR.SANT_PRGS_STAT_CD ,AAPR.SANT_NTC_DST_CD,IBIZ_COM_CD_NM('SANT_NTC_DST_CD', AAPR.SANT_NTC_DST_CD) AS SANT_NTC_DST_NM
@@ -701,8 +701,10 @@
 			<if test="slsEmpId != null and slsEmpId != ''">
 				,SLS_EMP_ID
 			</if>
-
 			,VRB_PRGS_STAT_CD
+			<if test="fileAttcId != null and fileAttcId != ''">
+				,FILE_ATTC_ID
+			</if>
 			,REG_EMP_ID
 			,REG_DT
 			,SANT_ID
@@ -746,8 +748,10 @@
 			<if test="slsEmpId != null and slsEmpId != ''">
 				,#{slsEmpId}
 			</if>
-
 			,#{vrbPrgsStatCd}
+			<if test="fileAttcId != null and fileAttcId != ''">
+				,#{fileAttcId}
+			</if>
 			,#{regEmpId}
 			,SYSDATE
 			,#{santId}
@@ -1009,6 +1013,7 @@
 			        , VRB_PRGS_STAT_CD = #{vrbPrgsStatCd}
 			        , SLS_DEPT_ID = #{slsDeptId}
 			        , SLS_EMP_ID = #{slsEmpId}
+					, FILE_ATTC_ID = #{fileAttcId}
 			WHERE
 			    VRB_ANLY_ID = #{vrbAnlyId}
 
