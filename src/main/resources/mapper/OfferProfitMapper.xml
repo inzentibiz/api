@@ -169,7 +169,7 @@
 			BEST.VRB_SLCT_RST_CD, IBIZ_COM_CD_NM('VRB_SLCT_RST_CD',BEST.VRB_SLCT_RST_CD) AS VRB_SLCT_RST_CD_NM,
 			BEST.REG_EMP_ID, IBIZ_EMP_NM(BEST.REG_EMP_ID) AS REG_EMP_NM, BEST.REG_DT,
 			BEST.CHG_EMP_ID, IBIZ_EMP_NM(BEST.CHG_EMP_ID) AS CHG_EMP_NM, BEST.CHG_DT,
-			BEST.BEF_FCST_PAL_ID
+			BEST.BEF_FCST_PAL_ID, BEST.FILE_ATTC_ID
 		FROM BEST000T BEST
 		JOIN APRJ000T APRJ ON ( BEST.PRJT_ID = APRJ.PRJT_ID )
 		JOIN BPIP000T BPIP ON ( BEST.BOPT_ID = BPIP.BOPT_ID )
@@ -428,6 +428,9 @@
 		<if test="befFcstPalId != null and befFcstPalId != ''">
 			BEF_FCST_PAL_ID,
 		</if>
+		<if test="fileAttcId != null and fileAttcId != ''">
+			FILE_ATTC_ID,
+		</if>
 		SELL_AMT,
 		FCST_PAL_PRGS_STAT_CD,
 		SLS_DEPT_ID,
@@ -471,6 +474,9 @@
 		</if>
 		<if test="befFcstPalId != null and befFcstPalId != ''">
 			#{befFcstPalId},
+		</if>
+		<if test="fileAttcId != null and fileAttcId != ''">
+			#{fileAttcId},
 		</if>
 		#{sellAmt},
 		#{fcstPalPrgsStatCd},
@@ -958,6 +964,7 @@
 		SELL_AMT = #{sellAmt},
 		CNTR_SPCL_CONT = #{cntrSpclCont},
 		BEF_FCST_PAL_ID = #{befFcstPalId},
+		FILE_ATTC_ID = #{fileAttcId},
 		CHG_EMP_ID = #{chgEmpId},
 		CHG_DT = SYSDATE
 		WHERE
@@ -1497,7 +1504,8 @@
 			   --( SELECT COUNT(1) FROM BPIP141T  WHERE FCST_PAL_ID = BEST.FCST_PAL_ID ) AS VRB_REG_COUNT,  --◀◀2번 SQL 통합
 			   AAPR.SANT_APPV_DT,
 		       BEST.REG_EMP_ID, IBIZ_EMP_NM(BEST.REG_EMP_ID) AS REG_EMP_NM, BEST.REG_DT,
-			   BEST.CHG_EMP_ID, IBIZ_EMP_NM(BEST.CHG_EMP_ID) AS CHG_EMP_NM, BEST.CHG_DT
+			   BEST.CHG_EMP_ID, IBIZ_EMP_NM(BEST.CHG_EMP_ID) AS CHG_EMP_NM, BEST.CHG_DT,
+				BEST.FILE_ATTC_ID
 		  FROM BEST000T BEST
 			   JOIN APRJ000T APRJ ON ( BEST.PRJT_ID = APRJ.PRJT_ID )
 			   JOIN BPIP000T BPIP ON ( BEST.BOPT_ID = BPIP.BOPT_ID )
@@ -1746,7 +1754,7 @@
 				T1.PRJT_TYPE_CD, T1.SLS_EMP_ID, IBIZ_EMP_NM(T1.SLS_EMP_ID) AS SLS_EMP_NM, T1.REG_DT, T1.FRMT_CD,
 				T1.FCST_PAL_PRGS_STAT_CD, IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD',FCST_PAL_PRGS_STAT_CD) AS FCST_PAL_PRGS_STAT_CD_NM,
 				T2.SUM_SELL_AMT, T2.SUM_BUY_AMT, T2.CTMG_AMT, T2.SUM_PUT_NOP_COUNT,
-				PRPT.EXPT_TURN_KEY_AMT, PRPT.TURN_KEY_AMT
+				PRPT.EXPT_TURN_KEY_AMT, PRPT.TURN_KEY_AMT, T1.FILE_ATTC_ID
 			FROM (SELECT *
                     FROM BEST000T
                     WHERE PRJT_ID = UPPER(#{prjtId})
@@ -1840,6 +1848,9 @@
 		<if test="befFcstPalId != null and befFcstPalId != ''">
 		BEF_FCST_PAL_ID,
 		</if>
+		<if test="fileAttcId != null and fileAttcId != ''">
+			FILE_ATTC_ID,
+		</if>
 		REG_EMP_ID,
 		REG_DT,
 		CHG_EMP_ID,
@@ -1883,6 +1894,9 @@
 		#{slsEmpId},
 		<if test="befFcstPalId != null and befFcstPalId != ''">
 			#{befFcstPalId},
+		</if>
+		<if test="fileAttcId != null and fileAttcId != ''">
+			#{fileAttcId},
 		</if>
 		#{regEmpId},
 		SYSDATE,
@@ -2316,6 +2330,7 @@
 			        SELL_AMT = #{sellAmt},
 			        CNTR_SPCL_CONT = #{cntrSpclCont},
 					BEF_FCST_PAL_ID = #{befFcstPalId},
+					FILE_ATTC_ID = #{fileAttcId},
 			        CHG_EMP_ID = #{chgEmpId},
 			        CHG_DT = SYSDATE
 			WHERE
@@ -2463,7 +2478,7 @@
 				Z.ORDE_CUST_NM, Z.PRJT_TYPE_CD, Z.PRJT_TYPE_CD_NM,
 				Z.SELL_AMT, Z.SLS_DEPT_ID, Z.SLS_DEPT_NM, Z.SLS_EMP_ID,
 				Z.SLS_EMP_NM, Z.FCST_PAL_PRGS_STAT_CD,
-				Z.FCST_PAL_PRGS_STAT_CD_NM, Z.SANT_ID, Z.SANT_FRMT_CD, Z.SANT_APPV_DT,
+				Z.FCST_PAL_PRGS_STAT_CD_NM, Z.SANT_ID, Z.SANT_FRMT_CD, Z.SANT_APPV_DT, Z.FILE_ATTC_ID,
 				ROWNUM AS ROWNUMBER, COUNT(1) OVER() AS TOTAL_CNT
 			FROM ( SELECT TEMP.FCST_PAL_ID, TEMP.DOC_NO, TEMP.DOC_TITL, TEMP.REG_DT,
 						TEMP.LAST_CUST_ID, TEMP.LAST_CUST_NM, TEMP.PRJT_ID,
@@ -2471,7 +2486,7 @@
 						TEMP.ORDE_CUST_NM, TEMP.PRJT_TYPE_CD, TEMP.PRJT_TYPE_CD_NM,
 						TEMP.SELL_AMT, TEMP.SLS_DEPT_ID, TEMP.SLS_DEPT_NM, TEMP.SLS_EMP_ID,
 						TEMP.SLS_EMP_NM, TEMP.FCST_PAL_PRGS_STAT_CD,
-						TEMP.FCST_PAL_PRGS_STAT_CD_NM, TEMP.SANT_ID, TEMP.SANT_FRMT_CD, TEMP.SANT_APPV_DT
+						TEMP.FCST_PAL_PRGS_STAT_CD_NM, TEMP.SANT_ID, TEMP.SANT_FRMT_CD, TEMP.SANT_APPV_DT, TEMP.FILE_ATTC_ID
 					FROM (
 							SELECT BEST.FCST_PAL_ID,
 								BEST.DOC_NO,
@@ -2487,7 +2502,8 @@
 								BEST.SLS_EMP_ID, IBIZ_EMP_NM(BEST.SLS_EMP_ID) AS SLS_EMP_NM,
 								BEST.FCST_PAL_PRGS_STAT_CD, IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD',  BEST.FCST_PAL_PRGS_STAT_CD) AS FCST_PAL_PRGS_STAT_CD_NM,
 								AAPR.SANT_ID,
-								AAPR.SANT_FRMT_CD, AP11.SANT_APPV_DT
+								AAPR.SANT_FRMT_CD, AP11.SANT_APPV_DT,
+								BEST.FILE_ATTC_ID
 							FROM BEST000T BEST
 							INNER JOIN APRJ000T APRJ ON BEST.PRJT_ID = APRJ.PRJT_ID
 							INNER JOIN BPIP000T BPIP ON (BEST.BOPT_ID = BPIP.BOPT_ID AND BPIP.BOPT_STAT_CD != 'D1')
@@ -2611,7 +2627,12 @@
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="java.lang.String">
 
-		SELECT  '['|| IBIZ_HGRK_COM_CD_NM('FRMT_CD',#{frmtCd}) ||'] '|| IBIZ_CUST_NM(#{lastCustId}) ||' / '|| BOPT_NM AS DOC_TITL
+		SELECT  '['|| IBIZ_HGRK_COM_CD_NM('FRMT_CD',#{frmtCd}) ||']'
+		<if test="befFcstPalId != null and befFcstPalId != null ">
+			|| ' 《변경보고》 '
+		</if>
+		||
+		IBIZ_CUST_NM(#{lastCustId}) ||' / '|| BOPT_NM AS DOC_TITL
 		FROM BPIP000T
 		WHERE BOPT_ID  = #{boptId}
 	</select>

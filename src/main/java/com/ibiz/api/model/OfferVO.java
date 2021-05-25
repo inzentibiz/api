@@ -407,6 +407,12 @@ public class OfferVO {
     // 수익보고 외주비(Turn-key)
     private long turnKeyAmt;
 
+    // 파일첨부ID
+    private String fileAttcId;
+
+    // 파일첨부리스트
+    private List<AttachVO> fileAttcList;
+
     public String getFrmtCdNm() {
         return frmtCdNm;
     }
@@ -1055,5 +1061,21 @@ public class OfferVO {
 
     public void setTurnKeyAmt(long turnKeyAmt) {
         this.turnKeyAmt = turnKeyAmt;
+    }
+
+    public String getFileAttcId() {
+        return fileAttcId;
+    }
+
+    public void setFileAttcId(String fileAttcId) {
+        this.fileAttcId = fileAttcId;
+    }
+
+    public List<AttachVO> getFileAttcList() {
+        return fileAttcList;
+    }
+
+    public void setFileAttcList(List<AttachVO> fileAttcList) {
+        this.fileAttcList = fileAttcList;
     }
 }
