@@ -292,6 +292,7 @@
                     <if test="fcstRflcYn != null and  fcstRflcYn != ''">
                         AND FCST_RFLC_YN = #{fcstRflcYn}
                     </if>
+                    <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                    AND EXISTS (SELECT 1 FROM BPIP020T T2
                         WHERE T2.BOPT_ID = T1.BOPT_ID
                           <if test="godsClsfCd != null and  godsClsfCd != ''">
@@ -304,7 +305,7 @@
                                          AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
                             </if>
                       )
-
+                    </if>
                     <if test="prjtInputCd != null and prjtInputCd != ''">
                         AND T3.PRJT_INPUT_CD = #{prjtInputCd}
                     </if>
@@ -652,6 +653,7 @@
                 <if test="fcstRflcYn != null and  fcstRflcYn != ''">
                     AND FCST_RFLC_YN = #{fcstRflcYn}
                 </if>
+        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                AND EXISTS (SELECT 1 FROM BPIP020T T2
                     WHERE T2.BOPT_ID = T1.BOPT_ID
                       <if test="godsClsfCd != null and  godsClsfCd != ''">
@@ -664,6 +666,7 @@
                                      AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
                         </if>
                   )
+        </if>
 
                 <if test="prjtInputCd != null and prjtInputCd != ''">
                     AND T3.PRJT_INPUT_CD = #{prjtInputCd}
