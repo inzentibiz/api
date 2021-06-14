@@ -241,161 +241,163 @@
 
         SELECT *
         FROM (
-                SELECT
-                    COUNT(1) OVER() AS TOTAL_CNT,
-                    ROWNUM AS ROWNUMBER,
-                    T1.PRJT_ID, T3.PRJT_NM,T1.BOPT_ID, T1.BOPT_NM, T3.LAST_CUST_ID, IBIZ_CUST_NM(T3.LAST_CUST_ID) AS LAST_CUST_NM,
-                    T1.ORDE_CUST_ID, IBIZ_CUST_NM(T1.ORDE_CUST_ID) AS ORDE_CUST_NM,T3.PRJT_TYPE_CD, IBIZ_COM_CD_NM('PRJT_TYPE_CD',T3.PRJT_TYPE_CD) AS PRJT_TYPE_CD_NM,
-                    T1.CNTR_DATE,T1.CNTR_AMT ,T1.CNTR_TRSF_START_YAM,
-                    T1.WCT_PRBB_CD, IBIZ_COM_CD_NM('WCT_PRBB_CD',T1.WCT_PRBB_CD) AS WCT_PRBB_CD_NM, T1.FCST_RFLC_YN,
-                    T1.SLS_DEPT_ID, IBIZ_DEPT_NM(T1.SLS_DEPT_ID) AS SLS_DEPT_NM,
-                    T1.SLS_EMP_ID, IBIZ_EMP_NM(T1.SLS_EMP_ID) AS SLS_EMP_NM,
-                    T3.PRJT_STAT_CD, IBIZ_COM_CD_NM('PRJT_STAT_CD',T3.PRJT_STAT_CD) AS PRJT_STAT_CD_NM,
-                    T1.BOPT_STAT_CD, IBIZ_COM_CD_NM('BOPT_STAT_CD',T1.BOPT_STAT_CD) AS BOPT_STAT_CD_NM
-                FROM BPIP000T T1
-                JOIN ACOM010T T2 ON (T1.WCT_PRBB_CD = T2.COM_CD  AND T2.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'WCT_PRBB_CD') )-- 수주확률코드 )
-                JOIN APRJ000T T3 ON T1.PRJT_ID = T3.PRJT_ID
-                WHERE  1=1
-                    AND T1.BOPT_STAT_CD != 'D1'
-                    <if test="prjtId != null and prjtId != ''">
-                        AND  T1.PRJT_ID = UPPER(#{prjtId})
-                    </if>
-                    <if test="prjtNm != null and prjtNm != ''">
-                        AND  UPPER(T3.PRJT_NM) LIKE '%'||UPPER(#{prjtNm})||'%'
-                    </if>
-                    <if test="lastCustId != null and lastCustId != ''">
-                        AND  UPPER(T3.LAST_CUST_ID) = UPPER(#{lastCustId})
-                    </if>
-                    <if test="lastCustNm != null and lastCustNm != ''">
-                        AND  UPPER(IBIZ_CUST_NM(T3.LAST_CUST_ID)) LIKE '%'||UPPER(#{lastCustNm})||'%'
-                    </if>
-                    <if test="boptId != null and boptId != ''">
-                        AND  T1.BOPT_ID = UPPER(#{boptId})
-                    </if>
-                    <if test="boptNm != null and boptNm != ''">
-                        AND  UPPER(T1.BOPT_NM) LIKE '%'||UPPER(#{boptNm})||'%'
-                    </if>
-                    <if test="slsDeptId != null and slsDeptId != ''">
-                        AND T1.SLS_DEPT_ID IN (SELECT DEPT_ID FROM HMST100T
-                        START WITH DEPT_ID = #{slsDeptId}  -- ★조회조건 대상부서
-                        CONNECT BY PRIOR DEPT_ID = HGRK_DEPT_ID)
-                    </if>
-                    <if test="slsEmpId != null and  slsEmpId != ''">
-                        AND T1.SLS_Emp_ID = #{slsEmpId}
-                    </if>
-                    <if test="prjtStatCd != null and prjtStatCd != ''">
-                        AND T3.PRJT_STAT_CD = #{prjtStatCd}
-                    </if>
-                    <if test="prjtTypeCd != null and prjtTypeCd != ''">
-                        AND PRJT_TYPE_CD = #{prjtTypeCd}
-                    </if>
-                    <if test="fcstRflcYn != null and  fcstRflcYn != ''">
-                        AND FCST_RFLC_YN = #{fcstRflcYn}
-                    </if>
-                    <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-                   AND EXISTS (SELECT 1 FROM BPIP020T T2
-                        WHERE T2.BOPT_ID = T1.BOPT_ID
-                          <if test="godsClsfCd != null and  godsClsfCd != ''">
-                          AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-                          </if>
-                          <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-                          AND EXISTS (SELECT COM_CD FROM ACOM010T GC
-                                       WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
-                                         AND T2.GODS_CLSF_CD = GC.COM_CD
-                                         AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                            </if>
-                      )
-                    </if>
-                    <if test="prjtInputCd != null and prjtInputCd != ''">
-                        AND T3.PRJT_INPUT_CD = #{prjtInputCd}
-                    </if>
-                    <if test="cntrStartDate != null and cntrStartDate != '' ">
-                        <![CDATA[
-                                   AND   #{cntrStartDate} <= TO_CHAR(TO_DATE(T1.CNTR_DATE,'YYYYMMDD'),'YYYYMMDD')
-                               ]]>
-                    </if>
-                    <if test="cntrEndDate != null and cntrEndDate != ''">
-                        <![CDATA[
-                                   AND   #{cntrEndDate} >= TO_CHAR(TO_DATE(T1.CNTR_DATE,'YYYYMMDD'),'YYYYMMDD')
-                               ]]>
-                    </if>
-                    <if test="sellStartDate != null and sellStartDate != '' ">
-                        <![CDATA[
-                                   AND EXISTS (SELECT 1 FROM BPIP020T WHERE BOPT_ID = T1.BOPT_ID AND TO_CHAR(TO_DATE(#{sellStartDate},'YYYYMMDD'),'YYYYMM') <= FCST_YAM AND SELL_AMT != 0)
-                               ]]>
-                    </if>
-                    <if test="sellEndDate != null and sellEndDate != '' ">
-                        <![CDATA[
-                                   AND EXISTS (SELECT 1 FROM BPIP020T WHERE BOPT_ID = T1.BOPT_ID AND TO_CHAR(TO_DATE(#{sellEndDate},'YYYYMMDD'),'YYYYMM') >= FCST_YAM AND SELL_AMT != 0)
-                               ]]>
-                    </if>
-                    <if test="buyStartDate != null and buyStartDate != '' ">
-                        <![CDATA[
-                                   AND EXISTS (SELECT 1 FROM BPIP020T WHERE BOPT_ID = T1.BOPT_ID AND TO_CHAR(TO_DATE(#{buyStartDate},'YYYYMMDD'),'YYYYMM') <= FCST_YAM AND BUY_AMT != 0)
-                               ]]>
-                    </if>
-                    <if test="buyEndDate != null and buyEndDate != '' ">
-                        <![CDATA[
-                                   AND EXISTS (SELECT 1 FROM BPIP020T WHERE BOPT_ID = T1.BOPT_ID AND TO_CHAR(TO_DATE(#{buyEndDate},'YYYYMMDD'),'YYYYMM') >= FCST_YAM AND BUY_AMT != 0)
-                               ]]>
-                    </if>
-                    <if test='boptStatCd == "TRUE" '>
-                        AND
-                        <foreach item="item" collection="boptStatCdList" open="(" separator="OR" close=")" >
-                            T1.BOPT_STAT_CD  =  #{item}
-                        </foreach>
-                    </if>
-                    <if test='boptStatCd == "FALSE" '>
-                        AND T1.BOPT_STAT_CD IS NULL
-                    </if>
-                    <if test='wctPsbltCd == "TRUE" '>
-                        AND
-                        <foreach item="item" collection="wctPsbltCdList" open="(" separator="OR" close=")" >
-                            <choose>
-                                <when test='item == "A" '>
-                                    <![CDATA[
-                                        IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  =  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 100%
-                                    ]]>
-                                </when>
-                                <when test='item == "B" '>
-                                    <![CDATA[
-                                        IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  >=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 80%이상
-                                    ]]>
-                                </when>
-                                <when test='item == "C" '>
-                                    <![CDATA[
-                                        IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  >=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 50%이상
-                                    ]]>
-                                </when>
-                                <when test='item == "D" '>
-                                    <![CDATA[
-                                        IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  <=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 50%미만
-                                    ]]>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </if>
-                    <if test='wctPsbltCd == "FALSE" '>
-                        AND T1.WCT_PRBB_CD IS NULL
-                    </if>
-                    <choose>
-                        <when test='orderByCd == "CP" '>
-                            ORDER BY  IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC, CNTR_DATE ASC
-                        </when>
-                        <when test='orderByCd == "CD" '>
-                            ORDER BY  CNTR_DATE ASC, IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
-                        </when>
-                        <when test='orderByCd == "SA" '>
-                            ORDER BY  NVL(SUM_SELL_AMT,0) DESC , IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
-                        </when>
-                        <when test='orderByCd == "WP" '>
-                            ORDER BY  COM_CD_NUM_VAL DESC, CNTR_DATE, IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
-                        </when>
-                        <otherwise>
-                            ORDER BY  IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC, CNTR_DATE ASC
-                        </otherwise>
-                    </choose>
-                )TF
+            SELECT ROWNUM AS ROWNUMBER, TF.*
+            FROM (
+                    SELECT
+                        COUNT(1) OVER() AS TOTAL_CNT,
+                        T1.PRJT_ID, T3.PRJT_NM,T1.BOPT_ID, T1.BOPT_NM, T3.LAST_CUST_ID, IBIZ_CUST_NM(T3.LAST_CUST_ID) AS LAST_CUST_NM,
+                        T1.ORDE_CUST_ID, IBIZ_CUST_NM(T1.ORDE_CUST_ID) AS ORDE_CUST_NM,T3.PRJT_TYPE_CD, IBIZ_COM_CD_NM('PRJT_TYPE_CD',T3.PRJT_TYPE_CD) AS PRJT_TYPE_CD_NM,
+                        T1.CNTR_DATE,T1.CNTR_AMT ,T1.CNTR_TRSF_START_YAM,
+                        T1.WCT_PRBB_CD, IBIZ_COM_CD_NM('WCT_PRBB_CD',T1.WCT_PRBB_CD) AS WCT_PRBB_CD_NM, T1.FCST_RFLC_YN,
+                        T1.SLS_DEPT_ID, IBIZ_DEPT_NM(T1.SLS_DEPT_ID) AS SLS_DEPT_NM,
+                        T1.SLS_EMP_ID, IBIZ_EMP_NM(T1.SLS_EMP_ID) AS SLS_EMP_NM,
+                        T3.PRJT_STAT_CD, IBIZ_COM_CD_NM('PRJT_STAT_CD',T3.PRJT_STAT_CD) AS PRJT_STAT_CD_NM,
+                        T1.BOPT_STAT_CD, IBIZ_COM_CD_NM('BOPT_STAT_CD',T1.BOPT_STAT_CD) AS BOPT_STAT_CD_NM
+                    FROM BPIP000T T1
+                    JOIN ACOM010T T2 ON (T1.WCT_PRBB_CD = T2.COM_CD  AND T2.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'WCT_PRBB_CD') )-- 수주확률코드 )
+                    JOIN APRJ000T T3 ON T1.PRJT_ID = T3.PRJT_ID
+                    WHERE  1=1
+                        AND T1.BOPT_STAT_CD != 'D1'
+                        <if test="prjtId != null and prjtId != ''">
+                            AND  T1.PRJT_ID = UPPER(#{prjtId})
+                        </if>
+                        <if test="prjtNm != null and prjtNm != ''">
+                            AND  UPPER(T3.PRJT_NM) LIKE '%'||UPPER(#{prjtNm})||'%'
+                        </if>
+                        <if test="lastCustId != null and lastCustId != ''">
+                            AND  UPPER(T3.LAST_CUST_ID) = UPPER(#{lastCustId})
+                        </if>
+                        <if test="lastCustNm != null and lastCustNm != ''">
+                            AND  UPPER(IBIZ_CUST_NM(T3.LAST_CUST_ID)) LIKE '%'||UPPER(#{lastCustNm})||'%'
+                        </if>
+                        <if test="boptId != null and boptId != ''">
+                            AND  T1.BOPT_ID = UPPER(#{boptId})
+                        </if>
+                        <if test="boptNm != null and boptNm != ''">
+                            AND  UPPER(T1.BOPT_NM) LIKE '%'||UPPER(#{boptNm})||'%'
+                        </if>
+                        <if test="slsDeptId != null and slsDeptId != ''">
+                            AND T1.SLS_DEPT_ID IN (SELECT DEPT_ID FROM HMST100T
+                            START WITH DEPT_ID = #{slsDeptId}  -- ★조회조건 대상부서
+                            CONNECT BY PRIOR DEPT_ID = HGRK_DEPT_ID)
+                        </if>
+                        <if test="slsEmpId != null and  slsEmpId != ''">
+                            AND T1.SLS_Emp_ID = #{slsEmpId}
+                        </if>
+                        <if test="prjtStatCd != null and prjtStatCd != ''">
+                            AND T3.PRJT_STAT_CD = #{prjtStatCd}
+                        </if>
+                        <if test="prjtTypeCd != null and prjtTypeCd != ''">
+                            AND PRJT_TYPE_CD = #{prjtTypeCd}
+                        </if>
+                        <if test="fcstRflcYn != null and  fcstRflcYn != ''">
+                            AND FCST_RFLC_YN = #{fcstRflcYn}
+                        </if>
+                        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                       AND EXISTS (SELECT 1 FROM BPIP020T T2
+                            WHERE T2.BOPT_ID = T1.BOPT_ID
+                              <if test="godsClsfCd != null and  godsClsfCd != ''">
+                              AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
+                              </if>
+                              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                              AND EXISTS (SELECT COM_CD FROM ACOM010T GC
+                                           WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
+                                             AND T2.GODS_CLSF_CD = GC.COM_CD
+                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
+                                </if>
+                          )
+                        </if>
+                        <if test="prjtInputCd != null and prjtInputCd != ''">
+                            AND T3.PRJT_INPUT_CD = #{prjtInputCd}
+                        </if>
+                        <if test="cntrStartDate != null and cntrStartDate != '' ">
+                            <![CDATA[
+                                       AND   #{cntrStartDate} <= TO_CHAR(TO_DATE(T1.CNTR_DATE,'YYYYMMDD'),'YYYYMMDD')
+                                   ]]>
+                        </if>
+                        <if test="cntrEndDate != null and cntrEndDate != ''">
+                            <![CDATA[
+                                       AND   #{cntrEndDate} >= TO_CHAR(TO_DATE(T1.CNTR_DATE,'YYYYMMDD'),'YYYYMMDD')
+                                   ]]>
+                        </if>
+                        <if test="sellStartDate != null and sellStartDate != '' ">
+                            <![CDATA[
+                                       AND EXISTS (SELECT 1 FROM BPIP020T WHERE BOPT_ID = T1.BOPT_ID AND TO_CHAR(TO_DATE(#{sellStartDate},'YYYYMMDD'),'YYYYMM') <= FCST_YAM AND SELL_AMT != 0)
+                                   ]]>
+                        </if>
+                        <if test="sellEndDate != null and sellEndDate != '' ">
+                            <![CDATA[
+                                       AND EXISTS (SELECT 1 FROM BPIP020T WHERE BOPT_ID = T1.BOPT_ID AND TO_CHAR(TO_DATE(#{sellEndDate},'YYYYMMDD'),'YYYYMM') >= FCST_YAM AND SELL_AMT != 0)
+                                   ]]>
+                        </if>
+                        <if test="buyStartDate != null and buyStartDate != '' ">
+                            <![CDATA[
+                                       AND EXISTS (SELECT 1 FROM BPIP020T WHERE BOPT_ID = T1.BOPT_ID AND TO_CHAR(TO_DATE(#{buyStartDate},'YYYYMMDD'),'YYYYMM') <= FCST_YAM AND BUY_AMT != 0)
+                                   ]]>
+                        </if>
+                        <if test="buyEndDate != null and buyEndDate != '' ">
+                            <![CDATA[
+                                       AND EXISTS (SELECT 1 FROM BPIP020T WHERE BOPT_ID = T1.BOPT_ID AND TO_CHAR(TO_DATE(#{buyEndDate},'YYYYMMDD'),'YYYYMM') >= FCST_YAM AND BUY_AMT != 0)
+                                   ]]>
+                        </if>
+                        <if test='boptStatCd == "TRUE" '>
+                            AND
+                            <foreach item="item" collection="boptStatCdList" open="(" separator="OR" close=")" >
+                                T1.BOPT_STAT_CD  =  #{item}
+                            </foreach>
+                        </if>
+                        <if test='boptStatCd == "FALSE" '>
+                            AND T1.BOPT_STAT_CD IS NULL
+                        </if>
+                        <if test='wctPsbltCd == "TRUE" '>
+                            AND
+                            <foreach item="item" collection="wctPsbltCdList" open="(" separator="OR" close=")" >
+                                <choose>
+                                    <when test='item == "A" '>
+                                        <![CDATA[
+                                            IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  =  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 100%
+                                        ]]>
+                                    </when>
+                                    <when test='item == "B" '>
+                                        <![CDATA[
+                                            IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  >=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 80%이상
+                                        ]]>
+                                    </when>
+                                    <when test='item == "C" '>
+                                        <![CDATA[
+                                            IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  >=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 50%이상
+                                        ]]>
+                                    </when>
+                                    <when test='item == "D" '>
+                                        <![CDATA[
+                                            IBIZ_COM_CD_NUM_VAL('WCT_PRBB_CD', T1.WCT_PRBB_CD)  <=  IBIZ_COM_CD_NUM_VAL('WCT_PSBLT_CD', #{item}) -- 50%미만
+                                        ]]>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </if>
+                        <if test='wctPsbltCd == "FALSE" '>
+                            AND T1.WCT_PRBB_CD IS NULL
+                        </if>
+                        <choose>
+                            <when test='orderByCd == "CP" '>
+                                ORDER BY  IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC, CNTR_DATE ASC
+                            </when>
+                            <when test='orderByCd == "CD" '>
+                                ORDER BY  CNTR_DATE ASC, IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
+                            </when>
+                            <when test='orderByCd == "SA" '>
+                                ORDER BY  NVL(T1.CNTR_AMT,0) DESC , IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
+                            </when>
+                            <when test='orderByCd == "WP" '>
+                                ORDER BY  COM_CD_NUM_VAL DESC, CNTR_DATE, IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
+                            </when>
+                            <otherwise>
+                                ORDER BY  IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC, CNTR_DATE ASC
+                            </otherwise>
+                        </choose>
+                    )TF
+            ) T
             WHERE
             ROWNUMBER BETWEEN #{pageSize} * (#{pageNumber} - 1) + 1
             AND #{pageSize} * (#{pageNumber} - 1) + #{pageSize}
@@ -414,7 +416,8 @@
                T1.BOPT_ID, T1.BOPT_NM,
                IBIZ_COM_CD_NM('BSNS_CLSF_CD',GC.HGRK_COM_CD) AS BSNS_CLSF_CD_NM,
                T1.ORDE_CUST_ID,IBIZ_CUST_NM(T1.ORDE_CUST_ID) AS ORDE_CUST_NM,
-               T1.CNTR_DATE, IBIZ_COM_CD_NM('WCT_PRBB_CD',T1.WCT_PRBB_CD) AS WCT_PRBB_CD_NM, T1.WCT_PRBB_CD, T1.FCST_RFLC_YN,
+               T1.CNTR_DATE,
+               WP.COM_CD_NM AS WCT_PRBB_CD_NM, T1.WCT_PRBB_CD, WP.COM_CD_NUM_VAL AS WCT_PRBB_WGVL, T1.FCST_RFLC_YN,
                IBIZ_COM_CD_NM('BOPT_STAT_CD',T1.BOPT_STAT_CD) AS BOPT_STAT_CD_NM,
                IBIZ_COM_CD_NM('BOPT_END_TYPE_CD',T1.BOPT_END_TYPE_CD)  AS BOPT_END_TYPE_CD_NM,
                T1.SLS_DEPT_ID, IBIZ_DEPT_NM(T1.SLS_DEPT_ID) AS SLS_DEPT_NM, --사업기회 영업부서
@@ -590,12 +593,14 @@
                 T1.PRJT_ID, T3.PRJT_NM,T3.LAST_CUST_ID, IBIZ_CUST_NM(T3.LAST_CUST_ID) AS LAST_CUST_NM,
                 T3.PRJT_TYPE_CD, IBIZ_COM_CD_NM('PRJT_TYPE_CD',T3.PRJT_TYPE_CD) AS PRJT_TYPE_CD_NM,
                 T3.BSNS_BDGT_AMT, T3.PRJT_STAT_CD, IBIZ_COM_CD_NM('PRJT_STAT_CD',T3.PRJT_STAT_CD) AS PRJT_STAT_CD_NM,
+                T3.BSNS_DOI_CD, IBIZ_COM_CD_NM('BSNS_DOI_CD',T3.BSNS_DOI_CD) AS BSNS_DOI_NM,
                 T1.BOPT_ID, T1.BOPT_NM,
                 T1.ORDE_CUST_ID, IBIZ_CUST_NM(T1.ORDE_CUST_ID) AS ORDE_CUST_NM,
                 T1.CNTR_DATE, T1.CNTR_TRSF_START_YAM,  T1.CNTR_TRSF_END_YAM, T1.PRPS_FNSH_DATE, T1.BID_FNSH_DATE, T1.CMPY_SLCT_DATE,
-                T4.SELL_AMT, T4.BUY_AMT,
-                T4.SELL_AMT*WP.COM_CD_NUM_VAL AS FCST_SELL_AMT,
-                T4.BUY_AMT*WP.COM_CD_NUM_VAL AS FCST_BUY_AMT,
+                T4.SUM_SELL_AMT, T4.SUM_BUY_AMT,
+                T4.SUM_SELL_AMT*WP.COM_CD_NUM_VAL AS FCST_SELL_AMT,
+                T4.SUM_BUY_AMT*WP.COM_CD_NUM_VAL AS FCST_BUY_AMT,
+                WP.COM_CD_NUM_VAL AS WCT_PRBB_WGVL,
                 T5.SUM_PUT_NOP_COUNT, T1.WCT_PRBB_CD, IBIZ_COM_CD_NM('WCT_PRBB_CD',T1.WCT_PRBB_CD) AS WCT_PRBB_CD_NM,  T1.FCST_RFLC_YN,
                 T1.BOPT_STAT_CD, IBIZ_COM_CD_NM('BOPT_STAT_CD',T1.BOPT_STAT_CD) AS BOPT_STAT_CD_NM,
                 IBIZ_COM_CD_NM('BOPT_END_TYPE_CD',T1.BOPT_END_TYPE_CD)  AS BOPT_END_TYPE_CD_NM, T1.WCT_DCD_DATE,
@@ -605,7 +610,7 @@
             FROM BPIP000T T1
             JOIN ACOM010T T2 ON (T1.WCT_PRBB_CD = T2.COM_CD  AND T2.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'WCT_PRBB_CD') )-- 수주확률코드 )
             JOIN APRJ000T T3 ON T1.PRJT_ID = T3.PRJT_ID
-            LEFT JOIN (SELECT BOPT_ID, SUM(SELL_AMT) AS SELL_AMT, SUM(BUY_AMT) AS BUY_AMT FROM BPIP020T GROUP BY BOPT_ID) T4
+            LEFT JOIN (SELECT BOPT_ID, SUM(SELL_AMT) AS SUM_SELL_AMT, SUM(BUY_AMT) AS SUM_BUY_AMT FROM BPIP020T GROUP BY BOPT_ID) T4
             ON T1.BOPT_ID = T4.BOPT_ID
             JOIN ACOM010T WP
             ON (WP.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'WCT_PRBB_CD')
@@ -744,7 +749,7 @@
                         ORDER BY  CNTR_DATE ASC, IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
                     </when>
                     <when test='orderByCd == "SA" '>
-                        ORDER BY  T1.CNTR_AMT DESC , IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
+                        ORDER BY  NVL(T1.CNTR_AMT,0) DESC , IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC
                     </when>
                     <when test='orderByCd == "WP" '>
                         ORDER BY  COM_CD_NUM_VAL DESC, CNTR_DATE, IBIZ_CUST_NM(T3.LAST_CUST_ID) ASC , BOPT_NM ASC

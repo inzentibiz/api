@@ -28,61 +28,61 @@ public class ExcelBizChanceVO {
     private String boptId;
     @ColumnAttribute(Index = 9, Title = "사업기회명", ColumnWidth = 400, CellStyleMethodName = "ContentLeft")
     private String boptNm;
-    @ColumnAttribute(Index = 10, Title = "사업분류", ColumnWidth = 80, CellStyleMethodName = "Content")
-    private String bsnsClsfCdNm;
-    @ColumnAttribute(Index = 11, Title = "발주업체ID", ColumnWidth = 100, CellStyleMethodName = "Content")
+    /*@ColumnAttribute(Index = 10, Title = "사업분류", ColumnWidth = 80, CellStyleMethodName = "Content")
+    private String bsnsClsfCdNm;*/
+    @ColumnAttribute(Index = 10, Title = "발주업체ID", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String ordeCustId;
-    @ColumnAttribute(Index = 12, Title = "발주업체명", ColumnWidth = 250, CellStyleMethodName = "ContentLeft")
+    @ColumnAttribute(Index = 11, Title = "발주업체명", ColumnWidth = 250, CellStyleMethodName = "ContentLeft")
     private String ordeCustNm;
-    @ColumnAttribute(Index = 13, Title = "계약일", ColumnWidth = 110, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 12, Title = "계약일", ColumnWidth = 110, CellStyleMethodName = "Content")
     private String cntrDate;
-    @ColumnAttribute(Index = 14, Title = "계약이행시작일", ColumnWidth = 110, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 13, Title = "계약이행시작일", ColumnWidth = 110, CellStyleMethodName = "Content")
     private String cntrTrsfStartYam;
-    @ColumnAttribute(Index = 15, Title = "계약이행종료일", ColumnWidth = 110, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 14, Title = "계약이행종료일", ColumnWidth = 110, CellStyleMethodName = "Content")
     private String cntrTrsfEndYam;
-    @ColumnAttribute(Index = 16, Title = "제안마감일", ColumnWidth = 110, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 15, Title = "제안마감일", ColumnWidth = 110, CellStyleMethodName = "Content")
     private String prpsFnshDate;
-    @ColumnAttribute(Index = 17, Title = "입찰마감일", ColumnWidth = 110, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 16, Title = "입찰마감일", ColumnWidth = 110, CellStyleMethodName = "Content")
     private String bidFnshDate;
-    @ColumnAttribute(Index = 18, Title = "업체선정일", ColumnWidth = 110, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 17, Title = "업체선정일", ColumnWidth = 110, CellStyleMethodName = "Content")
     private String cmpySlctDate;
-    @ColumnAttribute(Index = 19, Title = "매출액", ColumnWidth = 100, CellStyleMethodName = "Content" , CellType=CellType.NumericComma)
+    @ColumnAttribute(Index = 18, Title = "매출액", ColumnWidth = 100, CellStyleMethodName = "Content" , CellType=CellType.NumericComma)
     private String sumSellAmt;
-    @ColumnAttribute(Index = 20, Title = "매입액", ColumnWidth = 100, CellStyleMethodName = "Content" , CellType=CellType.NumericComma)
+    @ColumnAttribute(Index = 19, Title = "매입액", ColumnWidth = 100, CellStyleMethodName = "Content" , CellType=CellType.NumericComma)
     private String sumBuyAmt;
-    @ColumnAttribute(Index = 19, Title = "매출액(확률적용)", ColumnWidth = 120, CellStyleMethodName = "Content" , CellType=CellType.NumericComma)
+    @ColumnAttribute(Index = 20, Title = "매출액(확률적용)", ColumnWidth = 120, CellStyleMethodName = "Content" , CellType=CellType.NumericComma)
     private String fcstSellAmt;
-    @ColumnAttribute(Index = 20, Title = "매입액(확률적용)", ColumnWidth = 120, CellStyleMethodName = "Content" , CellType=CellType.NumericComma)
+    @ColumnAttribute(Index = 21, Title = "매입액(확률적용)", ColumnWidth = 120, CellStyleMethodName = "Content" , CellType=CellType.NumericComma)
     private String fcstBuyAmt;
-    @ColumnAttribute(Index = 21, Title = "예상투입인원", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 22, Title = "예상투입인원", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String sumPutNopCount;
-    @ColumnAttribute(Index = 22, Title = "수주가능성", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 23, Title = "수주가능성", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String wctPrbbCdNm;
-    @ColumnAttribute(Index = 23, Title = "확률적용가중치", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 24, Title = "확률적용가중치", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String wctPrbbWgvl;
-    @ColumnAttribute(Index = 24, Title = "예상반영어부", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 25, Title = "예상반영어부", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String fcstRflcYn;
-    @ColumnAttribute(Index = 25, Title = "사업기회상태", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 26, Title = "사업기회상태", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String boptStatCdNm;
-    @ColumnAttribute(Index = 26, Title = "기회종료유형", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 27, Title = "기회종료유형", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String boptEndTypeCdNm;
-    @ColumnAttribute(Index = 27, Title = "수주확정일", ColumnWidth = 110, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 28, Title = "수주확정일", ColumnWidth = 110, CellStyleMethodName = "Content")
     private String wctDcdDate;
-    @ColumnAttribute(Index = 28, Title = "영업부서ID", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 29, Title = "영업부서ID", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String slsDeptId;
-    @ColumnAttribute(Index = 29, Title = "영업부서명", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 30, Title = "영업부서명", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String slsDeptNm;
-    @ColumnAttribute(Index = 30, Title = "영업대표ID", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 31, Title = "영업대표ID", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String slsEmpId;
-    @ColumnAttribute(Index = 31, Title = "영업대표명", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 32, Title = "영업대표명", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String slsEmpNm;
-    @ColumnAttribute(Index = 32, Title = "등록자", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 33, Title = "등록자", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String regEmpNm;
-    @ColumnAttribute(Index = 33, Title = "등록일시", ColumnWidth = 160, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 34, Title = "등록일시", ColumnWidth = 160, CellStyleMethodName = "Content")
     private String regDt;
-    @ColumnAttribute(Index = 34, Title = "최종수정자", ColumnWidth = 100, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 35, Title = "최종수정자", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String chgEmpNm;
-    @ColumnAttribute(Index = 35, Title = "최종수정일시", ColumnWidth = 160, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 36, Title = "최종수정일시", ColumnWidth = 160, CellStyleMethodName = "Content")
     private String chgDt;
 
     public String getPrjtId() {
@@ -133,12 +133,12 @@ public class ExcelBizChanceVO {
     public void setPrjtStatCdNm(String prjtStatCdNm) {
         this.prjtStatCdNm = prjtStatCdNm;
     }
-    public String getBsnsClsfCdNm() {
-        return bsnsClsfCdNm;
-    }
-    public void setBsnsClsfCdNm(String bsnsClsfCdNm) {
-        this.bsnsClsfCdNm = bsnsClsfCdNm;
-    }
+//    public String getBsnsClsfCdNm() {
+//        return bsnsClsfCdNm;
+//    }
+//    public void setBsnsClsfCdNm(String bsnsClsfCdNm) {
+//        this.bsnsClsfCdNm = bsnsClsfCdNm;
+//    }
     public String getOrdeCustId() {
         return ordeCustId;
     }
