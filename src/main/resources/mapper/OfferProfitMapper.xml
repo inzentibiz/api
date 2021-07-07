@@ -1044,6 +1044,7 @@
 			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
 			resultType="com.ibiz.api.model.ExcelOfferProfitVO">
 
+		-- 기본다운로드
 		SELECT A.FCST_PAL_ID, A.DOC_NO,
 			A.SLS_DEPT_ID, IBIZ_DEPT_NM(A.SLS_DEPT_ID) SLS_DEPT_NM, --영업부서
 			A.SLS_EMP_ID, IBIZ_EMP_NM(A.SLS_EMP_ID) SLS_EMP_NM, --영업대표
@@ -1055,14 +1056,14 @@
 			IBIZ_EMP_NM(A.TECH_SVC_RVW_EMP_ID) TECH_SVC_RVW_EMP_NM, --A.TECH_SVC_RVW_EMP_ID, --기술서비스검토자
 			IBIZ_DEPT_NM( (SELECT BLTO_DEPT_ID FROM HMST300T WHERE EMP_ID = TECH_SVC_RVW_EMP_ID) ) AS TECH_SVC_RVW_DEPT_NM, --기술서비스검토부서
 			IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_CD_NM, --예상손익진행상태코드
-			SUM(B.SELL_AMT) SELL_AMT, --매출액
-			SUM(B.BUY_COST_AMT) BUY_COST_AMT, --매입원가
-			SUM(B.DRCST_AMT) DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
-			SUM(B.DREXP_AMT) DREXP_AMT, --직접경비
-			SUM(B.INCST_AMT) INCST_AMT, --간접원가
-			SUM(B.CTMG_AMT) CTMG_AMT, --공헌이익
-			SUM(B.PUT_NOP_COUNT) PUT_NOP_COUNT, --예상투입인원
-			IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD',MIN(B.PUT_TIME_UNIT_CD)) PUT_TIME_UNIT_CD_NM, --투입시간단위코드
+			B.SELL_AMT, --매출액
+			B.BUY_COST_AMT, --매입원가
+			B.DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
+			B.DREXP_AMT, --직접경비
+			B.INCST_AMT, --간접원가
+			B.CTMG_AMT, --공헌이익
+            B.PUT_NOP_COUNT, --예상투입인원
+			IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD',B.PUT_TIME_UNIT_CD) PUT_TIME_UNIT_CD_NM, --투입시간단위코드
 			IBIZ_EMP_NM(A.REG_EMP_ID) REG_EMP_NM, --등록자
 			A.REG_DT, --등록일시
 			A.CHG_DT --최종변경일시
@@ -1073,7 +1074,30 @@
 			GROUP BY BOPT_ID
 		) A1 JOIN BEST000T A
 		ON A1.FCST_PAL_ID = A.FCST_PAL_ID
-		JOIN BEST020T B
+		JOIN (
+                SELECT FCST_PAL_ID, MIN(PUT_TIME_UNIT_CD) AS PUT_TIME_UNIT_CD,
+                    SUM(SELL_AMT) SELL_AMT, --매출액
+                    SUM(BUY_COST_AMT) BUY_COST_AMT, --매입원가
+                    SUM(DRCST_AMT) DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
+                    SUM(DREXP_AMT) DREXP_AMT, --직접경비
+                    SUM(INCST_AMT) INCST_AMT, --간접원가
+                    SUM(CTMG_AMT) CTMG_AMT, --공헌이익
+                    SUM(PUT_NOP_COUNT) AS PUT_NOP_COUNT
+                FROM BEST020T B
+                WHERE 1 = 1
+             <if test="godsClsfCd != null and  godsClsfCd != ''">
+                    AND B.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
+             </if>
+               AND EXISTS (SELECT COM_CD FROM ACOM010T C
+                            WHERE C.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
+                              AND B.GODS_CLSF_CD = C.COM_CD
+                            <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                              AND C.HGRK_COM_CD = #{bsnsClsfCd}
+                            </if>
+                              ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
+                GROUP BY FCST_PAL_ID
+
+        ) B
 		ON A.FCST_PAL_ID = B.FCST_PAL_ID
 		JOIN BPIP000T O
 		ON A.BOPT_ID = O.BOPT_ID
@@ -1123,40 +1147,15 @@
 		<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != ''">
 			AND A.FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}  --★ 검색조건:진행상태
 		</if>
-		<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-			AND EXISTS (SELECT 1 FROM BPIP020T T2
-			WHERE T2.BOPT_ID = A.BOPT_ID
-			  <if test="godsClsfCd != null and  godsClsfCd != ''">
-			  AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-			  </if>
-			  <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-			  AND EXISTS (SELECT COM_CD FROM ACOM010T GC
-						   WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
-							 AND T2.GODS_CLSF_CD = GC.COM_CD
-							 AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-				</if>
-		  )
-		</if>
-		GROUP BY A.FCST_PAL_ID, A.DOC_NO,
-		A.SLS_DEPT_ID, --영업부서
-		A.SLS_EMP_ID, --영업대표
-		A.PRJT_TYPE_CD, --프로젝트유형
-		A.LAST_CUST_ID,  --최종고객
-		P.PRJT_ID, P.PRJT_NM, O.BOPT_ID, O.BOPT_NM, --프로젝트명, 사업기회명
-		A.ORDE_CUST_ID, --발주업체
-		A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
-		A.TECH_SVC_RVW_EMP_ID, --기술서비스검토자
-		A.FCST_PAL_PRGS_STAT_CD, --예상손익진행상태코드
-		A.REG_EMP_ID, A.REG_DT, A.CHG_DT --등록자,등록일시, 최종변경일시
 		ORDER BY A.REG_DT DESC
+
 	</select>
 
 	<!-- 예상손익 상품유형별 리스트 조회 For 엑셀 -->
 	<select id="seleceExcelDwnlOfferProfitByProdTypeList"
 			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
 			resultType="com.ibiz.api.model.ExcelOfferProfitByProdTypeVO">
-
-		SELECT A.FCST_PAL_ID, A.DOC_NO,
+SELECT A.FCST_PAL_ID, A.DOC_NO,
 			A.SLS_DEPT_ID, IBIZ_DEPT_NM(A.SLS_DEPT_ID) SLS_DEPT_NM, --영업부서
 			A.SLS_EMP_ID, IBIZ_EMP_NM(A.SLS_EMP_ID) SLS_EMP_NM, --영업대표
 			IBIZ_COM_CD_NM('PRJT_TYPE_CD', A.PRJT_TYPE_CD) PRJT_TYPE_CD_NM, -- A.PRJT_TYPE_CD, --프로젝트유형
@@ -1234,20 +1233,15 @@
 		<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != ''">
 			AND A.FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}  --★ 검색조건:진행상태
 		</if>
-        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-            AND EXISTS (SELECT 1 FROM BPIP020T T2
-            WHERE T2.BOPT_ID = A.BOPT_ID
-              <if test="godsClsfCd != null and  godsClsfCd != ''">
-              AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-              </if>
-              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-              AND EXISTS (SELECT COM_CD FROM ACOM010T GC
-                           WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
-                             AND T2.GODS_CLSF_CD = GC.COM_CD
-                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                </if>
-          )
+        <if test="godsClsfCd != null and  godsClsfCd != ''">
+          AND B.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
         </if>
+          <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+          AND B.GODS_CLSF_CD IN (SELECT COM_CD FROM ACOM010T GC
+                       WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
+                         AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
+            </if>
+
 		GROUP BY A.FCST_PAL_ID, A.DOC_NO,
 		A.SLS_DEPT_ID, --영업부서
 		A.SLS_EMP_ID, --영업대표
@@ -1383,20 +1377,15 @@
 		<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != ''">
 			AND A.FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}  --★ 검색조건:진행상태
 		</if>
-        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-            AND EXISTS (SELECT 1 FROM BPIP020T T2
-            WHERE T2.BOPT_ID = A.BOPT_ID
-              <if test="godsClsfCd != null and  godsClsfCd != ''">
-              AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-              </if>
-              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-              AND EXISTS (SELECT COM_CD FROM ACOM010T GC
-                           WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
-                             AND T2.GODS_CLSF_CD = GC.COM_CD
-                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                </if>
-          )
+        <if test="godsClsfCd != null and  godsClsfCd != ''">
+          AND B.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
         </if>
+          <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+          AND B.GODS_CLSF_CD IN (SELECT COM_CD FROM ACOM010T GC
+                       WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
+                         AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
+            </if>
+
 		--★★★★★★ AND ( ESTI_RMRK_CONT IS NOT NULL AND COST_RMRK_CONT IS NOT NULL ) (★★★★ 견적비고, 원가비고 통합 검토)
 		ORDER BY A.REG_DT DESC, PTC010T.SORT_SEQC, B.PROD_SEQ --등록일시, 상품유형코드 정렬순서, 예상손익상품순서
 
@@ -2505,6 +2494,22 @@
 								AAPR.SANT_FRMT_CD, AP11.SANT_APPV_DT,
 								BEST.FILE_ATTC_ID
 							FROM BEST000T BEST
+                            JOIN (
+                                    SELECT FCST_PAL_ID FROM BEST020T B
+                                    WHERE 1 = 1
+                             <if test="godsClsfCd != null and  godsClsfCd != ''">
+                                    AND B.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
+                             </if>
+                               AND EXISTS (SELECT COM_CD FROM ACOM010T C
+                                            WHERE C.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
+                                              AND B.GODS_CLSF_CD = C.COM_CD
+                                            <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                                              AND C.HGRK_COM_CD = #{bsnsClsfCd}
+                                            </if>
+                                              ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
+                                GROUP BY FCST_PAL_ID
+                            ) BE02
+                            ON BEST.FCST_PAL_ID = BE02.FCST_PAL_ID
 							INNER JOIN APRJ000T APRJ ON BEST.PRJT_ID = APRJ.PRJT_ID
 							INNER JOIN BPIP000T BPIP ON (BEST.BOPT_ID = BPIP.BOPT_ID AND BPIP.BOPT_STAT_CD != 'D1')
 							INNER JOIN AAPR100T AAPR ON BEST.SANT_ID = AAPR.SANT_ID
@@ -2582,20 +2587,6 @@
 						<if test="fcstPalPrgsStatCd != null and fcstPalPrgsStatCd != null">
 							AND FCST_PAL_PRGS_STAT_CD = #{fcstPalPrgsStatCd}
 						</if>
-                        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-                            AND EXISTS (SELECT 1 FROM BPIP020T T2
-                            WHERE T2.BOPT_ID = TEMP.BOPT_ID
-                              <if test="godsClsfCd != null and  godsClsfCd != ''">
-                              AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-                              </if>
-                              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
-                              AND EXISTS (SELECT COM_CD FROM ACOM010T GC
-                                           WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
-                                             AND T2.GODS_CLSF_CD = GC.COM_CD
-                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                                </if>
-                          )
-                        </if>
 						<if test="pageSearchType == 'PP'">
 							ORDER BY LAST_CUST_NM ASC, PRJT_NM ASC, ORDE_CUST_NM ASC, REG_DT DESC
 						</if>
