@@ -27,21 +27,18 @@
                     FROM ACOM020T C20, ACOM010T C10
                     WHERE C20.CLMN_NM = 'PROD_DST_CD'
                       AND C20.COM_GRP_CD = C10.COM_GRP_CD
-                      AND C10.USE_YN = 'Y'
                 ) PROD,
                 (SELECT SORT_SEQC AS PROD_TYPE_SEQC,
                           C10.COM_CD PROD_TYPE_CD, C10.COM_CD_NM PROD_TYPE_CD_NM
                     FROM ACOM020T C20, ACOM010T C10
                     WHERE C20.CLMN_NM = 'PROD_TYPE_CD'
                       AND C20.COM_GRP_CD = C10.COM_GRP_CD
-                      AND C10.USE_YN = 'Y'
                 ) PROD_TYPE,
                 (SELECT SORT_SEQC AS GODS_SEQC,
                           C10.COM_CD GODS_CLSF_CD, C10.COM_CD_NM GODS_CLSF_CD_NM
                     FROM ACOM020T C20, ACOM010T C10
                     WHERE C20.CLMN_NM = 'GODS_CLSF_CD'
                         AND C20.COM_GRP_CD = C10.COM_GRP_CD
-                        AND C10.USE_YN = 'Y'
                 ) GODS
          WHERE BPIP.PROD_DST_CD = PROD.PROD_DST_CD
            AND BPIP.PROD_TYPE_CD = PROD_TYPE.PROD_TYPE_CD
