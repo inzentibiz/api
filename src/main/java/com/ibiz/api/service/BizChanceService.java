@@ -14,6 +14,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -154,7 +155,7 @@ public class BizChanceService {
 
         try{
 
-            String boptId = bizChanceDAO.selectNewBoptId().getBoptId();
+            String boptId = bizChanceDAO.selectNewBoptId("").getBoptId();
 
             bizChanceVO.setBoptId(boptId);
             bizChanceVO.setRegEmpId(accountVO.getEmpId());
@@ -169,6 +170,7 @@ public class BizChanceService {
             String chgDt = date.substring(0, idx);
 
             bizChanceVO.setChgDt(chgDt);
+            bizChanceVO.setExtndYn("N");
             bizChanceDAO.insertBizChance(bizChanceVO);
             bizChanceDAO.insertBizChanceHistory(bizChanceVO);
 
@@ -221,6 +223,7 @@ public class BizChanceService {
             String chgDt = date.substring(0, idx);
 
             bizChanceVO.setChgDt(chgDt);
+            bizChanceVO.setExtndYn("N");
             bizChanceDAO.updateBizChance(bizChanceVO);
             // 변경이력(히스토리) 테이블에 적재..
             // 동일한 날짜로 이력된게 있으면 지우고 적재..
@@ -604,6 +607,103 @@ public class BizChanceService {
         return bizChanceActivityVO;
     }
 
+    // 사업기회 연장
+    @Transactional(rollbackFor = Exception.class)
+    public BizChanceSearchVO extendBizChanceInfo(Payload<BizChanceSearchVO> requestPayload) throws UpdateDeniedException {
+        log.info("Call Service : " + this.getClass().getName() + ".extendBizChanceInfo");
+
+        BizChanceSearchVO bizChanceSearchVO = requestPayload.getDto();
+        AccountVO accountVO = requestPayload.getAccountVO();
+
+        //날짜
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int nextYear = cal.get(Calendar.YEAR)+1; // 연장할 연도
+        long currDateTime = new Date().getTime();
+        Timestamp currDateTimestamp = new Timestamp(currDateTime);
+        String date = currDateTimestamp.toString();
+        int idx = date.indexOf(".");
+        String chgDt = date.substring(0, idx);
+
+        try{
+            // 연장할 사업기회 조회
+            for(BizChanceVO bizChanceVO : bizChanceSearchVO.getBizChanceChangeList()){
+                BizChanceAmountVO bizChanceAmountVO = new BizChanceAmountVO();
+                BizChancePersonVO bizChancePersonVO = new BizChancePersonVO();
+
+                bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
+                bizChancePersonVO.setBoptId(bizChanceVO.getBoptId());
+
+                BizChanceVO bizChance = bizChanceDAO.selectBizChance(bizChanceVO);
+                List<BizChanceAmountVO> amtList = bizChanceDAO.selectBizChanceAmtList(bizChanceAmountVO);
+                List<BizChancePersonVO> nopList = bizChanceDAO.selectBizChanceNopList(bizChancePersonVO);
+
+                bizChance.setBizChanceAmtList(amtList);
+                bizChance.setBizChanceNopList(nopList);
+
+                //연장한 사업기회 연장여부 Y
+                bizChance.setExtndYn("Y");
+                bizChance.setChgDt(bizChance.getChgDt().substring(0, idx));
+                bizChanceDAO.updateBizChance(bizChance);
+
+                //새사업기회ID 생성
+                String boptId = bizChanceDAO.selectNewBoptId(String.valueOf(nextYear)).getBoptId();
+
+                //프로젝트명 재생성(년도 prefix)
+                String boptNm = bizChance.getBoptNm();
+                boptNm = boptNm.replace(Integer.toString(year).substring(2)+"년",""); //(현재연도)
+                boptNm = boptNm.replace(year+"년","");
+                boptNm = nextYear + "년 " + boptNm;
+
+                //사업기회 연장
+                bizChance.setBoptId(boptId);
+                bizChance.setBoptNm(boptNm);
+                bizChance.setPrjtId(bizChanceVO.getPrjtId());
+                bizChance.setRegEmpId(accountVO.getEmpId());
+                bizChance.setChgEmpId(accountVO.getEmpId());
+                bizChance.setExtndYn("N");
+                bizChance.setChgDt(chgDt);
+                bizChance.setCntrDate(String.valueOf(Integer.parseInt(bizChance.getCntrDate())+10000));
+                if(bizChance.getCntrTrsfStartYam() != null ){
+                    bizChance.setCntrTrsfStartYam(String.valueOf(Integer.parseInt(bizChance.getCntrTrsfStartYam())+100));
+                }
+                if(bizChance.getCntrTrsfEndYam() != null ){
+                    bizChance.setCntrTrsfEndYam(String.valueOf(Integer.parseInt(bizChance.getCntrTrsfEndYam())+100));
+                }
+
+                bizChanceDAO.insertBizChance(bizChance);
+                bizChanceDAO.insertBizChanceHistory(bizChance);
+
+                if(amtList != null) { //사업기회 월별 매출매입
+                    int amtSeq = 1;
+                    for(BizChanceAmountVO bizChanceAmount : amtList){
+                        bizChanceAmount.setBoptId(boptId);
+                        bizChanceAmount.setChgDt(chgDt);
+                        bizChanceAmount.setSeq(amtSeq);
+                        bizChanceAmount.setFcstYam(String.valueOf(Integer.parseInt(bizChanceAmount.getFcstYam())+100));
+
+                        bizChanceDAO.insertBizChanceAmt(bizChanceAmount);
+                        bizChanceDAO.insertBizChanceHistoryAmt(bizChanceAmount);
+                        amtSeq++;
+                    }
+                }
+                if(nopList != null) { //사업기회 투입인원
+                    for(BizChancePersonVO bizChancePerson : nopList) {
+                        bizChancePerson.setBoptId(boptId);
+                        bizChancePerson.setChgDt(chgDt);
+
+                        bizChanceDAO.insertBizChanceNop(bizChancePerson);
+                        bizChanceDAO.insertBizChanceHistoryNop(bizChancePerson);
+                    }
+                }
+            }
+
+            return bizChanceSearchVO;
+
+        }catch (Exception e){
+            throw new UpdateDeniedException("사업기회 연장 중 문제가 발생했습니다.", bizChanceSearchVO);
+        }
+    }
 
 
 }

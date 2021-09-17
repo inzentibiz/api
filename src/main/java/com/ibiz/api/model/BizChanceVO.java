@@ -377,6 +377,11 @@ public class BizChanceVO {
      */
     private String prjtInputCd;
 
+    /**
+     * 연장여부
+     */
+    private String extndYn;
+
     public List<BizChanceVO> getBizChanceChangeList() {
         return bizChanceChangeList;
     }
@@ -967,5 +972,11 @@ public class BizChanceVO {
         this.prjtInputCd = prjtInputCd;
     }
 
+    public String getExtndYn() {
+        return extndYn;
+    }
 
+    public void setExtndYn(String extndYn) {
+        this.extndYn = extndYn;
+    }
 }

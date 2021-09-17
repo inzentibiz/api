@@ -187,5 +187,13 @@ public class BizChanceController extends BaseController {
         return super.composePayload(new Payload<BizChanceActivityVO>(bizChanceService.deleteBizChanceActivity(requestPayload)));
     }
 
+    // BOPT_사업기회 연장장
+   @PostMapping("/extendBizChanceInfo")
+    public ResponseEntity<String> extendBizChanceInfo(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".extendBizChanceInfo");
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<BizChanceSearchVO>>(){});
+
+        return super.composePayload(new Payload<BizChanceSearchVO>(bizChanceService.extendBizChanceInfo(requestPayload)));
+    }
 
 }

@@ -6,8 +6,14 @@
 
     <!-- 사업기회 key select -->
     <select id="selectNewBoptId"
+            parameterType="java.lang.String"
             resultType="com.ibiz.api.model.BizChanceVO">
-        SELECT IBIZ_NEW_ID('BPIP000T','BOPT_ID','YYYY######') AS BOPT_ID FROM DUAL
+        <if test="year != null and year != '' ">
+            SELECT IBIZ_NEW_ID('BPIP000T','BOPT_ID',#{year}||'######') AS BOPT_ID FROM DUAL
+        </if>
+        <if test="year == null or year == ''">
+            SELECT IBIZ_NEW_ID('BPIP000T','BOPT_ID','YYYY######') AS BOPT_ID FROM DUAL
+        </if>
     </select>
 
     <!-- 사업기회 월별매출매입 리스트 조회 -->
@@ -249,7 +255,7 @@
                         T1.SLS_DEPT_ID, IBIZ_DEPT_NM(T1.SLS_DEPT_ID) AS SLS_DEPT_NM,
                         T1.SLS_EMP_ID, IBIZ_EMP_NM(T1.SLS_EMP_ID) AS SLS_EMP_NM,
                         T3.PRJT_STAT_CD, IBIZ_COM_CD_NM('PRJT_STAT_CD',T3.PRJT_STAT_CD) AS PRJT_STAT_CD_NM,
-                        T1.BOPT_STAT_CD, IBIZ_COM_CD_NM('BOPT_STAT_CD',T1.BOPT_STAT_CD) AS BOPT_STAT_CD_NM
+                        T1.BOPT_STAT_CD, IBIZ_COM_CD_NM('BOPT_STAT_CD',T1.BOPT_STAT_CD) AS BOPT_STAT_CD_NM, T1.EXTND_YN
                     FROM BPIP000T T1
                     JOIN ACOM010T T2 ON (T1.WCT_PRBB_CD = T2.COM_CD  AND T2.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'WCT_PRBB_CD') )-- 수주확률코드 )
                     JOIN APRJ000T T3 ON T1.PRJT_ID = T3.PRJT_ID
@@ -289,6 +295,12 @@
                         </if>
                         <if test="fcstRflcYn != null and  fcstRflcYn != ''">
                             AND FCST_RFLC_YN = #{fcstRflcYn}
+                        </if>
+                        <if test="cntrAmt != null and cntrAmt != ''">
+                            AND <![CDATA[ T1.CNTR_AMT >= #{cntrAmt} ]]>
+                        </if>
+                        <if test="extndYn != null and extndYn != ''">
+                            AND T1.EXTND_YN = #{extndYn}
                         </if>
                         <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                        AND EXISTS (SELECT 1 FROM BPIP020T T2
@@ -880,6 +892,7 @@
             <if test="spclCont != null and spclCont != ''">
                 SPCL_CONT,
             </if>
+            EXTND_YN,
             REG_EMP_ID,
             REG_DT,
             CHG_EMP_ID,
@@ -926,6 +939,7 @@
             <if test="spclCont != null and spclCont != ''">
                 #{spclCont},
             </if>
+            #{extndYn},
             #{regEmpId},
             SYSDATE,
             #{chgEmpId},
@@ -1184,6 +1198,7 @@
             SLS_DEPT_ID =  #{slsDeptId},
             SLS_EMP_ID =  #{slsEmpId},
             SPCL_CONT =  #{spclCont},
+            EXTND_YN =  #{extndYn},
             CHG_EMP_ID =  #{chgEmpId},
             CHG_DT = TO_DATE(#{chgDt}, 'YYYY-MM-DD HH24:MI:SS')
         WHERE BOPT_ID = #{boptId}

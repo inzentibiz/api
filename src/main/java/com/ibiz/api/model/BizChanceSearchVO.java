@@ -527,6 +527,16 @@ public class BizChanceSearchVO {
      */
     private String prjtInputCd;
 
+    /**
+     * 연장여부
+     */
+    private String extndYn;
+
+    /**
+     * 계약금액
+     */
+    private long cntrAmt;
+
     public String getPrjtId() {
         return prjtId;
     }
@@ -1605,6 +1615,21 @@ public class BizChanceSearchVO {
         this.prjtInputCd = prjtInputCd;
     }
 
+    public String getExtndYn() {
+        return extndYn;
+    }
+
+    public void setExtndYn(String extndYn) {
+        this.extndYn = extndYn;
+    }
+
+    public long getCntrAmt() {
+        return cntrAmt;
+    }
+
+    public void setCntrAmt(long cntrAmt) {
+        this.cntrAmt = cntrAmt;
+    }
 
     @Override
     public String toString() {
@@ -1644,7 +1669,7 @@ public class BizChanceSearchVO {
                 + ", chgStartDate=" + chgStartDate + ", chgEndDate=" + chgEndDate
                 + ", userId=" + userId + ", totalCnt=" + totalCnt + ", exceptContractComplete=" + exceptContractComplete
                 + ", boptStatCdList=" + boptStatCdList + ", wctPsbltCd=" + wctPsbltCd+ ", wctPsbltCdList=" + wctPsbltCdList
-                + ", prjtInputCd=" + prjtInputCd + "]";
+                + ", prjtInputCd=" + prjtInputCd + ", extndYn=" + extndYn + ", cntrAmt=" + cntrAmt + "]";
     }
 
 }

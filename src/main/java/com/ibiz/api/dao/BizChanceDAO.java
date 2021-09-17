@@ -21,8 +21,8 @@ public class BizChanceDAO {
         return mybatis.selectList("BizChanceMapper.selectBizChanceView", bizChanceSearchVO);
     }*/
 
-    public BizChanceVO selectNewBoptId() throws Exception {
-        return mybatis.selectOne("BizChanceMapper.selectNewBoptId");
+    public BizChanceVO selectNewBoptId(String year) throws Exception {
+        return mybatis.selectOne("BizChanceMapper.selectNewBoptId",year);
     }
 
     public List<BizChanceAmountVO> selectBizChanceAmtList(BizChanceAmountVO bizChanceAmountVO) throws Exception {
