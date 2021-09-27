@@ -670,6 +670,10 @@ public class BizChanceService {
                 if(bizChance.getCntrTrsfEndYam() != null ){
                     bizChance.setCntrTrsfEndYam(String.valueOf(Integer.parseInt(bizChance.getCntrTrsfEndYam())+100));
                 }
+                bizChance.setPrpsFnshDate(null);
+                bizChance.setBidFnshDate(null);
+                bizChance.setCmpySlctDate(null);
+                bizChance.setWctDcdDate(null);
 
                 bizChanceDAO.insertBizChance(bizChance);
                 bizChanceDAO.insertBizChanceHistory(bizChance);
