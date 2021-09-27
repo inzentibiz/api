@@ -273,6 +273,12 @@
                         <if test="lastCustNm != null and lastCustNm != ''">
                             AND  UPPER(IBIZ_CUST_NM(T3.LAST_CUST_ID)) LIKE '%'||UPPER(#{lastCustNm})||'%'
                         </if>
+                        <if test="ordeCustId != null and ordeCustId != ''">
+                            AND  UPPER(T1.ORDE_CUST_ID) = UPPER(#{ordeCustId})
+                        </if>
+                        <if test="ordeCustNm != null and ordeCustNm != ''">
+                            AND  UPPER(IBIZ_CUST_NM(T1.ORDE_CUST_ID)) LIKE '%'||UPPER(#{ordeCustNm})||'%'
+                        </if>
                         <if test="boptId != null and boptId != ''">
                             AND  T1.BOPT_ID = UPPER(#{boptId})
                         </if>
