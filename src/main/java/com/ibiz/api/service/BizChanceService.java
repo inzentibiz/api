@@ -651,9 +651,9 @@ public class BizChanceService {
 
                 //프로젝트명 재생성(년도 prefix)
                 String boptNm = bizChance.getBoptNm();
-                boptNm = boptNm.replace(Integer.toString(year).substring(2)+"년",""); //(현재연도)
                 boptNm = boptNm.replace(year+"년","");
-                boptNm = nextYear + "년 " + boptNm;
+                boptNm = boptNm.replace(Integer.toString(year).substring(2)+"년",""); //(현재연도)
+                boptNm = "["+ nextYear + "년] " + boptNm;
 
                 //사업기회 연장
                 bizChance.setBoptId(boptId);
