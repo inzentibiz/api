@@ -614,8 +614,8 @@ public class OfferProfitService extends AbstractDraftService {
             OfferVO targetVO = offerProfitDAO.selectOfferProfit(bsnsProfitLoss);
             bsnsProfitLoss.setBefFcstPalId(targetVO.getBefFcstPalId()); // 이전 예상손익ID 대입
 
-            // 수익보고 상태가 승인완료이고 이전 예상손익ID가 존재한다면 연결된 수주정보가 존재하는지 확인 필요
-            if(bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C") && bsnsProfitLoss.getBefFcstPalId() != null){ 
+            // 수익보고 상태가 승인완료이거나 확정이고 이전 예상손익ID가 존재한다면 연결된 수주정보가 존재하는지 확인 필요
+            if( ((bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C")  || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D") ) && bsnsProfitLoss.getBefFcstPalId() != null) ){
 
                 if(bsnsProfitLoss.getPrgsStatUrl() != null){
                     String requestUri = "http://"+bsnsProfitLoss.getPrgsStatUrl().split("/")[2]+"/contract/updateContractRelatedFcstPalIdAjax.do";
