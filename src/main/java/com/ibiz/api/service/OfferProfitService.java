@@ -39,7 +39,7 @@ public class OfferProfitService extends AbstractDraftService {
     private ConnectionFactory connectionFactory;
 
     /*
-     * 예상손익분석서(P&S) ver 1
+     * 손익분석서(P&S) ver 1
      */
 
     @Transactional
@@ -94,7 +94,7 @@ public class OfferProfitService extends AbstractDraftService {
                     offerProfitDAO.insertOfferProfitExpense(offerExpenseVO);
                 }
             }
-            // 예상손익 실적취합
+            // 손익 실적취합
             if(offerVO.getBsnsRslSmryList() != null) {
                 for(OfferResultVO offerResultVO : offerVO.getBsnsRslSmryList()) {
                     offerResultVO.setFcstPalId(offerVO.getFcstPalId());
@@ -118,12 +118,12 @@ public class OfferProfitService extends AbstractDraftService {
             }
 
         }catch (Exception e){
-            //throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("손익분석서 등록 중 문제가 발생했습니다.", offerVO);
 
             if(e.getMessage() != null){
                 throw new UpdateDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 저장 중 오류가 발생했습니다.
+                //손익분석서 저장 중 오류가 발생했습니다.
                 throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -228,7 +228,7 @@ public class OfferProfitService extends AbstractDraftService {
 
 /*
 
-            // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
+            // 손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
             if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W")) {
                 bsnsProfitLoss.setIsInProgress(false);
             } else {
@@ -279,13 +279,13 @@ public class OfferProfitService extends AbstractDraftService {
 
 
             if(super.isBelongToAuthDept(sysUserGroupVO) ){
-                // 예상손익진행상태가 반려, 폐기가 아닌 경우에만 견적장성버튼 내려줌(요구사항 수정)
+                // 손익진행상태가 반려, 폐기가 아닌 경우에만 견적장성버튼 내려줌(요구사항 수정)
                 if(!bsnsProfitLoss.getFcstPalPrgsStatCd().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W") ){
                     buttonList.add(new HashMap<String, String>() {{put("button", "견적작성"); }});
                 }
                 if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D")) {
-                    // 예상손익진행상태가 승인인 경우 예상손익변경버튼 내려줌
-                    buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
+                    // 손익진행상태가 승인인 경우 손익변경버튼 내려줌
+                    buttonList.add(new HashMap<String, String>() {{put("button", "손익변경"); }});
                     buttonList.add(new HashMap<String, String>() {{put("button", "수주보고"); }});
                 }
             }
@@ -324,7 +324,7 @@ public class OfferProfitService extends AbstractDraftService {
             approvalVO.setChgEmpId(accountVO.getEmpId());
             super.updatePrgsStatCd(approvalVO);
 
-            // 결재서식(예상손익) 진행상태 업데이트
+            // 결재서식(손익) 진행상태 업데이트
             offerVO.setFcstPalPrgsStatCd(commonCodeMappingVO.getComCd());
             offerProfitDAO.updateOfferProfitStat(offerVO);
 
@@ -333,7 +333,7 @@ public class OfferProfitService extends AbstractDraftService {
 
             if(!requestUri.equals("") && requestUri != null){
 
-                // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                // 변경수익보고시 계약테이블에 연결된 손익정보를 업데이트한다. (새롭게 연결)
                 RestTemplate restTemplate = connectionFactory.getRestTemplate();
                 String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
 
@@ -345,7 +345,7 @@ public class OfferProfitService extends AbstractDraftService {
                     // 실패시
                     throw new UpdateDeniedException(offerVO);
                 }else if(returnResult.IsSucceed == true && (Integer)returnResult.Data > 0){
-                    // 계약테이블에 연결된 예상손익이 존재하는 경우
+                    // 계약테이블에 연결된 손익이 존재하는 경우
                     throw new UpdateDeniedException("연결된 계약, 수주정보가 존재하여 폐기할 수 없습니다.",offerVO);
 
                 }
@@ -357,7 +357,7 @@ public class OfferProfitService extends AbstractDraftService {
             if(e.getMessage() != null){
                 throw new UpdateDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 진행상태 변경 중 오류가 발생했습니다.
+                //손익분석서 진행상태 변경 중 오류가 발생했습니다.
                 throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_STATE_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -466,12 +466,12 @@ public class OfferProfitService extends AbstractDraftService {
             super.updateApprovalInfo(offerVO.getApproval());
 
         }catch (Exception e){
-            //throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("손익분석서 변경 중 문제가 발생했습니다.", offerVO);
 
             if(e.getMessage() != null){
                 throw new UpdateDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 저장 중 오류가 발생했습니다.
+                //손익분석서 저장 중 오류가 발생했습니다.
                 throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -490,17 +490,17 @@ public class OfferProfitService extends AbstractDraftService {
                 offerVO.setFcstPalId(offerProfitDAO.selectFcstPalId(offerVO));
             }
             if (offerProfitDAO.selectIsRelatedWithVrb(offerVO) > 0) {
-                throw new DeleteDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+                throw new DeleteDeniedException("VRB 분석서에 등록된 손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
-                throw new DeleteDeniedException("견적서가 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+                throw new DeleteDeniedException("견적서가 등록된 손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             // 수주등록이 되어있는 경우 삭제 불가
             String requestUri = "http://"+offerVO.getPrgsStatUrl().split("/")[2]+"/contract/selectCntrInfoRelatedFcstPalIdCountAjax.do";
 
             if(!requestUri.equals("") && requestUri != null){
 
-                // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                // 변경수익보고시 계약테이블에 연결된 손익정보를 업데이트한다. (새롭게 연결)
                 RestTemplate restTemplate = connectionFactory.getRestTemplate();
                 String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
 
@@ -512,7 +512,7 @@ public class OfferProfitService extends AbstractDraftService {
                     // 실패시
                     throw new UpdateDeniedException(offerVO);
                 }else if(returnResult.IsSucceed == true && (Integer)returnResult.Data > 0){
-                    // 계약테이블에 연결된 예상손익이 존재하는 경우
+                    // 계약테이블에 연결된 손익이 존재하는 경우
                     throw new UpdateDeniedException("연결된 계약, 수주정보가 존재하여 삭제할 수 없습니다.",offerVO);
 
                 }
@@ -545,7 +545,7 @@ public class OfferProfitService extends AbstractDraftService {
             if(e.getMessage() != null){
                 throw new DeleteDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 삭제 중 오류가 발생했습니다.
+                //손익분석서 삭제 중 오류가 발생했습니다.
                 throw new DeleteDeniedException(ExceptionCode.DELETE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -612,9 +612,9 @@ public class OfferProfitService extends AbstractDraftService {
                 bsnsProfitLoss.setFcstPalId(offerProfitDAO.selectFcstPalId(bsnsProfitLoss));
             }
             OfferVO targetVO = offerProfitDAO.selectOfferProfit(bsnsProfitLoss);
-            bsnsProfitLoss.setBefFcstPalId(targetVO.getBefFcstPalId()); // 이전 예상손익ID 대입
+            bsnsProfitLoss.setBefFcstPalId(targetVO.getBefFcstPalId()); // 이전 손익ID 대입
 
-            // 수익보고 상태가 승인완료이거나 확정이고 이전 예상손익ID가 존재한다면 연결된 수주정보가 존재하는지 확인 필요
+            // 수익보고 상태가 승인완료이거나 확정이고 이전 손익ID가 존재한다면 연결된 수주정보가 존재하는지 확인 필요
             if( ((bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C")  || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D") ) && bsnsProfitLoss.getBefFcstPalId() != null) ){
 
                 if(bsnsProfitLoss.getPrgsStatUrl() != null){
@@ -622,7 +622,7 @@ public class OfferProfitService extends AbstractDraftService {
 
                     if(!requestUri.equals("") && requestUri != null){
 
-                        // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                        // 변경수익보고시 계약테이블에 연결된 손익정보를 업데이트한다. (새롭게 연결)
                         RestTemplate restTemplate = connectionFactory.getRestTemplate();
                         String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
 
@@ -650,7 +650,7 @@ public class OfferProfitService extends AbstractDraftService {
             if(e.getMessage() != null){
                 throw new UpdateDeniedException(e.getMessage(), bsnsProfitLoss);
             }else{
-                //예상손익분석서 진행상태 변경 중 오류가 발생했습니다.
+                //손익분석서 진행상태 변경 중 오류가 발생했습니다.
                 throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_STATE_EXCEPTION_MESSAGE, bsnsProfitLoss);
             }
         }
@@ -704,7 +704,7 @@ public class OfferProfitService extends AbstractDraftService {
 
 
     /*
-     * 예상손익분석서(ma) ver 1
+     * 손익분석서(ma) ver 1
      */
 
     @Transactional
@@ -764,7 +764,7 @@ public class OfferProfitService extends AbstractDraftService {
                     offerProfitDAO.insertContractCond(offerContractCondVO);
                 }
             }
-            // 예상손익 실적취합
+            // 손익 실적취합
             if(offerVO.getBsnsRslSmryList() != null) {
                 for(OfferResultVO offerResultVO : offerVO.getBsnsRslSmryList()) {
                     offerResultVO.setFcstPalId(offerVO.getFcstPalId());
@@ -790,12 +790,12 @@ public class OfferProfitService extends AbstractDraftService {
             }
 
         }catch (Exception e){
-            //throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("손익분석서 등록 중 문제가 발생했습니다.", offerVO);
 
             if(e.getMessage() != null){
                 throw new UpdateDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 저장 중 오류가 발생했습니다.
+                //손익분석서 저장 중 오류가 발생했습니다.
                 throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -822,7 +822,7 @@ public class OfferProfitService extends AbstractDraftService {
 
         bsnsProfitLoss.setApproval(super.selectApprovalInfo(bsnsProfitLoss.getSantId()));
 /*
-        // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
+        // 손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
         if(bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W")) {
             bsnsProfitLoss.setIsInProgress(false);
         }else {
@@ -877,7 +877,7 @@ public class OfferProfitService extends AbstractDraftService {
                 }
             }
 
-            // 예상손익 실적취합
+            // 손익 실적취합
             offerProfitDAO.deleteOfferProfitPSResult(offerVO);
             if(offerVO.getBsnsRslSmryList() != null) {
                 for(OfferResultVO offerResultVO : offerVO.getBsnsRslSmryList()) {
@@ -925,12 +925,12 @@ public class OfferProfitService extends AbstractDraftService {
             super.updateApprovalInfo(offerVO.getApproval());
 
         }catch (Exception e){
-            //throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("손익분석서 변경 중 문제가 발생했습니다.", offerVO);
 
             if(e.getMessage() != null){
                 throw new UpdateDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 저장 중 오류가 발생했습니다.
+                //손익분석서 저장 중 오류가 발생했습니다.
                 throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -950,14 +950,14 @@ public class OfferProfitService extends AbstractDraftService {
                 offerVO.setFcstPalId(offerProfitDAO.selectFcstPalId(offerVO));
             }
             if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
-                throw new DeleteDeniedException("견적서가 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+                throw new DeleteDeniedException("견적서가 등록된 손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             // 수주등록이 되어있는 경우 삭제 불가
             String requestUri = "http://"+offerVO.getPrgsStatUrl().split("/")[2]+"/contract/selectCntrInfoRelatedFcstPalIdCountAjax.do";
 
             if(!requestUri.equals("") && requestUri != null){
 
-                // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                // 변경수익보고시 계약테이블에 연결된 손익정보를 업데이트한다. (새롭게 연결)
                 RestTemplate restTemplate = connectionFactory.getRestTemplate();
                 String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
 
@@ -969,7 +969,7 @@ public class OfferProfitService extends AbstractDraftService {
                     // 실패시
                     throw new UpdateDeniedException(offerVO);
                 }else if(returnResult.IsSucceed == true && (Integer)returnResult.Data > 0){
-                    // 계약테이블에 연결된 예상손익이 존재하는 경우
+                    // 계약테이블에 연결된 손익이 존재하는 경우
                     throw new UpdateDeniedException("연결된 계약, 수주정보가 존재하여 삭제할 수 없습니다.",offerVO);
 
                 }
@@ -996,7 +996,7 @@ public class OfferProfitService extends AbstractDraftService {
             if(e.getMessage() != null){
                 throw new DeleteDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 삭제 중 오류가 발생했습니다.
+                //손익분석서 삭제 중 오류가 발생했습니다.
                 throw new DeleteDeniedException(ExceptionCode.DELETE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -1007,7 +1007,7 @@ public class OfferProfitService extends AbstractDraftService {
 
 
     /*
-     * 예상손익분석서(P&S) ver 2
+     * 손익분석서(P&S) ver 2
      */
 
     @Transactional
@@ -1017,14 +1017,14 @@ public class OfferProfitService extends AbstractDraftService {
         AccountVO accountVO = requestPayload.getAccountVO();
 
         try{
-            // 변경전예상손익ID가 존재하는 경우 해당 문서의 진행상태가 승인이 아닌 경우 insert를 하지않는다.
+            // 변경전손익ID가 존재하는 경우 해당 문서의 진행상태가 승인이 아닌 경우 insert를 하지않는다.
             OfferVO befOfferVO = new OfferVO();
             if(offerVO.getBefFcstPalId() != null){
                 befOfferVO.setFcstPalId(offerVO.getBefFcstPalId());
                 befOfferVO.setSantId(offerProfitDAO.selectOfferProfitPS2(befOfferVO).getSantId());
 
                 if( !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("C") && !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("D")  ){
-                    throw new UpdateDeniedException("변경전 예상손익분석서는 승인상태여야 합니다.", befOfferVO);
+                    throw new UpdateDeniedException("변경전 손익분석서는 승인상태여야 합니다.", befOfferVO);
                 }
             }
 
@@ -1064,7 +1064,7 @@ public class OfferProfitService extends AbstractDraftService {
                     offerProfitDAO.insertOfferProfitPS2Expense(offerExpenseVO);
                 }
             }
-            // 예상손익 실적취합
+            // 손익 실적취합
             if(offerVO.getBsnsRslSmryList() != null) {
                 for(OfferResultVO offerResultVO : offerVO.getBsnsRslSmryList()) {
                     offerResultVO.setFcstPalId(fcstPalId);
@@ -1088,12 +1088,12 @@ public class OfferProfitService extends AbstractDraftService {
             }
 
         }catch (Exception e){
-            //throw new UpdateDeniedException("예상손익분석서 등록 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("손익분석서 등록 중 문제가 발생했습니다.", offerVO);
 
             if(e.getMessage() != null){
                 throw new UpdateDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 저장 중 오류가 발생했습니다.
+                //손익분석서 저장 중 오류가 발생했습니다.
                 throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -1173,7 +1173,7 @@ public class OfferProfitService extends AbstractDraftService {
             bsnsProfitLoss.setApproval(super.selectApprovalInfo(bsnsProfitLoss.getSantId()));
 /*
 
-            // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
+            // 손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
             if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W")) {
                 bsnsProfitLoss.setIsInProgress(false);
             } else {
@@ -1223,13 +1223,13 @@ public class OfferProfitService extends AbstractDraftService {
 
 
             if(super.isBelongToAuthDept(sysUserGroupVO)){
-                // 예상손익진행상태가 반려, 폐기가 아닌 경우에만 견적작성버튼 내려줌(요구사항 수정)
+                // 손익진행상태가 반려, 폐기가 아닌 경우에만 견적작성버튼 내려줌(요구사항 수정)
                 if(!bsnsProfitLoss.getFcstPalPrgsStatCd().equals("R") && !bsnsProfitLoss.getFcstPalPrgsStatCd().equals("W") ){
                     buttonList.add(new HashMap<String, String>() {{put("button", "견적작성"); }});
                 }
                 if (bsnsProfitLoss.getFcstPalPrgsStatCd().equals("C") || bsnsProfitLoss.getFcstPalPrgsStatCd().equals("D")) {
-                    // 예상손익진행상태가 승인인 경우 예상손익변경버튼 내려줌
-                    buttonList.add(new HashMap<String, String>() {{put("button", "예상손익변경"); }});
+                    // 손익진행상태가 승인인 경우 손익변경버튼 내려줌
+                    buttonList.add(new HashMap<String, String>() {{put("button", "손익변경"); }});
                     buttonList.add(new HashMap<String, String>() {{put("button", "수주보고"); }});
                 }
             }
@@ -1276,16 +1276,16 @@ public class OfferProfitService extends AbstractDraftService {
         try{
 
         /*if (offerProfitDAO.selectIsRelatedWithVrb(offerVO) > 0) {
-            throw new UpdateDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+            throw new UpdateDeniedException("VRB 분석서에 등록된 손익분석서는 삭제할 수 없습니다.", offerVO);
         }*/
-            // 변경전예상손익ID가 존재하는 경우 해당 문서의 진행상태가 승인이 아닌 경우 insert를 하지않는다.
+            // 변경전손익ID가 존재하는 경우 해당 문서의 진행상태가 승인이 아닌 경우 insert를 하지않는다.
             OfferVO befOfferVO = new OfferVO();
             if(offerVO.getBefFcstPalId() != null) {
                 befOfferVO.setFcstPalId(offerVO.getBefFcstPalId());
                 befOfferVO.setSantId(offerProfitDAO.selectOfferProfitPS2(befOfferVO).getSantId());
 
                 if (!offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("C") && !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("D") ) {
-                    throw new UpdateDeniedException("변경전 예상손익분석서는 승인상태여야 합니다.", befOfferVO);
+                    throw new UpdateDeniedException("변경전 손익분석서는 승인상태여야 합니다.", befOfferVO);
                 }
             }
 
@@ -1362,12 +1362,12 @@ public class OfferProfitService extends AbstractDraftService {
             super.updateApprovalInfo(offerVO.getApproval());
 
         }catch (Exception e){
-            //throw new UpdateDeniedException("예상손익분석서 변경 중 문제가 발생했습니다.", offerVO);
+            //throw new UpdateDeniedException("손익분석서 변경 중 문제가 발생했습니다.", offerVO);
 
             if(e.getMessage() != null){
                 throw new UpdateDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 저장 중 오류가 발생했습니다.
+                //손익분석서 저장 중 오류가 발생했습니다.
                 throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -1386,20 +1386,20 @@ public class OfferProfitService extends AbstractDraftService {
                 offerVO.setFcstPalId(offerProfitDAO.selectFcstPalId(offerVO));
             }
             if (offerProfitDAO.selectIsRelatedWithVrb(offerVO) > 0) {
-                throw new DeleteDeniedException("VRB 분석서에 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+                throw new DeleteDeniedException("VRB 분석서에 등록된 손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             if (offerProfitDAO.selectIsRelatedWithEstimate(offerVO) > 0) {
-                throw new DeleteDeniedException("견적서가 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+                throw new DeleteDeniedException("견적서가 등록된 손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             if (offerProfitDAO.selectIsRelatedWithBefProfitAnalysis(offerVO) > 0) {
-                throw new DeleteDeniedException("손익변경보고로 등록된 예상손익분석서는 삭제할 수 없습니다.", offerVO);
+                throw new DeleteDeniedException("손익변경보고로 등록된 손익분석서는 삭제할 수 없습니다.", offerVO);
             }
             // 수주등록이 되어있는 경우 삭제 불가
             String requestUri = "http://"+offerVO.getPrgsStatUrl().split("/")[2]+"/contract/selectCntrInfoRelatedFcstPalIdCountAjax.do";
 
             if(!requestUri.equals("") && requestUri != null){
 
-                // 변경수익보고시 계약테이블에 연결된 예상손익정보를 업데이트한다. (새롭게 연결)
+                // 변경수익보고시 계약테이블에 연결된 손익정보를 업데이트한다. (새롭게 연결)
                 RestTemplate restTemplate = connectionFactory.getRestTemplate();
                 String checkRestTemp = "http://"+requestUri.split("/")[2]+"/contract/selectContractInfoAjax.do";
 
@@ -1411,7 +1411,7 @@ public class OfferProfitService extends AbstractDraftService {
                     // 실패시
                     throw new UpdateDeniedException(offerVO);
                 }else if(returnResult.IsSucceed == true && (Integer)returnResult.Data > 0){
-                    // 계약테이블에 연결된 예상손익이 존재하는 경우
+                    // 계약테이블에 연결된 손익이 존재하는 경우
                     throw new UpdateDeniedException("연결된 계약, 수주정보가 존재하여 삭제할 수 없습니다.",offerVO);
 
                 }
@@ -1441,7 +1441,7 @@ public class OfferProfitService extends AbstractDraftService {
             if(e.getMessage() != null){
                 throw new DeleteDeniedException(e.getMessage(), offerVO);
             }else{
-                //예상손익분석서 삭제 중 오류가 발생했습니다.
+                //손익분석서 삭제 중 오류가 발생했습니다.
                 throw new DeleteDeniedException(ExceptionCode.DELETE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
             }
         }
@@ -1493,10 +1493,10 @@ public class OfferProfitService extends AbstractDraftService {
         // 결재진행상태 업데이트
         offerProfitDAO.updateOfferProfitStat(offerVO);
 
-        // 예상손익 결재진행 상태 조회
+        // 손익 결재진행 상태 조회
         result = offerProfitDAO.selectFcstPalPrgsStatCd(bsnsProfitLoss);
 
-        // 예상손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
+        // 손익 진행상태가 확정또는 폐기일 경우 결재버튼 내려주면 안된다.
         if(result.getFcstPalPrgsStatCd().equals("D") || result.getFcstPalPrgsStatCd().equals("W")) {
             result.setIsInProgress(false);
         }else {

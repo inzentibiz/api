@@ -7,7 +7,7 @@ import com.ibiz.api.utils.Enum.CellType;
 
 @CellStyleClassAttribute(CellStyleMethodName = "Title", ClassType = CellStyles.class)
 public class ExcelOfferProfitByProdTypeVO {
-    @ColumnAttribute(Index = 0, Title = "예상손익분석서ID", ColumnWidth = 120, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 0, Title = "손익분석서ID", ColumnWidth = 120, CellStyleMethodName = "Content")
     private String fcstPalId;
 
     @ColumnAttribute(Index = 1, Title = "문서번호", ColumnWidth = 180, CellStyleMethodName = "Content")
@@ -52,7 +52,7 @@ public class ExcelOfferProfitByProdTypeVO {
     @ColumnAttribute(Index = 14, Title = "계약이행종료월", ColumnWidth = 100, CellStyleMethodName = "Content")
     private String cntrTrsfEndYam;
 
-    @ColumnAttribute(Index = 15, Title = "예상손익진행상태", ColumnWidth = 130, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 15, Title = "손익진행상태", ColumnWidth = 130, CellStyleMethodName = "Content")
     private String fcstPalPrgsStatCdNm;
 
     @ColumnAttribute(Index = 16, Title = "상품유형", ColumnWidth = 140, CellStyleMethodName = "ContentLeft")

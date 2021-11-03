@@ -8,22 +8,22 @@ import java.util.List;
 
 public class BizChanceVO {
     /**
-     * 예상손익 ID
+     * 손익 ID
      */
     private String fcstPalId;
 
     /**
-     * 예상손익 문서번호
+     * 손익 문서번호
      */
     private String docNo;
 
     /**
-     * 예상손익 결재 ID
+     * 손익 결재 ID
      */
     private String santId;
 
     /**
-     * 예상손익상태
+     * 손익상태
      */
     private String fcstPalPrgsStatCdNm;
 
@@ -336,17 +336,17 @@ public class BizChanceVO {
     private List<BizChanceVO> bizChanceChangeList;
 
     /**
-     * 예상손익MA 연간투입원가
+     * 손익MA 연간투입원가
      */
     private long yrlyFcstPutCostAmt;
 
     /**
-     * 예상손익MA 유지보수시작일(MIN)
+     * 손익MA 유지보수시작일(MIN)
      */
     private String maStartDate;
 
     /**
-     * 예상손익MA 유지보수종료일(MAX)
+     * 손익MA 유지보수종료일(MAX)
      */
     private String maEndDate;
 

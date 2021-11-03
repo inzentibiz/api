@@ -16,7 +16,7 @@ import java.util.Map;
 public class VRBAnalysisVO {
 
     /**
-     * 예상손익 ID
+     * 손익 ID
      */
     private String fcstPalId;
     /**

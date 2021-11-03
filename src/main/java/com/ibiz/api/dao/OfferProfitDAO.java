@@ -95,7 +95,7 @@ public class OfferProfitDAO {
     }
 
     /**
-     * 예상손익 : 실적(취합)
+     * 손익 : 실적(취합)
      */
     public List<OfferResultVO> selectOfferProfitResultList(OfferVO offerVO) {
         return mybatis.selectList("OfferProfitMapper.selectOfferProfitResultList", offerVO);
@@ -103,7 +103,7 @@ public class OfferProfitDAO {
 
 
     /**
-     * 2. 예상손익 : 상품구분별 간접비
+     * 2. 손익 : 상품구분별 간접비
      */
 
 
@@ -173,7 +173,7 @@ public class OfferProfitDAO {
     }
 
     /**
-     * 예상손익 : 실적(취합)
+     * 손익 : 실적(취합)
      */
     public void insertOfferProfitResult(OfferResultVO offerResultVO) {
         mybatis.insert("OfferProfitMapper.insertOfferProfitResult", offerResultVO);
@@ -253,7 +253,7 @@ public class OfferProfitDAO {
         return mybatis.selectOne("OfferProfitMapper.selectIsRelatedWithBefProfitAnalysis", offerVO);
     }
 
-    //예상손익기본 상세 조회
+    //손익기본 상세 조회
     public OfferVO selectOfferProfitPS2(OfferVO offerVO) {
         return mybatis.selectOne("OfferProfitMapper.selectOfferProfitPS2", offerVO);
     }
@@ -304,12 +304,12 @@ public class OfferProfitDAO {
         return mybatis.selectOne("OfferProfitMapper.selectFcstPalPrgsStatCd", offerVO);
     }
 
-    // 예상손익 key select
+    // 손익 key select
     public OfferVO selectNewFcstPalId(OfferVO offerVO) {
         return mybatis.selectOne("OfferProfitMapper.selectNewFcstPalId", offerVO);
     }
 
-    // 프로젝트에 연관된 예상손익 조회
+    // 프로젝트에 연관된 손익 조회
     public List<OfferVO> selectProfitAnalysisListByPrjtId(OfferVO offerVO) {
         return mybatis.selectList("OfferProfitMapper.selectProfitAnalysisListByPrjtId", offerVO);
     }
@@ -319,12 +319,12 @@ public class OfferProfitDAO {
      * INSERT
      */
 
-    // 예상손익 기본 등록
+    // 손익 기본 등록
     public void insertOfferProfitPS2(OfferVO offerVO) {
         mybatis.insert("OfferProfitMapper.insertOfferProfitPS2", offerVO);
     }
 
-    // 예상손익 상품 등록
+    // 손익 상품 등록
     public void insertOfferProfitPS2Product(OfferProductVO offerProductVO) {
         mybatis.insert("OfferProfitMapper.insertOfferProfitPS2Product", offerProductVO);
     }
@@ -348,7 +348,7 @@ public class OfferProfitDAO {
      * UPDATE
      */
 
-    // 예상손익 기본 수정
+    // 손익 기본 수정
     public void updateOfferProfitPS2(OfferVO offerVO) {
         mybatis.update("OfferProfitMapper.updateOfferProfitPS2", offerVO);
     }
@@ -356,17 +356,17 @@ public class OfferProfitDAO {
     /*
      * DELETE
      */
-    // 예상손익 기본 삭제
+    // 손익 기본 삭제
     public void deleteOfferProfitPS(OfferVO offerVO) {
         mybatis.delete("OfferProfitMapper.deleteOfferProfitPS", offerVO);
     }
 
-    // 예상손익 상품 삭제
+    // 손익 상품 삭제
     public void deleteOfferProfitPSProduct(OfferVO offerVO) {
         mybatis.delete("OfferProfitMapper.deleteOfferProfitPSProduct", offerVO);
     }
 
-    // 예상손익 할인정책 삭제
+    // 손익 할인정책 삭제
     public void deleteOfferProfitPSProductDC(OfferVO offerVO) {
         mybatis.delete("OfferProfitMapper.deleteOfferProfitPSProductDC", offerVO);
     }
@@ -376,7 +376,7 @@ public class OfferProfitDAO {
         mybatis.delete("OfferProfitMapper.deleteOfferProfitPSExpense", offerVO);
     }
 
-    // 예상손익 실적집계 삭제
+    // 손익 실적집계 삭제
     public void deleteOfferProfitPSResult(OfferVO offerVO) {
         mybatis.delete("OfferProfitMapper.deleteOfferProfitPSResult", offerVO);
     }

@@ -2,14 +2,14 @@ package com.ibiz.api.model;
 
 /**
  *
- * BEST020T : 예상손익실적집계
+ * BEST020T : 손익실적집계
  *
  */
 
 public class OfferResultVO {
 
     /**
-     * 예상손익ID
+     * 손익ID
      */
     private String fcstPalId;
 

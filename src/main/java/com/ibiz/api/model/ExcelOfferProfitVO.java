@@ -8,7 +8,7 @@ import com.ibiz.api.utils.Enum.CellType;
 @CellStyleClassAttribute(CellStyleMethodName = "Title", ClassType = CellStyles.class)
 public class ExcelOfferProfitVO {
 
-    @ColumnAttribute(Index = 0, Title = "예상손익분석서ID", ColumnWidth = 120, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 0, Title = "손익분석서ID", ColumnWidth = 120, CellStyleMethodName = "Content")
     private String fcstPalId;
 
     @ColumnAttribute(Index = 1, Title = "문서번호", ColumnWidth = 180, CellStyleMethodName = "Content")
@@ -59,7 +59,7 @@ public class ExcelOfferProfitVO {
     @ColumnAttribute(Index = 16, Title = "기술서비스검토자", ColumnWidth = 120, CellStyleMethodName = "Content")
     private String techSvcRvwEmpNm;
 
-    @ColumnAttribute(Index = 17, Title = "예상손익진행상태", ColumnWidth = 130, CellStyleMethodName = "Content")
+    @ColumnAttribute(Index = 17, Title = "손익진행상태", ColumnWidth = 130, CellStyleMethodName = "Content")
     private String fcstPalPrgsStatCdNm;
 
     @ColumnAttribute(Index = 18, Title = "매출액", ColumnWidth = 110, CellStyleMethodName = "ContentRight", CellType=CellType.NumericComma)

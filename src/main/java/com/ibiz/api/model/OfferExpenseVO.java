@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 public class OfferExpenseVO {
 
     /**
-     * 예상손익ID
+     * 손익ID
      */
     @NotNull
     @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 견적ID는 10자리 이하여야합니다." )
@@ -39,7 +39,7 @@ public class OfferExpenseVO {
 
 
     /**
-     * 예상손익직접비명
+     * 손익직접비명
      */
     private String fcstPalDrcstNm;
 

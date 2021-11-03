@@ -13,7 +13,7 @@ public class VRBBizChanceVO {
     private String santId;
 
     /**
-     * 예상손익ID
+     * 손익ID
      */
     private String fcstPalId;
 
@@ -108,7 +108,7 @@ public class VRBBizChanceVO {
     private String docNo;
 
     /**
-     * 예상손익상태
+     * 손익상태
      */
     private String fcstPalPrgsStatCdNm;
 

@@ -204,7 +204,7 @@ public class OfferProfitSearchVO {
     private String pageSearchType;
 
     /**
-     * 변경전 예상손익ID
+     * 변경전 손익ID
      */
     private String befFcstPalId;
 

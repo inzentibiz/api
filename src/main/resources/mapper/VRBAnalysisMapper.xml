@@ -615,10 +615,10 @@
 	-->
 
 	<!--
-		예상손익데이터 이관
+		손익데이터 이관
 	-->
 
-	<!--  FROM 예상손익 TO VRB 수익분석상세-->
+	<!--  FROM 손익 TO VRB 수익분석상세-->
 	<insert id="insertOfferProfitIntoVrbAnalysis"
 			parameterType="com.ibiz.api.model.VRBProfitVO" >
 		INSERT INTO BPIP141T (

@@ -172,7 +172,7 @@
         ORDER BY CNTR_DATE DESC
     </select>
 
-    <!-- 해당 예상손익분석서(PnS) 조회 -->
+    <!-- 해당 손익분석서(PnS) 조회 -->
     <select id="selectPrjtTypeCd"
             parameterType="com.ibiz.api.model.BizChanceSearchVO"
             resultType="java.lang.String">
@@ -200,7 +200,7 @@
         FROM DUAL
 	</select>
 
-    <!-- 해당 예상손익분석서(PnS) 조회 -->
+    <!-- 해당 손익분석서(PnS) 조회 -->
     <select id="selectRlvnOfferProfitPSList"
             parameterType="com.ibiz.api.model.BizChanceSearchVO"
             resultType="com.ibiz.api.model.BizChanceVO">
@@ -219,7 +219,7 @@
         ORDER BY T1.REG_DT
     </select>
 
-    <!-- 해당 예상손익분석서(MA) 조회 -->
+    <!-- 해당 손익분석서(MA) 조회 -->
     <select id="selectRlvnOfferProfitMAList"
             parameterType="com.ibiz.api.model.BizChanceSearchVO"
             resultType="com.ibiz.api.model.BizChanceVO">

@@ -214,7 +214,7 @@ public class VRBAnalysisService extends AbstractDraftService {
 
         try {
             
-            // '수익가치 분석' 의 경우 '예상손익분석' 기획이 나온뒤에 추가해야함
+            // '수익가치 분석' 의 경우 '손익분석' 기획이 나온뒤에 추가해야함
             vrbAnalysisDAO.deleteVRBProfit(vrbAnalysisVO);
             vrbAnalysisDAO.deleteVRBStrategy(vrbAnalysisVO);
             vrbAnalysisDAO.deleteVRBOpinion(vrbAnalysisVO);

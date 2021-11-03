@@ -37,17 +37,17 @@ public class OfferEstimateDAO {
         return mybatis.selectOne("OfferEstimateMapper.selectEstimateRprsInfo", string);
     }
 
-    /* 예상손익 견적내역 조회*/
+    /* 손익 견적내역 조회*/
     public List<EstimateProductPSVO> selectEstimateBkdnList(String string) {
         return mybatis.selectList("OfferEstimateMapper.selectEstimateBkdnList", string);
     }
 
-    /* 예상손익 견적내역 유지보수 조회*/
+    /* 손익 견적내역 유지보수 조회*/
     public List<EstimateProductMAVO> selectEstimateMABkdnList(String string) {
         return mybatis.selectList("OfferEstimateMapper.selectEstimateMABkdnList", string);
     }
 
-    /* 예상손익 견적내역 유지보수 서비스 조회*/
+    /* 손익 견적내역 유지보수 서비스 조회*/
     public List<EstimateMAServiceVO> selectEstimateMAServiceBkdnList(String string) {
         return mybatis.selectList("OfferEstimateMapper.selectEstimateMAServiceBkdnList", string);
     }
@@ -68,7 +68,7 @@ public class OfferEstimateDAO {
     }
 
 
-    /* 예상손익 상태*/
+    /* 손익 상태*/
     public EstimateVO selectEstimateFcstPalPrgsStatCd(EstimateVO estimateVO) {
         return mybatis.selectOne("OfferEstimateMapper.selectEstimateFcstPalPrgsStatCd", estimateVO);
     }

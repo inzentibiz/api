@@ -216,7 +216,7 @@
 
 	</select>
 
-	<!-- 예상손익 상세 > VRB 대상선정 및 평가결과 : VRB 리스트 (BPIP100T)-->
+	<!-- 손익 상세 > VRB 대상선정 및 평가결과 : VRB 리스트 (BPIP100T)-->
 	<select id="selectOfferProfitPS1VrbList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.VRBProfitVO">
@@ -238,7 +238,7 @@
 		ORDER BY A.REG_DT DESC
 	</select>
 
-	<!-- 예상손익 상세 > 예상손익상품상세(BEST010T) -->
+	<!-- 손익 상세 > 손익상품상세(BEST010T) -->
 	<select id="selectOfferProfitProductList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferProductVO">
@@ -266,7 +266,7 @@
 
 	</select>
 
-	<!--  예상손익 상세 > 예상손익 할인정책(BEST011T)-->
+	<!--  손익 상세 > 손익 할인정책(BEST011T)-->
 	<select id="selectOfferProfitProductDCList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferProductDCVO">
@@ -318,7 +318,7 @@
 	</select>
 
 
-	<!-- 예상손익 : 실적(BEST020T) -->
+	<!-- 손익 : 실적(BEST020T) -->
 	<select id="selectOfferProfitResultList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferResultVO">
@@ -348,7 +348,7 @@
 
 	<!-- MA -->
 
-	<!-- 예상손익 > 서비스 제공조건(BEST080T)  -->
+	<!-- 손익 > 서비스 제공조건(BEST080T)  -->
 	<select id="selectOfferMACondList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferMACondVO">
@@ -368,7 +368,7 @@
 
 	</select>
 
-	<!-- 예상손익 > 계약옵션(BEST090T)  -->
+	<!-- 손익 > 계약옵션(BEST090T)  -->
 	<select id="selectContractCondList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferContractCondVO">
@@ -811,7 +811,7 @@
 	</insert>
 
 
-	<!-- 예상손익 : 실적(취합) -->
+	<!-- 손익 : 실적(취합) -->
 	<insert id="insertOfferProfitResult"
 			parameterType="com.ibiz.api.model.OfferResultVO" >
 
@@ -1039,7 +1039,7 @@
 	</select>
 
 
-	<!-- 예상손익 기본리스트 조회 For 엑셀 -->
+	<!-- 손익 기본리스트 조회 For 엑셀 -->
 	<select id="seleceExcelDwnlOfferProfitList"
 			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
 			resultType="com.ibiz.api.model.ExcelOfferProfitVO">
@@ -1055,7 +1055,7 @@
 			A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
 			IBIZ_EMP_NM(A.TECH_SVC_RVW_EMP_ID) TECH_SVC_RVW_EMP_NM, --A.TECH_SVC_RVW_EMP_ID, --기술서비스검토자
 			IBIZ_DEPT_NM( (SELECT BLTO_DEPT_ID FROM HMST300T WHERE EMP_ID = TECH_SVC_RVW_EMP_ID) ) AS TECH_SVC_RVW_DEPT_NM, --기술서비스검토부서
-			IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_CD_NM, --예상손익진행상태코드
+			IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_CD_NM, --손익진행상태코드
 			B.SELL_AMT, --매출액
 			B.BUY_COST_AMT, --매입원가
 			B.DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
@@ -1070,7 +1070,7 @@
 		FROM (
 			SELECT BOPT_ID, MAX(FCST_PAL_ID) FCST_PAL_ID
 			FROM BEST000T
-			WHERE FCST_PAL_PRGS_STAT_CD NOT IN ('R','W') --예상손익진행상태코드 R:반려, W:폐기
+			WHERE FCST_PAL_PRGS_STAT_CD NOT IN ('R','W') --손익진행상태코드 R:반려, W:폐기
 			GROUP BY BOPT_ID
 		) A1 JOIN BEST000T A
 		ON A1.FCST_PAL_ID = A.FCST_PAL_ID
@@ -1151,7 +1151,7 @@
 
 	</select>
 
-	<!-- 예상손익 상품유형별 리스트 조회 For 엑셀 -->
+	<!-- 손익 상품유형별 리스트 조회 For 엑셀 -->
 	<select id="seleceExcelDwnlOfferProfitByProdTypeList"
 			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
 			resultType="com.ibiz.api.model.ExcelOfferProfitByProdTypeVO">
@@ -1163,7 +1163,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 			P.PRJT_ID, P.PRJT_NM, O.BOPT_ID, O.BOPT_NM, --프로젝트명, 사업기회명
 			A.ORDE_CUST_ID, IBIZ_CUST_NM(A.ORDE_CUST_ID) AS ORDE_CUST_NM, --발주업체
 			A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
-			IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_CD_NM, --예상손익진행상태코드
+			IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_CD_NM, --손익진행상태코드
 			IBIZ_COM_CD_NM('PROD_TYPE_CD', B.PROD_TYPE_CD) PROD_TYPE_CD_NM, --상품유형코드
 			IBIZ_COM_CD_NM('GODS_CLSF_CD', B.GODS_CLSF_CD) GODS_CLSF_CD_NM, --제품분류코드
 			SUM(B.SELL_AMT) SELL_AMT, --매출액
@@ -1179,7 +1179,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 		FROM (
 			SELECT BOPT_ID, MAX(FCST_PAL_ID) FCST_PAL_ID
 			FROM BEST000T
-			WHERE FCST_PAL_PRGS_STAT_CD NOT IN ('R','W') --예상손익진행상태코드 R:반려, W:폐기
+			WHERE FCST_PAL_PRGS_STAT_CD NOT IN ('R','W') --손익진행상태코드 R:반려, W:폐기
 			GROUP BY BOPT_ID
 		) A1 JOIN BEST000T A
 		ON A1.FCST_PAL_ID = A.FCST_PAL_ID
@@ -1250,7 +1250,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 		P.PRJT_ID, P.PRJT_NM, O.BOPT_ID, O.BOPT_NM, --프로젝트명, 사업기회명
 		A.ORDE_CUST_ID, --발주업체
 		A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
-		A.FCST_PAL_PRGS_STAT_CD, --예상손익진행상태코드
+		A.FCST_PAL_PRGS_STAT_CD, --손익진행상태코드
 		B.PROD_TYPE_CD, --상품유형코드
 		B.GODS_CLSF_CD, --제품분류코드
 		B.PUT_TIME_UNIT_CD,
@@ -1260,7 +1260,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</select>
 
 
-	<!-- 예상손익 상품별 리스트 조회 For 엑셀 -->
+	<!-- 손익 상품별 리스트 조회 For 엑셀 -->
 	<select id="seleceExcelDwnlOfferProfitByProductList"
 			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
 			resultType="com.ibiz.api.model.ExcelOfferProfitByProductVO">
@@ -1273,7 +1273,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 			P.PRJT_ID, P.PRJT_NM, O.BOPT_ID, O.BOPT_NM, --프로젝트명, 사업기회명
 			A.ORDE_CUST_ID, IBIZ_CUST_NM(A.ORDE_CUST_ID) AS ORDE_CUST_NM, --발주업체
 			A.CNTR_TRSF_START_YAM, A.CNTR_TRSF_END_YAM, --계약이행기간
-			IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_CD_NM, --예상손익진행상태코드
+			IBIZ_COM_CD_NM('FCST_PAL_PRGS_STAT_CD', A.FCST_PAL_PRGS_STAT_CD) FCST_PAL_PRGS_STAT_CD_NM, --손익진행상태코드
 			A.REG_DT, --등록일시
 			IBIZ_COM_CD_NM('PROD_TYPE_CD', B.PROD_TYPE_CD) PROD_TYPE_CD_NM, --상품유형코드
 			PROD_SEQ, --상품순번
@@ -1381,7 +1381,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
             </if>
 
 		--★★★★★★ AND ( ESTI_RMRK_CONT IS NOT NULL AND COST_RMRK_CONT IS NOT NULL ) (★★★★ 견적비고, 원가비고 통합 검토)
-		ORDER BY A.REG_DT DESC, PTC010T.SORT_SEQC, B.PROD_SEQ --등록일시, 상품유형코드 정렬순서, 예상손익상품순서
+		ORDER BY A.REG_DT DESC, PTC010T.SORT_SEQC, B.PROD_SEQ --등록일시, 상품유형코드 정렬순서, 손익상품순서
 
 	</select>
 
@@ -1409,7 +1409,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	 -->
 
 
-	<!--	santid를 통해 예상손익정보 가져오기 -->
+	<!--	santid를 통해 손익정보 가져오기 -->
 	<select id="SelectFcstPalId"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="java.lang.String">
@@ -1431,7 +1431,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</select>
 
 	<!-- VRB 등록여부 조회
-	  	예상손익을 삭제하는 경우 VRB 등록여부를 체크하기 위한 쿼리 -->
+	  	손익을 삭제하는 경우 VRB 등록여부를 체크하기 위한 쿼리 -->
 	<select id="selectIsRelatedWithVrb"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="java.lang.Integer">
@@ -1446,7 +1446,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</select>
 
 	<!-- 견적서 등록여부 조회
-	  	예상손익을 삭제하는 경우 견적서 등록여부를 체크하기 위한 쿼리 -->
+	  	손익을 삭제하는 경우 견적서 등록여부를 체크하기 위한 쿼리 -->
 	<select id="selectIsRelatedWithEstimate"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="java.lang.Integer">
@@ -1461,7 +1461,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</select>
 
 
-	<!-- 예상손익기본 상세  -->
+	<!-- 손익기본 상세  -->
 	<select id="selectOfferProfitPS2"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferVO">
@@ -1500,7 +1500,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</select>
 
 
-	<!-- 예상손익 > 프로젝트 직접경비(BEST050T)  상세 화면용 -->
+	<!-- 손익 > 프로젝트 직접경비(BEST050T)  상세 화면용 -->
 	<select id="selectOfferExpenseList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferExpenseVO">
@@ -1522,7 +1522,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</select>
 
 
-	<!-- 예상손익 > 프로젝트 직접경비(BEST050T)  등록/수정화면용 -->
+	<!-- 손익 > 프로젝트 직접경비(BEST050T)  등록/수정화면용 -->
 	<select id="selectDirectCostList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.DirectCostCriteriaVO">
@@ -1554,7 +1554,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	</select>
 
-	<!-- 예상손익 상세 > 예상손익상품상세(BEST010T) -->
+	<!-- 손익 상세 > 손익상품상세(BEST010T) -->
 	<select id="selectOfferProfitPS2ProductList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferProductVO">
@@ -1596,7 +1596,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	</select>
 
-	<!--  예상손익 상세 > 예상손익 할인정책(BEST011T)-->
+	<!--  손익 상세 > 손익 할인정책(BEST011T)-->
 	<select id="selectOfferProfitPS2ProductDCList"
 			parameterType="com.ibiz.api.model.OfferProductVO"
 			resultType="com.ibiz.api.model.OfferProductDCVO">
@@ -1623,7 +1623,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	</select>
 
-	<!-- 예상손익 : 실적(BEST020T) -->
+	<!-- 손익 : 실적(BEST020T) -->
 	<select id="selectOfferProfitPS2ResultList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferResultVO">
@@ -1656,7 +1656,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	</select>
 
-	<!-- 예상손익 상세 >  VRB 대상선정 및 평가결과 : VRB 대상선정 기준항목(BPIP110T) -->
+	<!-- 손익 상세 >  VRB 대상선정 및 평가결과 : VRB 대상선정 기준항목(BPIP110T) -->
 	<select id="selectOfferProfitPS2VRBSelectCriteriaList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.VRBSelectCriteriaVO">
@@ -1690,7 +1690,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	</select>
 
-	<!-- 예상손익 상세 > VRB 대상선정 및 평가결과 : VRB 리스트 (BPIP100T)-->
+	<!-- 손익 상세 > VRB 대상선정 및 평가결과 : VRB 리스트 (BPIP100T)-->
 	<select id="selectOfferProfitPS2VrbList"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.VRBProfitVO">
@@ -1718,7 +1718,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</select>
 
 
-	<!-- 예상손익 key select -->
+	<!-- 손익 key select -->
 	<select id="selectNewFcstPalId"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferVO">
@@ -1728,7 +1728,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 
 
-	<!-- 프로젝트에 연관된 예상손익 조회 >> 수주등록시 참고 -->
+	<!-- 프로젝트에 연관된 손익 조회 >> 수주등록시 참고 -->
 	<select id="selectProfitAnalysisListByPrjtId"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="com.ibiz.api.model.OfferVO">
@@ -1785,7 +1785,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	 -->
 
-	<!-- 예상손익 기본 등록(BEST000T) -->
+	<!-- 손익 기본 등록(BEST000T) -->
 	<insert id="insertOfferProfitPS2"
 			parameterType="com.ibiz.api.model.OfferVO"
 			useGeneratedKeys="true"
@@ -1889,7 +1889,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	</insert>
 
-	<!-- 예상손익상품상세 등록(BEST010T) -->
+	<!-- 손익상품상세 등록(BEST010T) -->
 	<insert id="insertOfferProfitPS2Product"
 			parameterType="com.ibiz.api.model.OfferProductVO" >
 
@@ -2214,7 +2214,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</insert>
 
 
-	<!-- 예상손익 : 실적(BEST020T) -->
+	<!-- 손익 : 실적(BEST020T) -->
 	<insert id="insertOfferProfitPS2Result"
 			parameterType="com.ibiz.api.model.OfferResultVO" >
 
@@ -2291,7 +2291,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
        UPDATE
 
     -->
-	<!-- 예상손익상세 기본 수정 -->
+	<!-- 손익상세 기본 수정 -->
 	<update id= "updateOfferProfitPS2"
 			parameterType="com.ibiz.api.model.OfferVO" >
 
@@ -2327,7 +2327,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
        DELETE
 
     -->
-	<!-- 예상손익 기본 삭제(BEST000T) -->
+	<!-- 손익 기본 삭제(BEST000T) -->
 	<delete id="deleteOfferProfitPS"
 			parameterType="com.ibiz.api.model.OfferVO" >
 
@@ -2336,7 +2336,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	</delete>
 
-	<!-- 예상손익상품 삭제(BEST010T) -->
+	<!-- 손익상품 삭제(BEST010T) -->
 	<delete id="deleteOfferProfitPSProduct"
 			parameterType="com.ibiz.api.model.OfferVO" >
 
@@ -2346,7 +2346,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	</delete>
 
-	<!-- 예상손익 할인정책 삭제(BEST011T) -->
+	<!-- 손익 할인정책 삭제(BEST011T) -->
 	<delete id="deleteOfferProfitPSProductDC"
 			parameterType="com.ibiz.api.model.OfferVO" >
 
@@ -2357,7 +2357,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</delete>
 
 
-	<!-- 예상손익 직접경비 삭제(BEST050T) -->
+	<!-- 손익 직접경비 삭제(BEST050T) -->
 	<delete id="deleteOfferProfitPSExpense"
 			parameterType="com.ibiz.api.model.OfferVO" >
 
@@ -2367,7 +2367,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 	</delete>
 
-	<!-- 예상손익 실적 삭제(BEST020T) -->
+	<!-- 손익 실적 삭제(BEST020T) -->
 	<delete id="deleteOfferProfitPSResult"
 			parameterType="com.ibiz.api.model.OfferVO" >
 
@@ -2434,7 +2434,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</select>
 
 
-	<!-- 예상손익기본 상세  -->
+	<!-- 손익기본 상세  -->
 	<select id="selectIsRelatedWithBefProfitAnalysis"
 			parameterType="com.ibiz.api.model.OfferVO"
 			resultType="java.lang.Integer">
@@ -2448,7 +2448,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 
 
-	<!-- 예상손익분석 리스트 -->
+	<!-- 손익분석 리스트 -->
 	<select id="selectOfferProfitList"
 			parameterType="com.ibiz.api.model.OfferProfitSearchVO"
 			resultType="com.ibiz.api.model.OfferVO">

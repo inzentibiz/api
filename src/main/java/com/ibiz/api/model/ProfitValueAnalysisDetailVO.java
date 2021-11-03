@@ -8,7 +8,7 @@ public class ProfitValueAnalysisDetailVO {
     private String vrbAnlyId;
 
     /**
-     * 예상손익ID
+     * 손익ID
      */
     private String fcstPalId;
 

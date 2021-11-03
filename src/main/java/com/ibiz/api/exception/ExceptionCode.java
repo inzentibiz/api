@@ -83,7 +83,7 @@ public class ExceptionCode {
      *  31      01		03 		서비스 - 상태 - 동기화 오류
      *
      *  31		02		01 		서비스 - 정책 - 삭제할 수 없음
-     *  31		02		02		서비스 - 정책 - 예상손익분석/견적서가 존재하여 삭제 불가능합니다.
+     *  31		02		02		서비스 - 정책 - 손익분석/견적서가 존재하여 삭제 불가능합니다.
      *
      *  31		03		01		서비스 - 코드 - 중복된 코드 존재
      *  31		03		02		서비스 - 코드 - 하위 코드 존재 삭제 불가
@@ -194,7 +194,7 @@ public class ExceptionCode {
 
 
     public static final String DELETE_DENIED_BOPT_EXCEPTION = "IBIZ_310202";
-    public static final String DELETE_DENIED_BOPT_EXCEPTION_MESSAGE = "예상손익분석 / 견적서가 존재하여 삭제 불가능합니다.";
+    public static final String DELETE_DENIED_BOPT_EXCEPTION_MESSAGE = "손익분석 / 견적서가 존재하여 삭제 불가능합니다.";
 
     public static final String APPROVAL_STATE_EXCEPTION = "IBIZ_320101";
     public static final String APPROVAL_STATE_EXCEPTION_MESSAGE = "문서상태가 변경되어 결재진행이 불가능합니다.";
@@ -205,13 +205,13 @@ public class ExceptionCode {
 
 
     public static final String UPDATE_PROFIT_DATA_EXCEPTION = "IBIZ_350200";
-    public static final String UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE = "예상손익분석서 저장 중 오류가 발생했습니다.";
+    public static final String UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE = "손익분석서 저장 중 오류가 발생했습니다.";
 
     public static final String UPDATE_PROFIT_STATE_EXCEPTION = "IBIZ_350201";
-    public static final String UPDATE_PROFIT_STATE_EXCEPTION_MESSAGE = "예상손익분석서 진행상태 변경 중 오류가 발생했습니다.";
+    public static final String UPDATE_PROFIT_STATE_EXCEPTION_MESSAGE = "손익분석서 진행상태 변경 중 오류가 발생했습니다.";
 
     public static final String DELETE_PROFIT_DATA_EXCEPTION = "IBIZ_350300";
-    public static final String DELETE_PROFIT_DATA_EXCEPTION_MESSAGE = "예상손익분석서 삭제 중 오류가 발생했습니다.";
+    public static final String DELETE_PROFIT_DATA_EXCEPTION_MESSAGE = "손익분석서 삭제 중 오류가 발생했습니다.";
 
 
 

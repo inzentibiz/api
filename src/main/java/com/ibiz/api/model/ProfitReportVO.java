@@ -15,7 +15,7 @@ public class ProfitReportVO {
     // 수주ID
     private String wctId;
 
-    // 예상손익ID
+    // 손익ID
     private String fcstPalId;
 
     // 수익보고진행상태코드

@@ -181,7 +181,7 @@
 		WHERE ROWNUM = 1
 	</select>
 
-	<!-- 예상손익 견적내역 전체 조회 -->
+	<!-- 손익 견적내역 전체 조회 -->
 	<select id="selectEstimateBkdnList"
 			parameterType="com.ibiz.api.model.EstimateVO"
 			resultType="com.ibiz.api.model.EstimateProductPSVO" >

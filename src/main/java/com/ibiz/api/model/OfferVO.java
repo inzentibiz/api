@@ -10,13 +10,13 @@ import java.util.Map;
 
 /**
  *
- * BEST000T : 사업예상손익기본
+ * BEST000T : 사업손익기본
  *
  */
 public class OfferVO {
 
     /**
-     * 예상손익ID
+     * 손익ID
      */
     private String fcstPalId;
 
@@ -164,14 +164,14 @@ public class OfferVO {
     private String etcMtr;
 
     /**
-     * 예상손익진행상태코드
+     * 손익진행상태코드
      */
     @NotNull
-    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익진행상태코드는 4자리 이하여야합니다." )
+    @Size(max=4, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 손익진행상태코드는 4자리 이하여야합니다." )
     private String fcstPalPrgsStatCd;
 
     /**
-     * 예상손익진행상태코드명
+     * 손익진행상태코드명
      */
     private String fcstPalPrgsStatCdNm;
 
@@ -354,7 +354,7 @@ public class OfferVO {
     private String svcSearchType;
 
     /**
-     * 변경전 예상손익ID
+     * 변경전 손익ID
      */
     private String befFcstPalId;
 

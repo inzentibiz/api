@@ -8,16 +8,16 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * BEST011T : 예상손익할인정책상세
+ * BEST011T : 손익할인정책상세
  *
  */
 public class OfferProductDCVO {
 
     /**
-     * 예상손익ID
+     * 손익ID
      */
     @NotNull
-    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 예상손익ID는 10자리 이하여야합니다." )
+    @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 손익ID는 10자리 이하여야합니다." )
     private String fcstPalId;
 
     // 201911상품변경
