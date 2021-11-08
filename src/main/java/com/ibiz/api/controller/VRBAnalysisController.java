@@ -1,10 +1,7 @@
 package com.ibiz.api.controller;
 
 import com.google.gson.reflect.TypeToken;
-import com.ibiz.api.model.ApprovalVO;
-import com.ibiz.api.model.CommonGroupCodeVO;
-import com.ibiz.api.model.Payload;
-import com.ibiz.api.model.VRBAnalysisVO;
+import com.ibiz.api.model.*;
 import com.ibiz.api.service.VRBAnalysisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,6 +154,17 @@ public class VRBAnalysisController extends BaseController {
         Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<VRBAnalysisVO>>(){});
 
         return super.composePayload(new Payload<VRBAnalysisVO>(vrbAnalysisService.updateVRBAnalysis(requestPayload)));
+    }
+
+    /**
+     * VRB분석 손익분석 상세조회
+     */
+    @PostMapping("/selectProfitAnlyInfo")
+    public ResponseEntity<String> selectProfitAnlyInfo(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".selectProfitAnlyInfo");
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<VRBAnalysisVO>>(){});
+
+        return super.composePayload(new Payload<VRBProfitVO>(vrbAnalysisService.selectProfitAnlyInfo(requestPayload)));
     }
 
 }

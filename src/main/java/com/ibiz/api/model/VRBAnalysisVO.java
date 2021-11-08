@@ -277,7 +277,7 @@ public class VRBAnalysisVO {
     private String nsleAmt;
 
     /**
-     * 공헌이익
+     * 사업이익
      */
     private String ctmgAmt;
 
@@ -366,6 +366,20 @@ public class VRBAnalysisVO {
      * 파일첨부 ID
      */
     private String fileAttcId;
+    /**
+     * 사업배경내용
+     */
+    private String bsnsBckgCont;
+
+    /**
+     * 사업내용
+     */
+    private String bsnsCont;
+
+    /**
+     * 자사제품내용
+     */
+    private String ourGodsCont;
 
     public String getWinPopupCd() {
         return winPopupCd;
@@ -1005,5 +1019,29 @@ public class VRBAnalysisVO {
 
     public void setFileAttcId(String fileAttcId) {
         this.fileAttcId = fileAttcId;
+    }
+
+    public String getBsnsBckgCont() {
+        return bsnsBckgCont;
+    }
+
+    public void setBsnsBckgCont(String bsnsBckgCont) {
+        this.bsnsBckgCont = bsnsBckgCont;
+    }
+
+    public String getBsnsCont() {
+        return bsnsCont;
+    }
+
+    public void setBsnsCont(String bsnsCont) {
+        this.bsnsCont = bsnsCont;
+    }
+
+    public String getOurGodsCont() {
+        return ourGodsCont;
+    }
+
+    public void setOurGodsCont(String ourGodsCont) {
+        this.ourGodsCont = ourGodsCont;
     }
 }

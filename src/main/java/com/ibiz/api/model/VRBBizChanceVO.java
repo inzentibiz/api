@@ -33,7 +33,7 @@ public class VRBBizChanceVO {
     private Long nsleAmt;
 
     /**
-     * 공헌이익
+     * 사업이익
      */
     private Long ctmgAmt;
 
@@ -111,6 +111,47 @@ public class VRBBizChanceVO {
      * 손익상태
      */
     private String fcstPalPrgsStatCdNm;
+
+    /**
+     * 매입액
+     */
+    private Long buyCostAmt;
+
+    /**
+     * 직접경비
+     */
+    private Long drexpAmt;
+
+    /**
+     * 기술서비스원가
+     */
+    private Long drcstAmt;
+
+    /**
+     * 판매관리비
+     */
+    private Long incstAmt;
+
+    /**
+     * 사업이익률
+     */
+    private Float ctmgAmtRt;
+
+    /**
+     * SVC매입액
+     */
+    private Long svcBuyCostAmt;
+
+
+    /**
+     * 자사타사구분
+     */
+    private String ourOtcmDst;
+
+    /**
+     * 등급
+     */
+    private String grade;
 
     public String getAnlyDt() {
         return anlyDt;
@@ -288,16 +329,83 @@ public class VRBBizChanceVO {
         this.fcstPalPrgsStatCdNm = fcstPalPrgsStatCdNm;
     }
 
+    public Long getBuyCostAmt() {
+        return buyCostAmt;
+    }
+
+    public void setBuyCostAmt(Long buyCostAmt) {
+        this.buyCostAmt = buyCostAmt;
+    }
+
+    public Long getDrexpAmt() {
+        return drexpAmt;
+    }
+
+    public void setDrexpAmt(Long drexpAmt) {
+        this.drexpAmt = drexpAmt;
+    }
+
+    public Long getDrcstAmt() {
+        return drcstAmt;
+    }
+
+    public void setDrcstAmt(Long drcstAmt) {
+        this.drcstAmt = drcstAmt;
+    }
+
+    public Long getIncstAmt() {
+        return incstAmt;
+    }
+
+    public void setIncstAmt(Long incstAmt) {
+        this.incstAmt = incstAmt;
+    }
+
+    public Float getCtmgAmtRt() {
+        return ctmgAmtRt;
+    }
+
+    public void setCtmgAmtRt(Float ctmgAmtRt) {
+        this.ctmgAmtRt = ctmgAmtRt;
+    }
+
+    public Long getSvcBuyCostAmt() {
+        return svcBuyCostAmt;
+    }
+
+    public void setSvcBuyCostAmt(Long svcBuyCostAmt) {
+        this.svcBuyCostAmt = svcBuyCostAmt;
+    }
+
+    public String getOurOtcmDst() {
+        return ourOtcmDst;
+    }
+
+    public void setOurOtcmDst(String ourOtcmDst) {
+        this.ourOtcmDst = ourOtcmDst;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
     @Override
     public String toString() {
         return "VRBBizChanceVO [anlyDt=" + anlyDt + ", fcstPalId=" + fcstPalId + ", boptId=" + boptId + ", boptNm="
                 + boptNm + ", nsleAmt=" + nsleAmt + ", ctmgAmt=" + ctmgAmt + ", ordeCustId=" + ordeCustId
-                + ", ordeCustNm=" + ordeCustNm + ", splyAmt=" + splyAmt + ", putNopCount=" + putNopCount
+                + ", ordeCustNm=" + ordeCustNm + ", splyAmt=" + splyAmt+ ", buyCostAmt=" + buyCostAmt
+                + ", drexpAmt=" + drexpAmt + ", drcstAmt=" + drcstAmt + ", incstAmt=" + incstAmt
+                + ", ctmgAmtRt=" + ctmgAmtRt + ", svcBuyCostAmt=" + svcBuyCostAmt + ", putNopCount=" + putNopCount
                 + ", putTimeUnitCd=" + putTimeUnitCd + ", putTimeUnitCdNm=" + putTimeUnitCdNm + ", wctPrbbCd=" + wctPrbbCd
                 + ", wctPrbbCdNm=" + wctPrbbCdNm + ", prpsFnshDate=" + prpsFnshDate + ", bidFnshDate=" + bidFnshDate
                 + ", cntrDate=" + cntrDate + ", checkBox=" + checkBox + ", docNo=" + docNo + ", santId=" + santId
-                + ", fcstPalPrgsStatCdNm=" + fcstPalPrgsStatCdNm +"]";
+                + ", fcstPalPrgsStatCdNm=" + fcstPalPrgsStatCdNm + ", ourOtcmDst=" + ourOtcmDst + ", grade=" + grade +"]";
     }
+
 
 
 }

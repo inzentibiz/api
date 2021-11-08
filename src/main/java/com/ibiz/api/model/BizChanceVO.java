@@ -234,7 +234,7 @@ public class BizChanceVO {
     private long sumBuyAmt;
 
     /**
-     * 공헌이익
+     * 사업이익
      */
     private long ctmgAmt;
 

@@ -65,7 +65,7 @@ public class VRBAnalysisService extends AbstractDraftService {
         vrb.setProfitValueAnalysis(vrbAnalysisDAO.selectVRBAnalysisErnnAnly(vrbAnalysisVO)); //수익가치분석
 
         if (vrb.getProfitValueAnalysis() != null) {
-            // 순매출, 매출성과, 직간접비, 매출이익, 매출성과대비매출이익률, 공헌이익, 매출성과대비 공헌이익률
+            // 순매출, 매출성과, 직간접비, 매출이익, 매출성과대비매출이익률, 사업이익, 매출성과대비 사업이익률
             vrb.getProfitValueAnalysis().setNsleAmt(vrb.getProfitValueAnalysis().getSplyAmt() - vrb.getProfitValueAnalysis().getBuyCostAmt());
             vrb.getProfitValueAnalysis().setSellRslt(vrb.getProfitValueAnalysis().getNsleAmt() + vrb.getProfitValueAnalysis().getSvcBuyCostAmt());
             vrb.getProfitValueAnalysis().setDrcstIncstAmt(vrb.getProfitValueAnalysis().getIncstAmt() + vrb.getProfitValueAnalysis().getDrcstAmt());
@@ -493,4 +493,17 @@ public class VRBAnalysisService extends AbstractDraftService {
 
         return vrbAnalysisVO;
     }
+
+    //VRB분석 손익분석 상세조회
+    public VRBProfitVO selectProfitAnlyInfo(Payload<VRBAnalysisVO> requestPayload) throws Exception {
+        log.info("Call Service : " + this.getClass().getName() + ".selectProfitAnlyInfo");
+        VRBAnalysisVO vrbAnalysisVO = requestPayload.getDto();
+
+        VRBProfitVO vrbProfitVO = vrbAnalysisDAO.selectProfitAnlyInfo(vrbAnalysisVO);
+        List<VRBBizChanceVO> list = vrbAnalysisDAO.selectProfitAnlyPutNopInfoList(vrbAnalysisVO);
+        vrbProfitVO.setVrbBizChanceList(list);
+
+        return vrbProfitVO;
+    }
+
 }

@@ -97,6 +97,15 @@ public class VRBAnalysisDAO {
     public VRBAnalysisVO selectVRBPrgsStatCd(VRBAnalysisVO vrbAnalysisVO) {
         return mybatis.selectOne("VRBAnalysisMapper.selectVRBPrgsStatCd", vrbAnalysisVO);
     }
+
+    public VRBProfitVO selectProfitAnlyInfo(VRBAnalysisVO vrbAnalysisVO) {
+        return mybatis.selectOne("VRBAnalysisMapper.selectProfitAnlyInfo", vrbAnalysisVO);
+    }
+
+    public List<VRBBizChanceVO> selectProfitAnlyPutNopInfoList(VRBAnalysisVO vrbAnalysisVO) {
+        return mybatis.selectList("VRBAnalysisMapper.selectProfitAnlyPutNopInfoList", vrbAnalysisVO);
+    }
+
     /*
      * INSERT
      */

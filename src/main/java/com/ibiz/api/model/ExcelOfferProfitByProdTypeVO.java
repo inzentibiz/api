@@ -76,7 +76,7 @@ public class ExcelOfferProfitByProdTypeVO {
     @ColumnAttribute(Index = 22, Title = "간접원가", ColumnWidth = 110, CellStyleMethodName = "ContentRight", CellType=CellType.NumericComma)
     private String incstAmt;
 
-    @ColumnAttribute(Index = 23, Title = "공헌이익", ColumnWidth = 110, CellStyleMethodName = "ContentRight", CellType=CellType.NumericComma)
+    @ColumnAttribute(Index = 23, Title = "사업이익", ColumnWidth = 110, CellStyleMethodName = "ContentRight", CellType=CellType.NumericComma)
     private String ctmgAmt;
 
     @ColumnAttribute(Index = 24, Title = "예상투입인원", ColumnWidth = 100, CellStyleMethodName = "ContentRight", CellType=CellType.NumericComma)

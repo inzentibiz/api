@@ -1061,7 +1061,7 @@
 			B.DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
 			B.DREXP_AMT, --직접경비
 			B.INCST_AMT, --간접원가
-			B.CTMG_AMT, --공헌이익
+			B.CTMG_AMT, --사업이익
             B.PUT_NOP_COUNT, --예상투입인원
 			IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD',B.PUT_TIME_UNIT_CD) PUT_TIME_UNIT_CD_NM, --투입시간단위코드
 			IBIZ_EMP_NM(A.REG_EMP_ID) REG_EMP_NM, --등록자
@@ -1081,7 +1081,7 @@
                     SUM(DRCST_AMT) DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
                     SUM(DREXP_AMT) DREXP_AMT, --직접경비
                     SUM(INCST_AMT) INCST_AMT, --간접원가
-                    SUM(CTMG_AMT) CTMG_AMT, --공헌이익
+                    SUM(CTMG_AMT) CTMG_AMT, --사업이익
                     SUM(PUT_NOP_COUNT) AS PUT_NOP_COUNT
                 FROM BEST020T B
                 WHERE 1 = 1
@@ -1171,7 +1171,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 			SUM(B.DRCST_AMT) DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
 			SUM(B.DREXP_AMT) DREXP_AMT, --직접경비
 			SUM(B.INCST_AMT) INCST_AMT, --간접원가
-			SUM(B.CTMG_AMT) CTMG_AMT, --공헌이익
+			SUM(B.CTMG_AMT) CTMG_AMT, --사업이익
 			SUM(B.PUT_NOP_COUNT) PUT_NOP_COUNT, --예상투입인원
 			B.PUT_TIME_UNIT_CD,
 			IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD',MIN(B.PUT_TIME_UNIT_CD)) PUT_TIME_UNIT_CD_NM, --투입시간단위코드
@@ -1635,7 +1635,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 			   SUM(B.DRCST_AMT) DRCST_AMT, --매입외 직접원가(제조원가/직접인건비)
 			   SUM(B.DREXP_AMT) DREXP_AMT, --직접경비
 			   SUM(B.INCST_AMT) INCST_AMT, --간접원가
-			   SUM(B.CTMG_AMT) CTMG_AMT, --공헌이익
+			   SUM(B.CTMG_AMT) CTMG_AMT, --사업이익
 			   SUM(B.PUT_NOP_COUNT) PUT_NOP_COUNT, --예상투입인원
 			   IBIZ_COM_CD_NM('PUT_TIME_UNIT_CD',MIN(B.PUT_TIME_UNIT_CD)) PUT_TIME_UNIT_CD_NM --투입시간단위코드
 		 FROM  BEST020T B

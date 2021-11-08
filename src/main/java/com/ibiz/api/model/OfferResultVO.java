@@ -64,7 +64,7 @@ public class OfferResultVO {
     private long incstAmt;
 
     /**
-     * 공헌이익금액
+     * 사업이익금액
      */
     private long ctmgAmt;
 

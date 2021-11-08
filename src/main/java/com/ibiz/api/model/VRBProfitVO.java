@@ -5,6 +5,7 @@ import com.ibiz.api.exception.ExceptionCode;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  *
@@ -81,7 +82,7 @@ public class VRBProfitVO {
     private Long incstAmt;
 
     /**
-     * 공헌이익금액
+     * 사업이익금액
      */
     @Digits(integer=15,fraction=0)
     private Long ctmgAmt;
@@ -102,6 +103,11 @@ public class VRBProfitVO {
      */
     @Digits(integer=5,fraction=2)
     private float putNopCount;
+
+    /**
+     * vrb 투입 리스트
+     */
+    private List<VRBBizChanceVO> vrbBizChanceList;
 
     public String getFcstPalId() {
         return fcstPalId;
@@ -252,6 +258,13 @@ public class VRBProfitVO {
         this.putNopCount = putNopCount;
     }
 
+    public List<VRBBizChanceVO> getVrbBizChanceList() {
+        return vrbBizChanceList;
+    }
+
+    public void setVrbBizChanceList(List<VRBBizChanceVO> vrbBizChanceList) {
+        this.vrbBizChanceList = vrbBizChanceList;
+    }
 
     @Override
     public String toString() {
@@ -259,7 +272,7 @@ public class VRBProfitVO {
                 + ", prodTypeCd=" + prodTypeCd + ", prodTypeCdNm=" + prodTypeCdNm + ", lpcAmt=" + lpcAmt + ", sellAmt="
                 + sellAmt + ", buyCostAmt=" + buyCostAmt + ", drcstAmt=" + drcstAmt + ", drexpAmt=" + drexpAmt
                 + ", incstAmt=" + incstAmt + ", ctmgAmt=" + ctmgAmt + ", putTimeUnitCd=" + putTimeUnitCd
-                + ", putTimeUnitCdNm=" + putTimeUnitCdNm + ", putNopCount=" + putNopCount +"]";
+                + ", putTimeUnitCdNm=" + putTimeUnitCdNm + ", putNopCount=" + putNopCount + ", vrbBizChanceList=" + vrbBizChanceList +"]";
     }
 
 }

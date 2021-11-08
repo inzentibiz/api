@@ -28,12 +28,12 @@ public class ProfitValueAnalysisVO {
     private Float sellPrfRt;
 
     /**
-     * 공헌이익
+     * 사업이익
      */
     private Long ctmgAmt;
 
     /**
-     * 매출성과대비 공헌이익률
+     * 매출성과대비 사업이익률
      */
     private Float ctmgAmtRt;
 
