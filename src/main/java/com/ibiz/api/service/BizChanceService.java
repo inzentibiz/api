@@ -616,9 +616,6 @@ public class BizChanceService {
         AccountVO accountVO = requestPayload.getAccountVO();
 
         //날짜
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int nextYear = cal.get(Calendar.YEAR)+1; // 연장할 연도
         long currDateTime = new Date().getTime();
         Timestamp currDateTimestamp = new Timestamp(currDateTime);
         String date = currDateTimestamp.toString();
@@ -630,6 +627,11 @@ public class BizChanceService {
             for(BizChanceVO bizChanceVO : bizChanceSearchVO.getBizChanceChangeList()){
                 BizChanceAmountVO bizChanceAmountVO = new BizChanceAmountVO();
                 BizChancePersonVO bizChancePersonVO = new BizChancePersonVO();
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, Integer.valueOf(bizChanceVO.getBoptId().substring(0,4)));
+                int year = cal.get(Calendar.YEAR);
+                cal.add(Calendar.YEAR, 1);
+                int nextYear = cal.get(Calendar.YEAR); // 연장할 연도
 
                 bizChanceAmountVO.setBoptId(bizChanceVO.getBoptId());
                 bizChancePersonVO.setBoptId(bizChanceVO.getBoptId());
