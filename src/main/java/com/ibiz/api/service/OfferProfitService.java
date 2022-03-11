@@ -715,6 +715,24 @@ public class OfferProfitService extends AbstractDraftService {
 
         try{
 
+            // 변경전손익ID가 존재하는 경우 해당 문서의 진행상태가 승인이 아닌 경우 insert를 하지않는다.
+            OfferVO befOfferVO = new OfferVO();
+            if(offerVO.getBefFcstPalId() != null){
+                befOfferVO.setFcstPalId(offerVO.getBefFcstPalId());
+                befOfferVO.setSantId(offerProfitDAO.selectOfferProfitPS2(befOfferVO).getSantId());
+
+                if( !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("C") && !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("D")  ){
+                    throw new UpdateDeniedException("변경전 손익분석서는 승인상태여야 합니다.", befOfferVO);
+                }
+            }
+
+            // 사업기회 중복매핑 체크
+            // 반려, 폐기가 아닌 상태의 동일한 사업기회가 연결된 예상손익분석서가 존재하면 insert를 하지않는다.
+            // 변경보고로 들어오는 경우는 제외
+            if(offerProfitDAO.selectIsExistDuplicateBoptID(offerVO).size() > 0 ){
+                throw new UpdateDeniedException("동일한 사업기회에 연결된 손익분서서가 존재합니다. 사업기회를 확인하거나 변경보고인 경우 변경보고로 등록해주시기 바랍니다.", befOfferVO);
+            }
+
             String fcstPalId = offerProfitDAO.selectNewFcstPalId(offerVO).getFcstPalId();
 
             offerVO.setFcstPalId(fcstPalId);
@@ -839,6 +857,24 @@ public class OfferProfitService extends AbstractDraftService {
         AccountVO accountVO = requestPayload.getAccountVO();
 
         try{
+
+            // 변경전손익ID가 존재하는 경우 해당 문서의 진행상태가 승인이 아닌 경우 insert를 하지않는다.
+            OfferVO befOfferVO = new OfferVO();
+            if(offerVO.getBefFcstPalId() != null){
+                befOfferVO.setFcstPalId(offerVO.getBefFcstPalId());
+                befOfferVO.setSantId(offerProfitDAO.selectOfferProfitPS2(befOfferVO).getSantId());
+
+                if( !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("C") && !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("D")  ){
+                    throw new UpdateDeniedException("변경전 손익분석서는 승인상태여야 합니다.", befOfferVO);
+                }
+            }
+
+            // 사업기회 중복매핑 체크
+            // 반려, 폐기가 아닌 상태의 동일한 사업기회가 연결된 예상손익분석서가 존재하면 insert를 하지않는다.
+            // 변경보고로 들어오는 경우는 제외
+            if(offerProfitDAO.selectIsExistDuplicateBoptID(offerVO).size() > 0 ){
+                throw new UpdateDeniedException("동일한 사업기회에 연결된 손익분서서가 존재합니다. 사업기회를 확인하거나 변경보고인 경우 변경보고로 등록해주시기 바랍니다.", befOfferVO);
+            }
 
             offerProfitDAO.deleteOfferProfitPSProduct(offerVO);
             // 유지보수, 타사구매내역 동일한 VO
@@ -1027,6 +1063,14 @@ public class OfferProfitService extends AbstractDraftService {
                     throw new UpdateDeniedException("변경전 손익분석서는 승인상태여야 합니다.", befOfferVO);
                 }
             }
+            
+            // 사업기회 중복매핑 체크
+            // 반려, 폐기가 아닌 상태의 동일한 사업기회가 연결된 예상손익분석서가 존재하면 insert를 하지않는다.
+            // 변경보고로 들어오는 경우는 제외
+            if(offerProfitDAO.selectIsExistDuplicateBoptID(offerVO).size() > 0 ){
+                throw new UpdateDeniedException("동일한 사업기회에 연결된 손익분서서가 존재합니다. 사업기회를 확인하거나 변경보고인 경우 변경보고로 등록해주시기 바랍니다.", befOfferVO);
+            }
+
 
             // 결재 등록 (미상신)
             offerVO.setFcstPalPrgsStatCd("A");
@@ -1287,6 +1331,13 @@ public class OfferProfitService extends AbstractDraftService {
                 if (!offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("C") && !offerProfitDAO.selectFcstPalPrgsStatCd(befOfferVO).getFcstPalPrgsStatCd().equals("D") ) {
                     throw new UpdateDeniedException("변경전 손익분석서는 승인상태여야 합니다.", befOfferVO);
                 }
+            }
+
+            // 사업기회 중복매핑 체크
+            // 반려, 폐기가 아닌 상태의 동일한 사업기회가 연결된 예상손익분석서가 존재하면 insert를 하지않는다.
+            // 변경보고로 들어오는 경우는 제외
+            if(offerProfitDAO.selectIsExistDuplicateBoptID(offerVO).size() > 0 ){
+                throw new UpdateDeniedException("동일한 사업기회에 연결된 손익분서서가 존재합니다. 사업기회를 확인하거나 변경보고인 경우 변경보고로 등록해주시기 바랍니다.", befOfferVO);
             }
 
             offerProfitDAO.deleteOfferProfitPSProductDC(offerVO); // BEST011T

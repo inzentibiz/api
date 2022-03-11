@@ -420,5 +420,10 @@ public class OfferProfitDAO {
         return mybatis.selectOne("OfferProfitMapper.selectProfitReportCntOption",offerVO);
     }
 
+    // 사업기회-예상손익 중복 체크여부 조회
+    public List<OfferVO> selectIsExistDuplicateBoptID(OfferVO offerVO) {
+        return mybatis.selectList("OfferProfitMapper.selectIsExistDuplicateBoptID",offerVO);
+    }
+
 
 }

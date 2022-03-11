@@ -2720,4 +2720,25 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 	</select>
 
 
+	<!-- 사업기회-예상손익 중복 체크여부 체크용 -->
+	<select id="selectIsExistDuplicateBoptID"
+			parameterType="com.ibiz.api.model.OfferVO"
+			resultType="com.ibiz.api.model.OfferVO">
+		SELECT *
+		FROM BEST000T
+		WHERE BOPT_ID = #{boptId}
+		AND FCST_PAL_PRGS_STAT_CD NOT IN ('R','W')
+		AND ( FCST_PAL_ID NOT IN
+		(
+			SELECT BEF_FCST_PAL_ID FROM BEST000T
+			START WITH FCST_PAL_ID = #{befFcstPalId}
+			CONNECT BY PRIOR BEF_FCST_PAL_ID = FCST_PAL_ID
+		) OR BEF_FCST_PAL_ID IN ( #{befFcstPalId} )
+		<if test="fcstPalId != null and fcstPalId != '' ">
+			AND FCST_PAL_ID NOT IN ( #{fcstPalId} )
+		</if>
+
+		)
+	</select>
+
 </mapper>
