@@ -2733,7 +2733,10 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 			SELECT BEF_FCST_PAL_ID FROM BEST000T
 			START WITH FCST_PAL_ID = #{befFcstPalId}
 			CONNECT BY PRIOR BEF_FCST_PAL_ID = FCST_PAL_ID
-		) OR BEF_FCST_PAL_ID IN ( #{befFcstPalId} )
+		)
+		<if test="befFcstPalId != null and befFcstPalId != '' ">
+			OR BEF_FCST_PAL_ID IN ( #{befFcstPalId} )
+		</if>
 		<if test="fcstPalId != null and fcstPalId != '' ">
 			AND FCST_PAL_ID NOT IN ( #{fcstPalId} )
 		</if>
