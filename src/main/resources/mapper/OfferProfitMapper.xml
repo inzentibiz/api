@@ -169,7 +169,7 @@
 			BEST.VRB_SLCT_RST_CD, IBIZ_COM_CD_NM('VRB_SLCT_RST_CD',BEST.VRB_SLCT_RST_CD) AS VRB_SLCT_RST_CD_NM,
 			BEST.REG_EMP_ID, IBIZ_EMP_NM(BEST.REG_EMP_ID) AS REG_EMP_NM, BEST.REG_DT,
 			BEST.CHG_EMP_ID, IBIZ_EMP_NM(BEST.CHG_EMP_ID) AS CHG_EMP_NM, BEST.CHG_DT,
-			BEST.BEF_FCST_PAL_ID, BEST.FILE_ATTC_ID
+			BEST.BEF_FCST_PAL_ID, BEST.FILE_ATTC_ID, BEST.TECH_FILE_ATTC_ID
 		FROM BEST000T BEST
 		JOIN APRJ000T APRJ ON ( BEST.PRJT_ID = APRJ.PRJT_ID )
 		JOIN BPIP000T BPIP ON ( BEST.BOPT_ID = BPIP.BOPT_ID )
@@ -1488,7 +1488,7 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 			   AAPR.SANT_APPV_DT,
 		       BEST.REG_EMP_ID, IBIZ_EMP_NM(BEST.REG_EMP_ID) AS REG_EMP_NM, BEST.REG_DT,
 			   BEST.CHG_EMP_ID, IBIZ_EMP_NM(BEST.CHG_EMP_ID) AS CHG_EMP_NM, BEST.CHG_DT,
-				BEST.FILE_ATTC_ID
+				BEST.FILE_ATTC_ID, BEST.TECH_FILE_ATTC_ID
 		  FROM BEST000T BEST
 			   JOIN APRJ000T APRJ ON ( BEST.PRJT_ID = APRJ.PRJT_ID )
 			   JOIN BPIP000T BPIP ON ( BEST.BOPT_ID = BPIP.BOPT_ID )
@@ -1834,6 +1834,9 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 		<if test="fileAttcId != null and fileAttcId != ''">
 			FILE_ATTC_ID,
 		</if>
+		<if test="techFileAttcId != null and techFileAttcId != ''">
+			TECH_FILE_ATTC_ID,
+		</if>
 		REG_EMP_ID,
 		REG_DT,
 		CHG_EMP_ID,
@@ -1880,6 +1883,9 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 		</if>
 		<if test="fileAttcId != null and fileAttcId != ''">
 			#{fileAttcId},
+		</if>
+		<if test="techFileAttcId != null and techFileAttcId != ''">
+			#{techFileAttcId},
 		</if>
 		#{regEmpId},
 		SYSDATE,
@@ -2743,5 +2749,20 @@ SELECT A.FCST_PAL_ID, A.DOC_NO,
 
 		)
 	</select>
+
+
+	<!-- 기술관련 첨부파일만 업데이트 -->
+	<update id="updateOfferPSTechFileAttcInfo"
+			parameterType="com.ibiz.api.model.OfferVO" >
+
+			UPDATE BEST000T
+			SET
+				TECH_FILE_ATTC_ID = #{techFileAttcId},
+				CHG_EMP_ID = #{chgEmpId},
+				CHG_DT = SYSDATE
+			WHERE FCST_PAL_ID = #{fcstPalId}
+
+
+	</update>
 
 </mapper>

@@ -348,5 +348,14 @@ public class OfferProfitController extends BaseController {
         return super.composePayload(new Payload<Integer>(offerProfitService.selectProfitReportCnt(requestPayload)));
     }
 
+    // 기술관련 첨부파일만 업데이트
+    @PostMapping("/updateOfferPSTechFileAttcInfo")
+    public ResponseEntity<String> updateOfferPSTechFileAttcInfo(@RequestParam("payload") String payload) throws Exception {
+        log.info("Call Controller : " + this.getClass().getName() + ".updateOfferProfitTechFileAttcInfo");
+        Payload requestPayload = super.parsePayload(payload, new TypeToken<Payload<OfferVO>>(){});
+
+        return super.composePayload(new Payload<OfferVO>(offerProfitService.updateOfferPSTechFileAttcInfo(requestPayload)));
+    }
+
 }
 

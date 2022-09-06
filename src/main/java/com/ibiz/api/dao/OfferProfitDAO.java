@@ -425,5 +425,9 @@ public class OfferProfitDAO {
         return mybatis.selectList("OfferProfitMapper.selectIsExistDuplicateBoptID",offerVO);
     }
 
+    // 기술관련 첨부파일만 업데이트
+    public void updateOfferPSTechFileAttcInfo(OfferVO offerVO) {
+        mybatis.update("OfferProfitMapper.updateOfferPSTechFileAttcInfo", offerVO);
+    }
 
 }

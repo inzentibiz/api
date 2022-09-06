@@ -413,6 +413,13 @@ public class OfferVO {
     // 파일첨부리스트
     private List<AttachVO> fileAttcList;
 
+    // 기술 파일첨부ID
+    private String techFileAttcId;
+
+    // 기술 파일첨부리스트
+    private List<AttachVO> techFileAttcList;
+
+
     public String getFrmtCdNm() {
         return frmtCdNm;
     }
@@ -1078,4 +1085,21 @@ public class OfferVO {
     public void setFileAttcList(List<AttachVO> fileAttcList) {
         this.fileAttcList = fileAttcList;
     }
+
+    public String getTechFileAttcId() {
+        return techFileAttcId;
+    }
+
+    public void setTechFileAttcId(String techFileAttcId) {
+        this.techFileAttcId = techFileAttcId;
+    }
+
+    public List<AttachVO> getTechFileAttcList() {
+        return techFileAttcList;
+    }
+
+    public void setTechFileAttcList(List<AttachVO> techFileAttcList) {
+        this.techFileAttcList = techFileAttcList;
+    }
+
 }

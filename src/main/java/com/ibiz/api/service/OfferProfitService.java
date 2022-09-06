@@ -1703,4 +1703,30 @@ public class OfferProfitService extends AbstractDraftService {
         return profitReportCnt;
     }
 
+
+    // 기술관련 첨부파일만 업데이트
+    @Transactional
+    public OfferVO updateOfferPSTechFileAttcInfo(Payload<OfferVO> requestPayload) throws UpdateDeniedException {
+        log.info("Call Service : " + this.getClass().getName() + ".updateOfferPSTechFileAttcInfo");
+        OfferVO offerVO= requestPayload.getDto();
+        AccountVO accountVO = requestPayload.getAccountVO();
+
+        try{
+
+            offerProfitDAO.updateOfferPSTechFileAttcInfo(offerVO);
+
+        }catch (Exception e){
+            if(e.getMessage() != null){
+                throw new UpdateDeniedException(e.getMessage(), offerVO);
+            }else{
+                //손익분석서 저장 중 오류가 발생했습니다.
+                throw new UpdateDeniedException(ExceptionCode.UPDATE_PROFIT_DATA_EXCEPTION_MESSAGE, offerVO);
+            }
+        }
+
+        return offerVO;
+    }
+
+
+
 }
