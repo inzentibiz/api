@@ -249,7 +249,9 @@
                     SELECT
                         COUNT(1) OVER() AS TOTAL_CNT,
                         T1.PRJT_ID, T3.PRJT_NM,T1.BOPT_ID, T1.BOPT_NM, T3.LAST_CUST_ID, IBIZ_CUST_NM(T3.LAST_CUST_ID) AS LAST_CUST_NM,
-                        T1.ORDE_CUST_ID, IBIZ_CUST_NM(T1.ORDE_CUST_ID) AS ORDE_CUST_NM,T3.PRJT_TYPE_CD, IBIZ_COM_CD_NM('PRJT_TYPE_CD',T3.PRJT_TYPE_CD) AS PRJT_TYPE_CD_NM,
+                        T1.ORDE_CUST_ID, IBIZ_CUST_NM(T1.ORDE_CUST_ID) AS ORDE_CUST_NM,
+                        T3.PRJT_TYPE_CD, IBIZ_COM_CD_NM('PRJT_TYPE_CD',T3.PRJT_TYPE_CD) AS PRJT_TYPE_CD_NM,
+                        T3.PRJT_DTL_TYPE_CD, IBIZ_COM_CD_NM('PRJT_DTL_TYPE_CD', T3.PRJT_DTL_TYPE_CD) AS PRJT_DTL_TYPE_CD_NM,
                         T1.CNTR_DATE,T1.CNTR_AMT ,T1.CNTR_TRSF_START_YAM,
                         T1.WCT_PRBB_CD, IBIZ_COM_CD_NM('WCT_PRBB_CD',T1.WCT_PRBB_CD) AS WCT_PRBB_CD_NM, T1.FCST_RFLC_YN,
                         T1.SLS_DEPT_ID, IBIZ_DEPT_NM(T1.SLS_DEPT_ID) AS SLS_DEPT_NM,
@@ -298,6 +300,9 @@
                         </if>
                         <if test="prjtTypeCd != null and prjtTypeCd != ''">
                             AND PRJT_TYPE_CD = #{prjtTypeCd}
+                        </if>
+                        <if test="prjtDtlTypeCd != null and prjtDtlTypeCd != ''">
+                            AND T3.PRJT_DTL_TYPE_CD = #{prjtDtlTypeCd}
                         </if>
                         <if test="fcstRflcYn != null and  fcstRflcYn != ''">
                             AND FCST_RFLC_YN = #{fcstRflcYn}
@@ -426,6 +431,7 @@
 
         SELECT T1.PRJT_ID, T3.PRJT_NM, T3.LAST_CUST_ID, T2.CUST_NM AS LAST_CUST_NM,
                IBIZ_COM_CD_NM('PRJT_TYPE_CD',T3.PRJT_TYPE_CD) AS PRJT_TYPE_CD_NM,
+               IBIZ_COM_CD_NM('PRJT_DTL_TYPE_CD',T3.PRJT_DTL_TYPE_CD) AS PRJT_DTL_TYPE_CD_NM,
                IBIZ_COM_CD_NM('BSNS_DOI_CD',T3.BSNS_DOI_CD) AS BSNS_DOI_NM,
                T3.BSNS_BDGT_AMT, T3.PRJT_STAT_CD, IBIZ_COM_CD_NM('PRJT_STAT_CD',T3.PRJT_STAT_CD) AS PRJT_STAT_CD_NM,
                T1.BOPT_ID, T1.BOPT_NM,
@@ -497,6 +503,9 @@
             </if>
             <if test="prjtTypeCd != null and prjtTypeCd != ''">
                 AND PRJT_TYPE_CD = #{prjtTypeCd}
+            </if>
+            <if test="prjtDtlTypeCd != null and prjtDtlTypeCd != ''">
+                AND T3.PRJT_DTL_TYPE_CD = #{prjtDtlTypeCd}
             </if>
             <if test="fcstRflcYn != null and  fcstRflcYn != ''">
                 AND FCST_RFLC_YN = #{fcstRflcYn}
@@ -607,6 +616,7 @@
             SELECT
                 T1.PRJT_ID, T3.PRJT_NM,T3.LAST_CUST_ID, IBIZ_CUST_NM(T3.LAST_CUST_ID) AS LAST_CUST_NM,
                 T3.PRJT_TYPE_CD, IBIZ_COM_CD_NM('PRJT_TYPE_CD',T3.PRJT_TYPE_CD) AS PRJT_TYPE_CD_NM,
+                T3.PRJT_DTL_TYPE_CD, IBIZ_COM_CD_NM('PRJT_DTL_TYPE_CD',T3.PRJT_DTL_TYPE_CD) AS PRJT_DTL_TYPE_CD_NM,
                 T3.BSNS_BDGT_AMT, T3.PRJT_STAT_CD, IBIZ_COM_CD_NM('PRJT_STAT_CD',T3.PRJT_STAT_CD) AS PRJT_STAT_CD_NM,
                 T3.BSNS_DOI_CD, IBIZ_COM_CD_NM('BSNS_DOI_CD',T3.BSNS_DOI_CD) AS BSNS_DOI_NM,
                 T1.BOPT_ID, T1.BOPT_NM,
@@ -665,6 +675,9 @@
                 </if>
                 <if test="prjtTypeCd != null and prjtTypeCd != ''">
                     AND PRJT_TYPE_CD = #{prjtTypeCd}
+                </if>
+                <if test="prjtDtlTypeCd != null and prjtDtlTypeCd != ''">
+                    AND T3.PRJT_DTL_TYPE_CD = #{prjtDtlTypeCd}
                 </if>
                 <if test="fcstRflcYn != null and  fcstRflcYn != ''">
                     AND FCST_RFLC_YN = #{fcstRflcYn}
@@ -844,6 +857,9 @@
                 </if>
                 <if test="prjtTypeCd != null and prjtTypeCd != ''">
                     AND PRJT_TYPE_CD = #{prjtTypeCd}
+                </if>
+                <if test="prjtDtlTypeCd != null and prjtDtlTypeCd != ''">
+                    AND PRJT_DTL_TYPE_CD = #{prjtDtlTypeCd}
                 </if>
                     AND BOPT_STAT_CD != 'F'
                 ORDER BY  IBIZ_CUST_NM(T.LAST_CUST_ID) ASC , BOPT_NM ASC, CNTR_DATE ASC

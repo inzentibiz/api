@@ -84,6 +84,17 @@ public class BizChanceSearchVO {
      * 프로젝트유형코드명
      */
     private String prjtTypeCdNm;
+
+    /**
+     * 프로젝트 상세유형코드
+     */
+    private String prjtDtlTypeCd;
+
+    /**
+     * 프로젝트 상세유형코드명
+     */
+    private String prjtDtlTypeCdNm;
+
     /**
      * 수주확률 코드
      */
@@ -716,6 +727,21 @@ public class BizChanceSearchVO {
         this.prjtTypeCdNm = prjtTypeCdNm;
     }
 
+    public String getPrjtDtlTypeCd() {
+        return prjtDtlTypeCd;
+    }
+
+    public void setPrjtDtlTypeCd(String prjtDtlTypeCd) {
+        this.prjtDtlTypeCd = prjtDtlTypeCd;
+    }
+
+    public String getPrjtDtlTypeCdNm() {
+        return prjtDtlTypeCdNm;
+    }
+
+    public void setPrjtDtlTypeCdNm(String prjtDtlTypeCdNm) {
+        this.prjtDtlTypeCdNm = prjtDtlTypeCdNm;
+    }
 
     public String getWctPrbbCd() {
         return wctPrbbCd;
