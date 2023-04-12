@@ -308,18 +308,19 @@
                         <if test="extndYn != null and extndYn != ''">
                             AND T1.EXTND_YN = #{extndYn}
                         </if>
-                        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                        <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">-->
+                        <if test="godsClsfCd != null and  godsClsfCd != ''">
                        AND EXISTS (SELECT 1 FROM BPIP020T T2
                             WHERE T2.BOPT_ID = T1.BOPT_ID
-                              <if test="godsClsfCd != null and  godsClsfCd != ''">
+                              <!--<if test="godsClsfCd != null and  godsClsfCd != ''">-->
                               AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-                              </if>
-                              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                              <!--</if>-->
+                              <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                               AND EXISTS (SELECT COM_CD FROM ACOM010T GC
                                            WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
                                              AND T2.GODS_CLSF_CD = GC.COM_CD
-                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                                </if>
+                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) &#45;&#45;검색조건:사업분류 ★사업분류를 상품정보로 이동
+                                </if>-->
                           )
                         </if>
                         <if test="prjtInputCd != null and prjtInputCd != ''">
@@ -501,9 +502,9 @@
             <if test="fcstRflcYn != null and  fcstRflcYn != ''">
                 AND FCST_RFLC_YN = #{fcstRflcYn}
             </if>
-            <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+            <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                 AND GC.HGRK_COM_CD = #{bsnsClsfCd}
-            </if>
+            </if>-->
             <if test="godsClsfCd != null and  godsClsfCd != ''">
                 AND T4.GODS_CLSF_CD = #{godsClsfCd}
             </if>
@@ -669,18 +670,19 @@
                 <if test="fcstRflcYn != null and  fcstRflcYn != ''">
                     AND FCST_RFLC_YN = #{fcstRflcYn}
                 </if>
-        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+        <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">-->
+        <if test="godsClsfCd != null and  godsClsfCd != ''">
                AND EXISTS (SELECT 1 FROM BPIP020T T2
                     WHERE T2.BOPT_ID = T1.BOPT_ID
-                      <if test="godsClsfCd != null and  godsClsfCd != ''">
+                      <!--<if test="godsClsfCd != null and  godsClsfCd != ''">-->
                       AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-                      </if>
-                      <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                      <!--</if>-->
+                      <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                       AND EXISTS (SELECT COM_CD FROM ACOM010T GC
                                    WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
                                      AND T2.GODS_CLSF_CD = GC.COM_CD
-                                     AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                        </if>
+                                     AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) &#45;&#45;검색조건:사업분류 ★사업분류를 상품정보로 이동
+                        </if>-->
                   )
         </if>
 
@@ -1364,18 +1366,19 @@
                 <if test="prjtTypeCd != null and prjtTypeCd != ''">
                     AND PRJT_TYPE_CD = #{prjtTypeCd}
                 </if>
-                <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">-->
+                <if test="godsClsfCd != null and  godsClsfCd != ''">
                     AND EXISTS (SELECT 1 FROM BPIP020T T2
                     WHERE T2.BOPT_ID = T1.BOPT_ID
-                      <if test="godsClsfCd != null and  godsClsfCd != ''">
+                      <!--<if test="godsClsfCd != null and  godsClsfCd != ''">-->
                       AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-                      </if>
-                      <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                      <!--</if>-->
+                      <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                       AND EXISTS (SELECT COM_CD FROM ACOM010T GC
                                    WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
                                      AND T2.GODS_CLSF_CD = GC.COM_CD
-                                     AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                        </if>
+                                     AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) &#45;&#45;검색조건:사업분류 ★사업분류를 상품정보로 이동
+                        </if>-->
                   )
                 </if>
                 <if test="chgStartDate != null and chgStartDate != '' ">
@@ -1499,18 +1502,19 @@
                         <if test="prjtTypeCd != null and prjtTypeCd != ''">
                             AND PRJT_TYPE_CD = #{prjtTypeCd}
                         </if>
-                        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                        <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">-->
+                        <if test="godsClsfCd != null and  godsClsfCd != ''">
                             AND EXISTS (SELECT 1 FROM BPIP020T T2
                             WHERE T2.BOPT_ID = T1.BOPT_ID
-                              <if test="godsClsfCd != null and  godsClsfCd != ''">
+                              <!--<if test="godsClsfCd != null and  godsClsfCd != ''">-->
                               AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-                              </if>
-                              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                              <!--</if>-->
+                              <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                               AND EXISTS (SELECT COM_CD FROM ACOM010T GC
                                            WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
                                              AND T2.GODS_CLSF_CD = GC.COM_CD
-                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                                </if>
+                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) &#45;&#45;검색조건:사업분류 ★사업분류를 상품정보로 이동
+                                </if>-->
                           )
                         </if>
 
@@ -1636,18 +1640,19 @@
                         <if test="prjtTypeCd != null and prjtTypeCd != ''">
                             AND PRJT_TYPE_CD = #{prjtTypeCd}
                         </if>
-                        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                        <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">-->
+                        <if test="godsClsfCd != null and  godsClsfCd != ''">
                             AND EXISTS (SELECT 1 FROM BPIP020T T2
                             WHERE T2.BOPT_ID = T1.BOPT_ID
-                              <if test="godsClsfCd != null and  godsClsfCd != ''">
+                              <!--<if test="godsClsfCd != null and  godsClsfCd != ''">-->
                               AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-                              </if>
-                              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                              <!--</if>-->
+                              <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                               AND EXISTS (SELECT COM_CD FROM ACOM010T GC
                                            WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
                                              AND T2.GODS_CLSF_CD = GC.COM_CD
-                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                                </if>
+                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) &#45;&#45;검색조건:사업분류 ★사업분류를 상품정보로 이동
+                                </if>-->
                           )
                         </if>
 
@@ -1769,18 +1774,19 @@
                         <if test="prjtTypeCd != null and prjtTypeCd != ''">
                             AND PRJT_TYPE_CD = #{prjtTypeCd}
                         </if>
-                        <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                        <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">-->
+                        <if test="godsClsfCd != null and  godsClsfCd != ''">
                             AND EXISTS (SELECT 1 FROM BPIP020T T2
                             WHERE T2.BOPT_ID = T1.BOPT_ID
-                              <if test="godsClsfCd != null and  godsClsfCd != ''">
+                              <!--<if test="godsClsfCd != null and  godsClsfCd != ''">-->
                               AND T2.GODS_CLSF_CD = #{godsClsfCd} --검색조건:제품분류 ★제품분류 검색조건 추가
-                              </if>
-                              <if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
+                              <!--</if>-->
+                              <!--<if test="bsnsClsfCd != null and  bsnsClsfCd != ''">
                               AND EXISTS (SELECT COM_CD FROM ACOM010T GC
                                            WHERE GC.COM_GRP_CD = (SELECT COM_GRP_CD FROM ACOM020T WHERE CLMN_NM = 'GODS_CLSF_CD')
                                              AND T2.GODS_CLSF_CD = GC.COM_CD
-                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) --검색조건:사업분류 ★사업분류를 상품정보로 이동
-                                </if>
+                                             AND GC.HGRK_COM_CD = #{bsnsClsfCd} ) &#45;&#45;검색조건:사업분류 ★사업분류를 상품정보로 이동
+                                </if>-->
                           )
                         </if>
 
