@@ -138,6 +138,16 @@ public class BizChanceVO {
     private String prjtTypeCdNm;
 
     /**
+     * 프로젝트 상세유형코드
+     */
+    private String prjtDtlTypeCd;
+
+    /**
+     * 프로젝트 상세유형코드명
+     */
+    private String prjtDtlTypeCdNm;
+
+    /**
      * 프로젝트상태코드
      */
     private String prjtStateCd;
@@ -556,6 +566,22 @@ public class BizChanceVO {
 
     public void setPrjtTypeCdNm(String prjtTypeCdNm) {
         this.prjtTypeCdNm = prjtTypeCdNm;
+    }
+
+    public String getPrjtDtlTypeCd() {
+        return prjtDtlTypeCd;
+    }
+
+    public void setPrjtDtlTypeCd(String prjtDtlTypeCd) {
+        this.prjtDtlTypeCd = prjtDtlTypeCd;
+    }
+
+    public String getPrjtDtlTypeCdNm() {
+        return prjtDtlTypeCdNm;
+    }
+
+    public void setPrjtDtlTypeCdNm(String prjtDtlTypeCdNm) {
+        this.prjtDtlTypeCdNm = prjtDtlTypeCdNm;
     }
 
     public String getPrjtStateCd() {

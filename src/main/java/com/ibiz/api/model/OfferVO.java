@@ -68,6 +68,16 @@ public class OfferVO {
     private String prjtTypeCdNm;
 
     /**
+     * 프로젝트 상세유형코드
+     */
+    private String prjtDtlTypeCd;
+
+    /**
+     * 프로젝트 상세유형코드명
+     */
+    private String prjtDtlTypeCdNm;
+
+    /**
      * 사업기회ID
      */
     @Size(max=10, message=ExceptionCode.OUTOFSIZE_EXCEPTION+" 사업기회ID는 10자리 이하여야합니다." )
@@ -506,6 +516,22 @@ public class OfferVO {
 
     public void setPrjtTypeCdNm(String prjtTypeCdNm) {
         this.prjtTypeCdNm = prjtTypeCdNm;
+    }
+
+    public String getPrjtDtlTypeCd() {
+        return prjtDtlTypeCd;
+    }
+
+    public void setPrjtDtlTypeCd(String prjtDtlTypeCd) {
+        this.prjtDtlTypeCd = prjtDtlTypeCd;
+    }
+
+    public String getPrjtDtlTypeCdNm() {
+        return prjtDtlTypeCdNm;
+    }
+
+    public void setPrjtDtlTypeCdNm(String prjtDtlTypeCdNm) {
+        this.prjtDtlTypeCdNm = prjtDtlTypeCdNm;
     }
 
     public String getBoptId() {

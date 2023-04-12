@@ -58,6 +58,11 @@ public class OfferProfitSearchVO {
     private String prjtTypeCd;
 
     /**
+     * 프로젝트 상세유형코드
+     */
+    private String prjtDtlTypeCd;
+
+    /**
      * 페이지사이즈
      */
     private String pageSize;
@@ -308,6 +313,22 @@ public class OfferProfitSearchVO {
 
     public void setPrjtTypeCd(String prjtTypeCd) {
         this.prjtTypeCd = prjtTypeCd;
+    }
+
+    public String getPrjtDtlTypeCd() {
+        return prjtDtlTypeCd;
+    }
+
+    public void setPrjtDtlTypeCd(String prjtDtlTypeCd) {
+        this.prjtDtlTypeCd = prjtDtlTypeCd;
+    }
+
+    public String getFcstPalPrgsStatCd() {
+        return fcstPalPrgsStatCd;
+    }
+
+    public void setFcstPalPrgsStatCd(String fcstPalPrgsStatCd) {
+        this.fcstPalPrgsStatCd = fcstPalPrgsStatCd;
     }
 
     public String getPageSize() {
