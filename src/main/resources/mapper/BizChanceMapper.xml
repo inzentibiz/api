@@ -785,7 +785,7 @@
         SELECT *
         FROM ( SELECT COUNT(1) OVER() AS TOTAL_CNT, ROWNUM AS ROWNUMBER
                         ,T.BOPT_ID,T.BOPT_NM,T.PRJT_ID, T.PRJT_NM
-                        ,T.PRJT_TYPE_CD,T.PRJT_TYPE_CD_NM,T.LAST_CUST_ID,T.LAST_CUST_NM
+                        ,T.PRJT_TYPE_CD,T.PRJT_TYPE_CD_NM,T.PRJT_DTL_TYPE_CD,T.LAST_CUST_ID,T.LAST_CUST_NM
                         ,T.ORDE_CUST_ID,T.ORDE_CUST_NM,T.SLS_DEPT_ID,T.SLS_DEPT_NM
                         ,T.SLS_EMP_ID,T.SLS_EMP_NM,T.BOPT_STAT_CD,T.BOPT_STAT_CD_NM
                         ,T.BOPT_END_TYPE_CD,T.BOPT_END_TYPE_CD_NM
@@ -796,6 +796,7 @@
                             ,IBIZ_PRJT_NM(T1.PRJT_ID) AS PRJT_NM
                             ,T2.PRJT_TYPE_CD
                             ,IBIZ_COM_CD_NM('PRJT_TYPE_CD',T2.PRJT_TYPE_CD) AS PRJT_TYPE_CD_NM
+                            ,T2.PRJT_DTL_TYPE_CD
                             ,T2.LAST_CUST_ID
                             ,IBIZ_CUST_NM(T2.LAST_CUST_ID) AS LAST_CUST_NM
                             ,T1.ORDE_CUST_ID
